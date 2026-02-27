@@ -26,7 +26,7 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
 
   const isVerticalLayout = expression.includes('+') || expression.includes('-');
   const operator = expression.match(/[+\-]/)?.[0] || '';
-  const operands = expression.split(/\s*[+\-]\s*/).map((s) => s.trim());
+  const operands = expression.split(/\s*[+\-]\s*/).map((s: string) => s.trim());
 
   const handleSubmit = () => {
     if (inputValue.trim()) {

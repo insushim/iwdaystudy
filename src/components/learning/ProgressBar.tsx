@@ -56,8 +56,8 @@ export default function ProgressBar({
           const subjectInfo = SUBJECTS[q.subject];
           const subjectColor = subjectInfo?.color || 'var(--primary)';
 
-          // Special subjects don't have correct/incorrect
-          const isSpecial = q.subject === 'emotion_check' || q.subject === 'readiness_check' || q.subject === 'writing' || q.subject === 'creative';
+          // Special types don't have correct/incorrect
+          const isSpecial = q.question_type === 'emotion_check' || q.question_type === 'readiness_check' || q.subject === 'writing' || q.subject === 'creative';
 
           let dotColor = 'bg-muted';
           let borderColor = 'border-transparent';

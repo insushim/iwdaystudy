@@ -153,7 +153,7 @@ export default function EnglishQuestion({ content, answer, onAnswer, showResult,
             {content.practice && content.practice.length > 0 && (
               <div className="mt-2 flex flex-wrap justify-center gap-2">
                 <span className="text-xs text-muted-foreground">연습 단어:</span>
-                {content.practice.map((p, i) => (
+                {content.practice.map((p: string, i: number) => (
                   <span
                     key={i}
                     className="rounded-full bg-[#4169E1]/10 px-3 py-1 text-xs font-medium text-[#4169E1]"

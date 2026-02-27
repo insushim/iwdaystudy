@@ -85,7 +85,7 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
           className="flex flex-wrap justify-center gap-2"
         >
           <span className="text-sm text-muted-foreground font-medium mr-1">관련 단어:</span>
-          {content.words.map((word, i) => (
+          {content.words.map((word: string, i: number) => (
             <Badge
               key={i}
               variant="outline"
