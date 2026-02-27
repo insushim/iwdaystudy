@@ -1,7 +1,12 @@
-import ClassDetailClient from './ClassDetailClient';
+import ClassDetailClient from "./ClassDetailClient";
 
 export function generateStaticParams() {
-  return [{ classId: 'placeholder' }];
+  return [
+    { classId: "placeholder" },
+    { classId: "c1" },
+    { classId: "c2" },
+    { classId: "c3" },
+  ];
 }
 
 export default function ClassDetailPage() {
