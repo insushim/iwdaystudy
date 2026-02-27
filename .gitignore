@@ -55,5 +55,8 @@ android/local.properties
 dist/
 out/
 
+# Generated files (keep icon PNGs tracked)
+public/_icon-generator.html
+
 # Environment
 .env*.local

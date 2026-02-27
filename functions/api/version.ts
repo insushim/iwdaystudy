@@ -4,9 +4,9 @@
 export const onRequestGet: PagesFunction = async () => {
   return new Response(
     JSON.stringify({
-      version: '0.1.0',
-      minVersion: '0.1.0',
-      buildDate: '2026-02-27',
+      version: "1.0.0",
+      minVersion: "1.0.0",
+      buildDate: "2026-02-27",
       features: {
         aiGeneration: true,
         offlineMode: true,
@@ -17,7 +17,7 @@ export const onRequestGet: PagesFunction = async () => {
       message: null,
     }),
     {
-      headers: { 'Content-Type': 'application/json' },
-    }
+      headers: { "Content-Type": "application/json" },
+    },
   );
 };

@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build, Deploy and Release
 
 on:
   push:
@@ -28,6 +28,33 @@ jobs:
           name: web-build
           path: out/
 
+  deploy-web:
+    needs: build-web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: out/
+
+      - name: Run D1 Migration
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 execute araharu-db --file=wrangler/schema.sql --remote
+        continue-on-error: true
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy out --project-name=araharu
+
   build-apk:
     runs-on: ubuntu-latest
     steps:
@@ -42,10 +69,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Build APK
         working-directory: android
         run: |
-          chmod +x gradlew 2>/dev/null || gradle wrapper --gradle-version 8.2
+          gradle wrapper --gradle-version 8.2
           chmod +x gradlew
           ./gradlew assembleRelease
 
@@ -56,7 +86,7 @@ jobs:
           path: android/app/build/outputs/apk/release/*.apk
 
   release:
-    needs: [build-web, build-apk]
+    needs: [deploy-web, build-apk]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -75,7 +105,7 @@ jobs:
           mv dist/*.apk dist/araharu-${VERSION}.apk 2>/dev/null || true
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: dist/*.apk
           generate_release_notes: true
@@ -83,8 +113,13 @@ jobs:
             ## 아라하루 ${{ github.ref_name }}
 
             ### 설치 방법
-            - **Android**: APK 파일을 다운로드하여 설치하세요.
-            - **iOS/웹**: https://araharu.pages.dev 에서 "홈 화면에 추가"로 설치하세요.
+            - **Android**: 아래 APK 파일을 다운로드하여 설치하세요.
+            - **iOS**: https://araharu.pages.dev 접속 → 공유 버튼(□↑) → "홈 화면에 추가"
+            - **웹**: https://araharu.pages.dev
+
+            ### 업데이트
+            - Android 앱은 자동으로 업데이트를 감지합니다.
+            - iOS/웹은 새로고침 시 자동 업데이트됩니다.
 
             ### 변경사항
             자동 생성된 릴리스 노트를 참조하세요.

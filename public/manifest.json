@@ -3,14 +3,21 @@
   "short_name": "아라하루",
   "description": "초등 1~6학년 맞춤 일일학습 프로그램",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#FAFDF7",
   "theme_color": "#2ECC71",
   "orientation": "portrait-primary",
   "categories": ["education", "kids"],
   "lang": "ko",
+  "id": "/",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ]
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
 }

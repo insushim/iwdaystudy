@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_KR, Nanum_Pen_Script } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { ClientProviders } from "@/components/common/ClientProviders";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -19,8 +20,16 @@ const nanumPen = Nanum_Pen_Script({
 
 export const metadata: Metadata = {
   title: "아라하루 - 매일 아침, 알아가는 즐거움",
-  description: "초등 1~6학년 맞춤 일일학습 프로그램. 2022 개정 교육과정 기반 매일 30분 아침학습으로 학습 습관을 키워요.",
-  keywords: ["초등학습", "일일학습", "아침학습", "매일학습", "초등교육", "학습앱"],
+  description:
+    "초등 1~6학년 맞춤 일일학습 프로그램. 2022 개정 교육과정 기반 매일 30분 아침학습으로 학습 습관을 키워요.",
+  keywords: [
+    "초등학습",
+    "일일학습",
+    "아침학습",
+    "매일학습",
+    "초등교육",
+    "학습앱",
+  ],
   authors: [{ name: "아라하루" }],
   manifest: "/manifest.json",
   openGraph: {
@@ -44,17 +53,32 @@ export const viewport: Viewport = {
   themeColor: "#2ECC71",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="apple-touch-icon"
+          href="/apple-touch-icon.png"
+          sizes="180x180"
+        />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className={`${notoSansKR.variable} ${nanumPen.variable} antialiased`}>
+      <body
+        className={`${notoSansKR.variable} ${nanumPen.variable} antialiased`}
+      >
         {children}
+        <ClientProviders />
         <Toaster position="top-center" richColors />
       </body>
     </html>
