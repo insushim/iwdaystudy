@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="100" cy="185" rx="40" ry="8" fill="#000" opacity="0.08"/>
+
+  <!-- Sparkle effects -->
+  <g opacity="0.8">
+    <path d="M30 50 L32 44 L34 50 L40 52 L34 54 L32 60 L30 54 L24 52 Z" fill="#F9CA24"/>
+    <path d="M160 35 L161.5 30 L163 35 L168 36.5 L163 38 L161.5 43 L160 38 L155 36.5 Z" fill="#F9CA24"/>
+    <path d="M170 70 L171 67 L172 70 L175 71 L172 72 L171 75 L170 72 L167 71 Z" fill="#FF8BA7"/>
+  </g>
+
+  <!-- Body - round seed shape -->
+  <ellipse cx="100" cy="120" rx="48" ry="55" fill="#F5E6C8"/>
+  <ellipse cx="100" cy="118" rx="44" ry="51" fill="#FAECD3"/>
+
+  <!-- Belly highlight -->
+  <ellipse cx="100" cy="130" rx="28" ry="30" fill="#FFF5E6" opacity="0.5"/>
+
+  <!-- Left arm - raised up -->
+  <path d="M52 105 C38 90 35 80 42 75" stroke="#E8D5B0" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Left hand wave -->
+  <circle cx="42" cy="73" r="6" fill="#FAECD3"/>
+
+  <!-- Right arm - raised up -->
+  <path d="M148 105 C162 90 165 80 158 75" stroke="#E8D5B0" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Right hand wave -->
+  <circle cx="158" cy="73" r="6" fill="#FAECD3"/>
+
+  <!-- Left leg -->
+  <path d="M80 170 L75 185" stroke="#E8D5B0" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Right leg -->
+  <path d="M120 170 L125 185" stroke="#E8D5B0" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Left shoe -->
+  <ellipse cx="73" cy="187" rx="8" ry="5" fill="#8B6914"/>
+
+  <!-- Right shoe -->
+  <ellipse cx="127" cy="187" rx="8" ry="5" fill="#8B6914"/>
+
+  <!-- Sprout stem -->
+  <path d="M100 65 L100 45" stroke="#2ECC71" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Left sprout leaf -->
+  <path d="M100 52 C92 48 88 38 93 32 C96 28 100 36 100 44" fill="#2ECC71"/>
+
+  <!-- Right sprout leaf -->
+  <path d="M100 48 C108 44 112 34 107 28 C104 24 100 32 100 40" fill="#27AE60"/>
+
+  <!-- Left eye - happy squint -->
+  <path d="M76 103 Q82 97 88 103" stroke="#1A1A2E" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Right eye - happy squint -->
+  <path d="M112 103 Q118 97 124 103" stroke="#1A1A2E" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+  <!-- Wide smile -->
+  <path d="M82 118 Q100 140 118 118" stroke="#1A1A2E" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+  <!-- Open mouth -->
+  <path d="M88 122 Q100 136 112 122" fill="#FF6B6B" opacity="0.6"/>
+
+  <!-- Blush - left -->
+  <ellipse cx="72" cy="115" rx="9" ry="6" fill="#FF8BA7" opacity="0.4"/>
+
+  <!-- Blush - right -->
+  <ellipse cx="128" cy="115" rx="9" ry="6" fill="#FF8BA7" opacity="0.4"/>
+</svg>

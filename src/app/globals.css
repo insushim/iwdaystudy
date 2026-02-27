@@ -1,26 +1,230 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-noto);
+  --font-handwriting: var(--font-handwriting);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* 아라하루 브랜드 컬러 */
+  --color-ara-green: #2ECC71;
+  --color-ara-green-light: #A8E6CF;
+  --color-ara-green-dark: #1A9B50;
+  --color-ara-yellow: #F9CA24;
+  --color-ara-orange: #FF6B35;
+  --color-ara-blue: #4ECDC4;
+  --color-ara-purple: #A18CD1;
+  --color-ara-pink: #FF8BA7;
+  --color-ara-sky: #87CEEB;
+
+  /* 과목별 컬러 */
+  --color-subject-math: #FF6B35;
+  --color-subject-korean: #4ECDC4;
+  --color-subject-spelling: #A18CD1;
+  --color-subject-vocab: #FF8BA7;
+  --color-subject-hanja: #8B4513;
+  --color-subject-english: #4169E1;
+  --color-subject-writing: #2ECC71;
+  --color-subject-knowledge: #F9CA24;
+  --color-subject-safety: #E74C3C;
+  --color-subject-creative: #FF69B4;
+
+  /* 학년별 컬러 */
+  --color-grade1: #FF8BA7;
+  --color-grade2: #F9CA24;
+  --color-grade3: #4ECDC4;
+  --color-grade4: #4169E1;
+  --color-grade5: #A18CD1;
+  --color-grade6: #2ECC71;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.75rem;
+  --background: #FAFDF7;
+  --foreground: #1A1A2E;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A2E;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A2E;
+  --primary: #2ECC71;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F0F4F0;
+  --secondary-foreground: #1A1A2E;
+  --muted: #F0F4F0;
+  --muted-foreground: #6B7280;
+  --accent: #A8E6CF;
+  --accent-foreground: #1A1A2E;
+  --destructive: #E74C3C;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #2ECC71;
+  --chart-1: #FF6B35;
+  --chart-2: #4ECDC4;
+  --chart-3: #A18CD1;
+  --chart-4: #F9CA24;
+  --chart-5: #FF8BA7;
+  --sidebar: #F8FBF5;
+  --sidebar-foreground: #1A1A2E;
+  --sidebar-primary: #2ECC71;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E8F5E8;
+  --sidebar-accent-foreground: #1A1A2E;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #2ECC71;
+}
+
+.dark {
+  --background: #0F1B0F;
+  --foreground: #E8F5E8;
+  --card: #1A2E1A;
+  --card-foreground: #E8F5E8;
+  --popover: #1A2E1A;
+  --popover-foreground: #E8F5E8;
+  --primary: #2ECC71;
+  --primary-foreground: #FFFFFF;
+  --secondary: #1F3A1F;
+  --secondary-foreground: #E8F5E8;
+  --muted: #1F3A1F;
+  --muted-foreground: #9CA3AF;
+  --accent: #1A9B50;
+  --accent-foreground: #E8F5E8;
+  --destructive: #E74C3C;
+  --border: #2D4A2D;
+  --input: #2D4A2D;
+  --ring: #2ECC71;
+  --chart-1: #FF6B35;
+  --chart-2: #4ECDC4;
+  --chart-3: #A18CD1;
+  --chart-4: #F9CA24;
+  --chart-5: #FF8BA7;
+  --sidebar: #0F1B0F;
+  --sidebar-foreground: #E8F5E8;
+  --sidebar-primary: #2ECC71;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1F3A1F;
+  --sidebar-accent-foreground: #E8F5E8;
+  --sidebar-border: #2D4A2D;
+  --sidebar-ring: #2ECC71;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-noto), 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 학습 카드 효과 */
+.learning-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.08);
+}
+.learning-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(46, 204, 113, 0.15);
+}
+
+/* 정답 애니메이션 */
+@keyframes correctBounce {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.2); }
+  50% { transform: scale(0.95); }
+  70% { transform: scale(1.05); }
+}
+.animate-correct {
+  animation: correctBounce 0.6s ease-in-out;
+}
+
+/* 오답 흔들림 */
+@keyframes wrongShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+.animate-wrong {
+  animation: wrongShake 0.4s ease-in-out;
+}
+
+/* 반짝임 효과 */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.animate-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+/* 떠다니는 효과 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 컨페티 효과 */
+@keyframes confetti-fall {
+  0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+.animate-confetti {
+  animation: confetti-fall 3s ease-in-out forwards;
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--muted); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+
+/* PWA 관련 */
+@media (display-mode: standalone) {
+  body {
+    -webkit-user-select: none;
+    user-select: none;
+  }
 }

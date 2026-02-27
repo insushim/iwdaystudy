@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Soil base -->
+  <ellipse cx="32" cy="54" rx="14" ry="4" fill="#FFFFFF" opacity="0.15"/>
+  <!-- Main stem -->
+  <path d="M32 52 L32 26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+  <!-- Left leaf -->
+  <path d="M32 38 C24 36 20 28 24 22 C28 18 32 24 32 30" fill="#FFFFFF"/>
+  <!-- Left leaf vein -->
+  <path d="M32 34 C28 32 26 28 27 24" stroke="#E0E0E0" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+  <!-- Right leaf -->
+  <path d="M32 32 C40 30 44 22 40 16 C36 12 32 18 32 24" fill="#E0E0E0"/>
+  <!-- Right leaf vein -->
+  <path d="M32 28 C36 26 38 22 37 18" stroke="#CCCCCC" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+  <!-- Pencil integrated into top -->
+  <path d="M32 26 L28.5 17 L32 9 L35.5 17 Z" fill="#FFFFFF"/>
+  <path d="M32 9 L30.2 13 L33.8 13 Z" fill="#CCCCCC"/>
+  <!-- Small sparkle -->
+  <circle cx="42" cy="13" r="1.5" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="22" cy="19" r="1" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="44" cy="22" r="0.8" fill="#FFFFFF" opacity="0.5"/>
+</svg>

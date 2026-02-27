@@ -1,0 +1,32 @@
+name = "araharu"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "out"
+
+[vars]
+APP_ENV = "production"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "araharu-db"
+database_id = "placeholder-will-be-set-later"
+
+# Environment-specific configuration
+[env.preview]
+name = "araharu-preview"
+
+[[env.preview.d1_databases]]
+binding = "DB"
+database_name = "araharu-db-preview"
+database_id = "placeholder-preview-db-id"
+
+[env.production]
+name = "araharu"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "araharu-db"
+database_id = "placeholder-production-db-id"
+
+# Secrets are set via `wrangler secret put`:
+# wrangler secret put ANTHROPIC_API_KEY
+# wrangler secret put CRON_SECRET

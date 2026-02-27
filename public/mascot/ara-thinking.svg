@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="100" cy="185" rx="40" ry="8" fill="#000" opacity="0.08"/>
+
+  <!-- Question mark -->
+  <g transform="translate(150, 40)">
+    <text font-family="sans-serif" font-size="32" font-weight="bold" fill="#A18CD1" opacity="0.8">?</text>
+  </g>
+  <!-- Thought dots -->
+  <circle cx="145" cy="65" r="3" fill="#A18CD1" opacity="0.5"/>
+  <circle cx="138" cy="75" r="2" fill="#A18CD1" opacity="0.4"/>
+
+  <!-- Body - round seed shape, slightly tilted -->
+  <g transform="rotate(-5, 100, 120)">
+    <ellipse cx="100" cy="120" rx="48" ry="55" fill="#F5E6C8"/>
+    <ellipse cx="100" cy="118" rx="44" ry="51" fill="#FAECD3"/>
+
+    <!-- Belly highlight -->
+    <ellipse cx="100" cy="130" rx="28" ry="30" fill="#FFF5E6" opacity="0.5"/>
+  </g>
+
+  <!-- Left arm hanging -->
+  <path d="M55 118 C45 115 40 125 48 132" stroke="#E8D5B0" stroke-width="6" stroke-linecap="round" fill="none"/>
+
+  <!-- Right arm - hand on chin (thinking pose) -->
+  <path d="M145 110 C155 105 152 95 145 95" stroke="#E8D5B0" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <!-- Hand near chin -->
+  <circle cx="143" cy="112" r="6" fill="#FAECD3"/>
+
+  <!-- Left leg -->
+  <path d="M78 170 L73 185" stroke="#E8D5B0" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Right leg -->
+  <path d="M118 170 L123 185" stroke="#E8D5B0" stroke-width="7" stroke-linecap="round"/>
+
+  <!-- Left shoe -->
+  <ellipse cx="71" cy="187" rx="8" ry="5" fill="#8B6914"/>
+
+  <!-- Right shoe -->
+  <ellipse cx="125" cy="187" rx="8" ry="5" fill="#8B6914"/>
+
+  <!-- Sprout stem - slightly tilted -->
+  <path d="M98 65 L96 45" stroke="#2ECC71" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Left sprout leaf -->
+  <path d="M96 52 C88 48 84 38 89 32 C92 28 96 36 96 44" fill="#2ECC71"/>
+
+  <!-- Right sprout leaf -->
+  <path d="M96 48 C104 44 108 34 103 28 C100 24 96 32 96 40" fill="#27AE60"/>
+
+  <!-- Left eye - looking up/right -->
+  <circle cx="82" cy="103" r="5" fill="#1A1A2E"/>
+  <circle cx="84" cy="101" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Right eye - looking up/right -->
+  <circle cx="118" cy="103" r="5" fill="#1A1A2E"/>
+  <circle cx="120" cy="101" r="1.5" fill="#FFFFFF"/>
+
+  <!-- Thinking mouth - small 'o' -->
+  <ellipse cx="100" cy="125" rx="5" ry="4" stroke="#1A1A2E" stroke-width="2" fill="none"/>
+
+  <!-- Blush - left -->
+  <ellipse cx="72" cy="116" rx="8" ry="5" fill="#FF8BA7" opacity="0.3"/>
+
+  <!-- Blush - right -->
+  <ellipse cx="128" cy="116" rx="8" ry="5" fill="#FF8BA7" opacity="0.3"/>
+</svg>

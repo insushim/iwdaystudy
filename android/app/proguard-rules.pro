@@ -1,0 +1,3 @@
+-keep class kr.araharu.app.** { *; }
+-keepattributes JavascriptInterface
+-dontwarn android.webkit.**

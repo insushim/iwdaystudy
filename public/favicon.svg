@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Compact sprout for favicon clarity at small sizes -->
+  <!-- Soil -->
+  <ellipse cx="32" cy="54" rx="14" ry="4" fill="#2ECC71" opacity="0.2"/>
+  <!-- Stem -->
+  <path d="M32 52 L32 28" stroke="#2ECC71" stroke-width="4" stroke-linecap="round"/>
+  <!-- Left leaf - larger for visibility -->
+  <path d="M32 40 C22 37 18 28 22 20 C26 15 32 22 32 30" fill="#2ECC71"/>
+  <!-- Right leaf -->
+  <path d="M32 34 C42 31 46 22 42 14 C38 9 32 16 32 24" fill="#27AE60"/>
+  <!-- Pencil tip -->
+  <path d="M32 28 L28 18 L32 8 L36 18 Z" fill="#F9CA24"/>
+  <path d="M32 8 L30 12 L34 12 Z" fill="#1A1A2E"/>
+</svg>
