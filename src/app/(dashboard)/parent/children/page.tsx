@@ -14,7 +14,13 @@ import {
   Star,
   UserPlus,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -39,8 +45,6 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { MobileNav } from "@/components/layout/MobileNav";
 
 interface Child {
   id: string;
@@ -113,138 +117,165 @@ export default function ParentChildrenPage() {
   const [email, setEmail] = useState("");
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <Sidebar role="parent" userName="김학부모" />
-      <main className="flex-1 pb-20 lg:pb-0">
-        <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-between"
-          >
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <Heart className="h-6 w-6 text-primary" />
-                자녀 관리
-              </h1>
-              <p className="text-muted-foreground text-sm mt-1">
-                자녀의 학습 현황을 한눈에 확인하세요
-              </p>
-            </div>
-            <Button onClick={() => setShowAddDialog(true)} className="gap-2">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">자녀 추가</span>
-            </Button>
-          </motion.div>
-
-          {/* Children List */}
-          <div className="space-y-6">
-            {mockChildren.map((child, idx) => (
-              <motion.div
-                key={child.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <Avatar className="h-12 w-12 text-lg">
-                        <AvatarFallback className="bg-primary/10 text-primary">
-                          {child.name[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <CardTitle>{child.name}</CardTitle>
-                        <CardDescription>
-                          {child.school} | {child.grade}학년 {child.className} | 마지막 활동: {child.lastActive}
-                        </CardDescription>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-orange-500">
-                        <Flame className="h-5 w-5" />
-                        <span className="font-bold">{child.streak}일</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <p className="text-lg font-bold text-primary">{child.avgScore}점</p>
-                        <p className="text-xs text-muted-foreground">평균 점수</p>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <p className="text-lg font-bold">{child.totalSessions}회</p>
-                        <p className="text-xs text-muted-foreground">총 학습</p>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <p className="text-lg font-bold text-amber-500">{child.totalPoints.toLocaleString()}</p>
-                        <p className="text-xs text-muted-foreground">포인트</p>
-                      </div>
-                      <div className="text-center p-3 bg-muted/50 rounded-lg">
-                        <p className="text-lg font-bold text-orange-500">{child.streak}일</p>
-                        <p className="text-xs text-muted-foreground">연속 학습</p>
-                      </div>
-                    </div>
-
-                    {/* Best/Weak Subjects */}
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="flex items-center gap-2 p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg">
-                        <Star className="h-4 w-4 text-emerald-600" />
-                        <div>
-                          <p className="text-xs text-emerald-700 dark:text-emerald-400">최고 과목</p>
-                          <p className="text-sm font-semibold">{child.bestSubject}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg">
-                        <BookOpen className="h-4 w-4 text-amber-600" />
-                        <div>
-                          <p className="text-xs text-amber-700 dark:text-amber-400">보완 과목</p>
-                          <p className="text-sm font-semibold">{child.weakSubject}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Weekly Trend */}
-                    <div>
-                      <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                        <TrendingUp className="h-4 w-4 text-primary" />
-                        이번 주 성적
-                      </p>
-                      <ResponsiveContainer width="100%" height={150}>
-                        <LineChart data={child.weeklyTrend}>
-                          <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                          <XAxis dataKey="day" tick={{ fontSize: 11 }} className="fill-muted-foreground" />
-                          <YAxis domain={[0, 100]} tick={{ fontSize: 11 }} className="fill-muted-foreground" />
-                          <Tooltip
-                            contentStyle={{
-                              background: "hsl(var(--card))",
-                              border: "1px solid hsl(var(--border))",
-                              borderRadius: "8px",
-                              fontSize: "12px",
-                            }}
-                            formatter={(value: number) => [value === 0 ? "미학습" : `${value}점`, "점수"]}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="score"
-                            stroke="#2ECC71"
-                            strokeWidth={2}
-                            dot={{ r: 3 }}
-                            connectNulls
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+    <>
+      <div className="space-y-6">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center justify-between"
+        >
+          <div>
+            <h1 className="text-2xl font-bold flex items-center gap-2">
+              <Heart className="h-6 w-6 text-primary" />
+              자녀 관리
+            </h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              자녀의 학습 현황을 한눈에 확인하세요
+            </p>
           </div>
+          <Button onClick={() => setShowAddDialog(true)} className="gap-2">
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">자녀 추가</span>
+          </Button>
+        </motion.div>
+
+        {/* Children List */}
+        <div className="space-y-6">
+          {mockChildren.map((child, idx) => (
+            <motion.div
+              key={child.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-12 w-12 text-lg">
+                      <AvatarFallback className="bg-primary/10 text-primary">
+                        {child.name[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <CardTitle>{child.name}</CardTitle>
+                      <CardDescription>
+                        {child.school} | {child.grade}학년 {child.className} |
+                        마지막 활동: {child.lastActive}
+                      </CardDescription>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-orange-500">
+                      <Flame className="h-5 w-5" />
+                      <span className="font-bold">{child.streak}일</span>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <p className="text-lg font-bold text-primary">
+                        {child.avgScore}점
+                      </p>
+                      <p className="text-xs text-muted-foreground">평균 점수</p>
+                    </div>
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <p className="text-lg font-bold">
+                        {child.totalSessions}회
+                      </p>
+                      <p className="text-xs text-muted-foreground">총 학습</p>
+                    </div>
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <p className="text-lg font-bold text-amber-500">
+                        {child.totalPoints.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-muted-foreground">포인트</p>
+                    </div>
+                    <div className="text-center p-3 bg-muted/50 rounded-lg">
+                      <p className="text-lg font-bold text-orange-500">
+                        {child.streak}일
+                      </p>
+                      <p className="text-xs text-muted-foreground">연속 학습</p>
+                    </div>
+                  </div>
+
+                  {/* Best/Weak Subjects */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex items-center gap-2 p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg">
+                      <Star className="h-4 w-4 text-emerald-600" />
+                      <div>
+                        <p className="text-xs text-emerald-700 dark:text-emerald-400">
+                          최고 과목
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {child.bestSubject}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg">
+                      <BookOpen className="h-4 w-4 text-amber-600" />
+                      <div>
+                        <p className="text-xs text-amber-700 dark:text-amber-400">
+                          보완 과목
+                        </p>
+                        <p className="text-sm font-semibold">
+                          {child.weakSubject}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Weekly Trend */}
+                  <div>
+                    <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                      이번 주 성적
+                    </p>
+                    <ResponsiveContainer width="100%" height={150}>
+                      <LineChart data={child.weeklyTrend}>
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          className="stroke-muted"
+                        />
+                        <XAxis
+                          dataKey="day"
+                          tick={{ fontSize: 11 }}
+                          className="fill-muted-foreground"
+                        />
+                        <YAxis
+                          domain={[0, 100]}
+                          tick={{ fontSize: 11 }}
+                          className="fill-muted-foreground"
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            background: "hsl(var(--card))",
+                            border: "1px solid hsl(var(--border))",
+                            borderRadius: "8px",
+                            fontSize: "12px",
+                          }}
+                          formatter={(value: number) => [
+                            value === 0 ? "미학습" : `${value}점`,
+                            "점수",
+                          ]}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="score"
+                          stroke="#2ECC71"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          connectNulls
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
-      </main>
-      <MobileNav role="parent" />
+      </div>
 
       {/* Add Child Dialog */}
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
@@ -254,14 +285,16 @@ export default function ParentChildrenPage() {
               <UserPlus className="h-5 w-5" />
               자녀 추가
             </DialogTitle>
-            <DialogDescription>
-              자녀의 계정을 연결하세요
-            </DialogDescription>
+            <DialogDescription>자녀의 계정을 연결하세요</DialogDescription>
           </DialogHeader>
           <Tabs defaultValue="code">
             <TabsList className="w-full">
-              <TabsTrigger value="code" className="flex-1">초대 코드</TabsTrigger>
-              <TabsTrigger value="email" className="flex-1">이메일</TabsTrigger>
+              <TabsTrigger value="code" className="flex-1">
+                초대 코드
+              </TabsTrigger>
+              <TabsTrigger value="email" className="flex-1">
+                이메일
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="code" className="space-y-4 mt-4">
               <div className="space-y-2">
@@ -306,6 +339,6 @@ export default function ParentChildrenPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
