@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   format,
@@ -34,77 +34,113 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { StreakCalendar } from "@/components/dashboard/StreakCalendar";
-
-// Mock data
-function generateMockHistory() {
-  const records = [];
-  const subjects = [
-    "수학",
-    "국어",
-    "맞춤법",
-    "어휘",
-    "한자",
-    "영어",
-    "글쓰기",
-    "상식",
-  ];
-  const today = new Date();
-
-  for (let i = 0; i < 60; i++) {
-    const date = subDays(today, i);
-    const completed = Math.random() > 0.25;
-    if (completed) {
-      const score = Math.floor(Math.random() * 40) + 60;
-      const timeSpent = Math.floor(Math.random() * 20) + 10;
-      const subjectScores = subjects.map((s) => ({
-        name: s,
-        score: Math.floor(Math.random() * 40) + 60,
-        correct: Math.floor(Math.random() * 3) + 1,
-        total: Math.floor(Math.random() * 2) + 2,
-      }));
-
-      records.push({
-        id: `record-${i}`,
-        date: format(date, "yyyy-MM-dd"),
-        dateLabel: format(date, "M월 d일 (E)", { locale: ko }),
-        score,
-        timeSpent,
-        subjects: subjectScores,
-        completed: true,
-      });
-    }
-  }
-  return records;
-}
-
-function generateCalendarData() {
-  const data = [];
-  const today = new Date();
-  for (let i = 0; i < 90; i++) {
-    const date = subDays(today, i);
-    const completed = Math.random() > 0.3;
-    data.push({
-      date: format(date, "yyyy-MM-dd"),
-      score: completed ? Math.floor(Math.random() * 40) + 60 : 0,
-      completed,
-    });
-  }
-  return data;
-}
-
-const mockHistory = generateMockHistory();
-const calendarData = generateCalendarData();
+import { useAuthStore } from "@/stores/authStore";
+import { getLearningRecords } from "@/lib/local-storage";
 
 type DateRange = "1week" | "1month" | "3months" | "all";
 
+interface HistoryRecord {
+  id: string;
+  date: string;
+  dateLabel: string;
+  score: number;
+  timeSpent: number;
+  subjects: { name: string; score: number }[];
+  completed: boolean;
+}
+
+interface CalendarDay {
+  date: string;
+  score: number;
+  completed: boolean;
+}
+
 export default function StudentHistoryPage() {
+  const user = useAuthStore((s) => s.user);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [historyRecords, setHistoryRecords] = useState<HistoryRecord[]>([]);
+  const [calendarData, setCalendarData] = useState<CalendarDay[]>([]);
+
   const [dateRange, setDateRange] = useState<DateRange>("1month");
   const [customStart, setCustomStart] = useState<Date | undefined>();
   const [customEnd, setCustomEnd] = useState<Date | undefined>();
   const [showCustom, setShowCustom] = useState(false);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const studentId = user.id;
+    const records = getLearningRecords(studentId).filter((r) => r.is_completed);
+
+    // Sort by completed_at descending
+    records.sort(
+      (a, b) =>
+        new Date(b.completed_at || b.created_at).getTime() -
+        new Date(a.completed_at || a.created_at).getTime(),
+    );
+
+    // Transform records to display format
+    const transformed: HistoryRecord[] = records.map((r) => {
+      const completedDate = new Date(r.completed_at || r.created_at);
+      const scorePercent =
+        r.max_score > 0 ? Math.round((r.total_score / r.max_score) * 100) : 0;
+      const timeMinutes = Math.round(r.time_spent_seconds / 60);
+
+      return {
+        id: r.id,
+        date: format(completedDate, "yyyy-MM-dd"),
+        dateLabel: format(completedDate, "M월 d일 (E)", { locale: ko }),
+        score: scorePercent,
+        timeSpent: timeMinutes > 0 ? timeMinutes : 1,
+        subjects: [
+          {
+            name: `${r.total_score}/${r.max_score}`,
+            score: scorePercent,
+          },
+        ],
+        completed: true,
+      };
+    });
+
+    setHistoryRecords(transformed);
+
+    // Build calendar data from records (last 90 days)
+    const now = new Date();
+    const dateScoreMap = new Map<string, { score: number; maxScore: number }>();
+
+    for (const r of records) {
+      const d = new Date(r.completed_at || r.created_at);
+      const dateStr = format(d, "yyyy-MM-dd");
+      const existing = dateScoreMap.get(dateStr) || {
+        score: 0,
+        maxScore: 0,
+      };
+      existing.score += r.total_score;
+      existing.maxScore += r.max_score;
+      dateScoreMap.set(dateStr, existing);
+    }
+
+    const calData: CalendarDay[] = [];
+    for (let i = 0; i < 90; i++) {
+      const d = subDays(now, i);
+      const dateStr = format(d, "yyyy-MM-dd");
+      const dayData = dateScoreMap.get(dateStr);
+      calData.push({
+        date: dateStr,
+        score: dayData
+          ? dayData.maxScore > 0
+            ? Math.round((dayData.score / dayData.maxScore) * 100)
+            : 0
+          : 0,
+        completed: !!dayData,
+      });
+    }
+    setCalendarData(calData);
+
+    setIsLoaded(true);
+  }, [user?.id]);
 
   const filteredRecords = useMemo(() => {
     const now = new Date();
@@ -120,11 +156,11 @@ export default function StudentHistoryPage() {
         start = subMonths(now, 3);
         break;
       default:
-        return mockHistory;
+        return historyRecords;
     }
 
     if (showCustom && customStart && customEnd) {
-      return mockHistory.filter((r) =>
+      return historyRecords.filter((r) =>
         isWithinInterval(parseISO(r.date), {
           start: customStart,
           end: customEnd,
@@ -132,10 +168,32 @@ export default function StudentHistoryPage() {
       );
     }
 
-    return mockHistory.filter((r) =>
+    return historyRecords.filter((r) =>
       isWithinInterval(parseISO(r.date), { start, end: now }),
     );
-  }, [dateRange, customStart, customEnd, showCustom]);
+  }, [dateRange, customStart, customEnd, showCustom, historyRecords]);
+
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <BookOpen className="h-6 w-6 text-primary" />
+            학습 기록
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            지금까지의 학습 여정을 돌아보세요
+          </p>
+        </motion.div>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-muted-foreground">데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -245,7 +303,9 @@ export default function StudentHistoryPage() {
             <CardContent className="flex flex-col items-center justify-center py-12">
               <BookOpen className="h-12 w-12 text-muted-foreground/50 mb-3" />
               <p className="text-muted-foreground">
-                해당 기간에 학습 기록이 없습니다.
+                {historyRecords.length === 0
+                  ? "아직 학습 기록이 없습니다. 학습을 시작해보세요!"
+                  : "해당 기간에 학습 기록이 없습니다."}
               </p>
             </CardContent>
           </Card>
@@ -271,7 +331,6 @@ export default function StudentHistoryPage() {
                             <Clock className="h-3 w-3" />
                             {record.timeSpent}분
                           </span>
-                          <span>{record.subjects.length}과목</span>
                         </div>
                       </div>
                     </div>
@@ -283,13 +342,13 @@ export default function StudentHistoryPage() {
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    {record.subjects.map((subj) => (
+                    {record.subjects.map((subj, i) => (
                       <Badge
-                        key={subj.name}
+                        key={i}
                         variant={subj.score >= 80 ? "default" : "outline"}
                         className="text-xs"
                       >
-                        {subj.name} {subj.score}점
+                        점수 {subj.name}
                       </Badge>
                     ))}
                   </div>

@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS profiles (
   subscription_expires_at TEXT,
   streak_count INTEGER DEFAULT 0,
   total_points INTEGER DEFAULT 0,
+  approval_status TEXT DEFAULT 'approved' CHECK(approval_status IN ('pending','approved','rejected')),
   password_hash TEXT NOT NULL DEFAULT '',
   created_at TEXT DEFAULT (datetime('now')),
   updated_at TEXT DEFAULT (datetime('now'))

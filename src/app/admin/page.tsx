@@ -13,68 +13,19 @@ import {
   Plus,
   BarChart3,
   Sparkles,
+  UserCheck,
 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import {
+  localGetPendingTeacherCount,
+  localGetAllUsers,
+} from "@/lib/local-auth";
+import { getLearningRecords } from "@/lib/local-storage";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
-const overviewCards = [
-  {
-    title: "총 사용자",
-    value: "12,438",
-    change: "+284",
-    changePercent: "+2.3%",
-    trend: "up" as const,
-    icon: Users,
-    color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30",
-  },
-  {
-    title: "활성 구독",
-    value: "3,847",
-    change: "+127",
-    changePercent: "+3.4%",
-    trend: "up" as const,
-    icon: CreditCard,
-    color: "text-green-600 bg-green-100 dark:bg-green-900/30",
-  },
-  {
-    title: "일일 활성 사용자",
-    value: "6,234",
-    change: "-89",
-    changePercent: "-1.4%",
-    trend: "down" as const,
-    icon: Activity,
-    color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30",
-  },
-  {
-    title: "총 학습 세트",
-    value: "2,156",
-    change: "+45",
-    changePercent: "+2.1%",
-    trend: "up" as const,
-    icon: BookOpen,
-    color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
-  },
-];
-
-const dailyActiveData = [
-  { day: "월", users: 5800 },
-  { day: "화", users: 6200 },
-  { day: "수", users: 6500 },
-  { day: "목", users: 6100 },
-  { day: "금", users: 5900 },
-  { day: "토", users: 3200 },
-  { day: "일", users: 2800 },
-];
-
-const recentActivities = [
-  { action: "새 사용자 가입", detail: "김○○ (3학년)", time: "5분 전" },
-  { action: "프리미엄 구독", detail: "박○○ (학부모)", time: "12분 전" },
-  { action: "학습 세트 완료", detail: "2학년 1학기 - 수학 #142", time: "18분 전" },
-  { action: "학교 플랜 문의", detail: "서울 ○○초등학교", time: "32분 전" },
-  { action: "AI 콘텐츠 생성", detail: "4학년 2학기 세트 15개", time: "1시간 전" },
-];
+import type { Profile } from "@/types/database";
 
 const quickActions = [
   {
@@ -119,8 +70,157 @@ const itemVariants = {
   },
 };
 
+interface OverviewCard {
+  title: string;
+  value: string;
+  icon: typeof Users;
+  color: string;
+}
+
+interface RecentActivity {
+  action: string;
+  detail: string;
+  time: string;
+}
+
 export default function AdminDashboard() {
-  const maxUsers = Math.max(...dailyActiveData.map((d) => d.users));
+  const [pendingCount, setPendingCount] = useState(0);
+  const [overviewCards, setOverviewCards] = useState<OverviewCard[]>([]);
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>(
+    [],
+  );
+  const [roleBreakdown, setRoleBreakdown] = useState<
+    { role: string; count: number; color: string }[]
+  >([]);
+
+  useEffect(() => {
+    const allUsers = localGetAllUsers();
+    setPendingCount(localGetPendingTeacherCount());
+
+    const totalUsers = allUsers.length;
+    const students = allUsers.filter((u) => u.role === "student");
+    const teachers = allUsers.filter(
+      (u) => u.role === "teacher" && u.approval_status === "approved",
+    );
+    const parents = allUsers.filter((u) => u.role === "parent");
+    const admins = allUsers.filter((u) => u.role === "admin");
+
+    const paidSubscriptions = allUsers.filter(
+      (u) =>
+        u.subscription_plan !== "free" && u.subscription_plan !== undefined,
+    ).length;
+
+    // Count users with learning activity in last 7 days
+    const now = new Date();
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000)
+      .toISOString()
+      .split("T")[0];
+    let activeStudents = 0;
+    for (const student of students) {
+      const records = getLearningRecords(student.id);
+      const hasRecent = records.some((r) => {
+        const d = (r.completed_at || r.created_at).split("T")[0];
+        return d >= sevenDaysAgo;
+      });
+      if (hasRecent) activeStudents++;
+    }
+
+    // Count total daily sets from localStorage
+    let totalSets = 0;
+    try {
+      const setsData = localStorage.getItem("araharu_daily_sets");
+      if (setsData) {
+        totalSets = JSON.parse(setsData).length;
+      }
+    } catch {
+      // ignore
+    }
+
+    setOverviewCards([
+      {
+        title: "총 사용자",
+        value: totalUsers.toLocaleString(),
+        icon: Users,
+        color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30",
+      },
+      {
+        title: "유료 구독",
+        value: paidSubscriptions.toLocaleString(),
+        icon: CreditCard,
+        color: "text-green-600 bg-green-100 dark:bg-green-900/30",
+      },
+      {
+        title: "주간 활성 학생",
+        value: activeStudents.toLocaleString(),
+        icon: Activity,
+        color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30",
+      },
+      {
+        title: "학습 세트",
+        value: totalSets.toLocaleString(),
+        icon: BookOpen,
+        color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
+      },
+    ]);
+
+    // Role breakdown for chart
+    setRoleBreakdown([
+      { role: "학생", count: students.length, color: "bg-blue-400" },
+      { role: "교사", count: teachers.length, color: "bg-green-400" },
+      { role: "학부모", count: parents.length, color: "bg-purple-400" },
+      { role: "관리자", count: admins.length, color: "bg-amber-400" },
+    ]);
+
+    // Recent activities from real data
+    const activities: RecentActivity[] = [];
+
+    // Sort users by created_at to get recent signups
+    const recentUsers = [...allUsers]
+      .sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      )
+      .slice(0, 5);
+
+    for (const u of recentUsers) {
+      const roleLabel =
+        u.role === "student"
+          ? "학생"
+          : u.role === "teacher"
+            ? "교사"
+            : u.role === "parent"
+              ? "학부모"
+              : "관리자";
+      const gradeInfo = u.grade ? ` (${u.grade}학년)` : "";
+      const created = new Date(u.created_at);
+      const diffMin = Math.round((now.getTime() - created.getTime()) / 60000);
+      let timeStr: string;
+      if (diffMin < 1) timeStr = "방금 전";
+      else if (diffMin < 60) timeStr = `${diffMin}분 전`;
+      else if (diffMin < 1440) timeStr = `${Math.floor(diffMin / 60)}시간 전`;
+      else timeStr = `${Math.floor(diffMin / 1440)}일 전`;
+
+      activities.push({
+        action: "사용자 가입",
+        detail: `${u.name}${gradeInfo} (${roleLabel})`,
+        time: timeStr,
+      });
+    }
+
+    setRecentActivities(
+      activities.length > 0
+        ? activities
+        : [
+            {
+              action: "활동 없음",
+              detail: "아직 등록된 사용자가 없습니다",
+              time: "-",
+            },
+          ],
+    );
+  }, []);
+
+  const maxRole = Math.max(...roleBreakdown.map((r) => r.count), 1);
 
   return (
     <div className="space-y-6">
@@ -140,6 +240,34 @@ export default function AdminDashboard() {
         </Button>
       </div>
 
+      {/* Pending Approval Banner */}
+      {pendingCount > 0 && (
+        <Link href="/admin/approvals">
+          <Card className="border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/30 hover:shadow-md transition-shadow cursor-pointer">
+            <CardContent className="py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 dark:bg-amber-900/30 text-amber-600">
+                    <UserCheck className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-amber-800 dark:text-amber-200">
+                      승인 대기 중인 교사 {pendingCount}명
+                    </p>
+                    <p className="text-xs text-amber-600 dark:text-amber-400">
+                      클릭하여 승인 관리 페이지로 이동
+                    </p>
+                  </div>
+                </div>
+                <Badge className="bg-amber-200 text-amber-800 dark:bg-amber-800 dark:text-amber-200">
+                  {pendingCount}건
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      )}
+
       {/* Overview cards */}
       <motion.div
         variants={containerVariants}
@@ -153,29 +281,16 @@ export default function AdminDashboard() {
               <CardContent className="pt-5 pb-5">
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="text-sm text-muted-foreground">{card.title}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {card.title}
+                    </p>
                     <p className="text-2xl font-bold mt-1">{card.value}</p>
                   </div>
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${card.color}`}>
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-xl ${card.color}`}
+                  >
                     <card.icon className="h-5 w-5" />
                   </div>
-                </div>
-                <div className="flex items-center gap-1.5 mt-3">
-                  {card.trend === "up" ? (
-                    <ArrowUpRight className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <ArrowDownRight className="h-4 w-4 text-red-500" />
-                  )}
-                  <span
-                    className={`text-sm font-medium ${
-                      card.trend === "up" ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {card.changePercent}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    지난 주 대비
-                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -184,7 +299,7 @@ export default function AdminDashboard() {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* DAU Chart */}
+        {/* Role breakdown chart */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -194,35 +309,43 @@ export default function AdminDashboard() {
           <Card className="border shadow-sm">
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base">이번 주 일일 활성 사용자</CardTitle>
+                <CardTitle className="text-base">역할별 사용자 분포</CardTitle>
                 <Badge variant="secondary" className="text-xs">
                   <TrendingUp className="h-3 w-3 mr-1" />
-                  주간
+                  현재
                 </Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex items-end gap-2 h-48 mt-4">
-                {dailyActiveData.map((d) => (
-                  <div
-                    key={d.day}
-                    className="flex-1 flex flex-col items-center gap-2"
-                  >
-                    <span className="text-xs text-muted-foreground font-medium">
-                      {d.users.toLocaleString()}
-                    </span>
+              {roleBreakdown.length > 0 &&
+              roleBreakdown.some((r) => r.count > 0) ? (
+                <div className="flex items-end gap-2 h-48 mt-4">
+                  {roleBreakdown.map((d) => (
                     <div
-                      className="w-full rounded-t-lg bg-gradient-to-t from-primary to-primary/60 transition-all duration-500"
-                      style={{
-                        height: `${(d.users / maxUsers) * 140}px`,
-                      }}
-                    />
-                    <span className="text-xs text-muted-foreground">
-                      {d.day}
-                    </span>
-                  </div>
-                ))}
-              </div>
+                      key={d.role}
+                      className="flex-1 flex flex-col items-center gap-2"
+                    >
+                      <span className="text-xs text-muted-foreground font-medium">
+                        {d.count.toLocaleString()}
+                      </span>
+                      <div
+                        className={`w-full rounded-t-lg ${d.color} transition-all duration-500`}
+                        style={{
+                          height: `${(d.count / maxRole) * 140}px`,
+                          minHeight: d.count > 0 ? "8px" : "0px",
+                        }}
+                      />
+                      <span className="text-xs text-muted-foreground">
+                        {d.role}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 text-sm text-muted-foreground">
+                  데이터 없음
+                </div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
@@ -255,88 +378,39 @@ export default function AdminDashboard() {
         </motion.div>
       </div>
 
-      {/* Content stats + Recent activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Content Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <Card className="border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">콘텐츠 현황</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { label: "1학년", sets: 320, questions: 3200, color: "bg-pink-400" },
-                  { label: "2학년", sets: 340, questions: 3400, color: "bg-yellow-400" },
-                  { label: "3학년", sets: 380, questions: 4560, color: "bg-cyan-400" },
-                  { label: "4학년", sets: 370, questions: 4440, color: "bg-blue-500" },
-                  { label: "5학년", sets: 360, questions: 5040, color: "bg-purple-400" },
-                  { label: "6학년", sets: 386, questions: 5404, color: "bg-green-500" },
-                ].map((grade) => (
-                  <div key={grade.label} className="flex items-center gap-3">
-                    <span className="text-sm font-medium w-16">{grade.label}</span>
-                    <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${grade.color}`}
-                        style={{
-                          width: `${(grade.sets / 400) * 100}%`,
-                        }}
-                      />
-                    </div>
-                    <span className="text-xs text-muted-foreground w-24 text-right">
-                      {grade.sets}세트 / {grade.questions.toLocaleString()}문제
-                    </span>
+      {/* Recent activity */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <Card className="border shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">최근 활동</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivities.map((activity, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0"
+                >
+                  <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">{activity.action}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {activity.detail}
+                    </p>
                   </div>
-                ))}
-              </div>
-              <div className="mt-6 pt-4 border-t flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">
-                  총 2,156세트 / 26,044문제
-                </span>
-                <FileQuestion className="h-4 w-4 text-muted-foreground" />
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Recent Activity */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Card className="border shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">최근 활동</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {recentActivities.map((activity, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-3 pb-4 border-b border-border last:border-0 last:pb-0"
-                  >
-                    <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium">{activity.action}</p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {activity.detail}
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
-                      {activity.time}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                  <span className="text-xs text-muted-foreground whitespace-nowrap">
+                    {activity.time}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
     </div>
   );
 }

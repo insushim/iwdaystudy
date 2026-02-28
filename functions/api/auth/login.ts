@@ -6,27 +6,55 @@ interface Env {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    const { email, password } = await context.request.json() as {
+    const { email, password } = (await context.request.json()) as {
       email: string;
       password: string;
     };
 
     if (!email || !password) {
-      return jsonResponse({ message: '이메일과 비밀번호를 입력해주세요.' }, 400);
+      return jsonResponse(
+        { message: "이메일과 비밀번호를 입력해주세요." },
+        400,
+      );
     }
 
     // Query D1 for user by email
     const user = await context.env.DB.prepare(
-      'SELECT * FROM profiles WHERE email = ?'
-    ).bind(email).first();
+      "SELECT * FROM profiles WHERE email = ?",
+    )
+      .bind(email)
+      .first();
 
     if (!user) {
-      return jsonResponse({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' }, 401);
+      return jsonResponse(
+        { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
+        401,
+      );
     }
 
     // Verify password hash
     if (user.password_hash !== simpleHash(password)) {
-      return jsonResponse({ message: '이메일 또는 비밀번호가 올바르지 않습니다.' }, 401);
+      return jsonResponse(
+        { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
+        401,
+      );
+    }
+
+    // Block unapproved teachers
+    if (user.role === "teacher" && user.approval_status === "pending") {
+      return jsonResponse(
+        {
+          message:
+            "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다.",
+        },
+        403,
+      );
+    }
+    if (user.role === "teacher" && user.approval_status === "rejected") {
+      return jsonResponse(
+        { message: "승인이 거절된 계정입니다. 관리자에게 문의해주세요." },
+        403,
+      );
     }
 
     // Generate auth token (base64 encoded JSON with expiry)
@@ -35,7 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         id: user.id,
         email: user.email,
         exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-      })
+      }),
     );
 
     // Return user data without password_hash
@@ -43,7 +71,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     return jsonResponse({ user: safeUser, token });
   } catch (err: any) {
-    return jsonResponse({ message: err.message || '로그인 처리 중 오류가 발생했습니다.' }, 500);
+    return jsonResponse(
+      { message: err.message || "로그인 처리 중 오류가 발생했습니다." },
+      500,
+    );
   }
 };
 
@@ -51,7 +82,7 @@ function simpleHash(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash;
   }
   return Math.abs(hash).toString(36);
@@ -60,6 +91,6 @@ function simpleHash(str: string): string {
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   });
 }

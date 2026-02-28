@@ -1,10 +1,7 @@
 import StudentDetailClient from "./StudentDetailClient";
 
 export function generateStaticParams() {
-  return [
-    { studentId: "placeholder" },
-    ...Array.from({ length: 15 }, (_, i) => ({ studentId: `s${i + 1}` })),
-  ];
+  return [{ studentId: "placeholder" }];
 }
 
 export default function StudentDetailPage() {

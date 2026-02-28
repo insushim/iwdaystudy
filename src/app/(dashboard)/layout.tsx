@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useAuthStore } from '@/stores/authStore';
-import { localGetCurrentUser } from '@/lib/local-auth';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { MobileNav } from '@/components/layout/MobileNav';
-import { UpdateNotification } from '@/components/common/UpdateNotification';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import { localGetCurrentUser } from "@/lib/local-auth";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { MobileNav } from "@/components/layout/MobileNav";
+import { UpdateNotification } from "@/components/common/UpdateNotification";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, setUser } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
@@ -19,10 +23,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     const storedUser = localGetCurrentUser();
     if (storedUser) {
+      // Block unapproved teachers from accessing dashboard
+      if (
+        storedUser.role === "teacher" &&
+        storedUser.approval_status !== "approved"
+      ) {
+        router.push("/signup/pending");
+        return;
+      }
       setUser(storedUser);
       setIsReady(true);
     } else {
-      router.push('/login/');
+      router.push("/login/");
     }
   }, [setUser, router]);
 
@@ -30,10 +42,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     if (isReady && user) {
       const role = user.role;
-      if (pathname.startsWith('/teacher') && role !== 'teacher' && role !== 'admin') {
-        router.push('/student/');
-      } else if (pathname.startsWith('/parent') && role !== 'parent' && role !== 'admin') {
-        router.push('/student/');
+      if (
+        pathname.startsWith("/teacher") &&
+        role !== "teacher" &&
+        role !== "admin"
+      ) {
+        router.push("/student/");
+      } else if (
+        pathname.startsWith("/parent") &&
+        role !== "parent" &&
+        role !== "admin"
+      ) {
+        router.push("/student/");
       }
     }
   }, [isReady, user, pathname, router]);
@@ -47,8 +67,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   // Map admin role to teacher for sidebar/nav
-  const navRole: 'student' | 'teacher' | 'parent' =
-    user.role === 'admin' ? 'teacher' : (user.role as 'student' | 'teacher' | 'parent');
+  const navRole: "student" | "teacher" | "parent" =
+    user.role === "admin"
+      ? "teacher"
+      : (user.role as "student" | "teacher" | "parent");
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -57,9 +79,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main content area */}
       <main className="flex-1 pb-20 lg:pb-0 min-h-screen">
-        <div className="max-w-5xl mx-auto p-4 md:p-6">
-          {children}
-        </div>
+        <div className="max-w-5xl mx-auto p-4 md:p-6">{children}</div>
       </main>
 
       {/* Mobile bottom navigation */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -25,43 +25,52 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { localGetAllUsers, localUpdateProfile } from "@/lib/local-auth";
+import type { Profile } from "@/types/database";
 
 interface UserRecord {
   id: string;
   name: string;
   email: string;
-  role: "student" | "parent" | "teacher";
+  role: "student" | "parent" | "teacher" | "admin";
   grade: number | null;
   joinedAt: string;
   status: "active" | "inactive" | "suspended";
-  subscription: "free" | "basic" | "premium" | "school";
+  subscription: string;
 }
 
-const demoUsers: UserRecord[] = [
-  { id: "u1", name: "김서연", email: "seoyeon@example.com", role: "student", grade: 3, joinedAt: "2026-01-15", status: "active", subscription: "premium" },
-  { id: "u2", name: "이준호", email: "junho@example.com", role: "student", grade: 5, joinedAt: "2026-01-20", status: "active", subscription: "basic" },
-  { id: "u3", name: "박지민", email: "jimin.park@example.com", role: "parent", grade: null, joinedAt: "2026-01-18", status: "active", subscription: "premium" },
-  { id: "u4", name: "최수아", email: "sua@example.com", role: "student", grade: 1, joinedAt: "2026-02-01", status: "active", subscription: "free" },
-  { id: "u5", name: "정민서", email: "minseo@example.com", role: "student", grade: 4, joinedAt: "2026-02-05", status: "inactive", subscription: "basic" },
-  { id: "u6", name: "김영희", email: "younghee@example.com", role: "teacher", grade: null, joinedAt: "2025-12-10", status: "active", subscription: "school" },
-  { id: "u7", name: "이하은", email: "haeun@example.com", role: "student", grade: 2, joinedAt: "2026-02-10", status: "active", subscription: "free" },
-  { id: "u8", name: "송도윤", email: "doyun@example.com", role: "student", grade: 6, joinedAt: "2026-01-25", status: "active", subscription: "premium" },
-  { id: "u9", name: "한소율", email: "soyul@example.com", role: "parent", grade: null, joinedAt: "2026-02-15", status: "active", subscription: "basic" },
-  { id: "u10", name: "오시우", email: "siwoo@example.com", role: "student", grade: 3, joinedAt: "2026-02-20", status: "suspended", subscription: "free" },
-  { id: "u11", name: "윤서", email: "yoonseo@example.com", role: "student", grade: 4, joinedAt: "2026-01-08", status: "active", subscription: "premium" },
-  { id: "u12", name: "강현우", email: "hyunwoo@example.com", role: "teacher", grade: null, joinedAt: "2026-01-02", status: "active", subscription: "school" },
-];
+function profileToUserRecord(p: Profile): UserRecord {
+  // Determine status from approval_status
+  let status: "active" | "inactive" | "suspended" = "active";
+  if (p.approval_status === "pending") status = "inactive";
+  if (p.approval_status === "rejected") status = "suspended";
+
+  return {
+    id: p.id,
+    name: p.name,
+    email: p.email,
+    role: p.role as "student" | "parent" | "teacher" | "admin",
+    grade: p.grade,
+    joinedAt: p.created_at.split("T")[0],
+    status,
+    subscription: p.subscription_plan || "free",
+  };
+}
 
 const roleLabels: Record<string, string> = {
   student: "학생",
   parent: "학부모",
   teacher: "교사",
+  admin: "관리자",
 };
 
 const roleColors: Record<string, string> = {
   student: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  parent: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  teacher: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  parent:
+    "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
+  teacher:
+    "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  admin: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
 };
 
 const statusLabels: Record<string, string> = {
@@ -71,7 +80,8 @@ const statusLabels: Record<string, string> = {
 };
 
 const statusColors: Record<string, string> = {
-  active: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  active:
+    "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
   inactive: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400",
   suspended: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
 };
@@ -86,8 +96,10 @@ const subscriptionLabels: Record<string, string> = {
 const subscriptionColors: Record<string, string> = {
   free: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400",
   basic: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
-  premium: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-  school: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+  premium:
+    "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+  school:
+    "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
 };
 
 export default function UserManagementPage() {
@@ -95,19 +107,25 @@ export default function UserManagementPage() {
   const [roleFilter, setRoleFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState("all");
   const [subscriptionFilter, setSubscriptionFilter] = useState("all");
-  const [users, setUsers] = useState(demoUsers);
+  const [users, setUsers] = useState<UserRecord[]>([]);
   const [page, setPage] = useState(1);
   const perPage = 10;
+
+  // Load real users on mount
+  useEffect(() => {
+    const allProfiles = localGetAllUsers();
+    setUsers(allProfiles.map(profileToUserRecord));
+  }, []);
 
   const filteredUsers = users.filter((u) => {
     if (roleFilter !== "all" && u.role !== roleFilter) return false;
     if (statusFilter !== "all" && u.status !== statusFilter) return false;
-    if (subscriptionFilter !== "all" && u.subscription !== subscriptionFilter) return false;
+    if (subscriptionFilter !== "all" && u.subscription !== subscriptionFilter)
+      return false;
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       return (
-        u.name.toLowerCase().includes(q) ||
-        u.email.toLowerCase().includes(q)
+        u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q)
       );
     }
     return true;
@@ -116,12 +134,21 @@ export default function UserManagementPage() {
   const totalPages = Math.ceil(filteredUsers.length / perPage);
   const paginatedUsers = filteredUsers.slice(
     (page - 1) * perPage,
-    page * perPage
+    page * perPage,
   );
 
-  function changeRole(userId: string, newRole: "student" | "parent" | "teacher") {
+  function changeRole(
+    userId: string,
+    newRole: "student" | "parent" | "teacher" | "admin",
+  ) {
+    // Persist to localStorage via localUpdateProfile
+    try {
+      localUpdateProfile(userId, { role: newRole as any });
+    } catch {
+      // ignore
+    }
     setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
     );
   }
 
@@ -130,15 +157,23 @@ export default function UserManagementPage() {
       prev.map((u) => {
         if (u.id !== userId) return u;
         const nextStatus = u.status === "active" ? "suspended" : "active";
+        // Persist approval_status change
+        try {
+          localUpdateProfile(userId, {
+            approval_status: nextStatus === "active" ? "approved" : "rejected",
+          });
+        } catch {
+          // ignore
+        }
         return { ...u, status: nextStatus };
-      })
+      }),
     );
   }
 
   const totalActive = users.filter((u) => u.status === "active").length;
   const totalStudents = users.filter((u) => u.role === "student").length;
   const totalPremium = users.filter(
-    (u) => u.subscription === "premium" || u.subscription === "school"
+    (u) => u.subscription === "premium" || u.subscription === "school",
   ).length;
 
   return (
@@ -215,6 +250,7 @@ export default function UserManagementPage() {
                   <SelectItem value="student">학생</SelectItem>
                   <SelectItem value="parent">학부모</SelectItem>
                   <SelectItem value="teacher">교사</SelectItem>
+                  <SelectItem value="admin">관리자</SelectItem>
                 </SelectContent>
               </Select>
               <Select
@@ -288,7 +324,9 @@ export default function UserManagementPage() {
               <div className="py-12 text-center">
                 <UserX className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
-                  조건에 맞는 사용자가 없습니다.
+                  {users.length === 0
+                    ? "등록된 사용자가 없습니다."
+                    : "조건에 맞는 사용자가 없습니다."}
                 </p>
               </div>
             ) : (
@@ -319,9 +357,9 @@ export default function UserManagementPage() {
                   <div className="hidden md:flex justify-center">
                     <Badge
                       variant="secondary"
-                      className={cn("text-xs", roleColors[user.role])}
+                      className={cn("text-xs", roleColors[user.role] || "")}
                     >
-                      {roleLabels[user.role]}
+                      {roleLabels[user.role] || user.role}
                     </Badge>
                   </div>
 
@@ -339,9 +377,13 @@ export default function UserManagementPage() {
                   <div className="hidden md:flex justify-center">
                     <Badge
                       variant="secondary"
-                      className={cn("text-xs", subscriptionColors[user.subscription])}
+                      className={cn(
+                        "text-xs",
+                        subscriptionColors[user.subscription] || "",
+                      )}
                     >
-                      {subscriptionLabels[user.subscription]}
+                      {subscriptionLabels[user.subscription] ||
+                        user.subscription}
                     </Badge>
                   </div>
 
@@ -360,7 +402,10 @@ export default function UserManagementPage() {
                     <Select
                       value={user.role}
                       onValueChange={(v) =>
-                        changeRole(user.id, v as "student" | "parent" | "teacher")
+                        changeRole(
+                          user.id,
+                          v as "student" | "parent" | "teacher" | "admin",
+                        )
                       }
                     >
                       <SelectTrigger className="h-7 w-16 text-xs px-2">
@@ -370,6 +415,7 @@ export default function UserManagementPage() {
                         <SelectItem value="student">학생</SelectItem>
                         <SelectItem value="parent">학부모</SelectItem>
                         <SelectItem value="teacher">교사</SelectItem>
+                        <SelectItem value="admin">관리자</SelectItem>
                       </SelectContent>
                     </Select>
                     <Button
@@ -391,9 +437,9 @@ export default function UserManagementPage() {
                   <div className="flex flex-wrap gap-2 md:hidden">
                     <Badge
                       variant="secondary"
-                      className={cn("text-xs", roleColors[user.role])}
+                      className={cn("text-xs", roleColors[user.role] || "")}
                     >
-                      {roleLabels[user.role]}
+                      {roleLabels[user.role] || user.role}
                     </Badge>
                     {user.grade && (
                       <Badge variant="secondary" className="text-xs">
@@ -402,9 +448,13 @@ export default function UserManagementPage() {
                     )}
                     <Badge
                       variant="secondary"
-                      className={cn("text-xs", subscriptionColors[user.subscription])}
+                      className={cn(
+                        "text-xs",
+                        subscriptionColors[user.subscription] || "",
+                      )}
                     >
-                      {subscriptionLabels[user.subscription]}
+                      {subscriptionLabels[user.subscription] ||
+                        user.subscription}
                     </Badge>
                     <Badge
                       variant="secondary"
@@ -422,8 +472,7 @@ export default function UserManagementPage() {
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4 pt-4 border-t">
               <span className="text-sm text-muted-foreground">
-                {filteredUsers.length}명 중{" "}
-                {(page - 1) * perPage + 1}-
+                {filteredUsers.length}명 중 {(page - 1) * perPage + 1}-
                 {Math.min(page * perPage, filteredUsers.length)}
               </span>
               <div className="flex items-center gap-2">

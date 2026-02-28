@@ -73,81 +73,6 @@ interface Assignment {
   status: "active" | "overdue" | "completed" | "cancelled";
 }
 
-const mockAssignments: Assignment[] = [
-  {
-    id: "a1",
-    setTitle: "3학년 1학기 25일차",
-    className: "3학년 1반",
-    classId: "c1",
-    assignedDate: "2026-02-27",
-    dueDate: "2026-02-28",
-    completed: 18,
-    total: 28,
-    status: "active",
-  },
-  {
-    id: "a2",
-    setTitle: "3학년 1학기 24일차",
-    className: "3학년 1반",
-    classId: "c1",
-    assignedDate: "2026-02-26",
-    dueDate: "2026-02-27",
-    completed: 24,
-    total: 28,
-    status: "active",
-  },
-  {
-    id: "a3",
-    setTitle: "3학년 1학기 24일차",
-    className: "3학년 2반",
-    classId: "c2",
-    assignedDate: "2026-02-26",
-    dueDate: "2026-02-27",
-    completed: 22,
-    total: 26,
-    status: "active",
-  },
-  {
-    id: "a4",
-    setTitle: "3학년 1학기 23일차",
-    className: "3학년 1반",
-    classId: "c1",
-    assignedDate: "2026-02-25",
-    dueDate: "2026-02-26",
-    completed: 28,
-    total: 28,
-    status: "completed",
-  },
-  {
-    id: "a5",
-    setTitle: "3학년 1학기 22일차",
-    className: "3학년 1반",
-    classId: "c1",
-    assignedDate: "2026-02-24",
-    dueDate: "2026-02-25",
-    completed: 25,
-    total: 28,
-    status: "completed",
-  },
-  {
-    id: "a6",
-    setTitle: "3학년 1학기 21일차",
-    className: "3학년 2반",
-    classId: "c2",
-    assignedDate: "2026-02-23",
-    dueDate: "2026-02-24",
-    completed: 20,
-    total: 26,
-    status: "overdue",
-  },
-];
-
-const mockSets = [
-  { id: "set1", title: "3학년 1학기 26일차" },
-  { id: "set2", title: "3학년 1학기 27일차" },
-  { id: "set3", title: "3학년 1학기 28일차" },
-];
-
 const STATUS_CONFIG = {
   active: {
     label: "진행 중",
@@ -172,9 +97,9 @@ const STATUS_CONFIG = {
 };
 
 export default function TeacherAssignmentsPage() {
-  const [assignments, setAssignments] = useState(mockAssignments);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [selectedSet, setSelectedSet] = useState("");
+  const [selectedTitle, setSelectedTitle] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const [dueDate, setDueDate] = useState<Date | undefined>(
     addDays(new Date(), 1),
@@ -183,26 +108,23 @@ export default function TeacherAssignmentsPage() {
   const [newDueDate, setNewDueDate] = useState<Date | undefined>();
 
   const handleCreate = () => {
-    if (!selectedSet || !selectedClass || !dueDate) return;
-    const set = mockSets.find((s) => s.id === selectedSet);
-    const cls = selectedClass === "c1" ? "3학년 1반" : "3학년 2반";
-    const total = selectedClass === "c1" ? 28 : 26;
+    if (!selectedTitle || !selectedClass || !dueDate) return;
 
     const newAssignment: Assignment = {
       id: `a${Date.now()}`,
-      setTitle: set?.title || "",
-      className: cls,
-      classId: selectedClass,
+      setTitle: selectedTitle,
+      className: selectedClass,
+      classId: `c${Date.now()}`,
       assignedDate: format(new Date(), "yyyy-MM-dd"),
       dueDate: format(dueDate, "yyyy-MM-dd"),
       completed: 0,
-      total,
+      total: 0,
       status: "active",
     };
 
     setAssignments([newAssignment, ...assignments]);
     setShowCreateDialog(false);
-    setSelectedSet("");
+    setSelectedTitle("");
     setSelectedClass("");
   };
 
@@ -270,15 +192,21 @@ export default function TeacherAssignmentsPage() {
                 <p className="text-muted-foreground">
                   진행 중인 과제가 없습니다.
                 </p>
+                <p className="text-muted-foreground text-sm mt-1">
+                  상단의 과제 배정 버튼으로 새 과제를 만들어보세요.
+                </p>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-3">
               {activeAssignments.map((assignment, idx) => {
                 const config = STATUS_CONFIG[assignment.status];
-                const completionRate = Math.round(
-                  (assignment.completed / assignment.total) * 100,
-                );
+                const completionRate =
+                  assignment.total > 0
+                    ? Math.round(
+                        (assignment.completed / assignment.total) * 100,
+                      )
+                    : 0;
 
                 return (
                   <motion.div
@@ -426,32 +354,21 @@ export default function TeacherAssignmentsPage() {
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>학습 세트</Label>
-              <Select value={selectedSet} onValueChange={setSelectedSet}>
-                <SelectTrigger>
-                  <SelectValue placeholder="세트를 선택하세요" />
-                </SelectTrigger>
-                <SelectContent>
-                  {mockSets.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <Label>과제 제목</Label>
+              <Input
+                placeholder="예: 3학년 1학기 25일차"
+                value={selectedTitle}
+                onChange={(e) => setSelectedTitle(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
               <Label>학급</Label>
-              <Select value={selectedClass} onValueChange={setSelectedClass}>
-                <SelectTrigger>
-                  <SelectValue placeholder="학급을 선택하세요" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="c1">3학년 1반 (28명)</SelectItem>
-                  <SelectItem value="c2">3학년 2반 (26명)</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                placeholder="예: 3학년 1반"
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
@@ -487,7 +404,7 @@ export default function TeacherAssignmentsPage() {
             </Button>
             <Button
               onClick={handleCreate}
-              disabled={!selectedSet || !selectedClass || !dueDate}
+              disabled={!selectedTitle || !selectedClass || !dueDate}
             >
               배정하기
             </Button>

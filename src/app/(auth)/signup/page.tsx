@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, type FormEvent } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/stores/authStore';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,22 +14,31 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { APP_NAME, GRADES, SEMESTERS } from '@/lib/constants';
+} from "@/components/ui/select";
+import { APP_NAME, GRADES, SEMESTERS } from "@/lib/constants";
 
-type Role = 'student' | 'teacher' | 'parent';
+type Role = "student" | "teacher" | "parent";
 
-const ROLE_OPTIONS: { value: Role; label: string; icon: string; desc: string }[] = [
-  { value: 'student', label: '학생', icon: '🎒', desc: '매일 아침학습을 해요' },
-  { value: 'teacher', label: '교사', icon: '👩‍🏫', desc: '학급을 관리해요' },
-  { value: 'parent', label: '학부모', icon: '👨‍👩‍👧', desc: '아이의 학습을 확인해요' },
+const ROLE_OPTIONS: {
+  value: Role;
+  label: string;
+  icon: string;
+  desc: string;
+}[] = [
+  { value: "student", label: "학생", icon: "🎒", desc: "매일 아침학습을 해요" },
+  {
+    value: "teacher",
+    label: "학급 관리자",
+    icon: "👩‍🏫",
+    desc: "학급을 관리해요 (승인 필요)",
+  },
 ];
 
 export default function SignupPage() {
@@ -37,14 +46,14 @@ export default function SignupPage() {
   const { signup, isLoading } = useAuthStore();
   const [step, setStep] = useState<1 | 2>(1);
   const [role, setRole] = useState<Role | null>(null);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [grade, setGrade] = useState<string>('');
-  const [semester, setSemester] = useState<string>('');
-  const [schoolName, setSchoolName] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [grade, setGrade] = useState<string>("");
+  const [semester, setSemester] = useState<string>("");
+  const [schoolName, setSchoolName] = useState("");
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   function handleRoleSelect(selectedRole: Role) {
@@ -54,40 +63,40 @@ export default function SignupPage() {
 
   function handleBack() {
     setStep(1);
-    setError('');
+    setError("");
   }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!role) {
-      setError('역할을 선택해 주세요.');
+      setError("역할을 선택해 주세요.");
       return;
     }
     if (!name.trim()) {
-      setError('이름을 입력해 주세요.');
+      setError("이름을 입력해 주세요.");
       return;
     }
     if (!email.trim()) {
-      setError('이메일을 입력해 주세요.');
+      setError("이메일을 입력해 주세요.");
       return;
     }
     if (password.length < 6) {
-      setError('비밀번호는 6자 이상이어야 합니다.');
+      setError("비밀번호는 6자 이상이어야 합니다.");
       return;
     }
     if (password !== passwordConfirm) {
-      setError('비밀번호가 일치하지 않습니다.');
+      setError("비밀번호가 일치하지 않습니다.");
       return;
     }
-    if (role === 'student') {
+    if (role === "student") {
       if (!grade) {
-        setError('학년을 선택해 주세요.');
+        setError("학년을 선택해 주세요.");
         return;
       }
       if (!semester) {
-        setError('학기를 선택해 주세요.');
+        setError("학기를 선택해 주세요.");
         return;
       }
     }
@@ -98,12 +107,19 @@ export default function SignupPage() {
         password,
         name,
         role,
-        ...(role === 'student' ? { grade: Number(grade), semester: Number(semester) } : {}),
+        ...(role === "student"
+          ? { grade: Number(grade), semester: Number(semester) }
+          : {}),
         ...(schoolName ? { school_name: schoolName } : {}),
       });
-      router.push('/dashboard');
+      // Teacher signup → redirect to pending page
+      if (role === "teacher") {
+        router.push("/signup/pending");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : '회원가입에 실패했습니다.');
+      setError(err instanceof Error ? err.message : "회원가입에 실패했습니다.");
     }
   }
 
@@ -113,9 +129,11 @@ export default function SignupPage() {
         <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
           <span className="text-3xl">🌱</span>
         </div>
-        <CardTitle className="text-2xl font-bold">{APP_NAME} 회원가입</CardTitle>
+        <CardTitle className="text-2xl font-bold">
+          {APP_NAME} 회원가입
+        </CardTitle>
         <CardDescription>
-          {step === 1 ? '어떤 분이신가요?' : '정보를 입력해 주세요'}
+          {step === 1 ? "어떤 분이신가요?" : "정보를 입력해 주세요"}
         </CardDescription>
       </CardHeader>
 
@@ -140,7 +158,9 @@ export default function SignupPage() {
                   {option.icon}
                 </div>
                 <div>
-                  <p className="font-semibold text-foreground">{option.label}</p>
+                  <p className="font-semibold text-foreground">
+                    {option.label}
+                  </p>
                   <p className="text-sm text-muted-foreground">{option.desc}</p>
                 </div>
                 <svg
@@ -167,10 +187,20 @@ export default function SignupPage() {
               onClick={handleBack}
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-2"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <polyline points="15 18 9 12 15 6" />
               </svg>
-              {ROLE_OPTIONS.find((r) => r.value === role)?.icon}{' '}
+              {ROLE_OPTIONS.find((r) => r.value === role)?.icon}{" "}
               {ROLE_OPTIONS.find((r) => r.value === role)?.label}으로 가입
             </button>
 
@@ -179,7 +209,7 @@ export default function SignupPage() {
               <Input
                 id="name"
                 type="text"
-                placeholder={role === 'student' ? '학생 이름' : '이름'}
+                placeholder={role === "student" ? "학생 이름" : "이름"}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 autoFocus
@@ -205,7 +235,7 @@ export default function SignupPage() {
               <div className="relative">
                 <Input
                   id="signup-password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="6자 이상 입력"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -219,9 +249,35 @@ export default function SignupPage() {
                   tabIndex={-1}
                 >
                   {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
                   ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
                   )}
                 </button>
               </div>
@@ -231,7 +287,7 @@ export default function SignupPage() {
               <Label htmlFor="password-confirm">비밀번호 확인</Label>
               <Input
                 id="password-confirm"
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 placeholder="비밀번호 재입력"
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -239,12 +295,14 @@ export default function SignupPage() {
                 className="h-11"
               />
               {passwordConfirm && password !== passwordConfirm && (
-                <p className="text-xs text-destructive">비밀번호가 일치하지 않습니다.</p>
+                <p className="text-xs text-destructive">
+                  비밀번호가 일치하지 않습니다.
+                </p>
               )}
             </div>
 
             {/* Student-specific fields */}
-            {role === 'student' && (
+            {role === "student" && (
               <div className="space-y-4 rounded-xl border border-primary/20 bg-primary/5 p-4">
                 <p className="text-sm font-medium text-primary">학생 정보</p>
                 <div className="grid grid-cols-2 gap-3">
@@ -282,8 +340,8 @@ export default function SignupPage() {
               </div>
             )}
 
-            {/* Teacher/Parent school name */}
-            {(role === 'teacher' || role === 'parent') && (
+            {/* Teacher school name */}
+            {role === "teacher" && (
               <div className="space-y-2">
                 <Label htmlFor="school-name">학교명 (선택)</Label>
                 <Input
@@ -297,27 +355,53 @@ export default function SignupPage() {
               </div>
             )}
 
-            <Button type="submit" className="w-full h-11 text-base font-semibold" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full h-11 text-base font-semibold"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <span className="flex items-center gap-2">
-                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  <svg
+                    className="animate-spin h-4 w-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   가입 중...
                 </span>
               ) : (
-                '가입하기'
+                "가입하기"
               )}
             </Button>
 
             <p className="text-center text-xs text-muted-foreground">
-              가입하면{' '}
-              <Link href="/terms" className="underline underline-offset-4 hover:text-foreground">
+              가입하면{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
                 이용약관
               </Link>
-              과{' '}
-              <Link href="/privacy" className="underline underline-offset-4 hover:text-foreground">
+              과{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-foreground"
+              >
                 개인정보처리방침
               </Link>
               에 동의하게 됩니다.
@@ -343,7 +427,7 @@ export default function SignupPage() {
                 variant="outline"
                 type="button"
                 className="h-11"
-                onClick={() => setError('소셜 로그인은 준비 중입니다.')}
+                onClick={() => setError("소셜 로그인은 준비 중입니다.")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
@@ -369,7 +453,7 @@ export default function SignupPage() {
                 variant="outline"
                 type="button"
                 className="h-11"
-                onClick={() => setError('소셜 로그인은 준비 중입니다.')}
+                onClick={() => setError("소셜 로그인은 준비 중입니다.")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
@@ -386,7 +470,7 @@ export default function SignupPage() {
 
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          이미 계정이 있으신가요?{' '}
+          이미 계정이 있으신가요?{" "}
           <Link
             href="/login"
             className="font-medium text-primary hover:text-primary/80 transition-colors underline-offset-4 hover:underline"

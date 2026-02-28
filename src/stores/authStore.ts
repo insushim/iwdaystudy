@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { Profile } from '@/types/database';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { Profile } from "@/types/database";
 import {
   localLogin,
   localSignup,
@@ -9,7 +9,8 @@ import {
   localUpdateProfile,
   shouldUseLocalAuth,
   type SignupData,
-} from '@/lib/local-auth';
+  type AuthResult,
+} from "@/lib/local-auth";
 
 interface AuthState {
   user: Profile | null;
@@ -45,17 +46,19 @@ export const useAuthStore = create<AuthState>()(
             });
           } else {
             // Production mode: call Cloudflare Functions API
-            const res = await fetch('/api/auth/login', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const res = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password }),
             });
             if (!res.ok) {
-              const err = await res.json().catch(() => ({ message: '로그인 실패' }));
-              throw new Error(err.message || '로그인 실패');
+              const err = await res
+                .json()
+                .catch(() => ({ message: "로그인 실패" }));
+              throw new Error(err.message || "로그인 실패");
             }
             const data = await res.json();
-            localStorage.setItem('auth_token', data.token);
+            localStorage.setItem("auth_token", data.token);
             set({
               user: data.user,
               token: data.token,
@@ -73,8 +76,20 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           if (shouldUseLocalAuth()) {
-            // Static export / offline mode: use localStorage auth
             const result = localSignup(data);
+            // Pending teachers: set user but not authenticated
+            if (
+              result.user.role === "teacher" &&
+              result.user.approval_status === "pending"
+            ) {
+              set({
+                user: result.user,
+                token: null,
+                isAuthenticated: false,
+                isLoading: false,
+              });
+              return;
+            }
             set({
               user: result.user,
               token: result.token,
@@ -82,18 +97,32 @@ export const useAuthStore = create<AuthState>()(
               isLoading: false,
             });
           } else {
-            // Production mode: call Cloudflare Functions API
-            const res = await fetch('/api/auth/signup', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const res = await fetch("/api/auth/signup", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify(data),
             });
             if (!res.ok) {
-              const err = await res.json().catch(() => ({ message: '회원가입 실패' }));
-              throw new Error(err.message || '회원가입 실패');
+              const err = await res
+                .json()
+                .catch(() => ({ message: "회원가입 실패" }));
+              throw new Error(err.message || "회원가입 실패");
             }
             const result = await res.json();
-            localStorage.setItem('auth_token', result.token);
+            // Pending teachers
+            if (
+              result.user.role === "teacher" &&
+              result.user.approval_status === "pending"
+            ) {
+              set({
+                user: result.user,
+                token: null,
+                isAuthenticated: false,
+                isLoading: false,
+              });
+              return;
+            }
+            localStorage.setItem("auth_token", result.token);
             set({
               user: result.user,
               token: result.token,
@@ -111,7 +140,7 @@ export const useAuthStore = create<AuthState>()(
         if (shouldUseLocalAuth()) {
           localLogout();
         }
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem("auth_token");
         set({ user: null, token: null, isAuthenticated: false });
       },
 
@@ -130,12 +159,12 @@ export const useAuthStore = create<AuthState>()(
       setUser: (user) => set({ user, isAuthenticated: !!user }),
     }),
     {
-      name: 'araharu-auth',
+      name: "araharu-auth",
       partialize: (state) => ({
         user: state.user,
         token: state.token,
         isAuthenticated: state.isAuthenticated,
       }),
-    }
-  )
+    },
+  ),
 );

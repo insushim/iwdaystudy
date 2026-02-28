@@ -1,17 +1,36 @@
 // All the TypeScript types mirroring the D1 SQLite schema
 
-export type UserRole = 'student' | 'teacher' | 'parent' | 'admin';
+export type UserRole = "student" | "teacher" | "parent" | "admin";
+export type ApprovalStatus = "pending" | "approved" | "rejected";
 
 export type SubjectType =
-  | 'math' | 'korean' | 'spelling' | 'vocabulary' | 'hanja'
-  | 'english' | 'writing' | 'general_knowledge' | 'safety'
-  | 'science' | 'social' | 'creative';
+  | "math"
+  | "korean"
+  | "spelling"
+  | "vocabulary"
+  | "hanja"
+  | "english"
+  | "writing"
+  | "general_knowledge"
+  | "safety"
+  | "science"
+  | "social"
+  | "creative";
 
 export type QuestionType =
-  | 'multiple_choice' | 'fill_blank' | 'short_answer' | 'true_false'
-  | 'matching' | 'ordering' | 'drawing' | 'writing_prompt'
-  | 'emotion_check' | 'readiness_check' | 'calculation'
-  | 'word_puzzle' | 'dictation';
+  | "multiple_choice"
+  | "fill_blank"
+  | "short_answer"
+  | "true_false"
+  | "matching"
+  | "ordering"
+  | "drawing"
+  | "writing_prompt"
+  | "emotion_check"
+  | "readiness_check"
+  | "calculation"
+  | "word_puzzle"
+  | "dictation";
 
 export interface Profile {
   id: string;
@@ -30,6 +49,7 @@ export interface Profile {
   subscription_expires_at: string | null;
   streak_count: number;
   total_points: number;
+  approval_status: ApprovalStatus;
   password_hash: string;
   created_at: string;
   updated_at: string;
@@ -147,7 +167,7 @@ export interface Badge {
   icon: string;
   condition_type: string;
   condition_value: number | null;
-  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  rarity: "common" | "rare" | "epic" | "legendary";
   created_at: string;
 }
 

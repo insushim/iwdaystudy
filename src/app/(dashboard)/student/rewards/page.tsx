@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Award, Star, Zap, Trophy, Crown, Gift, Sparkles } from "lucide-react";
+import { Award, Zap, Sparkles, BookOpen } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -14,181 +14,15 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BadgeGrid } from "@/components/dashboard/BadgeGrid";
-
-// Mock badges data
-const allBadges = [
-  {
-    id: "b1",
-    name: "첫 걸음",
-    description: "첫 번째 학습을 완료했어요!",
-    icon: "🌱",
-    rarity: "common" as const,
-    earned: true,
-    earnedDate: "2025-09-01",
-  },
-  {
-    id: "b2",
-    name: "3일 연속",
-    description: "3일 연속 학습 달성!",
-    icon: "🔥",
-    rarity: "common" as const,
-    earned: true,
-    earnedDate: "2025-09-03",
-  },
-  {
-    id: "b3",
-    name: "7일 연속",
-    description: "일주일 연속 학습! 대단해요!",
-    icon: "⭐",
-    rarity: "rare" as const,
-    earned: true,
-    earnedDate: "2025-09-07",
-  },
-  {
-    id: "b4",
-    name: "수학 천재",
-    description: "수학 정답률 90% 이상 달성!",
-    icon: "🧮",
-    rarity: "rare" as const,
-    earned: true,
-    earnedDate: "2025-09-15",
-  },
-  {
-    id: "b5",
-    name: "국어 마스터",
-    description: "국어 정답률 90% 이상 달성!",
-    icon: "📖",
-    rarity: "rare" as const,
-    earned: true,
-    earnedDate: "2025-10-01",
-  },
-  {
-    id: "b6",
-    name: "30일 연속",
-    description: "한 달 연속 학습! 놀라워요!",
-    icon: "🏆",
-    rarity: "epic" as const,
-    earned: true,
-    earnedDate: "2025-10-01",
-  },
-  {
-    id: "b7",
-    name: "완벽한 하루",
-    description: "하루 학습에서 100점 달성!",
-    icon: "💎",
-    rarity: "epic" as const,
-    earned: true,
-    earnedDate: "2025-10-05",
-  },
-  {
-    id: "b8",
-    name: "맞춤법 왕",
-    description: "맞춤법 20문제 연속 정답!",
-    icon: "✍️",
-    rarity: "rare" as const,
-    earned: true,
-    earnedDate: "2025-10-10",
-  },
-  {
-    id: "b9",
-    name: "올라운더",
-    description: "모든 과목 정답률 70% 이상!",
-    icon: "🌈",
-    rarity: "epic" as const,
-    earned: false,
-    progress: 6,
-    maxProgress: 8,
-  },
-  {
-    id: "b10",
-    name: "100일 연속",
-    description: "100일 연속 학습! 전설의 시작!",
-    icon: "👑",
-    rarity: "legendary" as const,
-    earned: false,
-    progress: 45,
-    maxProgress: 100,
-  },
-  {
-    id: "b11",
-    name: "포인트 부자",
-    description: "누적 포인트 10,000P 달성!",
-    icon: "💰",
-    rarity: "epic" as const,
-    earned: false,
-    progress: 3420,
-    maxProgress: 10000,
-  },
-  {
-    id: "b12",
-    name: "전 과목 만점",
-    description: "하루에 전 과목 만점 달성!",
-    icon: "🎯",
-    rarity: "legendary" as const,
-    earned: false,
-    progress: 0,
-    maxProgress: 1,
-  },
-  {
-    id: "b13",
-    name: "빛의 속도",
-    description: "10분 이내로 전 문제 정답!",
-    icon: "⚡",
-    rarity: "epic" as const,
-    earned: false,
-    progress: 0,
-    maxProgress: 1,
-  },
-  {
-    id: "b14",
-    name: "한자 달인",
-    description: "한자 정답률 90% 이상!",
-    icon: "漢",
-    rarity: "rare" as const,
-    earned: false,
-    progress: 55,
-    maxProgress: 90,
-  },
-  {
-    id: "b15",
-    name: "영어 마스터",
-    description: "영어 정답률 90% 이상!",
-    icon: "🌏",
-    rarity: "rare" as const,
-    earned: false,
-    progress: 65,
-    maxProgress: 90,
-  },
-  {
-    id: "b16",
-    name: "365일 전설",
-    description: "1년 연속 학습! 진정한 전설!",
-    icon: "🌟",
-    rarity: "legendary" as const,
-    earned: false,
-    progress: 45,
-    maxProgress: 365,
-  },
-  {
-    id: "b17",
-    name: "50회 학습",
-    description: "총 50회 학습 완료!",
-    icon: "📚",
-    rarity: "common" as const,
-    earned: false,
-    progress: 45,
-    maxProgress: 50,
-  },
-  {
-    id: "b18",
-    name: "새벽형 학습러",
-    description: "오전 7시 이전에 학습 완료!",
-    icon: "🌅",
-    rarity: "common" as const,
-    earned: true,
-    earnedDate: "2025-09-20",
-  },
-];
+import { useAuthStore } from "@/stores/authStore";
+import {
+  getAllBadges,
+  getEarnedBadges,
+  getTotalPoints,
+  getStreakCount,
+  getLearningRecords,
+  getSubjectStats,
+} from "@/lib/local-storage";
 
 const LEVEL_CONFIG = [
   { name: "씨앗", minPoints: 0, icon: "🌱", color: "text-gray-500" },
@@ -203,7 +37,7 @@ const LEVEL_CONFIG = [
 
 function getLevel(points: number) {
   let current = LEVEL_CONFIG[0];
-  let next = LEVEL_CONFIG[1];
+  let next: (typeof LEVEL_CONFIG)[number] | null = LEVEL_CONFIG[1];
   for (let i = LEVEL_CONFIG.length - 1; i >= 0; i--) {
     if (points >= LEVEL_CONFIG[i].minPoints) {
       current = LEVEL_CONFIG[i];
@@ -214,18 +48,204 @@ function getLevel(points: number) {
   return { current, next };
 }
 
+type Rarity = "common" | "rare" | "epic" | "legendary";
+
+interface BadgeItem {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  rarity: Rarity;
+  earned: boolean;
+  earnedDate?: string;
+  progress?: number;
+  maxProgress?: number;
+}
+
 export default function StudentRewardsPage() {
-  const totalPoints = 3420;
+  const user = useAuthStore((s) => s.user);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [allBadgeItems, setAllBadgeItems] = useState<BadgeItem[]>([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const studentId = user.id;
+
+    // Get real data
+    const points = getTotalPoints(studentId);
+    setTotalPoints(points);
+
+    const badgeDefs = getAllBadges();
+    const earnedBadges = getEarnedBadges(studentId);
+    const earnedIds = new Set(earnedBadges.map((b) => b.id));
+
+    // Get data for progress calculation
+    const streak = getStreakCount(studentId);
+    const records = getLearningRecords(studentId).filter((r) => r.is_completed);
+    const subjectStats = getSubjectStats(studentId);
+
+    // Build badge list combining definitions with earned status
+    const badges: BadgeItem[] = badgeDefs.map((def) => {
+      const earned = earnedBadges.find((e) => e.id === def.id);
+
+      if (earned) {
+        return {
+          id: def.id,
+          name: def.name,
+          description: def.description,
+          icon: def.icon,
+          rarity: def.rarity as Rarity,
+          earned: true,
+          earnedDate: earned.earned_at
+            ? new Date(earned.earned_at).toLocaleDateString("ko-KR")
+            : undefined,
+        };
+      }
+
+      // Calculate progress for unearned badges
+      let progress = 0;
+      let maxProgress = 1;
+
+      switch (def.condition_type) {
+        case "first_complete":
+          progress = records.length >= 1 ? 1 : 0;
+          maxProgress = 1;
+          break;
+        case "streak_3":
+          progress = Math.min(streak, 3);
+          maxProgress = 3;
+          break;
+        case "streak_7":
+          progress = Math.min(streak, 7);
+          maxProgress = 7;
+          break;
+        case "streak_30":
+          progress = Math.min(streak, 30);
+          maxProgress = 30;
+          break;
+        case "streak_100":
+          progress = Math.min(streak, 100);
+          maxProgress = 100;
+          break;
+        case "perfect_score":
+          progress = records.some(
+            (r) => r.total_score >= r.max_score && r.max_score > 0,
+          )
+            ? 1
+            : 0;
+          maxProgress = 1;
+          break;
+        case "points_1000":
+          progress = Math.min(points, 1000);
+          maxProgress = 1000;
+          break;
+        case "points_10000":
+          progress = Math.min(points, 10000);
+          maxProgress = 10000;
+          break;
+        case "early_bird":
+          progress = 0;
+          maxProgress = 1;
+          break;
+        case "weekend_learner":
+          progress = 0;
+          maxProgress = 1;
+          break;
+        case "math_streak_10": {
+          const math = subjectStats["math"];
+          progress = math ? Math.min(math.correct, 10) : 0;
+          maxProgress = 10;
+          break;
+        }
+        case "spelling_streak_20": {
+          const spelling = subjectStats["spelling"];
+          progress = spelling ? Math.min(spelling.correct, 20) : 0;
+          maxProgress = 20;
+          break;
+        }
+        case "hanja_50": {
+          const hanja = subjectStats["hanja"];
+          progress = hanja ? Math.min(hanja.correct, 50) : 0;
+          maxProgress = 50;
+          break;
+        }
+        case "english_streak_30": {
+          const english = subjectStats["english"];
+          progress = english ? Math.min(english.correct, 30) : 0;
+          maxProgress = 30;
+          break;
+        }
+        case "all_subject_90": {
+          const subjects = Object.values(subjectStats).filter(
+            (s) => s.total >= 3,
+          );
+          const over90 = subjects.filter((s) => s.accuracy >= 90).length;
+          progress = over90;
+          maxProgress = Math.max(5, subjects.length);
+          break;
+        }
+        default:
+          progress = 0;
+          maxProgress =
+            typeof def.condition_value === "number" ? def.condition_value : 1;
+      }
+
+      return {
+        id: def.id,
+        name: def.name,
+        description: def.description,
+        icon: def.icon,
+        rarity: def.rarity as Rarity,
+        earned: false,
+        progress,
+        maxProgress,
+      };
+    });
+
+    setAllBadgeItems(badges);
+    setIsLoaded(true);
+  }, [user?.id]);
+
   const { current: currentLevel, next: nextLevel } = getLevel(totalPoints);
 
-  const earnedBadges = allBadges.filter((b) => b.earned);
-  const lockedBadges = allBadges.filter((b) => !b.earned);
+  const earnedBadges = useMemo(
+    () => allBadgeItems.filter((b) => b.earned),
+    [allBadgeItems],
+  );
+  const lockedBadges = useMemo(
+    () => allBadgeItems.filter((b) => !b.earned),
+    [allBadgeItems],
+  );
 
   const rarityCount = useMemo(() => {
     const counts = { common: 0, rare: 0, epic: 0, legendary: 0 };
     earnedBadges.forEach((b) => counts[b.rarity]++);
     return counts;
-  }, []);
+  }, [earnedBadges]);
+
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Award className="h-6 w-6 text-primary" />
+            뱃지 / 보상
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            열심히 모은 뱃지와 포인트를 확인해보세요
+          </p>
+        </motion.div>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-muted-foreground">데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -337,7 +357,7 @@ export default function StudentRewardsPage() {
       >
         <Tabs defaultValue="all">
           <TabsList>
-            <TabsTrigger value="all">전체 ({allBadges.length})</TabsTrigger>
+            <TabsTrigger value="all">전체 ({allBadgeItems.length})</TabsTrigger>
             <TabsTrigger value="earned">
               획득 ({earnedBadges.length})
             </TabsTrigger>
@@ -346,10 +366,21 @@ export default function StudentRewardsPage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="all" className="mt-4">
-            <BadgeGrid badges={allBadges} title="전체 뱃지" />
+            <BadgeGrid badges={allBadgeItems} title="전체 뱃지" />
           </TabsContent>
           <TabsContent value="earned" className="mt-4">
-            <BadgeGrid badges={earnedBadges} title="획득한 뱃지" />
+            {earnedBadges.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-12">
+                  <BookOpen className="h-12 w-12 text-muted-foreground/50 mb-3" />
+                  <p className="text-muted-foreground">
+                    아직 획득한 뱃지가 없습니다. 학습을 시작해보세요!
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <BadgeGrid badges={earnedBadges} title="획득한 뱃지" />
+            )}
           </TabsContent>
           <TabsContent value="locked" className="mt-4">
             <BadgeGrid badges={lockedBadges} title="도전 중인 뱃지" />
@@ -379,7 +410,8 @@ export default function StudentRewardsPage() {
                 (b) =>
                   b.progress !== undefined &&
                   b.maxProgress !== undefined &&
-                  b.progress / b.maxProgress > 0.5,
+                  b.maxProgress > 0 &&
+                  b.progress / b.maxProgress > 0.3,
               )
               .sort(
                 (a, b) =>
@@ -416,6 +448,17 @@ export default function StudentRewardsPage() {
                   </div>
                 </div>
               ))}
+            {lockedBadges.filter(
+              (b) =>
+                b.progress !== undefined &&
+                b.maxProgress !== undefined &&
+                b.maxProgress > 0 &&
+                b.progress / b.maxProgress > 0.3,
+            ).length === 0 && (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                학습을 계속하면 곧 뱃지를 획득할 수 있어요!
+              </p>
+            )}
           </CardContent>
         </Card>
       </motion.div>

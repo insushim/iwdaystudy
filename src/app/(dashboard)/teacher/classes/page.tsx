@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -23,7 +23,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
@@ -62,47 +61,24 @@ interface ClassData {
   createdAt: string;
 }
 
-const mockClasses: ClassData[] = [
-  {
-    id: "c1",
-    name: "3학년 1반",
-    grade: 3,
-    semester: 1,
-    studentCount: 28,
-    inviteCode: "ARA-3A-2025",
-    isActive: true,
-    completionRate: 82,
-    avgScore: 78,
-    createdAt: "2025-03-01",
-  },
-  {
-    id: "c2",
-    name: "3학년 2반",
-    grade: 3,
-    semester: 1,
-    studentCount: 26,
-    inviteCode: "ARA-3B-2025",
-    isActive: true,
-    completionRate: 75,
-    avgScore: 81,
-    createdAt: "2025-03-01",
-  },
-  {
-    id: "c3",
-    name: "2학년 1반 (2024)",
-    grade: 2,
-    semester: 2,
-    studentCount: 25,
-    inviteCode: "ARA-2A-2024",
-    isActive: false,
-    completionRate: 90,
-    avgScore: 85,
-    createdAt: "2024-03-01",
-  },
-];
+const STORAGE_KEY = "araharu-classes";
+
+function loadClasses(): ClassData[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveClasses(classes: ClassData[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(classes));
+}
 
 export default function TeacherClassesPage() {
-  const [classes, setClasses] = useState(mockClasses);
+  const [classes, setClasses] = useState<ClassData[]>([]);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [newClass, setNewClass] = useState({
@@ -111,6 +87,22 @@ export default function TeacherClassesPage() {
     semester: "1",
   });
   const [editingClass, setEditingClass] = useState<ClassData | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    grade: "3",
+    semester: "1",
+  });
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    setClasses(loadClasses());
+  }, []);
+
+  // Persist whenever classes change (skip initial empty render)
+  const persistClasses = useCallback((updated: ClassData[]) => {
+    setClasses(updated);
+    saveClasses(updated);
+  }, []);
 
   const handleCopyCode = (code: string) => {
     navigator.clipboard.writeText(code);
@@ -131,15 +123,41 @@ export default function TeacherClassesPage() {
       avgScore: 0,
       createdAt: new Date().toISOString().split("T")[0],
     };
-    setClasses([...classes, created]);
+    persistClasses([...classes, created]);
     setShowCreateDialog(false);
     setNewClass({ name: "", grade: "3", semester: "1" });
   };
 
   const toggleActive = (id: string) => {
-    setClasses(
+    persistClasses(
       classes.map((c) => (c.id === id ? { ...c, isActive: !c.isActive } : c)),
     );
+  };
+
+  const handleEditClass = () => {
+    if (!editingClass) return;
+    persistClasses(
+      classes.map((c) =>
+        c.id === editingClass.id
+          ? {
+              ...c,
+              name: editForm.name,
+              grade: parseInt(editForm.grade),
+              semester: parseInt(editForm.semester),
+            }
+          : c,
+      ),
+    );
+    setEditingClass(null);
+  };
+
+  const openEditDialog = (cls: ClassData) => {
+    setEditingClass(cls);
+    setEditForm({
+      name: cls.name,
+      grade: String(cls.grade),
+      semester: String(cls.semester),
+    });
   };
 
   const activeClasses = classes.filter((c) => c.isActive);
@@ -212,7 +230,7 @@ export default function TeacherClassesPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem
-                              onClick={() => setEditingClass(cls)}
+                              onClick={() => openEditDialog(cls)}
                             >
                               <Edit className="h-4 w-4 mr-2" />
                               수정
@@ -419,12 +437,22 @@ export default function TeacherClassesPage() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>학급 이름</Label>
-                <Input defaultValue={editingClass.name} />
+                <Input
+                  value={editForm.name}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, name: e.target.value })
+                  }
+                />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label>학년</Label>
-                  <Select defaultValue={String(editingClass.grade)}>
+                  <Select
+                    value={editForm.grade}
+                    onValueChange={(val) =>
+                      setEditForm({ ...editForm, grade: val })
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -439,7 +467,12 @@ export default function TeacherClassesPage() {
                 </div>
                 <div className="space-y-2">
                   <Label>학기</Label>
-                  <Select defaultValue={String(editingClass.semester)}>
+                  <Select
+                    value={editForm.semester}
+                    onValueChange={(val) =>
+                      setEditForm({ ...editForm, semester: val })
+                    }
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -455,7 +488,12 @@ export default function TeacherClassesPage() {
               <Button variant="outline" onClick={() => setEditingClass(null)}>
                 취소
               </Button>
-              <Button onClick={() => setEditingClass(null)}>저장</Button>
+              <Button
+                onClick={handleEditClass}
+                disabled={!editForm.name.trim()}
+              >
+                저장
+              </Button>
             </DialogFooter>
           </DialogContent>
         )}

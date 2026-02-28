@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { format, subDays, subWeeks } from "date-fns";
+import { format, subDays, subWeeks, startOfWeek, endOfWeek } from "date-fns";
 import { ko } from "date-fns/locale";
 import {
   Target,
@@ -12,6 +12,7 @@ import {
   Zap,
   CalendarCheck,
   AlertTriangle,
+  BookOpen,
 } from "lucide-react";
 import {
   Card,
@@ -42,79 +43,340 @@ import {
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { SubjectChart } from "@/components/dashboard/SubjectChart";
 import { WeeklyReport } from "@/components/dashboard/WeeklyReport";
+import { useAuthStore } from "@/stores/authStore";
+import {
+  getSubjectStats,
+  getStreakCount,
+  getTotalPoints,
+  getLearningRecords,
+  getLocalReport,
+} from "@/lib/local-storage";
+import { getSubjectColor } from "@/lib/utils";
 
-// Mock data generators
-const subjectData = [
-  { subject: "math", name: "수학", accuracy: 85, color: "#FF6B35" },
-  { subject: "korean", name: "국어", accuracy: 78, color: "#4ECDC4" },
-  { subject: "spelling", name: "맞춤법", accuracy: 92, color: "#A18CD1" },
-  { subject: "vocabulary", name: "어휘", accuracy: 70, color: "#FF8BA7" },
-  { subject: "english", name: "영어", accuracy: 65, color: "#4169E1" },
-  { subject: "writing", name: "글쓰기", accuracy: 82, color: "#2ECC71" },
-  {
-    subject: "general_knowledge",
-    name: "상식",
-    accuracy: 88,
-    color: "#F9CA24",
-  },
-  { subject: "hanja", name: "한자", accuracy: 55, color: "#8B4513" },
-];
-
-const weeklyPoints = Array.from({ length: 12 }, (_, i) => {
-  const date = subWeeks(new Date(), 11 - i);
-  return {
-    week: format(date, "M/d", { locale: ko }),
-    points: Math.floor(Math.random() * 200) + 100,
-    score: Math.floor(Math.random() * 30) + 65,
-  };
-});
-
-const dailyScores = Array.from({ length: 30 }, (_, i) => {
-  const date = subDays(new Date(), 29 - i);
-  return {
-    date: format(date, "M/d"),
-    score: Math.random() > 0.2 ? Math.floor(Math.random() * 30) + 65 : 0,
-  };
-});
-
-const weekComparison = [
-  { label: "이번 주", score: 82, color: "#2ECC71" },
-  { label: "지난 주", score: 76, color: "#A18CD1" },
-  { label: "2주 전", score: 71, color: "#FF8BA7" },
-  { label: "3주 전", score: 68, color: "#F9CA24" },
-];
-
-const weakAreas = [
-  {
-    subject: "한자",
-    topic: "4학년 한자 읽기",
-    accuracy: 45,
-    suggestion: "획순 연습을 더 해보세요",
-  },
-  {
-    subject: "영어",
-    topic: "기초 단어",
-    accuracy: 55,
-    suggestion: "매일 5개씩 외워보세요",
-  },
-  {
-    subject: "어휘",
-    topic: "반의어",
-    accuracy: 60,
-    suggestion: "짝을 지어서 외우면 좋아요",
-  },
-];
+const SUBJECT_NAME_MAP: Record<string, string> = {
+  math: "수학",
+  korean: "국어",
+  spelling: "맞춤법",
+  vocabulary: "어휘",
+  english: "영어",
+  writing: "글쓰기",
+  general_knowledge: "상식",
+  hanja: "한자",
+  science: "과학",
+  social: "사회",
+  safety: "안전",
+  creative: "창의",
+};
 
 export default function StudentStatsPage() {
-  const overallAccuracy = 79;
-  const streakDays = 12;
-  const totalPoints = 3420;
-  const totalSessions = 45;
+  const user = useAuthStore((s) => s.user);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Real data state
+  const [subjectData, setSubjectData] = useState<
+    { subject: string; name: string; accuracy: number; color: string }[]
+  >([]);
+  const [weeklyPoints, setWeeklyPoints] = useState<
+    { week: string; points: number; score: number }[]
+  >([]);
+  const [dailyScores, setDailyScores] = useState<
+    { date: string; score: number }[]
+  >([]);
+  const [weekComparison, setWeekComparison] = useState<
+    { label: string; score: number; color: string }[]
+  >([]);
+  const [weakAreas, setWeakAreas] = useState<
+    { subject: string; accuracy: number; suggestion: string }[]
+  >([]);
+  const [overallAccuracy, setOverallAccuracy] = useState(0);
+  const [streakDays, setStreakDays] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const [totalSessions, setTotalSessions] = useState(0);
+  const [weeklyReportData, setWeeklyReportData] = useState<{
+    daysCompleted: number;
+    averageScore: number;
+    bestSubject: { name: string; score: number };
+    weakestSubject: { name: string; score: number };
+    improvementFromLastWeek: number;
+    totalPoints: number;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const studentId = user.id;
+    const now = new Date();
+    const today = format(now, "yyyy-MM-dd");
+    const from90 = format(subDays(now, 90), "yyyy-MM-dd");
+
+    // Subject stats
+    const stats = getSubjectStats(studentId);
+    const subjectArr = Object.entries(stats).map(([subject, s]) => ({
+      subject,
+      name: SUBJECT_NAME_MAP[subject] || subject,
+      accuracy: s.accuracy,
+      color: getSubjectColor(subject),
+    }));
+    setSubjectData(subjectArr);
+
+    // Overall accuracy
+    const totalCorrect = Object.values(stats).reduce(
+      (s, v) => s + v.correct,
+      0,
+    );
+    const totalQuestions = Object.values(stats).reduce(
+      (s, v) => s + v.total,
+      0,
+    );
+    setOverallAccuracy(
+      totalQuestions > 0
+        ? Math.round((totalCorrect / totalQuestions) * 100)
+        : 0,
+    );
+
+    // Streak & points
+    setStreakDays(getStreakCount(studentId));
+    setTotalPoints(getTotalPoints(studentId));
+
+    // Records
+    const records = getLearningRecords(studentId).filter((r) => r.is_completed);
+    setTotalSessions(records.length);
+
+    // Build weeklyPoints from records grouped by week (last 12 weeks)
+    const weeklyMap = new Map<
+      string,
+      { points: number; score: number; maxScore: number }
+    >();
+    for (let i = 0; i < 12; i++) {
+      const weekDate = subWeeks(now, 11 - i);
+      const weekLabel = format(weekDate, "M/d", { locale: ko });
+      weeklyMap.set(weekLabel, { points: 0, score: 0, maxScore: 0 });
+    }
+    for (const r of records) {
+      const completedDate = new Date(r.completed_at || r.created_at);
+      // Find which week bucket this falls into
+      for (let i = 0; i < 12; i++) {
+        const weekDate = subWeeks(now, 11 - i);
+        const wStart = startOfWeek(weekDate, { weekStartsOn: 1 });
+        const wEnd = endOfWeek(weekDate, { weekStartsOn: 1 });
+        if (completedDate >= wStart && completedDate <= wEnd) {
+          const weekLabel = format(weekDate, "M/d", { locale: ko });
+          const existing = weeklyMap.get(weekLabel) || {
+            points: 0,
+            score: 0,
+            maxScore: 0,
+          };
+          existing.points += r.total_score;
+          existing.score += r.total_score;
+          existing.maxScore += r.max_score;
+          weeklyMap.set(weekLabel, existing);
+          break;
+        }
+      }
+    }
+    setWeeklyPoints(
+      Array.from(weeklyMap.entries()).map(([week, d]) => ({
+        week,
+        points: d.points,
+        score: d.maxScore > 0 ? Math.round((d.score / d.maxScore) * 100) : 0,
+      })),
+    );
+
+    // Build dailyScores from records grouped by day (last 30 days)
+    const dailyMap = new Map<string, { score: number; maxScore: number }>();
+    for (let i = 0; i < 30; i++) {
+      const d = subDays(now, 29 - i);
+      dailyMap.set(format(d, "M/d"), { score: 0, maxScore: 0 });
+    }
+    for (const r of records) {
+      const d = new Date(r.completed_at || r.created_at);
+      const key = format(d, "M/d");
+      if (dailyMap.has(key)) {
+        const existing = dailyMap.get(key)!;
+        existing.score += r.total_score;
+        existing.maxScore += r.max_score;
+        dailyMap.set(key, existing);
+      }
+    }
+    setDailyScores(
+      Array.from(dailyMap.entries()).map(([date, d]) => ({
+        date,
+        score: d.maxScore > 0 ? Math.round((d.score / d.maxScore) * 100) : 0,
+      })),
+    );
+
+    // Build weekComparison from records grouped by recent 4 weeks
+    const weekColors = ["#2ECC71", "#A18CD1", "#FF8BA7", "#F9CA24"];
+    const weekLabels = ["이번 주", "지난 주", "2주 전", "3주 전"];
+    const comparison = weekLabels.map((label, i) => {
+      const weekDate = subWeeks(now, i);
+      const wStart = startOfWeek(weekDate, { weekStartsOn: 1 });
+      const wEnd = endOfWeek(weekDate, { weekStartsOn: 1 });
+      const weekRecords = records.filter((r) => {
+        const d = new Date(r.completed_at || r.created_at);
+        return d >= wStart && d <= wEnd;
+      });
+      const totalScore = weekRecords.reduce((s, r) => s + r.total_score, 0);
+      const totalMax = weekRecords.reduce((s, r) => s + r.max_score, 0);
+      return {
+        label,
+        score: totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0,
+        color: weekColors[i],
+      };
+    });
+    setWeekComparison(comparison);
+
+    // Build weakAreas from subjectStats sorted by accuracy (lowest first)
+    const suggestions: Record<string, string> = {
+      math: "계산 연습을 더 해보세요",
+      korean: "독해 연습을 꾸준히 해보세요",
+      spelling: "맞춤법 규칙을 다시 확인해보세요",
+      vocabulary: "짝을 지어서 외우면 좋아요",
+      english: "매일 5개씩 외워보세요",
+      writing: "짧은 문장부터 연습해보세요",
+      general_knowledge: "다양한 분야의 책을 읽어보세요",
+      hanja: "획순 연습을 더 해보세요",
+      science: "실험 원리를 정리해보세요",
+      social: "지도와 함께 공부해보세요",
+      safety: "안전 규칙을 반복해서 읽어보세요",
+      creative: "자유롭게 생각을 펼쳐보세요",
+    };
+    const weak = Object.entries(stats)
+      .filter(([, s]) => s.total >= 1)
+      .sort((a, b) => a[1].accuracy - b[1].accuracy)
+      .slice(0, 3)
+      .map(([subject, s]) => ({
+        subject: SUBJECT_NAME_MAP[subject] || subject,
+        accuracy: s.accuracy,
+        suggestion: suggestions[subject] || "꾸준히 연습해보세요",
+      }));
+    setWeakAreas(weak);
+
+    // Weekly report data
+    const thisWeekStart = startOfWeek(now, { weekStartsOn: 1 });
+    const thisWeekEnd = endOfWeek(now, { weekStartsOn: 1 });
+    const lastWeekStart = startOfWeek(subWeeks(now, 1), { weekStartsOn: 1 });
+    const lastWeekEnd = endOfWeek(subWeeks(now, 1), { weekStartsOn: 1 });
+
+    const thisWeekRecords = records.filter((r) => {
+      const d = new Date(r.completed_at || r.created_at);
+      return d >= thisWeekStart && d <= thisWeekEnd;
+    });
+    const lastWeekRecords = records.filter((r) => {
+      const d = new Date(r.completed_at || r.created_at);
+      return d >= lastWeekStart && d <= lastWeekEnd;
+    });
+
+    const thisWeekDays = new Set(
+      thisWeekRecords.map(
+        (r) => (r.completed_at || r.created_at).split("T")[0],
+      ),
+    ).size;
+    const thisWeekScore = thisWeekRecords.reduce(
+      (s, r) => s + r.total_score,
+      0,
+    );
+    const thisWeekMax = thisWeekRecords.reduce((s, r) => s + r.max_score, 0);
+    const thisWeekAvg =
+      thisWeekMax > 0 ? Math.round((thisWeekScore / thisWeekMax) * 100) : 0;
+
+    const lastWeekScore = lastWeekRecords.reduce(
+      (s, r) => s + r.total_score,
+      0,
+    );
+    const lastWeekMax = lastWeekRecords.reduce((s, r) => s + r.max_score, 0);
+    const lastWeekAvg =
+      lastWeekMax > 0 ? Math.round((lastWeekScore / lastWeekMax) * 100) : 0;
+
+    // Find best & weakest from subject stats
+    const sortedSubjects = Object.entries(stats).sort(
+      (a, b) => b[1].accuracy - a[1].accuracy,
+    );
+    const best = sortedSubjects[0];
+    const weakest = sortedSubjects[sortedSubjects.length - 1];
+
+    setWeeklyReportData({
+      daysCompleted: thisWeekDays,
+      averageScore: thisWeekAvg,
+      bestSubject: best
+        ? {
+            name: SUBJECT_NAME_MAP[best[0]] || best[0],
+            score: best[1].accuracy,
+          }
+        : { name: "-", score: 0 },
+      weakestSubject: weakest
+        ? {
+            name: SUBJECT_NAME_MAP[weakest[0]] || weakest[0],
+            score: weakest[1].accuracy,
+          }
+        : { name: "-", score: 0 },
+      improvementFromLastWeek: thisWeekAvg - lastWeekAvg,
+      totalPoints: thisWeekScore,
+    });
+
+    setIsLoaded(true);
+  }, [user?.id]);
 
   const ringData = [
     { name: "정답", value: overallAccuracy, fill: "hsl(var(--primary))" },
-    { name: "오답", value: 100 - overallAccuracy, fill: "hsl(var(--muted))" },
+    {
+      name: "오답",
+      value: 100 - overallAccuracy,
+      fill: "hsl(var(--muted))",
+    },
   ];
+
+  if (!isLoaded) {
+    return (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Target className="h-6 w-6 text-primary" />
+            학습 통계
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            나의 학습 현황을 분석해보세요
+          </p>
+        </motion.div>
+        <div className="flex items-center justify-center py-20">
+          <p className="text-muted-foreground">데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (totalSessions === 0) {
+    return (
+      <div className="space-y-6">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h1 className="text-2xl font-bold flex items-center gap-2">
+            <Target className="h-6 w-6 text-primary" />
+            학습 통계
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">
+            나의 학습 현황을 분석해보세요
+          </p>
+        </motion.div>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <BookOpen className="h-12 w-12 text-muted-foreground/50 mb-3" />
+            <p className="text-lg font-medium text-muted-foreground">
+              아직 학습 기록이 없습니다
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              학습을 시작하면 여기에 통계가 표시됩니다
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -138,7 +400,6 @@ export default function StudentStatsPage() {
           icon={Target}
           title="전체 정답률"
           value={`${overallAccuracy}%`}
-          change={3}
           iconColor="text-primary"
           iconBg="bg-primary/10"
         />
@@ -146,8 +407,6 @@ export default function StudentStatsPage() {
           icon={Flame}
           title="연속 학습"
           value={`${streakDays}일`}
-          change={2}
-          changeLabel="일 증가"
           iconColor="text-orange-500"
           iconBg="bg-orange-50 dark:bg-orange-950/30"
         />
@@ -155,7 +414,6 @@ export default function StudentStatsPage() {
           icon={Zap}
           title="총 포인트"
           value={totalPoints.toLocaleString()}
-          change={12}
           iconColor="text-amber-500"
           iconBg="bg-amber-50 dark:bg-amber-950/30"
         />
@@ -432,45 +690,53 @@ export default function StudentStatsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {weakAreas.map((area, idx) => (
-                <div key={idx} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-amber-500" />
-                      <span className="text-sm font-medium">
-                        {area.subject} - {area.topic}
-                      </span>
+              {weakAreas.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  아직 과목별 데이터가 부족합니다
+                </p>
+              ) : (
+                weakAreas.map((area, idx) => (
+                  <div key={idx} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-amber-500" />
+                        <span className="text-sm font-medium">
+                          {area.subject}
+                        </span>
+                      </div>
+                      <Badge variant="outline" className="text-xs">
+                        {area.accuracy}%
+                      </Badge>
                     </div>
-                    <Badge variant="outline" className="text-xs">
-                      {area.accuracy}%
-                    </Badge>
+                    <Progress value={area.accuracy} className="h-2" />
+                    <p className="text-xs text-muted-foreground">
+                      {area.suggestion}
+                    </p>
                   </div>
-                  <Progress value={area.accuracy} className="h-2" />
-                  <p className="text-xs text-muted-foreground">
-                    {area.suggestion}
-                  </p>
-                </div>
-              ))}
+                ))
+              )}
             </CardContent>
           </Card>
         </motion.div>
       </div>
 
       {/* Weekly Report */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-      >
-        <WeeklyReport
-          daysCompleted={5}
-          averageScore={82}
-          bestSubject={{ name: "맞춤법", score: 95 }}
-          weakestSubject={{ name: "한자", score: 55 }}
-          improvementFromLastWeek={6}
-          totalPoints={320}
-        />
-      </motion.div>
+      {weeklyReportData && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <WeeklyReport
+            daysCompleted={weeklyReportData.daysCompleted}
+            averageScore={weeklyReportData.averageScore}
+            bestSubject={weeklyReportData.bestSubject}
+            weakestSubject={weeklyReportData.weakestSubject}
+            improvementFromLastWeek={weeklyReportData.improvementFromLastWeek}
+            totalPoints={weeklyReportData.totalPoints}
+          />
+        </motion.div>
+      )}
     </div>
   );
 }

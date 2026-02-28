@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -10,6 +11,7 @@ import {
   Clock,
   TrendingUp,
   BookOpen,
+  UserX,
 } from "lucide-react";
 import {
   Card,
@@ -21,38 +23,114 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import { useAuthStore } from "@/stores/authStore";
+import { localGetAllUsers } from "@/lib/local-auth";
+import {
+  getLearningRecords,
+  getStreakCount,
+  getTotalPoints,
+} from "@/lib/local-storage";
 
-// Mock data
-const children = [
-  {
-    id: "child1",
-    name: "김아라",
-    grade: 3,
-    className: "1반",
-    streak: 15,
-    todayCompleted: true,
-    todayScore: 92,
-    todayTimeSpent: 22,
-    avgScore: 85,
-    totalPoints: 3420,
-    recentScores: [88, 92, 85, 90, 95],
-  },
-  {
-    id: "child2",
-    name: "김하루",
-    grade: 1,
-    className: "2반",
-    streak: 5,
-    todayCompleted: false,
-    todayScore: 0,
-    todayTimeSpent: 0,
-    avgScore: 78,
-    totalPoints: 1250,
-    recentScores: [75, 80, 72, 78, 82],
-  },
-];
+interface ChildData {
+  id: string;
+  name: string;
+  grade: number | null;
+  className: string | null;
+  streak: number;
+  todayCompleted: boolean;
+  todayScore: number;
+  todayTimeSpent: number;
+  avgScore: number;
+  totalPoints: number;
+  recentScores: number[];
+}
+
+function buildChildData(childProfile: {
+  id: string;
+  name: string;
+  grade: number | null;
+  class_name: string | null;
+}): ChildData {
+  const records = getLearningRecords(childProfile.id);
+  const completedRecords = records.filter((r) => r.is_completed);
+  const streak = getStreakCount(childProfile.id);
+  const totalPoints = getTotalPoints(childProfile.id);
+
+  const today = new Date().toISOString().split("T")[0];
+  const todayRecords = completedRecords.filter(
+    (r) => (r.completed_at || r.created_at).split("T")[0] === today,
+  );
+  const todayCompleted = todayRecords.length > 0;
+  const todayScore =
+    todayRecords.length > 0
+      ? Math.round(
+          todayRecords.reduce((sum, r) => {
+            return (
+              sum + (r.max_score > 0 ? (r.total_score / r.max_score) * 100 : 0)
+            );
+          }, 0) / todayRecords.length,
+        )
+      : 0;
+  const todayTimeSpent = todayRecords.reduce(
+    (sum, r) => sum + Math.round(r.time_spent_seconds / 60),
+    0,
+  );
+
+  const avgScore =
+    completedRecords.length > 0
+      ? Math.round(
+          completedRecords.reduce((sum, r) => {
+            return (
+              sum + (r.max_score > 0 ? (r.total_score / r.max_score) * 100 : 0)
+            );
+          }, 0) / completedRecords.length,
+        )
+      : 0;
+
+  // Recent 5 completed sessions' scores as percentage
+  const recentScores = completedRecords
+    .sort(
+      (a, b) =>
+        new Date(b.completed_at || b.created_at).getTime() -
+        new Date(a.completed_at || a.created_at).getTime(),
+    )
+    .slice(0, 5)
+    .map((r) =>
+      r.max_score > 0 ? Math.round((r.total_score / r.max_score) * 100) : 0,
+    )
+    .reverse();
+
+  return {
+    id: childProfile.id,
+    name: childProfile.name,
+    grade: childProfile.grade,
+    className: childProfile.class_name,
+    streak,
+    todayCompleted,
+    todayScore,
+    todayTimeSpent,
+    avgScore,
+    totalPoints,
+    recentScores,
+  };
+}
 
 export default function ParentDashboardPage() {
+  const { user } = useAuthStore();
+  const [children, setChildren] = useState<ChildData[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    const allUsers = localGetAllUsers();
+    const childProfiles = allUsers.filter(
+      (u) => u.parent_id === user.id && u.role === "student",
+    );
+    const childData = childProfiles.map((c) => buildChildData(c));
+    setChildren(childData);
+    setLoaded(true);
+  }, [user]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -69,6 +147,30 @@ export default function ParentDashboardPage() {
           현황
         </p>
       </motion.div>
+
+      {/* Empty state */}
+      {loaded && children.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card className="border shadow-sm border-dashed">
+            <CardContent className="py-16">
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                  <UserX className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-bold mb-2">
+                  연결된 자녀가 없습니다
+                </h3>
+                <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                  자녀 관리 페이지에서 자녀 계정을 연결해 주세요.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
 
       {/* Children Cards */}
       <div className="space-y-6">
@@ -91,7 +193,8 @@ export default function ParentDashboardPage() {
                   <div className="flex-1">
                     <CardTitle className="text-xl">{child.name}</CardTitle>
                     <CardDescription>
-                      {child.grade}학년 {child.className}
+                      {child.grade ? `${child.grade}학년` : ""}{" "}
+                      {child.className || ""}
                     </CardDescription>
                   </div>
                   <div className="flex items-center gap-1.5 text-orange-500">
@@ -171,34 +274,40 @@ export default function ParentDashboardPage() {
                 </div>
 
                 {/* Recent Scores */}
-                <div>
-                  <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                    <TrendingUp className="h-4 w-4 text-primary" />
-                    최근 5일 점수
-                  </p>
-                  <div className="flex items-end gap-2 h-16">
-                    {child.recentScores.map((score, i) => {
-                      const height = (score / 100) * 100;
-                      const isLast = i === child.recentScores.length - 1;
-                      return (
-                        <div
-                          key={i}
-                          className="flex-1 flex flex-col items-center gap-1"
-                        >
-                          <span className="text-[10px] text-muted-foreground">
-                            {score}
-                          </span>
+                {child.recentScores.length > 0 ? (
+                  <div>
+                    <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <TrendingUp className="h-4 w-4 text-primary" />
+                      최근 {child.recentScores.length}회 점수
+                    </p>
+                    <div className="flex items-end gap-2 h-16">
+                      {child.recentScores.map((score, i) => {
+                        const height = (score / 100) * 100;
+                        const isLast = i === child.recentScores.length - 1;
+                        return (
                           <div
-                            className={`w-full rounded-t-md transition-all ${
-                              isLast ? "bg-primary" : "bg-primary/30"
-                            }`}
-                            style={{ height: `${height}%` }}
-                          />
-                        </div>
-                      );
-                    })}
+                            key={i}
+                            className="flex-1 flex flex-col items-center gap-1"
+                          >
+                            <span className="text-[10px] text-muted-foreground">
+                              {score}
+                            </span>
+                            <div
+                              className={`w-full rounded-t-md transition-all ${
+                                isLast ? "bg-primary" : "bg-primary/30"
+                              }`}
+                              style={{ height: `${height}%` }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="text-center py-4 text-sm text-muted-foreground">
+                    아직 학습 기록이 없습니다
+                  </div>
+                )}
               </CardContent>
             </Card>
           </motion.div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import type { DailySet, Question } from "@/types/database";
 
 interface ContentSet {
   id: string;
@@ -39,31 +40,66 @@ interface ContentSet {
   difficulty: string;
 }
 
-const demoSets: ContentSet[] = [
-  { id: "s1", grade: 1, semester: 1, setNumber: 1, subject: "수학", questionCount: 10, published: true, createdAt: "2026-02-25", difficulty: "쉬움" },
-  { id: "s2", grade: 1, semester: 1, setNumber: 2, subject: "국어", questionCount: 10, published: true, createdAt: "2026-02-25", difficulty: "쉬움" },
-  { id: "s3", grade: 1, semester: 1, setNumber: 3, subject: "통합", questionCount: 10, published: false, createdAt: "2026-02-26", difficulty: "쉬움" },
-  { id: "s4", grade: 2, semester: 1, setNumber: 1, subject: "수학", questionCount: 10, published: true, createdAt: "2026-02-24", difficulty: "쉬움" },
-  { id: "s5", grade: 2, semester: 1, setNumber: 2, subject: "국어", questionCount: 10, published: true, createdAt: "2026-02-24", difficulty: "보통" },
-  { id: "s6", grade: 3, semester: 1, setNumber: 1, subject: "수학", questionCount: 12, published: true, createdAt: "2026-02-23", difficulty: "보통" },
-  { id: "s7", grade: 3, semester: 1, setNumber: 2, subject: "영어", questionCount: 12, published: true, createdAt: "2026-02-23", difficulty: "보통" },
-  { id: "s8", grade: 3, semester: 2, setNumber: 1, subject: "수학", questionCount: 12, published: false, createdAt: "2026-02-26", difficulty: "보통" },
-  { id: "s9", grade: 4, semester: 1, setNumber: 1, subject: "수학", questionCount: 12, published: true, createdAt: "2026-02-22", difficulty: "보통" },
-  { id: "s10", grade: 4, semester: 1, setNumber: 2, subject: "과학", questionCount: 12, published: true, createdAt: "2026-02-22", difficulty: "어려움" },
-  { id: "s11", grade: 5, semester: 1, setNumber: 1, subject: "수학", questionCount: 14, published: true, createdAt: "2026-02-21", difficulty: "보통" },
-  { id: "s12", grade: 5, semester: 1, setNumber: 2, subject: "사회", questionCount: 14, published: true, createdAt: "2026-02-21", difficulty: "어려움" },
-  { id: "s13", grade: 6, semester: 1, setNumber: 1, subject: "수학", questionCount: 14, published: true, createdAt: "2026-02-20", difficulty: "어려움" },
-  { id: "s14", grade: 6, semester: 2, setNumber: 1, subject: "영어", questionCount: 14, published: false, createdAt: "2026-02-26", difficulty: "보통" },
-];
+const SUBJECT_NAMES: Record<string, string> = {
+  math: "수학",
+  korean: "국어",
+  spelling: "맞춤법",
+  vocabulary: "어휘",
+  english: "영어",
+  writing: "글쓰기",
+  general_knowledge: "상식",
+  hanja: "한자",
+  science: "과학",
+  social: "사회",
+};
 
-const gradeStats = [
-  { grade: 1, sets: 320, questions: 3200 },
-  { grade: 2, sets: 340, questions: 3400 },
-  { grade: 3, sets: 380, questions: 4560 },
-  { grade: 4, sets: 370, questions: 4440 },
-  { grade: 5, sets: 360, questions: 5040 },
-  { grade: 6, sets: 386, questions: 5404 },
-];
+function loadSetsFromStorage(): ContentSet[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const setsData = localStorage.getItem("araharu_daily_sets");
+    const questionsData = localStorage.getItem("araharu_questions");
+    if (!setsData) return [];
+
+    const sets: DailySet[] = JSON.parse(setsData);
+    const questions: Question[] = questionsData
+      ? JSON.parse(questionsData)
+      : [];
+
+    return sets.map((s) => {
+      const setQuestions = questions.filter((q) => q.daily_set_id === s.id);
+      // Determine primary subject from questions
+      const subjectCounts: Record<string, number> = {};
+      for (const q of setQuestions) {
+        if (q.subject !== "emotion_check" && q.subject !== "readiness_check") {
+          subjectCounts[q.subject] = (subjectCounts[q.subject] || 0) + 1;
+        }
+      }
+      const primarySubject =
+        Object.entries(subjectCounts).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+        "통합";
+      const displaySubject = SUBJECT_NAMES[primarySubject] || primarySubject;
+
+      // Estimate difficulty from question count/grade
+      let difficulty = "보통";
+      if (s.grade <= 2) difficulty = "쉬움";
+      if (s.grade >= 5) difficulty = "어려움";
+
+      return {
+        id: s.id,
+        grade: s.grade,
+        semester: s.semester,
+        setNumber: s.set_number,
+        subject: displaySubject,
+        questionCount: s.total_questions || setQuestions.length,
+        published: s.is_published,
+        createdAt: s.created_at.split("T")[0],
+        difficulty,
+      };
+    });
+  } catch {
+    return [];
+  }
+}
 
 const gradeColors: Record<number, string> = {
   1: "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400",
@@ -79,11 +115,18 @@ export default function ContentManagementPage() {
   const [gradeFilter, setGradeFilter] = useState("all");
   const [semesterFilter, setSemesterFilter] = useState("all");
   const [publishFilter, setPublishFilter] = useState("all");
-  const [sets, setSets] = useState(demoSets);
+  const [sets, setSets] = useState<ContentSet[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setSets(loadSetsFromStorage());
+    setLoaded(true);
+  }, []);
 
   const filteredSets = sets.filter((s) => {
     if (gradeFilter !== "all" && s.grade !== Number(gradeFilter)) return false;
-    if (semesterFilter !== "all" && s.semester !== Number(semesterFilter)) return false;
+    if (semesterFilter !== "all" && s.semester !== Number(semesterFilter))
+      return false;
     if (publishFilter === "published" && !s.published) return false;
     if (publishFilter === "unpublished" && s.published) return false;
     if (searchQuery) {
@@ -97,9 +140,33 @@ export default function ContentManagementPage() {
     return true;
   });
 
+  // Compute grade stats from actual data
+  const gradeStats = [1, 2, 3, 4, 5, 6].map((grade) => {
+    const gradeSets = sets.filter((s) => s.grade === grade);
+    return {
+      grade,
+      sets: gradeSets.length,
+      questions: gradeSets.reduce((sum, s) => sum + s.questionCount, 0),
+    };
+  });
+
   function togglePublish(id: string) {
+    // Toggle in localStorage
+    try {
+      const setsData = localStorage.getItem("araharu_daily_sets");
+      if (setsData) {
+        const stored: DailySet[] = JSON.parse(setsData);
+        const idx = stored.findIndex((s) => s.id === id);
+        if (idx >= 0) {
+          stored[idx].is_published = !stored[idx].is_published;
+          localStorage.setItem("araharu_daily_sets", JSON.stringify(stored));
+        }
+      }
+    } catch {
+      // ignore
+    }
     setSets((prev) =>
-      prev.map((s) => (s.id === id ? { ...s, published: !s.published } : s))
+      prev.map((s) => (s.id === id ? { ...s, published: !s.published } : s)),
     );
   }
 
@@ -132,11 +199,11 @@ export default function ContentManagementPage() {
             key={g.grade}
             className={cn(
               "cursor-pointer border shadow-sm transition-all hover:shadow-md",
-              gradeFilter === String(g.grade) && "ring-2 ring-primary"
+              gradeFilter === String(g.grade) && "ring-2 ring-primary",
             )}
             onClick={() =>
               setGradeFilter(
-                gradeFilter === String(g.grade) ? "all" : String(g.grade)
+                gradeFilter === String(g.grade) ? "all" : String(g.grade),
               )
             }
           >
@@ -240,8 +307,18 @@ export default function ContentManagementPage() {
               <div className="py-12 text-center">
                 <FileQuestion className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
-                  조건에 맞는 세트가 없습니다.
+                  {loaded && sets.length === 0
+                    ? "콘텐츠가 아직 없습니다. AI로 생성해 보세요!"
+                    : "조건에 맞는 세트가 없습니다."}
                 </p>
+                {loaded && sets.length === 0 && (
+                  <Button asChild className="mt-4" size="sm">
+                    <Link href="/admin/content/generate">
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      AI로 생성하기
+                    </Link>
+                  </Button>
+                )}
               </div>
             ) : (
               filteredSets.map((set) => (
@@ -252,7 +329,7 @@ export default function ContentManagementPage() {
                   <div className="flex items-center gap-2">
                     <div
                       className={`h-8 w-8 rounded-lg flex items-center justify-center text-xs font-bold ${
-                        gradeColors[set.grade]
+                        gradeColors[set.grade] || ""
                       }`}
                     >
                       {set.grade}-{set.setNumber}
@@ -283,9 +360,12 @@ export default function ContentManagementPage() {
                       variant="secondary"
                       className={cn(
                         "text-xs",
-                        set.difficulty === "쉬움" && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-                        set.difficulty === "보통" && "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
-                        set.difficulty === "어려움" && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                        set.difficulty === "쉬움" &&
+                          "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+                        set.difficulty === "보통" &&
+                          "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+                        set.difficulty === "어려움" &&
+                          "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
                       )}
                     >
                       {set.difficulty}
@@ -299,7 +379,7 @@ export default function ContentManagementPage() {
                         "h-8 text-xs gap-1",
                         set.published
                           ? "text-green-600 hover:text-green-700"
-                          : "text-muted-foreground"
+                          : "text-muted-foreground",
                       )}
                       onClick={() => togglePublish(set.id)}
                     >

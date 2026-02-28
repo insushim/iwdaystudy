@@ -1,18 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { format, subDays } from "date-fns";
-import { ko } from "date-fns/locale";
 import {
   Heart,
   Plus,
   Flame,
   TrendingUp,
-  TrendingDown,
   BookOpen,
   Star,
   UserPlus,
+  UserX,
 } from "lucide-react";
 import {
   Card,
@@ -45,13 +43,34 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useAuthStore } from "@/stores/authStore";
+import { localGetAllUsers } from "@/lib/local-auth";
+import {
+  getLearningRecords,
+  getStreakCount,
+  getTotalPoints,
+  getSubjectStats,
+} from "@/lib/local-storage";
 
-interface Child {
+const SUBJECT_NAMES: Record<string, string> = {
+  math: "수학",
+  korean: "국어",
+  spelling: "맞춤법",
+  vocabulary: "어휘",
+  english: "영어",
+  writing: "글쓰기",
+  general_knowledge: "상식",
+  hanja: "한자",
+  science: "과학",
+  social: "사회",
+};
+
+interface ChildData {
   id: string;
   name: string;
-  grade: number;
-  className: string;
-  school: string;
+  grade: number | null;
+  className: string | null;
+  school: string | null;
   streak: number;
   avgScore: number;
   totalSessions: number;
@@ -62,59 +81,125 @@ interface Child {
   lastActive: string;
 }
 
-const mockChildren: Child[] = [
-  {
-    id: "child1",
-    name: "김아라",
-    grade: 3,
-    className: "1반",
-    school: "아라초등학교",
-    streak: 15,
-    avgScore: 85,
-    totalSessions: 42,
-    totalPoints: 3420,
-    weeklyTrend: [
-      { day: "월", score: 88 },
-      { day: "화", score: 92 },
-      { day: "수", score: 85 },
-      { day: "목", score: 90 },
-      { day: "금", score: 95 },
-      { day: "토", score: 0 },
-      { day: "일", score: 0 },
-    ],
-    bestSubject: "맞춤법",
-    weakSubject: "한자",
-    lastActive: "오늘 08:12",
-  },
-  {
-    id: "child2",
-    name: "김하루",
-    grade: 1,
-    className: "2반",
-    school: "아라초등학교",
-    streak: 5,
-    avgScore: 78,
-    totalSessions: 28,
-    totalPoints: 1250,
-    weeklyTrend: [
-      { day: "월", score: 75 },
-      { day: "화", score: 80 },
-      { day: "수", score: 72 },
-      { day: "목", score: 78 },
-      { day: "금", score: 82 },
-      { day: "토", score: 0 },
-      { day: "일", score: 0 },
-    ],
-    bestSubject: "국어",
-    weakSubject: "수학",
-    lastActive: "어제",
-  },
-];
+function buildChildData(childProfile: {
+  id: string;
+  name: string;
+  grade: number | null;
+  class_name: string | null;
+  school_name: string | null;
+}): ChildData {
+  const records = getLearningRecords(childProfile.id);
+  const completedRecords = records.filter((r) => r.is_completed);
+  const streak = getStreakCount(childProfile.id);
+  const totalPoints = getTotalPoints(childProfile.id);
+  const subjectStatsData = getSubjectStats(childProfile.id);
+
+  const avgScore =
+    completedRecords.length > 0
+      ? Math.round(
+          completedRecords.reduce((sum, r) => {
+            return (
+              sum + (r.max_score > 0 ? (r.total_score / r.max_score) * 100 : 0)
+            );
+          }, 0) / completedRecords.length,
+        )
+      : 0;
+
+  // Weekly trend: last 7 days
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const weeklyTrend: { day: string; score: number }[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0];
+    const dayRecords = completedRecords.filter(
+      (r) => (r.completed_at || r.created_at).split("T")[0] === dateStr,
+    );
+    const dayScore =
+      dayRecords.length > 0
+        ? Math.round(
+            dayRecords.reduce((sum, r) => {
+              return (
+                sum +
+                (r.max_score > 0 ? (r.total_score / r.max_score) * 100 : 0)
+              );
+            }, 0) / dayRecords.length,
+          )
+        : 0;
+    weeklyTrend.push({ day: dayNames[d.getDay()], score: dayScore });
+  }
+
+  // Best and weak subjects
+  const subjectEntries = Object.entries(subjectStatsData).filter(
+    ([, s]) => s.total >= 1,
+  );
+  let bestSubject = "-";
+  let weakSubject = "-";
+  if (subjectEntries.length > 0) {
+    subjectEntries.sort((a, b) => b[1].accuracy - a[1].accuracy);
+    bestSubject = SUBJECT_NAMES[subjectEntries[0][0]] || subjectEntries[0][0];
+    weakSubject =
+      SUBJECT_NAMES[subjectEntries[subjectEntries.length - 1][0]] ||
+      subjectEntries[subjectEntries.length - 1][0];
+  }
+
+  // Last active
+  let lastActive = "기록 없음";
+  if (completedRecords.length > 0) {
+    const sorted = [...completedRecords].sort(
+      (a, b) =>
+        new Date(b.completed_at || b.created_at).getTime() -
+        new Date(a.completed_at || a.created_at).getTime(),
+    );
+    const lastDate = new Date(sorted[0].completed_at || sorted[0].created_at);
+    const today = new Date();
+    const diffDays = Math.floor(
+      (today.getTime() - lastDate.getTime()) / 86400000,
+    );
+    if (diffDays === 0) {
+      lastActive = `오늘 ${String(lastDate.getHours()).padStart(2, "0")}:${String(lastDate.getMinutes()).padStart(2, "0")}`;
+    } else if (diffDays === 1) {
+      lastActive = "어제";
+    } else {
+      lastActive = `${diffDays}일 전`;
+    }
+  }
+
+  return {
+    id: childProfile.id,
+    name: childProfile.name,
+    grade: childProfile.grade,
+    className: childProfile.class_name,
+    school: childProfile.school_name,
+    streak,
+    avgScore,
+    totalSessions: completedRecords.length,
+    totalPoints,
+    weeklyTrend,
+    bestSubject,
+    weakSubject,
+    lastActive,
+  };
+}
 
 export default function ParentChildrenPage() {
+  const { user } = useAuthStore();
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [inviteCode, setInviteCode] = useState("");
   const [email, setEmail] = useState("");
+  const [children, setChildren] = useState<ChildData[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    const allUsers = localGetAllUsers();
+    const childProfiles = allUsers.filter(
+      (u) => u.parent_id === user.id && u.role === "student",
+    );
+    const childData = childProfiles.map((c) => buildChildData(c));
+    setChildren(childData);
+    setLoaded(true);
+  }, [user]);
 
   return (
     <>
@@ -140,9 +225,34 @@ export default function ParentChildrenPage() {
           </Button>
         </motion.div>
 
+        {/* Empty state */}
+        {loaded && children.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Card className="border shadow-sm border-dashed">
+              <CardContent className="py-16">
+                <div className="text-center">
+                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                    <UserX className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">
+                    연결된 자녀가 없습니다
+                  </h3>
+                  <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                    &ldquo;자녀 추가&rdquo; 버튼을 눌러 자녀 계정을 연결해
+                    주세요.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
         {/* Children List */}
         <div className="space-y-6">
-          {mockChildren.map((child, idx) => (
+          {children.map((child, idx) => (
             <motion.div
               key={child.id}
               initial={{ opacity: 0, y: 20 }}
@@ -160,8 +270,13 @@ export default function ParentChildrenPage() {
                     <div className="flex-1">
                       <CardTitle>{child.name}</CardTitle>
                       <CardDescription>
-                        {child.school} | {child.grade}학년 {child.className} |
-                        마지막 활동: {child.lastActive}
+                        {child.school || ""}{" "}
+                        {child.school && (child.grade || child.className)
+                          ? "| "
+                          : ""}
+                        {child.grade ? `${child.grade}학년` : ""}{" "}
+                        {child.className || ""} | 마지막 활동:{" "}
+                        {child.lastActive}
                       </CardDescription>
                     </div>
                     <div className="flex items-center gap-1.5 text-orange-500">
@@ -226,50 +341,56 @@ export default function ParentChildrenPage() {
                   </div>
 
                   {/* Weekly Trend */}
-                  <div>
-                    <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
-                      <TrendingUp className="h-4 w-4 text-primary" />
-                      이번 주 성적
-                    </p>
-                    <ResponsiveContainer width="100%" height={150}>
-                      <LineChart data={child.weeklyTrend}>
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          className="stroke-muted"
-                        />
-                        <XAxis
-                          dataKey="day"
-                          tick={{ fontSize: 11 }}
-                          className="fill-muted-foreground"
-                        />
-                        <YAxis
-                          domain={[0, 100]}
-                          tick={{ fontSize: 11 }}
-                          className="fill-muted-foreground"
-                        />
-                        <Tooltip
-                          contentStyle={{
-                            background: "hsl(var(--card))",
-                            border: "1px solid hsl(var(--border))",
-                            borderRadius: "8px",
-                            fontSize: "12px",
-                          }}
-                          formatter={(value: number) => [
-                            value === 0 ? "미학습" : `${value}점`,
-                            "점수",
-                          ]}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="score"
-                          stroke="#2ECC71"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          connectNulls
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
+                  {child.weeklyTrend.some((d) => d.score > 0) ? (
+                    <div>
+                      <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                        <TrendingUp className="h-4 w-4 text-primary" />
+                        이번 주 성적
+                      </p>
+                      <ResponsiveContainer width="100%" height={150}>
+                        <LineChart data={child.weeklyTrend}>
+                          <CartesianGrid
+                            strokeDasharray="3 3"
+                            className="stroke-muted"
+                          />
+                          <XAxis
+                            dataKey="day"
+                            tick={{ fontSize: 11 }}
+                            className="fill-muted-foreground"
+                          />
+                          <YAxis
+                            domain={[0, 100]}
+                            tick={{ fontSize: 11 }}
+                            className="fill-muted-foreground"
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              background: "hsl(var(--card))",
+                              border: "1px solid hsl(var(--border))",
+                              borderRadius: "8px",
+                              fontSize: "12px",
+                            }}
+                            formatter={(value: number) => [
+                              value === 0 ? "미학습" : `${value}점`,
+                              "점수",
+                            ]}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="score"
+                            stroke="#2ECC71"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            connectNulls
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="text-center py-4 text-sm text-muted-foreground">
+                      이번 주 학습 기록이 없습니다
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>

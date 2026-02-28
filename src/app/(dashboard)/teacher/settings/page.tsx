@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Settings,
@@ -31,14 +31,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function TeacherSettingsPage() {
+  const { user, updateProfile } = useAuthStore();
+
   const [profile, setProfile] = useState({
-    name: "김선생",
-    email: "kim.teacher@school.edu",
-    school: "아라초등학교",
-    phone: "010-1234-5678",
+    name: "",
+    email: "",
+    school: "",
+    phone: "",
   });
+
+  // Initialize from auth store
+  useEffect(() => {
+    if (user) {
+      setProfile({
+        name: user.name || "",
+        email: user.email || "",
+        school: user.school_name || "",
+        phone: "",
+      });
+    }
+  }, [user]);
 
   const [notifications, setNotifications] = useState({
     studentComplete: true,
@@ -64,6 +79,11 @@ export default function TeacherSettingsPage() {
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {
+    updateProfile({
+      name: profile.name,
+      email: profile.email,
+      school_name: profile.school,
+    });
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };

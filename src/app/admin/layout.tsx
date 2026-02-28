@@ -15,6 +15,7 @@ import {
   Shield,
   Menu,
   X,
+  UserCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +41,11 @@ const sidebarLinks = [
     indent: true,
   },
   {
+    href: "/admin/approvals",
+    label: "승인 관리",
+    icon: UserCheck,
+  },
+  {
     href: "/admin/users",
     label: "사용자 관리",
     icon: Users,
@@ -51,7 +57,11 @@ const sidebarLinks = [
   },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
@@ -64,7 +74,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.push("/login");
       return;
     }
-    if (user && user.role !== "teacher") {
+    if (user && user.role !== "admin") {
       router.push("/dashboard");
     }
   }, [isAuthenticated, user, router]);
@@ -98,7 +108,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Admin badge */}
       {!collapsed && (
         <div className="px-4 py-3">
-          <Badge variant="secondary" className="w-full justify-center gap-1.5 py-1.5">
+          <Badge
+            variant="secondary"
+            className="w-full justify-center gap-1.5 py-1.5"
+          >
             <Shield className="h-3.5 w-3.5" />
             관리자 모드
           </Badge>
@@ -117,10 +130,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               link.indent && !collapsed && "ml-6",
               isActive(link.href)
                 ? "bg-primary/10 text-primary"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
           >
-            <link.icon className={cn("shrink-0", collapsed ? "h-5 w-5" : "h-4 w-4")} />
+            <link.icon
+              className={cn("shrink-0", collapsed ? "h-5 w-5" : "h-4 w-4")}
+            />
             {!collapsed && <span>{link.label}</span>}
           </Link>
         ))}
@@ -132,7 +147,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           href="/"
           className={cn(
             "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors",
-            collapsed && "justify-center"
+            collapsed && "justify-center",
           )}
         >
           <LogOut className="h-4 w-4 shrink-0" />
@@ -159,7 +174,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             size="icon"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </Button>
         </div>
       </div>
@@ -176,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside
         className={cn(
           "lg:hidden fixed top-14 left-0 bottom-0 z-40 w-64 bg-background border-r transform transition-transform duration-200",
-          mobileOpen ? "translate-x-0" : "-translate-x-full"
+          mobileOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <div className="flex flex-col h-full pt-2">
@@ -191,7 +210,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   link.indent && "ml-6",
                   isActive(link.href)
                     ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
                 <link.icon className="h-4 w-4 shrink-0" />
@@ -215,7 +234,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside
         className={cn(
           "hidden lg:flex fixed top-0 left-0 bottom-0 z-30 flex-col border-r bg-background transition-all duration-200",
-          collapsed ? "w-16" : "w-60"
+          collapsed ? "w-16" : "w-60",
         )}
       >
         {sidebarContent}
@@ -225,7 +244,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <main
         className={cn(
           "transition-all duration-200 pt-14 lg:pt-0",
-          collapsed ? "lg:ml-16" : "lg:ml-60"
+          collapsed ? "lg:ml-16" : "lg:ml-60",
         )}
       >
         {/* Desktop header */}
