@@ -327,18 +327,20 @@ export function localGetPendingTeacherCount(): number {
 // ---------- Teacher: Bulk Student Creation ----------
 
 export interface BulkCreateResult {
-  name: string;
-  email: string;
+  nickname: string;
+  loginId: string;
   password: string;
 }
 
 /**
- * Bulk create student accounts from a list of names.
- * Returns the created accounts with auto-generated emails and passwords.
+ * Bulk create student accounts by count.
+ * Generates ara01, ara02, ... style login IDs and passwords.
+ * Returns the created accounts.
  */
 export function localBulkCreateStudents(
-  names: string[],
+  count: number,
   options: {
+    prefix: string;
     grade: number;
     semester: number;
     class_name: string;
@@ -348,28 +350,29 @@ export function localBulkCreateStudents(
   const users = getStoredUsers();
   const results: BulkCreateResult[] = [];
   const now = new Date().toISOString();
+  const prefix = options.prefix || "ara";
 
-  for (const name of names) {
-    const trimmedName = name.trim();
-    if (!trimmedName) continue;
+  for (let i = 1; i <= count; i++) {
+    const num = String(i).padStart(2, "0");
+    const loginId = `${prefix}${num}`;
+    const password = loginId; // ID와 비밀번호 동일
+    const email = `${loginId}@class.local`;
+    const nickname = `${i}번`;
 
-    // Generate unique email: student_[random]@class.local
-    const randomSuffix = Math.random().toString(36).substring(2, 8);
-    const email = `student_${randomSuffix}@class.local`;
-    // Generate simple 4-digit password
-    const password = String(Math.floor(1000 + Math.random() * 9000));
+    // Skip if already exists
+    if (users.find((u) => u.email === email)) continue;
 
     const newUser: Profile & { password_hash: string } = {
       id: generateId(),
       email,
-      name: trimmedName,
+      name: nickname,
       role: "student",
       avatar_url: null,
       grade: options.grade,
       semester: options.semester,
       school_name: null,
       class_name: options.class_name,
-      student_number: null,
+      student_number: i,
       parent_id: null,
       teacher_id: options.teacher_id,
       subscription_plan: "free",
@@ -383,7 +386,7 @@ export function localBulkCreateStudents(
     };
 
     users.push(newUser);
-    results.push({ name: trimmedName, email, password });
+    results.push({ nickname, loginId, password });
   }
 
   saveStoredUsers(users);

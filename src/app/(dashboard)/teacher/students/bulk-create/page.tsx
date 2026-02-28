@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -15,7 +14,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -32,9 +30,9 @@ import { GRADES, SEMESTERS } from "@/lib/constants";
 import Link from "next/link";
 
 export default function BulkCreateStudentsPage() {
-  const router = useRouter();
   const { user } = useAuthStore();
-  const [namesText, setNamesText] = useState("");
+  const [studentCount, setStudentCount] = useState("");
+  const [prefix, setPrefix] = useState("ara");
   const [grade, setGrade] = useState("");
   const [semester, setSemester] = useState("");
   const [className, setClassName] = useState("");
@@ -50,33 +48,40 @@ export default function BulkCreateStudentsPage() {
       return;
     }
 
-    const names = namesText
-      .split("\n")
-      .map((n) => n.trim())
-      .filter(Boolean);
+    const count = Number(studentCount);
+    if (!count || count < 1 || count > 99) {
+      setError("학생 수를 1~99 사이로 입력해주세요.");
+      return;
+    }
 
-    if (names.length === 0) {
-      setError("학생 이름을 한 줄에 한 명씩 입력해주세요.");
+    if (!prefix.trim()) {
+      setError("접두어를 입력해주세요.");
       return;
     }
 
     if (!user) return;
 
-    const created = localBulkCreateStudents(names, {
+    const created = localBulkCreateStudents(count, {
+      prefix: prefix.trim().toLowerCase(),
       grade: Number(grade),
       semester: Number(semester),
       class_name: className.trim(),
       teacher_id: user.id,
     });
 
+    if (created.length === 0) {
+      setError("이미 존재하는 계정입니다. 다른 접두어를 사용해주세요.");
+      return;
+    }
+
     setResults(created);
   }
 
   function downloadCSV() {
     if (!results) return;
-    const header = "이름,이메일,비밀번호\n";
+    const header = "닉네임,아이디,비밀번호\n";
     const rows = results
-      .map((r) => `${r.name},${r.email},${r.password}`)
+      .map((r) => `${r.nickname},${r.loginId},${r.password}`)
       .join("\n");
     const csv = header + rows;
     const blob = new Blob(["\uFEFF" + csv], {
@@ -93,12 +98,23 @@ export default function BulkCreateStudentsPage() {
   function copyToClipboard() {
     if (!results) return;
     const text = results
-      .map((r) => `${r.name}\t${r.email}\t${r.password}`)
+      .map((r) => `${r.nickname}\t${r.loginId}\t${r.password}`)
       .join("\n");
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
+
+  // Preview IDs
+  const count = Number(studentCount) || 0;
+  const previewPrefix = prefix.trim().toLowerCase() || "ara";
+  const previewItems =
+    count > 0
+      ? Array.from({ length: Math.min(count, 5) }, (_, i) => {
+          const num = String(i + 1).padStart(2, "0");
+          return `${previewPrefix}${num}`;
+        })
+      : [];
 
   // Already created → show results
   if (results) {
@@ -126,8 +142,8 @@ export default function BulkCreateStudentsPage() {
                 </CardTitle>
               </div>
               <p className="text-sm text-muted-foreground">
-                아래 정보를 학생들에게 배포해주세요. CSV 파일로 다운로드할 수
-                있습니다.
+                아래 정보를 학생들에게 배포해주세요. 아이디와 비밀번호가
+                동일합니다.
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -146,8 +162,8 @@ export default function BulkCreateStudentsPage() {
               {/* Results table */}
               <div className="rounded-lg border overflow-hidden">
                 <div className="grid grid-cols-3 gap-3 px-4 py-2 bg-muted/50 text-xs font-medium text-muted-foreground">
-                  <span>이름</span>
-                  <span>이메일</span>
+                  <span>닉네임</span>
+                  <span>아이디</span>
                   <span>비밀번호</span>
                 </div>
                 <div className="divide-y max-h-96 overflow-y-auto">
@@ -156,10 +172,8 @@ export default function BulkCreateStudentsPage() {
                       key={i}
                       className="grid grid-cols-3 gap-3 px-4 py-2.5 text-sm"
                     >
-                      <span className="font-medium">{r.name}</span>
-                      <span className="text-muted-foreground text-xs break-all">
-                        {r.email}
-                      </span>
+                      <span className="font-medium">{r.nickname}</span>
+                      <span className="font-mono text-xs">{r.loginId}</span>
                       <span className="font-mono text-xs">{r.password}</span>
                     </div>
                   ))}
@@ -171,7 +185,7 @@ export default function BulkCreateStudentsPage() {
                 className="w-full"
                 onClick={() => {
                   setResults(null);
-                  setNamesText("");
+                  setStudentCount("");
                 }}
               >
                 추가 생성하기
@@ -204,7 +218,7 @@ export default function BulkCreateStudentsPage() {
           학생 일괄 생성
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
-          학생 이름을 입력하면 자동으로 이메일과 비밀번호가 생성됩니다
+          인원수를 입력하면 자동으로 계정이 생성됩니다 (아이디 = 비밀번호)
         </p>
       </motion.div>
 
@@ -277,24 +291,67 @@ export default function BulkCreateStudentsPage() {
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
               <Users className="h-4 w-4" />
-              학생 이름 입력
+              계정 설정
             </CardTitle>
-            <p className="text-xs text-muted-foreground">
-              한 줄에 한 명씩 이름을 입력하세요
-            </p>
           </CardHeader>
           <CardContent className="space-y-4">
-            <textarea
-              className="w-full min-h-[200px] rounded-lg border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              placeholder={"김민준\n이서연\n박지호\n최수아\n..."}
-              value={namesText}
-              onChange={(e) => setNamesText(e.target.value)}
-            />
-            <div className="flex items-center justify-between">
-              <Badge variant="secondary">
-                {namesText.split("\n").filter((n) => n.trim()).length}명
-              </Badge>
-              <Button onClick={handleCreate} disabled={!namesText.trim()}>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label>접두어</Label>
+                <Input
+                  placeholder="ara"
+                  value={prefix}
+                  onChange={(e) =>
+                    setPrefix(e.target.value.replace(/[^a-zA-Z]/g, ""))
+                  }
+                  maxLength={10}
+                />
+                <p className="text-xs text-muted-foreground">
+                  영문만 입력 가능
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Label>학생 수</Label>
+                <Input
+                  type="number"
+                  placeholder="예: 30"
+                  min={1}
+                  max={99}
+                  value={studentCount}
+                  onChange={(e) => setStudentCount(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Preview */}
+            {previewItems.length > 0 && (
+              <div className="rounded-lg bg-muted/50 border p-3 space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">
+                  미리보기
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {previewItems.map((id) => (
+                    <span
+                      key={id}
+                      className="inline-flex items-center rounded-md bg-background border px-2.5 py-1 text-xs font-mono"
+                    >
+                      {id}
+                    </span>
+                  ))}
+                  {count > 5 && (
+                    <span className="text-xs text-muted-foreground self-center">
+                      ... 총 {count}명
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  아이디와 비밀번호가 동일하게 생성됩니다
+                </p>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end">
+              <Button onClick={handleCreate} disabled={!studentCount}>
                 <Upload className="h-4 w-4 mr-1" />
                 일괄 생성
               </Button>
