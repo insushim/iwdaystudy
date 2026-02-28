@@ -396,9 +396,14 @@ export function localBulkCreateStudents(
  */
 export function initDemoAccounts(): void {
   if (typeof window === "undefined") return;
-  const users = getStoredUsers();
-  if (users.length > 0) return; // Already has users
 
+  const users = getStoredUsers();
+  const hasAdmin = users.some((u) => u.email === "admin@demo.com");
+  if (hasAdmin) return; // Demo accounts already seeded
+
+  const now = new Date().toISOString();
+
+  // Create demo student/teacher/parent via signup (skips if email already exists)
   const demoAccounts: SignupData[] = [
     {
       email: "student@demo.com",
@@ -442,7 +447,6 @@ export function initDemoAccounts(): void {
   }
 
   // Create admin account directly (not through signup which only accepts student/teacher/parent)
-  const now = new Date().toISOString();
   const adminUser: Profile & { password_hash: string } = {
     id: generateId(),
     email: "admin@demo.com",
@@ -467,10 +471,8 @@ export function initDemoAccounts(): void {
   };
 
   const currentUsers = getStoredUsers();
-  if (!currentUsers.find((u) => u.email === "admin@demo.com")) {
-    currentUsers.push(adminUser);
-    saveStoredUsers(currentUsers);
-  }
+  currentUsers.push(adminUser);
+  saveStoredUsers(currentUsers);
 
   // Auto-approve the demo teacher
   const allUsers = getStoredUsers();
