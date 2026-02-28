@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -64,10 +65,21 @@ interface SidebarProps {
   className?: string;
 }
 
-export function Sidebar({ role, userName = "사용자", className }: SidebarProps) {
+export function Sidebar({
+  role,
+  userName = "사용자",
+  className,
+}: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuthStore();
   const [collapsed, setCollapsed] = useState(false);
   const items = NAV_ITEMS[role];
+
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
 
   const roleLabels: Record<UserRole, string> = {
     student: "학생",
@@ -80,11 +92,16 @@ export function Sidebar({ role, userName = "사용자", className }: SidebarProp
       className={cn(
         "hidden lg:flex flex-col border-r bg-sidebar transition-all duration-300 h-screen sticky top-0",
         collapsed ? "w-[68px]" : "w-[240px]",
-        className
+        className,
       )}
     >
       {/* Logo */}
-      <div className={cn("flex items-center h-16 px-4 border-b", collapsed && "justify-center")}>
+      <div
+        className={cn(
+          "flex items-center h-16 px-4 border-b",
+          collapsed && "justify-center",
+        )}
+      >
         <Link href="/" className="flex items-center gap-2">
           <GraduationCap className="h-7 w-7 text-primary shrink-0" />
           {!collapsed && (
@@ -111,7 +128,8 @@ export function Sidebar({ role, userName = "사용자", className }: SidebarProp
                   className={cn(
                     "w-full justify-start gap-3 h-10",
                     collapsed && "justify-center px-0",
-                    isActive && "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
+                    isActive &&
+                      "bg-sidebar-accent text-sidebar-accent-foreground font-semibold",
                   )}
                 >
                   <item.icon className="h-5 w-5 shrink-0" />
@@ -138,9 +156,11 @@ export function Sidebar({ role, userName = "사용자", className }: SidebarProp
             </Avatar>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium truncate">{userName}</p>
-              <p className="text-xs text-muted-foreground">{roleLabels[role]}</p>
+              <p className="text-xs text-muted-foreground">
+                {roleLabels[role]}
+              </p>
             </div>
-            <Button variant="ghost" size="icon-xs">
+            <Button variant="ghost" size="icon-xs" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
