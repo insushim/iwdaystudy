@@ -20,6 +20,8 @@ import type {
   HanjaEntry,
   EnglishEntry,
 } from "@/types/curriculum";
+import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
+import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
 
 import {
   grade1SpellingData,
@@ -54,6 +56,10 @@ import {
   grade3EnglishData,
   grade3CreativeData,
 } from "@/lib/curriculum/grade3";
+import {
+  grade3KnowledgeDataExtra,
+  grade3SafetyDataExtra,
+} from "@/lib/curriculum/grade3_suffix";
 
 import {
   grade4SpellingData,
@@ -119,14 +125,17 @@ interface GradeData {
   social?: KnowledgeEntry[];
 }
 
-// Get curriculum data per grade
+// Get curriculum data per grade (merges static + procedurally generated)
 function getGradeData(grade: number): GradeData {
+  const dayOfYear = getDayOfYear();
+  const generatedMath = generateMathPool(grade, dayOfYear);
+  const generatedSpelling = generateSpellingPool(grade, dayOfYear);
   switch (grade) {
     case 1:
       return {
-        spelling: grade1SpellingData,
+        spelling: [...grade1SpellingData, ...generatedSpelling],
         vocab: grade1VocabData,
-        math: grade1MathData,
+        math: [...grade1MathData, ...generatedMath],
         knowledge: grade1KnowledgeData,
         safety: grade1SafetyData,
         writing: grade1WritingPrompts,
@@ -135,9 +144,9 @@ function getGradeData(grade: number): GradeData {
       };
     case 2:
       return {
-        spelling: grade2SpellingData,
+        spelling: [...grade2SpellingData, ...generatedSpelling],
         vocab: grade2VocabData,
-        math: grade2MathData,
+        math: [...grade2MathData, ...generatedMath],
         knowledge: grade2KnowledgeData,
         safety: grade2SafetyData,
         writing: grade2WritingPrompts,
@@ -146,11 +155,11 @@ function getGradeData(grade: number): GradeData {
       };
     case 3:
       return {
-        spelling: grade3SpellingData,
+        spelling: [...grade3SpellingData, ...generatedSpelling],
         vocab: grade3VocabData,
-        math: grade3MathData,
-        knowledge: grade3KnowledgeData,
-        safety: grade3SafetyData,
+        math: [...grade3MathData, ...generatedMath],
+        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra],
+        safety: [...grade3SafetyData, ...grade3SafetyDataExtra],
         writing: grade3WritingPrompts,
         hanja: grade3HanjaData,
         english: grade3EnglishData,
@@ -158,9 +167,9 @@ function getGradeData(grade: number): GradeData {
       };
     case 4:
       return {
-        spelling: grade4SpellingData,
+        spelling: [...grade4SpellingData, ...generatedSpelling],
         vocab: grade4VocabData,
-        math: grade4MathData,
+        math: [...grade4MathData, ...generatedMath],
         knowledge: grade4KnowledgeData,
         safety: grade4SafetyData,
         writing: grade4WritingPrompts,
@@ -170,9 +179,9 @@ function getGradeData(grade: number): GradeData {
       };
     case 5:
       return {
-        spelling: grade5SpellingData,
+        spelling: [...grade5SpellingData, ...generatedSpelling],
         vocab: grade5VocabData,
-        math: grade5MathData,
+        math: [...grade5MathData, ...generatedMath],
         knowledge: grade5KnowledgeData,
         safety: grade5SafetyData,
         writing: grade5WritingPrompts,
@@ -184,9 +193,9 @@ function getGradeData(grade: number): GradeData {
       };
     case 6:
       return {
-        spelling: grade6SpellingData,
+        spelling: [...grade6SpellingData, ...generatedSpelling],
         vocab: grade6VocabData,
-        math: grade6MathData,
+        math: [...grade6MathData, ...generatedMath],
         knowledge: grade6KnowledgeData,
         safety: grade6SafetyData,
         writing: grade6WritingPrompts,
@@ -198,9 +207,9 @@ function getGradeData(grade: number): GradeData {
       };
     default:
       return {
-        spelling: grade1SpellingData,
+        spelling: [...grade1SpellingData, ...generatedSpelling],
         vocab: grade1VocabData,
-        math: grade1MathData,
+        math: [...grade1MathData, ...generatedMath],
         knowledge: grade1KnowledgeData,
         safety: grade1SafetyData,
         writing: grade1WritingPrompts,

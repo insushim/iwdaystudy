@@ -72,7 +72,15 @@ export default function RootLayout({
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+        <meta name="apple-mobile-web-app-title" content="아라하루" />
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="format-detection" content="telephone=no" />
+        {/* iOS splash screens */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 375px)"
+        />
       </head>
       <body
         className={`${notoSansKR.variable} ${nanumPen.variable} antialiased`}

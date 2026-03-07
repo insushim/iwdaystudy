@@ -1,15 +1,17 @@
 {
   "name": "아라하루 - 매일 아침학습",
   "short_name": "아라하루",
-  "description": "초등 1~6학년 맞춤 일일학습 프로그램",
+  "description": "초등 1~6학년 맞춤 일일학습 프로그램. 2022 개정 교육과정 기반 매일 30분 아침학습.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "background_color": "#FAFDF7",
   "theme_color": "#2ECC71",
   "orientation": "portrait-primary",
   "categories": ["education", "kids"],
   "lang": "ko",
+  "dir": "ltr",
   "id": "/",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
@@ -19,5 +21,27 @@
     { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
   ],
   "screenshots": [],
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "shortcuts": [
+    {
+      "name": "오늘의 학습",
+      "short_name": "학습 시작",
+      "description": "오늘의 아침학습을 시작합니다",
+      "url": "/student/daily",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "학습 기록",
+      "short_name": "기록",
+      "description": "학습 기록을 확인합니다",
+      "url": "/student/history",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
 }
