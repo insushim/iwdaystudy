@@ -1,16 +1,30 @@
-name: Deploy to Cloudflare Pages
+name: Deploy & Release
 
 on:
   push:
     branches: [master]
+    tags:
+      - 'v*'
   workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      release_notes:
+        description: 'Release notes (optional)'
+        required: false
+        default: ''
 
 jobs:
-  deploy:
+  # === 1. Build Web ===
+  build-web:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
     steps:
       - uses: actions/checkout@v4
 
@@ -18,12 +32,35 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build
         run: npm run build
+
+      - name: Upload web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: out/
+
+  # === 2. Deploy to Cloudflare Pages + D1 ===
+  deploy-web:
+    needs: build-web
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download web build
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: out/
 
       - name: Run D1 Migration
         uses: cloudflare/wrangler-action@v3
@@ -38,4 +75,146 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=araharu
+          command: pages deploy out --project-name=araharu --commit-message="deploy $(date +%Y%m%d-%H%M%S)"
+
+  # === 3. Build APK ===
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build APK
+        working-directory: android
+        run: |
+          gradle wrapper --gradle-version 8.2
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-build
+          path: android/app/build/outputs/apk/release/*.apk
+
+  # === 4. Create GitHub Release ===
+  release:
+    needs: [deploy-web, build-apk]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: apk-build
+          path: dist/
+
+      - name: Determine version
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            # Tag push - use tag version
+            VERSION="${GITHUB_REF#refs/tags/}"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # Manual trigger - bump from latest tag
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            CURRENT="${LATEST_TAG#v}"
+            IFS='.' read -r major minor patch <<< "$CURRENT"
+            BUMP="${{ github.event.inputs.bump_type }}"
+            case "$BUMP" in
+              major) major=$((major + 1)); minor=0; patch=0 ;;
+              minor) minor=$((minor + 1)); patch=0 ;;
+              *) patch=$((patch + 1)) ;;
+            esac
+            VERSION="v${major}.${minor}.${patch}"
+          else
+            # Push to master - auto bump patch
+            LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            CURRENT="${LATEST_TAG#v}"
+            IFS='.' read -r major minor patch <<< "$CURRENT"
+            patch=$((patch + 1))
+            VERSION="v${major}.${minor}.${patch}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_num=${VERSION#v}" >> $GITHUB_OUTPUT
+          echo "Determined version: $VERSION"
+
+      - name: Rename APK
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          mv dist/*.apk "dist/araharu-${VERSION}.apk" 2>/dev/null || true
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          CUSTOM_NOTES="${{ github.event.inputs.release_notes }}"
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -n "$PREV_TAG" ]; then
+            COMMIT_LOG=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s" --no-merges | head -20)
+          else
+            COMMIT_LOG=$(git log --pretty=format:"- %s" --no-merges -10)
+          fi
+
+          # Write to file to avoid escaping issues
+          cat > release_notes.md << 'HEADER'
+          ## 아라하루 ${{ steps.version.outputs.version }}
+          HEADER
+
+          if [ -n "$CUSTOM_NOTES" ]; then
+            echo "" >> release_notes.md
+            echo "$CUSTOM_NOTES" >> release_notes.md
+          fi
+
+          cat >> release_notes.md << 'MIDDLE'
+
+          ### 변경사항
+          MIDDLE
+          echo "$COMMIT_LOG" >> release_notes.md
+
+          cat >> release_notes.md << 'FOOTER'
+
+          ### 설치 방법
+          - **Android**: 아래 APK 파일을 다운로드하여 설치하세요
+          - **iOS**: https://araharu.pages.dev 접속 → 공유 버튼(□↑) → "홈 화면에 추가"
+          - **웹**: https://araharu.pages.dev
+
+          ### 업데이트
+          - Android 앱: 자동으로 업데이트를 감지합니다
+          - iOS/웹: 새로고침 시 자동 업데이트됩니다
+          FOOTER
+
+      - name: Create tag (if not tag push)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: "아라하루 ${{ steps.version.outputs.version }}"
+          body_path: release_notes.md
+          files: dist/*.apk
+          draft: false
+          prerelease: false

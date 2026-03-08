@@ -75,11 +75,47 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="아라하루" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="format-detection" content="telephone=no" />
-        {/* iOS splash screens */}
+        {/* iOS splash screens - various device sizes */}
+        {/* iPhone SE, 8 (375x667) */}
         <link
           rel="apple-touch-startup-image"
           href="/icon-512.png"
-          media="(device-width: 375px)"
+          media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+        />
+        {/* iPhone X, XS, 11 Pro, 12 mini, 13 mini (375x812) */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+        />
+        {/* iPhone XR, 11, 12, 13, 14 (414x896 / 390x844) */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+        />
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)"
+        />
+        {/* iPhone 14 Pro, 15, 16 (393x852) */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)"
+        />
+        {/* iPhone 14 Pro Max, 15 Plus, 16 Plus (430x932) */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3)"
+        />
+        {/* iPad (768x1024) */}
+        <link
+          rel="apple-touch-startup-image"
+          href="/icon-512.png"
+          media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
         />
       </head>
       <body
