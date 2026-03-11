@@ -12,6 +12,13 @@ export function UpdateNotification() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
+    // PC 웹브라우저에서는 새로고침으로 자동 반영 → 업데이트 알림 불필요
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isPWA =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      ('standalone' in navigator && (navigator as Record<string, unknown>).standalone === true);
+    if (!isMobile && !isPWA) return;
+
     const dismissedVersion = localStorage.getItem(DISMISS_KEY);
 
     checkForUpdate().then((info) => {
