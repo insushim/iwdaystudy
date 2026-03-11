@@ -75,10 +75,10 @@ export default function WritingPrompt({ content, onAnswer, showResult, isCorrect
             </div>
             <Button
               onClick={handleSubmit}
-              disabled={!text.trim()}
+              disabled={!meetsMinimum}
               className="rounded-xl font-bold bg-[#2ECC71] hover:bg-[#2ECC71]/90"
             >
-              제출하기
+              {meetsMinimum ? '제출하기' : `${minChars - charCount}자 더 써주세요`}
             </Button>
           </div>
         </motion.div>

@@ -307,13 +307,17 @@ export default function LearningSessionClient() {
             <Button variant="outline" disabled className="rounded-xl">
               모든 문제를 풀어주세요
             </Button>
-          ) : (
+          ) : currentState?.isAnswered ? (
             <Button
               onClick={() => handleNavigate(currentIndex + 1)}
               className="gap-1 rounded-xl"
             >
               다음
               <ChevronRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+              문제를 풀어주세요
             </Button>
           )}
         </div>

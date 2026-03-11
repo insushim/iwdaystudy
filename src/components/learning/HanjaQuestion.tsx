@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, BookOpen } from 'lucide-react';
+import { CheckCircle, XCircle, BookOpen, RotateCcw, Pen } from 'lucide-react';
+
 interface Props {
   content: any;
   answer: any;
@@ -14,9 +15,167 @@ interface Props {
   isCorrect: boolean | null;
 }
 
+/** Drawable canvas for Hanja stroke practice */
+function HanjaCanvas({ character, onDrawComplete }: { character: string; onDrawComplete: () => void }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isDrawing = useRef(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+  const hasDrawn = useRef(false);
+  const [strokeCount, setStrokeCount] = useState(0);
+
+  const getPos = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if ('touches' in e) {
+      const touch = e.touches[0] || e.changedTouches[0];
+      return { x: (touch.clientX - rect.left) * scaleX, y: (touch.clientY - rect.top) * scaleY };
+    }
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+  }, []);
+
+  const drawGuide = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Background
+    ctx.fillStyle = '#FFFAF0';
+    ctx.fillRect(0, 0, w, h);
+
+    // Grid lines (田 pattern)
+    ctx.strokeStyle = '#e8d5b8';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 4]);
+    // Vertical center
+    ctx.beginPath(); ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); ctx.stroke();
+    // Horizontal center
+    ctx.beginPath(); ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2); ctx.stroke();
+    // Diagonals
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(w, h); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w, 0); ctx.lineTo(0, h); ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Ghost character
+    ctx.font = `${w * 0.7}px serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba(139, 69, 19, 0.08)';
+    ctx.fillText(character, w / 2, h / 2 + w * 0.03);
+
+    // Border
+    ctx.strokeStyle = '#c9a96e';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, w - 2, h - 2);
+  }, [character]);
+
+  useEffect(() => {
+    drawGuide();
+  }, [drawGuide]);
+
+  const startDraw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    isDrawing.current = true;
+    hasDrawn.current = true;
+    lastPos.current = getPos(e);
+  }, [getPos]);
+
+  const draw = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    if (!isDrawing.current) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const pos = getPos(e);
+    ctx.strokeStyle = '#1a1a1a';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastPos.current.x, lastPos.current.y);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastPos.current = pos;
+  }, [getPos]);
+
+  const endDraw = useCallback(() => {
+    if (isDrawing.current) {
+      isDrawing.current = false;
+      setStrokeCount(c => c + 1);
+    }
+  }, []);
+
+  const handleClear = useCallback(() => {
+    setStrokeCount(0);
+    hasDrawn.current = false;
+    drawGuide();
+  }, [drawGuide]);
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Pen className="h-3.5 w-3.5" />
+        <span>따라 써 보세요</span>
+        {strokeCount > 0 && (
+          <Badge variant="secondary" className="text-xs ml-1">{strokeCount}획</Badge>
+        )}
+      </div>
+
+      <div className="relative rounded-2xl overflow-hidden shadow-md border-2 border-[#c9a96e]/40">
+        <canvas
+          ref={canvasRef}
+          width={280}
+          height={280}
+          className="touch-none cursor-crosshair"
+          style={{ width: 280, height: 280 }}
+          onMouseDown={startDraw}
+          onMouseMove={draw}
+          onMouseUp={endDraw}
+          onMouseLeave={endDraw}
+          onTouchStart={startDraw}
+          onTouchMove={draw}
+          onTouchEnd={endDraw}
+        />
+      </div>
+
+      <div className="flex gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleClear}
+          className="gap-1 rounded-lg text-xs"
+        >
+          <RotateCcw className="h-3 w-3" />
+          지우기
+        </Button>
+        {strokeCount >= 1 && (
+          <Button
+            size="sm"
+            onClick={onDrawComplete}
+            className="gap-1 rounded-lg text-xs bg-[#8B4513] hover:bg-[#8B4513]/90 text-white"
+          >
+            <CheckCircle className="h-3 w-3" />
+            쓰기 완료
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function HanjaQuestion({ content, answer, onAnswer, showResult, isCorrect }: Props) {
   const correctReading = answer?.reading || answer?.correct || answer?.text || '';
   const [inputValue, setInputValue] = useState('');
+  const [drawDone, setDrawDone] = useState(false);
 
   const handleSubmit = () => {
     if (inputValue.trim()) {
@@ -97,7 +256,21 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
         </motion.div>
       )}
 
-      {/* Practice input */}
+      {/* Hanja writing canvas */}
+      {!showResult && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+        >
+          <HanjaCanvas
+            character={content.character}
+            onDrawComplete={() => setDrawDone(true)}
+          />
+        </motion.div>
+      )}
+
+      {/* Practice input - shows after drawing or as fallback */}
       {!showResult && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -105,6 +278,11 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
           transition={{ delay: 0.5 }}
           className="flex flex-col items-center gap-3 w-full max-w-sm"
         >
+          {!drawDone && (
+            <p className="text-xs text-muted-foreground text-center">
+              위 캔버스에 한자를 따라 쓴 후, 아래에 음(소리)을 입력하세요
+            </p>
+          )}
           <p className="text-sm font-medium text-muted-foreground">
             이 한자의 음(소리)을 입력하세요
           </p>
@@ -116,16 +294,21 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
               onKeyDown={handleKeyDown}
               placeholder="예: 산"
               className="h-14 text-center text-2xl font-bold rounded-xl border-2 border-[#8B4513]/30 focus-visible:border-[#8B4513] focus-visible:ring-[#8B4513]/20"
-              autoFocus
+              autoFocus={drawDone}
             />
             <Button
               onClick={handleSubmit}
-              disabled={!inputValue.trim()}
+              disabled={!inputValue.trim() || !drawDone}
               className="h-14 px-6 rounded-xl text-lg font-bold bg-[#8B4513] hover:bg-[#8B4513]/90 text-white"
             >
               확인
             </Button>
           </div>
+          {!drawDone && inputValue.trim() && (
+            <p className="text-xs text-orange-500 font-medium">
+              먼저 위 캔버스에 한자를 따라 써 주세요
+            </p>
+          )}
         </motion.div>
       )}
 
