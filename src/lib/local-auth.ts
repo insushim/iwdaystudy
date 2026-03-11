@@ -384,6 +384,55 @@ function saveLocalClasses(classes: ClassDataLocal[]): void {
 }
 
 /**
+ * Sync all classes: migrate students by class_name into class_members.
+ * Call this on the class list page to ensure studentCount is correct.
+ */
+export function localSyncAllClassMembers(): void {
+  const classes = getLocalClasses();
+  if (classes.length === 0) return;
+
+  const members = getClassMembers();
+  const allUsers = getStoredUsers();
+  const now = new Date().toISOString();
+  let changed = false;
+
+  for (const cls of classes) {
+    const existingIds = new Set(
+      members.filter((m) => m.class_id === cls.id).map((m) => m.student_id),
+    );
+
+    for (const u of allUsers) {
+      if (
+        u.role === "student" &&
+        u.class_name === cls.name &&
+        !existingIds.has(u.id)
+      ) {
+        members.push({
+          id: generateId(),
+          class_id: cls.id,
+          student_id: u.id,
+          joined_at: now,
+        });
+        existingIds.add(u.id);
+        changed = true;
+      }
+    }
+
+    // Update studentCount
+    const newCount = members.filter((m) => m.class_id === cls.id).length;
+    if (cls.studentCount !== newCount) {
+      cls.studentCount = newCount;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    saveClassMembers(members);
+    saveLocalClasses(classes);
+  }
+}
+
+/**
  * Get students belonging to a specific class.
  * Also auto-migrates students that were created before class_members existed
  * (matched by class_name and teacher_id).

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { localSyncAllClassMembers } from "@/lib/local-auth";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -103,8 +104,9 @@ export default function TeacherClassesPage() {
     semester: "1",
   });
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount, sync class members first
   useEffect(() => {
+    localSyncAllClassMembers();
     setClasses(loadClasses());
   }, []);
 
