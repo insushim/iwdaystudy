@@ -1,0 +1,552 @@
+/**
+ * Procedural Hanja (Chinese Character) Generator
+ * Generates grade-appropriate Korean Hanja learning entries algorithmically.
+ *
+ * Grade 3-4: 급수 8-7급 level (basic characters)
+ * Grade 5-6: 급수 6-5급 level (intermediate characters)
+ * Grades 1-2: Returns empty array (no Hanja curriculum)
+ */
+import type { HanjaEntry } from "@/types/curriculum";
+
+function seededRandom(seed: number) {
+  let s = seed;
+  return () => {
+    s = (s * 9301 + 49297) % 233280;
+    return s / 233280;
+  };
+}
+
+// ─── Base Hanja Data ────────────────────────────────────────────────────────────
+
+interface HanjaData {
+  character: string;
+  reading: string;
+  meaning: string;
+  strokes: number;
+  words: string[];
+  sentence: string;
+}
+
+// Grade 3-4: 급수 8-7급 level basic characters (200+ entries)
+const GRADE_3_4_HANJA: HanjaData[] = [
+  // ── Nature / Elements ──
+  { character: "山", reading: "산", meaning: "뫼 산", strokes: 3, words: ["산맥", "등산", "화산"], sentence: "높은 산에 올라가면 경치가 좋다." },
+  { character: "水", reading: "수", meaning: "물 수", strokes: 4, words: ["수영", "홍수", "수도"], sentence: "깨끗한 물을 마시는 것이 건강에 좋다." },
+  { character: "火", reading: "화", meaning: "불 화", strokes: 4, words: ["화재", "불꽃", "화산"], sentence: "화재가 나면 빨리 대피해야 한다." },
+  { character: "木", reading: "목", meaning: "나무 목", strokes: 4, words: ["목재", "수목", "목공"], sentence: "학교 앞에 큰 나무가 있다." },
+  { character: "金", reading: "금", meaning: "쇠 금", strokes: 8, words: ["금메달", "황금", "금속"], sentence: "금메달을 따기 위해 열심히 연습했다." },
+  { character: "土", reading: "토", meaning: "흙 토", strokes: 3, words: ["토지", "영토", "토양"], sentence: "비옥한 토양에서 채소가 잘 자란다." },
+  { character: "天", reading: "천", meaning: "하늘 천", strokes: 4, words: ["천국", "천재", "천문"], sentence: "맑은 하늘에 별이 가득하다." },
+  { character: "地", reading: "지", meaning: "땅 지", strokes: 6, words: ["지도", "토지", "지구"], sentence: "지도를 보고 길을 찾았다." },
+  { character: "日", reading: "일", meaning: "날 일", strokes: 4, words: ["일요일", "생일", "일출"], sentence: "오늘은 내 생일이다." },
+  { character: "月", reading: "월", meaning: "달 월", strokes: 4, words: ["월요일", "정월", "월급"], sentence: "보름달이 환하게 떠올랐다." },
+  { character: "風", reading: "풍", meaning: "바람 풍", strokes: 9, words: ["태풍", "풍경", "풍속"], sentence: "가을 바람이 시원하게 불었다." },
+  { character: "雲", reading: "운", meaning: "구름 운", strokes: 12, words: ["구름", "운동", "운해"], sentence: "하늘에 흰 구름이 떠다닌다." },
+  { character: "雨", reading: "우", meaning: "비 우", strokes: 8, words: ["우산", "폭우", "우기"], sentence: "비가 오니 우산을 가져가자." },
+  { character: "雪", reading: "설", meaning: "눈 설", strokes: 11, words: ["설경", "폭설", "설산"], sentence: "겨울에 눈이 많이 내렸다." },
+  { character: "花", reading: "화", meaning: "꽃 화", strokes: 8, words: ["화분", "꽃다발", "화원"], sentence: "봄에 예쁜 꽃이 활짝 피었다." },
+  { character: "草", reading: "초", meaning: "풀 초", strokes: 10, words: ["잡초", "초원", "초록"], sentence: "넓은 초원에서 뛰어놀았다." },
+  { character: "石", reading: "석", meaning: "돌 석", strokes: 5, words: ["석탑", "보석", "석유"], sentence: "예쁜 돌을 주워서 모았다." },
+  { character: "川", reading: "천", meaning: "내 천", strokes: 3, words: ["하천", "산천", "천변"], sentence: "맑은 냇물이 흐르고 있다." },
+  { character: "江", reading: "강", meaning: "강 강", strokes: 7, words: ["강변", "한강", "강물"], sentence: "한강에서 유람선을 탔다." },
+  { character: "海", reading: "해", meaning: "바다 해", strokes: 11, words: ["해변", "해수욕", "바다"], sentence: "여름에 바다에서 수영했다." },
+  { character: "林", reading: "림", meaning: "수풀 림", strokes: 8, words: ["산림", "임업", "밀림"], sentence: "산림을 보호해야 한다." },
+  { character: "田", reading: "전", meaning: "밭 전", strokes: 5, words: ["논밭", "전원", "수전"], sentence: "밭에서 배추를 심었다." },
+  { character: "春", reading: "춘", meaning: "봄 춘", strokes: 9, words: ["춘분", "청춘", "봄날"], sentence: "봄이 되면 꽃이 핀다." },
+  { character: "夏", reading: "하", meaning: "여름 하", strokes: 10, words: ["여름", "하계", "하절기"], sentence: "여름에는 날씨가 무척 덥다." },
+  { character: "秋", reading: "추", meaning: "가을 추", strokes: 9, words: ["추석", "추수", "가을"], sentence: "가을에 추수를 한다." },
+  { character: "冬", reading: "동", meaning: "겨울 동", strokes: 5, words: ["동절기", "겨울", "동계"], sentence: "겨울에는 눈이 많이 온다." },
+  // ── People / Body ──
+  { character: "人", reading: "인", meaning: "사람 인", strokes: 2, words: ["인간", "가족", "인구"], sentence: "사람은 서로 도와야 한다." },
+  { character: "大", reading: "대", meaning: "큰 대", strokes: 3, words: ["대학", "거대", "대회"], sentence: "운동장이 매우 크다." },
+  { character: "小", reading: "소", meaning: "작을 소", strokes: 3, words: ["소형", "소년", "소녀"], sentence: "작은 강아지가 귀엽다." },
+  { character: "中", reading: "중", meaning: "가운데 중", strokes: 4, words: ["중심", "중학교", "집중"], sentence: "교실 가운데에 책상이 있다." },
+  { character: "上", reading: "상", meaning: "위 상", strokes: 3, words: ["상위", "이상", "상품"], sentence: "책을 책상 위에 놓았다." },
+  { character: "下", reading: "하", meaning: "아래 하", strokes: 3, words: ["하교", "지하", "이하"], sentence: "계단 아래에서 친구를 기다렸다." },
+  { character: "左", reading: "좌", meaning: "왼 좌", strokes: 5, words: ["좌회전", "좌측", "좌석"], sentence: "길 왼쪽으로 돌아가세요." },
+  { character: "右", reading: "우", meaning: "오른 우", strokes: 5, words: ["우회전", "우측", "좌우"], sentence: "오른쪽에 학교가 보인다." },
+  { character: "男", reading: "남", meaning: "사내 남", strokes: 7, words: ["남자", "남녀", "남학생"], sentence: "남학생들이 축구를 한다." },
+  { character: "女", reading: "여", meaning: "계집 여", strokes: 3, words: ["여자", "남녀", "여학생"], sentence: "여학생들이 줄넘기를 한다." },
+  { character: "子", reading: "자", meaning: "아들 자", strokes: 3, words: ["자녀", "왕자", "아들"], sentence: "아이들이 놀이터에서 놀고 있다." },
+  { character: "母", reading: "모", meaning: "어미 모", strokes: 5, words: ["모자", "어머니", "모국"], sentence: "어머니께서 맛있는 음식을 만드셨다." },
+  { character: "父", reading: "부", meaning: "아비 부", strokes: 4, words: ["부모", "아버지", "부자"], sentence: "아버지와 함께 낚시를 갔다." },
+  { character: "兄", reading: "형", meaning: "형 형", strokes: 5, words: ["형제", "사형", "형님"], sentence: "형이 숙제를 도와주었다." },
+  { character: "弟", reading: "제", meaning: "아우 제", strokes: 7, words: ["형제", "제자", "남동생"], sentence: "동생과 함께 공원에 갔다." },
+  { character: "王", reading: "왕", meaning: "임금 왕", strokes: 4, words: ["왕국", "대왕", "왕자"], sentence: "세종대왕은 한글을 만드셨다." },
+  { character: "民", reading: "민", meaning: "백성 민", strokes: 5, words: ["국민", "시민", "민주"], sentence: "국민 모두가 투표에 참여했다." },
+  { character: "氏", reading: "씨", meaning: "성씨 씨", strokes: 4, words: ["성씨", "김씨", "씨족"], sentence: "한국에서 가장 많은 성씨는 김씨이다." },
+  { character: "友", reading: "우", meaning: "벗 우", strokes: 4, words: ["친구", "우정", "우호"], sentence: "좋은 친구가 있어 행복하다." },
+  { character: "口", reading: "구", meaning: "입 구", strokes: 3, words: ["인구", "입구", "구호"], sentence: "건물 입구에서 만나기로 했다." },
+  { character: "目", reading: "목", meaning: "눈 목", strokes: 5, words: ["목표", "주목", "과목"], sentence: "목표를 세우고 열심히 노력했다." },
+  { character: "耳", reading: "이", meaning: "귀 이", strokes: 6, words: ["이비인후과", "귀걸이", "이명"], sentence: "음악을 귀로 듣는다." },
+  { character: "手", reading: "수", meaning: "손 수", strokes: 4, words: ["수화", "악수", "선수"], sentence: "손을 깨끗이 씻어야 한다." },
+  { character: "足", reading: "족", meaning: "발 족", strokes: 7, words: ["족구", "만족", "부족"], sentence: "운동장에서 족구를 했다." },
+  { character: "心", reading: "심", meaning: "마음 심", strokes: 4, words: ["안심", "중심", "심리"], sentence: "따뜻한 마음을 가져야 한다." },
+  { character: "力", reading: "력", meaning: "힘 력", strokes: 2, words: ["노력", "체력", "능력"], sentence: "노력하면 꿈을 이룰 수 있다." },
+  { character: "生", reading: "생", meaning: "날 생", strokes: 5, words: ["학생", "생활", "탄생"], sentence: "학생들이 열심히 공부한다." },
+  { character: "死", reading: "사", meaning: "죽을 사", strokes: 6, words: ["생사", "사망", "필사"], sentence: "생명을 소중히 여겨야 한다." },
+  // ── School / Education ──
+  { character: "學", reading: "학", meaning: "배울 학", strokes: 16, words: ["학교", "학생", "과학"], sentence: "학교에서 열심히 공부한다." },
+  { character: "校", reading: "교", meaning: "학교 교", strokes: 10, words: ["학교", "교실", "교장"], sentence: "학교에 새 건물이 지어졌다." },
+  { character: "先", reading: "선", meaning: "먼저 선", strokes: 6, words: ["선생님", "선배", "우선"], sentence: "선생님께 인사를 드렸다." },
+  { character: "敎", reading: "교", meaning: "가르칠 교", strokes: 11, words: ["교육", "교사", "종교"], sentence: "교육은 매우 중요하다." },
+  { character: "文", reading: "문", meaning: "글월 문", strokes: 4, words: ["문화", "작문", "문학"], sentence: "문화를 이해하는 것이 중요하다." },
+  { character: "字", reading: "자", meaning: "글자 자", strokes: 6, words: ["글자", "문자", "한자"], sentence: "한자를 바르게 쓰는 연습을 한다." },
+  { character: "書", reading: "서", meaning: "글 서", strokes: 10, words: ["독서", "도서관", "서점"], sentence: "도서관에서 책을 읽었다." },
+  { character: "紙", reading: "지", meaning: "종이 지", strokes: 10, words: ["종이", "신문지", "용지"], sentence: "종이에 그림을 그렸다." },
+  { character: "筆", reading: "필", meaning: "붓 필", strokes: 12, words: ["연필", "붓글씨", "필기"], sentence: "연필로 글씨를 썼다." },
+  { character: "算", reading: "산", meaning: "셀 산", strokes: 14, words: ["계산", "산수", "예산"], sentence: "산수 문제를 열심히 풀었다." },
+  { character: "數", reading: "수", meaning: "셈 수", strokes: 15, words: ["수학", "숫자", "횟수"], sentence: "수학 시험을 잘 봤다." },
+  { character: "言", reading: "언", meaning: "말씀 언", strokes: 7, words: ["언어", "발언", "격언"], sentence: "한국어는 아름다운 언어이다." },
+  { character: "話", reading: "화", meaning: "말씀 화", strokes: 13, words: ["대화", "전화", "동화"], sentence: "친구와 전화로 이야기했다." },
+  { character: "讀", reading: "독", meaning: "읽을 독", strokes: 22, words: ["독서", "독해", "낭독"], sentence: "매일 독서를 하면 좋다." },
+  // ── Numbers ──
+  { character: "一", reading: "일", meaning: "한 일", strokes: 1, words: ["일등", "하나", "통일"], sentence: "달리기에서 일등을 했다." },
+  { character: "二", reading: "이", meaning: "두 이", strokes: 2, words: ["이월", "이중", "제이"], sentence: "이월은 가장 짧은 달이다." },
+  { character: "三", reading: "삼", meaning: "석 삼", strokes: 3, words: ["삼월", "삼각형", "삼국"], sentence: "삼각형은 세 변으로 이루어져 있다." },
+  { character: "四", reading: "사", meaning: "넉 사", strokes: 5, words: ["사계절", "사각형", "사방"], sentence: "우리나라에는 사계절이 있다." },
+  { character: "五", reading: "오", meaning: "다섯 오", strokes: 4, words: ["오월", "오감", "오대양"], sentence: "손가락이 다섯 개이다." },
+  { character: "六", reading: "육", meaning: "여섯 육", strokes: 4, words: ["육월", "육각형", "육대주"], sentence: "육월에 현충일이 있다." },
+  { character: "七", reading: "칠", meaning: "일곱 칠", strokes: 2, words: ["칠월", "칠석", "칠판"], sentence: "칠판에 글씨를 쓴다." },
+  { character: "八", reading: "팔", meaning: "여덟 팔", strokes: 2, words: ["팔월", "팔십", "팔방"], sentence: "팔월에 광복절이 있다." },
+  { character: "九", reading: "구", meaning: "아홉 구", strokes: 2, words: ["구월", "구구단", "구십"], sentence: "구구단을 외워야 한다." },
+  { character: "十", reading: "십", meaning: "열 십", strokes: 2, words: ["십월", "십자가", "이십"], sentence: "시월에 한글날이 있다." },
+  { character: "百", reading: "백", meaning: "일백 백", strokes: 6, words: ["백점", "백화점", "백성"], sentence: "시험에서 백점을 받았다." },
+  { character: "千", reading: "천", meaning: "일천 천", strokes: 3, words: ["천원", "천지", "천년"], sentence: "천원짜리 지폐를 받았다." },
+  { character: "萬", reading: "만", meaning: "일만 만", strokes: 13, words: ["만원", "만세", "만물"], sentence: "대한민국 만세!" },
+  // ── Location / Direction ──
+  { character: "東", reading: "동", meaning: "동녘 동", strokes: 8, words: ["동쪽", "동해", "동물"], sentence: "해는 동쪽에서 뜬다." },
+  { character: "西", reading: "서", meaning: "서녘 서", strokes: 6, words: ["서쪽", "서울", "서양"], sentence: "해는 서쪽으로 진다." },
+  { character: "南", reading: "남", meaning: "남녘 남", strokes: 9, words: ["남쪽", "남산", "남한"], sentence: "남산에 올라가면 서울이 보인다." },
+  { character: "北", reading: "북", meaning: "북녘 북", strokes: 5, words: ["북쪽", "북극", "남북"], sentence: "겨울에 북풍이 세차게 분다." },
+  { character: "內", reading: "내", meaning: "안 내", strokes: 4, words: ["실내", "국내", "이내"], sentence: "실내에서 조용히 하자." },
+  { character: "外", reading: "외", meaning: "바깥 외", strokes: 5, words: ["외국", "실외", "해외"], sentence: "외국에서 온 친구를 환영했다." },
+  { character: "前", reading: "전", meaning: "앞 전", strokes: 9, words: ["이전", "전방", "오전"], sentence: "학교 앞에서 친구를 만났다." },
+  { character: "後", reading: "후", meaning: "뒤 후", strokes: 9, words: ["이후", "후방", "오후"], sentence: "오후에 도서관에 갈 거예요." },
+  { character: "門", reading: "문", meaning: "문 문", strokes: 8, words: ["정문", "대문", "출입문"], sentence: "학교 정문에서 만나자." },
+  { character: "里", reading: "리", meaning: "마을 리", strokes: 7, words: ["마을", "만리", "리장"], sentence: "우리 마을에 새 도서관이 생겼다." },
+  { character: "方", reading: "방", meaning: "모 방", strokes: 4, words: ["방향", "방법", "사방"], sentence: "올바른 방법으로 공부하자." },
+  { character: "道", reading: "도", meaning: "길 도", strokes: 13, words: ["도로", "도덕", "보도"], sentence: "안전하게 길을 건너야 한다." },
+  // ── Country / Government ──
+  { character: "國", reading: "국", meaning: "나라 국", strokes: 11, words: ["국가", "한국", "국민"], sentence: "우리나라 한국을 사랑합니다." },
+  { character: "家", reading: "가", meaning: "집 가", strokes: 10, words: ["가족", "국가", "작가"], sentence: "가족과 함께 여행을 갔다." },
+  { character: "室", reading: "실", meaning: "집 실", strokes: 9, words: ["교실", "실내", "거실"], sentence: "교실을 깨끗이 청소했다." },
+  { character: "正", reading: "정", meaning: "바를 정", strokes: 5, words: ["정답", "바르다", "정의"], sentence: "바른 자세로 앉아야 한다." },
+  { character: "直", reading: "직", meaning: "곧을 직", strokes: 8, words: ["직선", "정직", "직접"], sentence: "정직한 사람이 되어야 한다." },
+  { character: "公", reading: "공", meaning: "공변될 공", strokes: 4, words: ["공원", "공부", "공평"], sentence: "공원에서 산책을 했다." },
+  { character: "立", reading: "립", meaning: "설 립", strokes: 5, words: ["독립", "설립", "국립"], sentence: "우리나라의 독립을 위해 많은 분이 노력하셨다." },
+  { character: "軍", reading: "군", meaning: "군사 군", strokes: 9, words: ["군인", "군대", "장군"], sentence: "군인들이 나라를 지킨다." },
+  { character: "長", reading: "장", meaning: "긴 장", strokes: 8, words: ["장군", "교장", "성장"], sentence: "키가 많이 자라서 기뻤다." },
+  // ── Time ──
+  { character: "年", reading: "년", meaning: "해 년", strokes: 6, words: ["신년", "작년", "올해"], sentence: "새해에는 좋은 일이 많기를 바란다." },
+  { character: "時", reading: "시", meaning: "때 시", strokes: 10, words: ["시간", "시계", "때때로"], sentence: "시계를 보고 시간을 확인했다." },
+  { character: "分", reading: "분", meaning: "나눌 분", strokes: 4, words: ["십분", "분명", "구분"], sentence: "수업이 삼십분 후에 끝난다." },
+  { character: "半", reading: "반", meaning: "반 반", strokes: 5, words: ["반달", "절반", "한반도"], sentence: "케이크를 반으로 나누었다." },
+  { character: "朝", reading: "조", meaning: "아침 조", strokes: 12, words: ["조회", "아침", "조선"], sentence: "아침 일찍 일어나서 운동했다." },
+  { character: "夕", reading: "석", meaning: "저녁 석", strokes: 3, words: ["석양", "조석", "전석"], sentence: "석양이 아름답게 물들었다." },
+  { character: "午", reading: "오", meaning: "낮 오", strokes: 4, words: ["오전", "오후", "정오"], sentence: "정오에 점심을 먹었다." },
+  // ── Colors ──
+  { character: "白", reading: "백", meaning: "흰 백", strokes: 5, words: ["백색", "백지", "고백"], sentence: "흰 눈이 온 세상을 덮었다." },
+  { character: "黑", reading: "흑", meaning: "검을 흑", strokes: 12, words: ["흑백", "흑인", "암흑"], sentence: "흑백 사진이 멋지다." },
+  { character: "靑", reading: "청", meaning: "푸를 청", strokes: 8, words: ["청소년", "청소", "청색"], sentence: "푸른 하늘이 맑다." },
+  { character: "赤", reading: "적", meaning: "붉을 적", strokes: 7, words: ["적색", "적자", "적도"], sentence: "신호등이 빨간색이면 멈춰야 한다." },
+  // ── Actions / Verbs ──
+  { character: "入", reading: "입", meaning: "들 입", strokes: 2, words: ["입학", "입구", "수입"], sentence: "올해 초등학교에 입학했다." },
+  { character: "出", reading: "출", meaning: "날 출", strokes: 5, words: ["출발", "출구", "수출"], sentence: "여행을 떠나기 위해 출발했다." },
+  { character: "行", reading: "행", meaning: "다닐 행", strokes: 6, words: ["여행", "행복", "은행"], sentence: "가족과 여행을 떠났다." },
+  { character: "來", reading: "래", meaning: "올 래", strokes: 8, words: ["미래", "본래", "왕래"], sentence: "미래에 과학자가 되고 싶다." },
+  { character: "去", reading: "거", meaning: "갈 거", strokes: 5, words: ["과거", "거래", "철거"], sentence: "과거를 돌아보면 많이 성장했다." },
+  { character: "見", reading: "견", meaning: "볼 견", strokes: 7, words: ["의견", "발견", "견학"], sentence: "새로운 사실을 발견했다." },
+  { character: "聞", reading: "문", meaning: "들을 문", strokes: 14, words: ["신문", "소문", "견문"], sentence: "신문을 읽고 세상 소식을 알았다." },
+  { character: "食", reading: "식", meaning: "먹을 식", strokes: 9, words: ["식사", "음식", "식당"], sentence: "맛있는 음식을 먹었다." },
+  { character: "飮", reading: "음", meaning: "마실 음", strokes: 13, words: ["음료", "음식", "음수"], sentence: "시원한 음료를 마셨다." },
+  { character: "立", reading: "립", meaning: "설 립", strokes: 5, words: ["독립", "기립", "설립"], sentence: "국기에 대한 경례 때 기립했다." },
+  { character: "坐", reading: "좌", meaning: "앉을 좌", strokes: 7, words: ["좌석", "좌선", "정좌"], sentence: "의자에 바르게 앉았다." },
+  { character: "走", reading: "주", meaning: "달릴 주", strokes: 7, words: ["주행", "경주", "주로"], sentence: "운동장을 힘차게 달렸다." },
+  { character: "飛", reading: "비", meaning: "날 비", strokes: 9, words: ["비행기", "비행", "날다"], sentence: "비행기를 타고 제주도에 갔다." },
+  { character: "開", reading: "개", meaning: "열 개", strokes: 12, words: ["개학", "공개", "개방"], sentence: "내일 학교가 개학한다." },
+  { character: "閉", reading: "폐", meaning: "닫을 폐", strokes: 11, words: ["폐쇄", "개폐", "폐문"], sentence: "문을 닫고 나왔다." },
+  { character: "使", reading: "사", meaning: "부릴 사", strokes: 8, words: ["사용", "대사", "천사"], sentence: "연필을 사용하여 글을 썼다." },
+  { character: "作", reading: "작", meaning: "지을 작", strokes: 7, words: ["작품", "제작", "작문"], sentence: "미술 시간에 작품을 만들었다." },
+  { character: "動", reading: "동", meaning: "움직일 동", strokes: 11, words: ["운동", "동물", "활동"], sentence: "매일 운동을 하면 건강해진다." },
+  { character: "住", reading: "주", meaning: "살 주", strokes: 7, words: ["주소", "거주", "주민"], sentence: "우리 가족은 서울에 산다." },
+  { character: "休", reading: "휴", meaning: "쉴 휴", strokes: 6, words: ["휴일", "휴식", "휴가"], sentence: "휴일에 가족과 놀러 갔다." },
+  { character: "工", reading: "공", meaning: "장인 공", strokes: 3, words: ["공장", "공사", "인공"], sentence: "공장에서 물건을 만든다." },
+  // ── Nature / Animals ──
+  { character: "犬", reading: "견", meaning: "개 견", strokes: 4, words: ["애견", "견주", "맹견"], sentence: "우리 집 강아지는 귀엽다." },
+  { character: "馬", reading: "마", meaning: "말 마", strokes: 10, words: ["경마", "마차", "마을"], sentence: "말을 타고 초원을 달렸다." },
+  { character: "牛", reading: "우", meaning: "소 우", strokes: 4, words: ["한우", "우유", "소"], sentence: "아침마다 우유를 마신다." },
+  { character: "羊", reading: "양", meaning: "양 양", strokes: 6, words: ["양", "목양", "양모"], sentence: "목장에서 양을 보았다." },
+  { character: "鳥", reading: "조", meaning: "새 조", strokes: 11, words: ["조류", "야조", "철새"], sentence: "나뭇가지 위에 새가 앉아 있다." },
+  { character: "魚", reading: "어", meaning: "물고기 어", strokes: 11, words: ["어류", "금어", "어업"], sentence: "바다에서 물고기를 잡았다." },
+  { character: "蟲", reading: "충", meaning: "벌레 충", strokes: 18, words: ["곤충", "해충", "벌레"], sentence: "정원에서 여러 곤충을 관찰했다." },
+  // ── Adjectives / States ──
+  { character: "新", reading: "신", meaning: "새 신", strokes: 13, words: ["신발", "신문", "혁신"], sentence: "새 신발을 사서 기분이 좋다." },
+  { character: "古", reading: "고", meaning: "예 고", strokes: 5, words: ["고대", "고궁", "고전"], sentence: "경복궁은 오래된 고궁이다." },
+  { character: "多", reading: "다", meaning: "많을 다", strokes: 6, words: ["다수", "다양", "다량"], sentence: "과일을 많이 먹으면 건강해진다." },
+  { character: "少", reading: "소", meaning: "적을 소", strokes: 4, words: ["소수", "소년", "감소"], sentence: "소년이 공원에서 놀고 있다." },
+  { character: "高", reading: "고", meaning: "높을 고", strokes: 10, words: ["고층", "최고", "고등"], sentence: "산이 매우 높다." },
+  { character: "低", reading: "저", meaning: "낮을 저", strokes: 7, words: ["저녁", "저지대", "최저"], sentence: "오늘 기온이 매우 낮다." },
+  { character: "明", reading: "명", meaning: "밝을 명", strokes: 8, words: ["설명", "발명", "명랑"], sentence: "방 안이 환하게 밝다." },
+  { character: "暗", reading: "암", meaning: "어두울 암", strokes: 13, words: ["암흑", "어둠", "암기"], sentence: "밤이 되면 밖이 어둡다." },
+  { character: "强", reading: "강", meaning: "강할 강", strokes: 11, words: ["강력", "강화", "강풍"], sentence: "강한 바람이 불고 있다." },
+  { character: "弱", reading: "약", meaning: "약할 약", strokes: 10, words: ["약점", "약자", "허약"], sentence: "약한 사람을 도와주어야 한다." },
+  { character: "老", reading: "로", meaning: "늙을 로", strokes: 6, words: ["노인", "양로원", "원로"], sentence: "노인을 공경해야 한다." },
+  { character: "幼", reading: "유", meaning: "어릴 유", strokes: 5, words: ["유치원", "유아", "유년"], sentence: "유치원에 다니는 동생이 있다." },
+  { character: "長", reading: "장", meaning: "길 장", strokes: 8, words: ["장기", "성장", "장래"], sentence: "뱀의 몸이 길다." },
+  { character: "短", reading: "단", meaning: "짧을 단", strokes: 12, words: ["단기", "단축", "단편"], sentence: "짧은 시간에 많은 것을 배웠다." },
+  { character: "重", reading: "중", meaning: "무거울 중", strokes: 9, words: ["체중", "중요", "중력"], sentence: "건강 관리가 매우 중요하다." },
+  { character: "輕", reading: "경", meaning: "가벼울 경", strokes: 14, words: ["경쾌", "가벼움", "경량"], sentence: "새 가방이 매우 가볍다." },
+  { character: "善", reading: "선", meaning: "착할 선", strokes: 12, words: ["선행", "친선", "선량"], sentence: "착한 일을 하면 기분이 좋다." },
+  { character: "惡", reading: "악", meaning: "악할 악", strokes: 12, words: ["악인", "선악", "악행"], sentence: "나쁜 행동을 하면 안 된다." },
+  { character: "美", reading: "미", meaning: "아름다울 미", strokes: 9, words: ["미술", "미인", "아름다움"], sentence: "미술 시간에 그림을 그렸다." },
+  { character: "安", reading: "안", meaning: "편안할 안", strokes: 6, words: ["안전", "안심", "안녕"], sentence: "안전하게 횡단보도를 건너자." },
+  { character: "平", reading: "평", meaning: "평평할 평", strokes: 5, words: ["평화", "평등", "수평"], sentence: "평화로운 세상을 만들자." },
+  { character: "同", reading: "동", meaning: "같을 동", strokes: 6, words: ["동시", "같은", "공동"], sentence: "같은 반 친구들과 사이좋게 지낸다." },
+  { character: "每", reading: "매", meaning: "매양 매", strokes: 7, words: ["매일", "매주", "매월"], sentence: "매일 아침 운동을 한다." },
+  { character: "全", reading: "전", meaning: "온전할 전", strokes: 6, words: ["전부", "안전", "전교"], sentence: "전교생이 운동장에 모였다." },
+  { character: "空", reading: "공", meaning: "빌 공", strokes: 8, words: ["공기", "하늘", "공간"], sentence: "맑은 공기를 마시며 산책했다." },
+  { character: "氣", reading: "기", meaning: "기운 기", strokes: 10, words: ["기분", "공기", "날씨"], sentence: "기분이 좋아서 노래를 불렀다." },
+  // ── Objects / Daily Life ──
+  { character: "車", reading: "차", meaning: "수레 차", strokes: 7, words: ["자동차", "기차", "자전거"], sentence: "자동차를 타고 학교에 갔다." },
+  { character: "船", reading: "선", meaning: "배 선", strokes: 11, words: ["유람선", "선박", "배"], sentence: "배를 타고 섬에 갔다." },
+  { character: "食", reading: "식", meaning: "밥 식", strokes: 9, words: ["식사", "식탁", "간식"], sentence: "온 가족이 식탁에 둘러앉아 밥을 먹었다." },
+  { character: "衣", reading: "의", meaning: "옷 의", strokes: 6, words: ["의복", "의류", "한의"], sentence: "깨끗한 옷을 입고 학교에 갔다." },
+  { character: "色", reading: "색", meaning: "빛 색", strokes: 6, words: ["색깔", "적색", "청색"], sentence: "무지개에는 일곱 가지 색깔이 있다." },
+  { character: "音", reading: "음", meaning: "소리 음", strokes: 9, words: ["음악", "발음", "소음"], sentence: "음악을 들으며 공부했다." },
+  { character: "樂", reading: "악", meaning: "풍류 악", strokes: 15, words: ["음악", "즐거움", "낙원"], sentence: "음악 시간이 가장 즐겁다." },
+  { character: "電", reading: "전", meaning: "번개 전", strokes: 13, words: ["전기", "전화", "전자"], sentence: "전기를 아껴 써야 한다." },
+  { character: "鐵", reading: "철", meaning: "쇠 철", strokes: 21, words: ["지하철", "철도", "철분"], sentence: "지하철을 타고 출발했다." },
+  // ── Moral / Abstract ──
+  { character: "孝", reading: "효", meaning: "효도 효", strokes: 7, words: ["효도", "효자", "효녀"], sentence: "부모님께 효도해야 한다." },
+  { character: "忠", reading: "충", meaning: "충성 충", strokes: 8, words: ["충성", "충실", "충고"], sentence: "나라에 충성하는 마음을 가지자." },
+  { character: "信", reading: "신", meaning: "믿을 신", strokes: 9, words: ["신뢰", "자신", "통신"], sentence: "약속을 잘 지켜야 신뢰를 받는다." },
+  { character: "義", reading: "의", meaning: "옳을 의", strokes: 13, words: ["정의", "의미", "의리"], sentence: "정의로운 사람이 되자." },
+  { character: "禮", reading: "례", meaning: "예도 례", strokes: 18, words: ["예절", "인사", "예의"], sentence: "어른께 예의 바르게 인사해야 한다." },
+  { character: "德", reading: "덕", meaning: "큰 덕", strokes: 15, words: ["도덕", "덕분", "미덕"], sentence: "도덕 시간에 바른 행동을 배웠다." },
+  { character: "愛", reading: "애", meaning: "사랑 애", strokes: 13, words: ["사랑", "애정", "애국"], sentence: "가족을 사랑하는 마음이 중요하다." },
+  { character: "思", reading: "사", meaning: "생각 사", strokes: 9, words: ["사고", "사상", "의사"], sentence: "깊이 생각하고 행동하자." },
+  { character: "望", reading: "망", meaning: "바랄 망", strokes: 11, words: ["희망", "소망", "전망"], sentence: "미래에 대한 희망을 가지자." },
+  { character: "情", reading: "정", meaning: "뜻 정", strokes: 11, words: ["감정", "우정", "사정"], sentence: "친구와의 우정은 소중하다." },
+  { character: "意", reading: "의", meaning: "뜻 의", strokes: 13, words: ["의미", "주의", "동의"], sentence: "선생님 말씀에 주의를 기울였다." },
+  { character: "志", reading: "지", meaning: "뜻 지", strokes: 7, words: ["의지", "뜻", "지원"], sentence: "굳은 의지로 목표를 이루었다." },
+  { character: "勇", reading: "용", meaning: "날랠 용", strokes: 9, words: ["용기", "용감", "용사"], sentence: "용기를 내어 발표했다." },
+  { character: "知", reading: "지", meaning: "알 지", strokes: 8, words: ["지식", "알다", "인지"], sentence: "많이 읽으면 지식이 늘어난다." },
+  { character: "樂", reading: "락", meaning: "즐길 락", strokes: 15, words: ["즐거움", "오락", "쾌락"], sentence: "친구들과 함께 하면 즐겁다." },
+  { character: "命", reading: "명", meaning: "목숨 명", strokes: 8, words: ["생명", "운명", "명령"], sentence: "모든 생명은 소중하다." },
+  // ── Additional basic characters ──
+  { character: "名", reading: "명", meaning: "이름 명", strokes: 6, words: ["이름", "유명", "명단"], sentence: "친구의 이름을 불렀다." },
+  { character: "世", reading: "세", meaning: "인간 세", strokes: 5, words: ["세상", "세계", "세기"], sentence: "넓은 세상을 탐험하고 싶다." },
+  { character: "界", reading: "계", meaning: "지경 계", strokes: 9, words: ["세계", "경계", "학계"], sentence: "세계 여러 나라에 대해 배웠다." },
+  { character: "身", reading: "신", meaning: "몸 신", strokes: 7, words: ["신체", "몸", "출신"], sentence: "건강한 몸을 위해 운동하자." },
+  { character: "體", reading: "체", meaning: "몸 체", strokes: 23, words: ["신체", "체육", "체력"], sentence: "체육 시간에 달리기를 했다." },
+  { character: "育", reading: "육", meaning: "기를 육", strokes: 8, words: ["교육", "체육", "육아"], sentence: "교육은 나라의 미래이다." },
+  { character: "自", reading: "자", meaning: "스스로 자", strokes: 6, words: ["자기", "자연", "자유"], sentence: "자연을 보호해야 한다." },
+  { character: "然", reading: "연", meaning: "그럴 연", strokes: 12, words: ["자연", "당연", "천연"], sentence: "자연 속에서 마음이 편해진다." },
+  { character: "物", reading: "물", meaning: "만물 물", strokes: 8, words: ["동물", "식물", "물건"], sentence: "동물원에서 여러 동물을 보았다." },
+  { character: "事", reading: "사", meaning: "일 사", strokes: 8, words: ["사건", "일", "무사"], sentence: "좋은 일이 많이 생기길 바란다." },
+  { character: "永", reading: "영", meaning: "길 영", strokes: 5, words: ["영원", "영구", "영생"], sentence: "우리의 우정은 영원하다." },
+  { character: "有", reading: "유", meaning: "있을 유", strokes: 6, words: ["유명", "소유", "유무"], sentence: "정원에 예쁜 꽃이 있다." },
+  { character: "無", reading: "무", meaning: "없을 무", strokes: 12, words: ["무한", "무료", "무사"], sentence: "끝없는 가능성을 믿자." },
+  { character: "不", reading: "불", meaning: "아닐 불", strokes: 4, words: ["불가", "불행", "불안"], sentence: "포기하지 않으면 성공할 수 있다." },
+  { character: "可", reading: "가", meaning: "옳을 가", strokes: 5, words: ["가능", "허가", "가치"], sentence: "무엇이든 가능하다고 믿자." },
+  { character: "必", reading: "필", meaning: "반드시 필", strokes: 5, words: ["필요", "필수", "필승"], sentence: "공부에는 노력이 반드시 필요하다." },
+  { character: "要", reading: "요", meaning: "구할 요", strokes: 9, words: ["필요", "중요", "요청"], sentence: "건강이 가장 중요하다." },
+  { character: "初", reading: "초", meaning: "처음 초", strokes: 7, words: ["초등", "최초", "초보"], sentence: "초등학교에 처음 입학한 날이 기억난다." },
+  { character: "終", reading: "종", meaning: "마칠 종", strokes: 11, words: ["종료", "최종", "임종"], sentence: "수업이 끝나고 집에 갔다." },
+  { character: "始", reading: "시", meaning: "비로소 시", strokes: 8, words: ["시작", "시초", "개시"], sentence: "새 학기가 시작되었다." },
+  { character: "末", reading: "말", meaning: "끝 말", strokes: 5, words: ["주말", "기말", "말기"], sentence: "주말에 가족과 소풍을 갔다." },
+  { character: "回", reading: "회", meaning: "돌 회", strokes: 6, words: ["회전", "회의", "회상"], sentence: "놀이기구가 빙글빙글 돌아간다." },
+  { character: "近", reading: "근", meaning: "가까울 근", strokes: 8, words: ["근처", "최근", "접근"], sentence: "학교가 집에서 가깝다." },
+  { character: "遠", reading: "원", meaning: "멀 원", strokes: 14, words: ["원거리", "영원", "소원"], sentence: "할머니 댁은 멀리 있다." },
+  { character: "速", reading: "속", meaning: "빠를 속", strokes: 11, words: ["속도", "고속", "가속"], sentence: "자동차가 빠른 속도로 달린다." },
+  { character: "完", reading: "완", meaning: "완전할 완", strokes: 7, words: ["완성", "완전", "완료"], sentence: "숙제를 완성해서 뿌듯하다." },
+  { character: "成", reading: "성", meaning: "이룰 성", strokes: 7, words: ["성공", "완성", "성장"], sentence: "꿈을 이루기 위해 노력하자." },
+  { character: "功", reading: "공", meaning: "공 공", strokes: 5, words: ["성공", "공부", "공로"], sentence: "열심히 노력하면 성공할 수 있다." },
+  { character: "業", reading: "업", meaning: "업 업", strokes: 13, words: ["직업", "수업", "졸업"], sentence: "수업 시간에 집중하자." },
+];
+
+// Grade 5-6: 급수 6-5급 level intermediate characters (200+ entries)
+const GRADE_5_6_HANJA: HanjaData[] = [
+  // ── Government / Society ──
+  { character: "政", reading: "정", meaning: "정사 정", strokes: 8, words: ["정치", "행정", "정부"], sentence: "민주주의에서 정치 참여는 중요하다." },
+  { character: "法", reading: "법", meaning: "법 법", strokes: 9, words: ["법률", "방법", "합법"], sentence: "법을 지키는 것은 시민의 의무이다." },
+  { character: "制", reading: "제", meaning: "지을 제", strokes: 8, words: ["제도", "제한", "규제"], sentence: "새로운 제도가 시행되었다." },
+  { character: "經", reading: "경", meaning: "지날 경", strokes: 13, words: ["경제", "경험", "경영"], sentence: "경제 활동은 생활의 기본이다." },
+  { character: "濟", reading: "제", meaning: "건널 제", strokes: 18, words: ["경제", "구제", "제주"], sentence: "어려운 이웃을 구제하는 것이 중요하다." },
+  { character: "社", reading: "사", meaning: "모일 사", strokes: 8, words: ["사회", "회사", "신사"], sentence: "사회 시간에 역사를 배웠다." },
+  { character: "會", reading: "회", meaning: "모일 회", strokes: 13, words: ["사회", "회의", "국회"], sentence: "학급 회의에서 의견을 나누었다." },
+  { character: "議", reading: "의", meaning: "의논할 의", strokes: 20, words: ["회의", "의논", "국회의원"], sentence: "중요한 문제를 의논하여 결정했다." },
+  { character: "員", reading: "원", meaning: "인원 원", strokes: 10, words: ["회원", "직원", "위원"], sentence: "도서관 회원에 가입했다." },
+  { character: "官", reading: "관", meaning: "벼슬 관", strokes: 8, words: ["관리", "기관", "관청"], sentence: "공공 기관에서 일하는 관리가 되고 싶다." },
+  { character: "選", reading: "선", meaning: "가릴 선", strokes: 15, words: ["선거", "선택", "당선"], sentence: "반장 선거에 출마했다." },
+  { character: "代", reading: "대", meaning: "대신할 대", strokes: 5, words: ["시대", "대표", "교대"], sentence: "새로운 시대가 열리고 있다." },
+  { character: "表", reading: "표", meaning: "겉 표", strokes: 8, words: ["대표", "발표", "표현"], sentence: "수업 시간에 발표를 잘 했다." },
+  { character: "現", reading: "현", meaning: "나타날 현", strokes: 12, words: ["현재", "표현", "발현"], sentence: "현재 하는 일에 최선을 다하자." },
+  { character: "實", reading: "실", meaning: "열매 실", strokes: 14, words: ["실제", "사실", "현실"], sentence: "사실을 정확히 말해야 한다." },
+  { character: "際", reading: "제", meaning: "사이 제", strokes: 14, words: ["국제", "실제", "교제"], sentence: "국제 교류가 활발해지고 있다." },
+  { character: "交", reading: "교", meaning: "사귈 교", strokes: 6, words: ["교통", "교류", "외교"], sentence: "교통 규칙을 잘 지켜야 한다." },
+  { character: "通", reading: "통", meaning: "통할 통", strokes: 11, words: ["교통", "통신", "소통"], sentence: "원활한 소통이 중요하다." },
+  { character: "報", reading: "보", meaning: "갚을 보", strokes: 12, words: ["보고", "신문", "보도"], sentence: "뉴스를 보고 세상 소식을 알았다." },
+  { character: "告", reading: "고", meaning: "알릴 고", strokes: 7, words: ["광고", "보고", "고발"], sentence: "선생님께 결과를 보고했다." },
+  // ── Science / Technology ──
+  { character: "科", reading: "과", meaning: "과목 과", strokes: 9, words: ["과학", "과목", "교과서"], sentence: "과학 실험이 재미있었다." },
+  { character: "技", reading: "기", meaning: "재주 기", strokes: 8, words: ["기술", "기능", "특기"], sentence: "새로운 기술을 배우는 것이 즐겁다." },
+  { character: "術", reading: "술", meaning: "재주 술", strokes: 11, words: ["기술", "미술", "예술"], sentence: "예술 작품을 감상했다." },
+  { character: "械", reading: "계", meaning: "기계 계", strokes: 11, words: ["기계", "무기", "계기"], sentence: "기계가 물건을 만든다." },
+  { character: "器", reading: "기", meaning: "그릇 기", strokes: 16, words: ["악기", "기구", "용기"], sentence: "여러 가지 악기를 연주했다." },
+  { character: "原", reading: "원", meaning: "근원 원", strokes: 10, words: ["원래", "원인", "평원"], sentence: "문제의 원인을 찾아야 한다." },
+  { character: "因", reading: "인", meaning: "인할 인", strokes: 6, words: ["원인", "인과", "요인"], sentence: "사고의 원인을 조사했다." },
+  { character: "果", reading: "과", meaning: "열매 과", strokes: 8, words: ["결과", "과일", "효과"], sentence: "노력한 결과 좋은 성적을 받았다." },
+  { character: "結", reading: "결", meaning: "맺을 결", strokes: 12, words: ["결과", "결정", "결심"], sentence: "열심히 공부하기로 결심했다." },
+  { character: "定", reading: "정", meaning: "정할 정", strokes: 8, words: ["결정", "안정", "확정"], sentence: "여행 계획을 결정했다." },
+  { character: "計", reading: "계", meaning: "셀 계", strokes: 9, words: ["계획", "계산", "설계"], sentence: "방학 계획을 세웠다." },
+  { character: "畫", reading: "화", meaning: "그을 화", strokes: 12, words: ["계획", "그림", "영화"], sentence: "영화를 보고 감상문을 썼다." },
+  { character: "圖", reading: "도", meaning: "그림 도", strokes: 14, words: ["지도", "도서관", "설계도"], sentence: "도서관에서 책을 빌렸다." },
+  { character: "形", reading: "형", meaning: "모양 형", strokes: 7, words: ["삼각형", "형태", "지형"], sentence: "여러 가지 도형을 그렸다." },
+  { character: "量", reading: "량", meaning: "헤아릴 량", strokes: 12, words: ["양", "분량", "측량"], sentence: "물의 양을 정확히 측정했다." },
+  { character: "測", reading: "측", meaning: "헤아릴 측", strokes: 13, words: ["측정", "관측", "예측"], sentence: "온도를 측정했다." },
+  { character: "驗", reading: "험", meaning: "시험할 험", strokes: 23, words: ["실험", "경험", "시험"], sentence: "과학 실험을 통해 원리를 배웠다." },
+  { character: "究", reading: "구", meaning: "궁구할 구", strokes: 7, words: ["연구", "탐구", "궁구"], sentence: "과학자는 새로운 것을 연구한다." },
+  { character: "硏", reading: "연", meaning: "갈 연", strokes: 11, words: ["연구", "연습", "연마"], sentence: "연구를 통해 새로운 사실을 발견했다." },
+  { character: "發", reading: "발", meaning: "필 발", strokes: 12, words: ["발전", "발견", "출발"], sentence: "과학 기술이 빠르게 발전하고 있다." },
+  // ── Culture / Education ──
+  { character: "歷", reading: "력", meaning: "지날 력", strokes: 16, words: ["역사", "경력", "이력"], sentence: "역사에서 교훈을 배운다." },
+  { character: "史", reading: "사", meaning: "사기 사", strokes: 5, words: ["역사", "사건", "사료"], sentence: "한국 역사를 공부했다." },
+  { character: "傳", reading: "전", meaning: "전할 전", strokes: 13, words: ["전통", "전설", "유전"], sentence: "우리의 전통 문화를 지켜야 한다." },
+  { character: "統", reading: "통", meaning: "거느릴 통", strokes: 12, words: ["전통", "통일", "대통령"], sentence: "남북통일을 소망한다." },
+  { character: "化", reading: "화", meaning: "될 화", strokes: 4, words: ["문화", "변화", "진화"], sentence: "문화가 다양하게 발전하고 있다." },
+  { character: "格", reading: "격", meaning: "격식 격", strokes: 10, words: ["성격", "자격", "가격"], sentence: "그 학생은 밝은 성격을 가졌다." },
+  { character: "性", reading: "성", meaning: "성품 성", strokes: 9, words: ["성격", "성질", "특성"], sentence: "좋은 성품을 기르자." },
+  { character: "才", reading: "재", meaning: "재주 재", strokes: 3, words: ["재능", "천재", "인재"], sentence: "재능을 발견하고 키워나가자." },
+  { character: "能", reading: "능", meaning: "능할 능", strokes: 10, words: ["능력", "가능", "기능"], sentence: "능력을 키우기 위해 노력한다." },
+  { character: "容", reading: "용", meaning: "얼굴 용", strokes: 10, words: ["내용", "용기", "포용"], sentence: "책의 내용이 재미있다." },
+  { character: "態", reading: "태", meaning: "모양 태", strokes: 14, words: ["태도", "상태", "자태"], sentence: "바른 태도로 수업에 참여하자." },
+  { character: "度", reading: "도", meaning: "법도 도", strokes: 9, words: ["온도", "태도", "정도"], sentence: "오늘 기온이 삼십 도이다." },
+  { character: "習", reading: "습", meaning: "익힐 습", strokes: 11, words: ["학습", "연습", "습관"], sentence: "좋은 습관을 기르자." },
+  { character: "練", reading: "련", meaning: "익힐 련", strokes: 15, words: ["연습", "훈련", "숙련"], sentence: "피아노 연습을 매일 했다." },
+  { character: "試", reading: "시", meaning: "시험할 시", strokes: 13, words: ["시험", "시도", "시합"], sentence: "시험을 잘 보기 위해 열심히 공부했다." },
+  { character: "問", reading: "문", meaning: "물을 문", strokes: 11, words: ["질문", "문제", "방문"], sentence: "궁금한 것을 질문했다." },
+  { character: "答", reading: "답", meaning: "대답할 답", strokes: 12, words: ["대답", "정답", "해답"], sentence: "질문에 정확히 대답했다." },
+  { character: "題", reading: "제", meaning: "제목 제", strokes: 18, words: ["문제", "제목", "주제"], sentence: "시험 문제를 풀었다." },
+  { character: "記", reading: "기", meaning: "기록할 기", strokes: 10, words: ["기록", "일기", "기억"], sentence: "매일 일기를 쓴다." },
+  { character: "錄", reading: "록", meaning: "기록할 록", strokes: 16, words: ["기록", "목록", "녹음"], sentence: "중요한 내용을 기록했다." },
+  // ── Geography / Places ──
+  { character: "都", reading: "도", meaning: "도읍 도", strokes: 12, words: ["수도", "도시", "도청"], sentence: "서울은 대한민국의 수도이다." },
+  { character: "市", reading: "시", meaning: "저자 시", strokes: 5, words: ["도시", "시장", "시내"], sentence: "도시에 높은 건물이 많다." },
+  { character: "郡", reading: "군", meaning: "고을 군", strokes: 10, words: ["군청", "군수", "군민"], sentence: "할머니 댁은 시골 군에 있다." },
+  { character: "村", reading: "촌", meaning: "마을 촌", strokes: 7, words: ["농촌", "어촌", "촌락"], sentence: "농촌에서 농사를 짓는다." },
+  { character: "港", reading: "항", meaning: "항구 항", strokes: 13, words: ["항구", "공항", "입항"], sentence: "공항에서 비행기를 탔다." },
+  { character: "島", reading: "도", meaning: "섬 도", strokes: 10, words: ["제주도", "독도", "섬"], sentence: "제주도에 가족 여행을 갔다." },
+  { character: "陸", reading: "육", meaning: "뭍 육", strokes: 11, words: ["대륙", "육지", "육군"], sentence: "아시아 대륙은 매우 넓다." },
+  { character: "洋", reading: "양", meaning: "큰바다 양", strokes: 10, words: ["대양", "서양", "태평양"], sentence: "태평양은 세계에서 가장 넓은 바다이다." },
+  { character: "州", reading: "주", meaning: "고을 주", strokes: 6, words: ["제주", "주민", "주도"], sentence: "각 주마다 특색이 있다." },
+  { character: "域", reading: "역", meaning: "지경 역", strokes: 11, words: ["지역", "영역", "구역"], sentence: "우리 지역에 새 도서관이 생겼다." },
+  { character: "場", reading: "장", meaning: "마당 장", strokes: 12, words: ["운동장", "시장", "농장"], sentence: "운동장에서 축구를 했다." },
+  { character: "區", reading: "구", meaning: "구분할 구", strokes: 11, words: ["지구", "구역", "구분"], sentence: "우리 구에 공원이 많다." },
+  { character: "路", reading: "로", meaning: "길 로", strokes: 13, words: ["도로", "길", "경로"], sentence: "새 도로가 개통되었다." },
+  { character: "橋", reading: "교", meaning: "다리 교", strokes: 16, words: ["다리", "교량", "육교"], sentence: "한강에 다리가 많이 놓여 있다." },
+  { character: "建", reading: "건", meaning: "세울 건", strokes: 9, words: ["건물", "건설", "건축"], sentence: "새 건물이 지어지고 있다." },
+  { character: "設", reading: "설", meaning: "베풀 설", strokes: 11, words: ["건설", "설치", "시설"], sentence: "놀이 시설이 새로 설치되었다." },
+  // ── Economy / Life ──
+  { character: "産", reading: "산", meaning: "낳을 산", strokes: 11, words: ["생산", "산업", "재산"], sentence: "공장에서 물건을 생산한다." },
+  { character: "業", reading: "업", meaning: "업 업", strokes: 13, words: ["산업", "기업", "농업"], sentence: "농업은 식량을 생산하는 중요한 산업이다." },
+  { character: "農", reading: "농", meaning: "농사 농", strokes: 13, words: ["농업", "농촌", "농민"], sentence: "농민들이 열심히 농사를 짓는다." },
+  { character: "商", reading: "상", meaning: "장사 상", strokes: 11, words: ["상점", "상인", "상품"], sentence: "상점에서 물건을 샀다." },
+  { character: "品", reading: "품", meaning: "물건 품", strokes: 9, words: ["상품", "작품", "식품"], sentence: "좋은 품질의 상품을 골랐다." },
+  { character: "賣", reading: "매", meaning: "팔 매", strokes: 15, words: ["판매", "매출", "매점"], sentence: "시장에서 과일을 팔고 있다." },
+  { character: "買", reading: "매", meaning: "살 매", strokes: 12, words: ["구매", "매입", "매수"], sentence: "문구점에서 연필을 샀다." },
+  { character: "價", reading: "가", meaning: "값 가", strokes: 15, words: ["가격", "가치", "평가"], sentence: "물건의 가격이 올랐다." },
+  { character: "材", reading: "재", meaning: "재목 재", strokes: 7, words: ["재료", "목재", "인재"], sentence: "요리 재료를 준비했다." },
+  { character: "料", reading: "료", meaning: "헤아릴 료", strokes: 10, words: ["재료", "요리", "자료"], sentence: "자료를 모아 보고서를 썼다." },
+  { character: "貨", reading: "화", meaning: "재물 화", strokes: 11, words: ["화폐", "잡화", "백화점"], sentence: "백화점에서 쇼핑을 했다." },
+  { character: "銀", reading: "은", meaning: "은 은", strokes: 14, words: ["은행", "은메달", "은색"], sentence: "은행에 저금을 했다." },
+  // ── Health / Body ──
+  { character: "醫", reading: "의", meaning: "의원 의", strokes: 18, words: ["의사", "의학", "의원"], sentence: "의사 선생님이 진료해 주셨다." },
+  { character: "藥", reading: "약", meaning: "약 약", strokes: 19, words: ["약국", "약품", "의약"], sentence: "약국에서 감기약을 샀다." },
+  { character: "病", reading: "병", meaning: "병 병", strokes: 10, words: ["병원", "질병", "간병"], sentence: "아파서 병원에 갔다." },
+  { character: "院", reading: "원", meaning: "집 원", strokes: 10, words: ["병원", "학원", "법원"], sentence: "병원에서 건강 검진을 받았다." },
+  { character: "康", reading: "강", meaning: "편안할 강", strokes: 11, words: ["건강", "안강", "소강"], sentence: "건강을 지키기 위해 운동하자." },
+  { character: "健", reading: "건", meaning: "굳셀 건", strokes: 11, words: ["건강", "건전", "보건"], sentence: "건강한 몸과 마음을 기르자." },
+  { character: "溫", reading: "온", meaning: "따뜻할 온", strokes: 13, words: ["온도", "온천", "체온"], sentence: "따뜻한 온천에 몸을 담갔다." },
+  { character: "熱", reading: "열", meaning: "더울 열", strokes: 15, words: ["열정", "발열", "열대"], sentence: "열정을 가지고 공부하자." },
+  { character: "冷", reading: "랭", meaning: "찰 랭", strokes: 7, words: ["냉장고", "냉수", "냉정"], sentence: "냉장고에서 시원한 물을 꺼냈다." },
+  // ── Emotions / Mind ──
+  { character: "感", reading: "감", meaning: "느낄 감", strokes: 13, words: ["감동", "감사", "감정"], sentence: "선생님의 말씀에 감동했다." },
+  { character: "想", reading: "상", meaning: "생각할 상", strokes: 13, words: ["상상", "이상", "사상"], sentence: "미래를 상상하면 즐겁다." },
+  { character: "願", reading: "원", meaning: "원할 원", strokes: 19, words: ["소원", "자원", "지원"], sentence: "새해 소원을 빌었다." },
+  { character: "喜", reading: "희", meaning: "기쁠 희", strokes: 12, words: ["기쁨", "희망", "희극"], sentence: "시험 결과가 좋아 기뻤다." },
+  { character: "怒", reading: "노", meaning: "성낼 노", strokes: 9, words: ["분노", "노여움", "격노"], sentence: "화가 나도 참는 것이 중요하다." },
+  { character: "悲", reading: "비", meaning: "슬플 비", strokes: 12, words: ["슬픔", "비극", "비참"], sentence: "이별은 슬프지만 다시 만날 수 있다." },
+  { character: "苦", reading: "고", meaning: "쓸 고", strokes: 9, words: ["고통", "고생", "신고"], sentence: "어려움을 이겨내면 더 강해진다." },
+  { character: "樂", reading: "낙", meaning: "즐길 낙", strokes: 15, words: ["안락", "낙관", "쾌락"], sentence: "편안한 마음으로 생활하자." },
+  { character: "敬", reading: "경", meaning: "공경할 경", strokes: 13, words: ["존경", "경례", "공경"], sentence: "어른을 존경하는 마음을 가지자." },
+  { character: "尊", reading: "존", meaning: "높을 존", strokes: 12, words: ["존경", "존중", "존엄"], sentence: "서로를 존중하는 것이 중요하다." },
+  { character: "恩", reading: "은", meaning: "은혜 은", strokes: 10, words: ["은혜", "감은", "보은"], sentence: "부모님의 은혜에 감사하자." },
+  { character: "恐", reading: "공", meaning: "두려울 공", strokes: 10, words: ["공포", "공룡", "공황"], sentence: "공룡 화석을 박물관에서 보았다." },
+  { character: "憂", reading: "우", meaning: "근심 우", strokes: 15, words: ["우울", "걱정", "근심"], sentence: "걱정하지 말고 밝게 생각하자." },
+  // ── Nature (advanced) ──
+  { character: "星", reading: "성", meaning: "별 성", strokes: 9, words: ["별", "행성", "위성"], sentence: "밤하늘에 별이 반짝인다." },
+  { character: "光", reading: "광", meaning: "빛 광", strokes: 6, words: ["광선", "햇빛", "관광"], sentence: "햇빛이 밝게 비친다." },
+  { character: "影", reading: "영", meaning: "그림자 영", strokes: 15, words: ["그림자", "영향", "영화"], sentence: "햇빛 아래 그림자가 생겼다." },
+  { character: "陽", reading: "양", meaning: "볕 양", strokes: 12, words: ["태양", "양지", "음양"], sentence: "태양이 따뜻하게 비춘다." },
+  { character: "陰", reading: "음", meaning: "그늘 음", strokes: 11, words: ["그늘", "음지", "음양"], sentence: "나무 그늘 아래에서 쉬었다." },
+  { character: "氷", reading: "빙", meaning: "얼음 빙", strokes: 5, words: ["빙하", "빙판", "결빙"], sentence: "겨울에 강물이 얼었다." },
+  { character: "霜", reading: "상", meaning: "서리 상", strokes: 17, words: ["서리", "상해", "풍상"], sentence: "가을 아침에 서리가 내렸다." },
+  { character: "森", reading: "삼", meaning: "숲 삼", strokes: 12, words: ["숲", "삼림", "울창"], sentence: "울창한 숲에서 새 소리가 들린다." },
+  { character: "谷", reading: "곡", meaning: "골짜기 곡", strokes: 7, words: ["계곡", "골짜기", "곡물"], sentence: "여름에 시원한 계곡에서 놀았다." },
+  { character: "野", reading: "야", meaning: "들 야", strokes: 11, words: ["야외", "평야", "야생"], sentence: "야외에서 체육 수업을 했다." },
+  { character: "園", reading: "원", meaning: "동산 원", strokes: 13, words: ["공원", "정원", "동물원"], sentence: "동물원에서 판다를 보았다." },
+  { character: "湖", reading: "호", meaning: "호수 호", strokes: 13, words: ["호수", "호반", "강호"], sentence: "호수에서 오리배를 탔다." },
+  { character: "池", reading: "지", meaning: "못 지", strokes: 7, words: ["연못", "전지", "수지"], sentence: "연못에 물고기가 헤엄치고 있다." },
+  { character: "波", reading: "파", meaning: "물결 파", strokes: 9, words: ["파도", "전파", "파장"], sentence: "바다에서 파도 소리가 들렸다." },
+  { character: "溪", reading: "계", meaning: "시내 계", strokes: 14, words: ["계곡", "시내", "계류"], sentence: "계곡에서 물놀이를 했다." },
+  // ── Ethics / Philosophy ──
+  { character: "理", reading: "리", meaning: "다스릴 리", strokes: 11, words: ["이치", "관리", "심리"], sentence: "과학 원리를 이해했다." },
+  { character: "論", reading: "론", meaning: "의논할 론", strokes: 15, words: ["이론", "토론", "결론"], sentence: "친구들과 열심히 토론했다." },
+  { character: "說", reading: "설", meaning: "말씀 설", strokes: 14, words: ["설명", "소설", "전설"], sentence: "선생님의 설명을 잘 들었다." },
+  { character: "學", reading: "학", meaning: "배울 학", strokes: 16, words: ["학문", "과학", "수학"], sentence: "학문의 길은 끝이 없다." },
+  { character: "智", reading: "지", meaning: "슬기 지", strokes: 12, words: ["지혜", "지능", "지식"], sentence: "지혜로운 사람이 되자." },
+  { character: "慧", reading: "혜", meaning: "슬기 혜", strokes: 15, words: ["지혜", "혜택", "총혜"], sentence: "지혜를 모아 문제를 해결했다." },
+  { character: "仁", reading: "인", meaning: "어질 인", strokes: 4, words: ["인자", "어짊", "인의"], sentence: "인자한 마음으로 이웃을 돌보자." },
+  { character: "和", reading: "화", meaning: "화할 화", strokes: 8, words: ["평화", "화합", "조화"], sentence: "화합하면 어려운 일도 해낼 수 있다." },
+  { character: "協", reading: "협", meaning: "화합할 협", strokes: 8, words: ["협력", "협동", "타협"], sentence: "협동하여 청소를 했다." },
+  { character: "助", reading: "조", meaning: "도울 조", strokes: 7, words: ["도움", "조력", "원조"], sentence: "어려운 친구를 도와주었다." },
+  // ── Movement / Change ──
+  { character: "進", reading: "진", meaning: "나아갈 진", strokes: 12, words: ["진보", "전진", "진학"], sentence: "한 걸음씩 앞으로 나아가자." },
+  { character: "退", reading: "퇴", meaning: "물러날 퇴", strokes: 10, words: ["후퇴", "퇴근", "퇴학"], sentence: "아버지가 퇴근하셨다." },
+  { character: "移", reading: "이", meaning: "옮길 이", strokes: 11, words: ["이동", "이민", "이사"], sentence: "새 집으로 이사했다." },
+  { character: "變", reading: "변", meaning: "변할 변", strokes: 23, words: ["변화", "변경", "사변"], sentence: "계절이 변하면 옷차림도 달라진다." },
+  { character: "換", reading: "환", meaning: "바꿀 환", strokes: 13, words: ["교환", "환전", "전환"], sentence: "해외여행을 위해 환전했다." },
+  { character: "增", reading: "증", meaning: "더할 증", strokes: 15, words: ["증가", "증대", "배증"], sentence: "인구가 점점 증가하고 있다." },
+  { character: "減", reading: "감", meaning: "덜 감", strokes: 13, words: ["감소", "절감", "가감"], sentence: "에너지 사용을 줄이자." },
+  { character: "集", reading: "집", meaning: "모을 집", strokes: 12, words: ["수집", "집합", "모집"], sentence: "우표를 수집하는 것이 취미이다." },
+  { character: "散", reading: "산", meaning: "흩을 산", strokes: 12, words: ["산책", "해산", "분산"], sentence: "공원에서 산책을 즐겼다." },
+  { character: "活", reading: "활", meaning: "살 활", strokes: 10, words: ["생활", "활동", "활력"], sentence: "규칙적인 생활을 하자." },
+  { character: "存", reading: "존", meaning: "있을 존", strokes: 6, words: ["존재", "생존", "보존"], sentence: "자연을 보존해야 한다." },
+  { character: "亡", reading: "망", meaning: "망할 망", strokes: 3, words: ["사망", "멸망", "도망"], sentence: "공룡은 오래전에 멸망했다." },
+  { character: "消", reading: "소", meaning: "사라질 소", strokes: 11, words: ["소방", "소화", "소멸"], sentence: "소방관이 불을 껐다." },
+  { character: "防", reading: "방", meaning: "막을 방", strokes: 7, words: ["방어", "예방", "소방"], sentence: "질병을 예방하기 위해 손을 씻자." },
+  { character: "護", reading: "호", meaning: "지킬 호", strokes: 21, words: ["보호", "간호", "호위"], sentence: "환경을 보호하는 것이 중요하다." },
+  { character: "保", reading: "보", meaning: "지킬 보", strokes: 9, words: ["보호", "보험", "보안"], sentence: "문화재를 보호해야 한다." },
+  // ── Materials / Things ──
+  { character: "鉛", reading: "연", meaning: "납 연", strokes: 13, words: ["연필", "납", "연판"], sentence: "연필로 그림을 그렸다." },
+  { character: "銅", reading: "동", meaning: "구리 동", strokes: 14, words: ["구리", "동메달", "청동"], sentence: "동메달을 받아 기뻤다." },
+  { character: "絲", reading: "사", meaning: "실 사", strokes: 12, words: ["실", "견사", "사직"], sentence: "바늘에 실을 꿰었다." },
+  { character: "布", reading: "포", meaning: "베 포", strokes: 5, words: ["천", "포장", "분포"], sentence: "천으로 주머니를 만들었다." },
+  { character: "紅", reading: "홍", meaning: "붉을 홍", strokes: 9, words: ["홍수", "홍차", "홍색"], sentence: "단풍이 붉게 물들었다." },
+  { character: "綠", reading: "록", meaning: "초록 록", strokes: 14, words: ["녹색", "녹지", "녹화"], sentence: "초록색 나뭇잎이 싱그럽다." },
+  { character: "黃", reading: "황", meaning: "누를 황", strokes: 12, words: ["황금", "황색", "황사"], sentence: "봄에 황사가 심하게 왔다." },
+  // ── Additional intermediate characters ──
+  { character: "族", reading: "족", meaning: "겨레 족", strokes: 11, words: ["가족", "민족", "종족"], sentence: "가족은 세상에서 가장 소중하다." },
+  { character: "團", reading: "단", meaning: "둥글 단", strokes: 14, words: ["단체", "집단", "악단"], sentence: "단체 활동에 적극적으로 참여했다." },
+  { character: "組", reading: "조", meaning: "짤 조", strokes: 11, words: ["조직", "조합", "모둠"], sentence: "모둠 활동에서 역할을 나누었다." },
+  { character: "部", reading: "부", meaning: "떼 부", strokes: 11, words: ["부분", "부서", "전부"], sentence: "일부분만 읽어도 재미있다." },
+  { character: "等", reading: "등", meaning: "무리 등", strokes: 12, words: ["평등", "등급", "동등"], sentence: "모든 사람은 평등하다." },
+  { character: "級", reading: "급", meaning: "등급 급", strokes: 10, words: ["학급", "급식", "등급"], sentence: "학급 친구들과 급식을 먹었다." },
+  { character: "章", reading: "장", meaning: "글 장", strokes: 11, words: ["문장", "장절", "헌장"], sentence: "문장을 바르게 쓰는 연습을 했다." },
+  { character: "節", reading: "절", meaning: "마디 절", strokes: 15, words: ["계절", "절약", "명절"], sentence: "에너지를 절약하자." },
+  { character: "期", reading: "기", meaning: "기약할 기", strokes: 12, words: ["시기", "기간", "학기"], sentence: "새 학기가 시작되었다." },
+  { character: "限", reading: "한", meaning: "한할 한", strokes: 9, words: ["제한", "한계", "기한"], sentence: "속도 제한을 지켜야 안전하다." },
+  { character: "示", reading: "시", meaning: "보일 시", strokes: 5, words: ["전시", "시범", "표시"], sentence: "박물관에서 전시회를 보았다." },
+  { character: "指", reading: "지", meaning: "가리킬 지", strokes: 10, words: ["지시", "손가락", "지적"], sentence: "선생님의 지시를 따랐다." },
+  { character: "決", reading: "결", meaning: "결단할 결", strokes: 8, words: ["결정", "해결", "결심"], sentence: "문제를 해결하기 위해 머리를 맞댔다." },
+  { character: "判", reading: "판", meaning: "판단할 판", strokes: 7, words: ["판단", "재판", "비판"], sentence: "옳고 그름을 판단하는 힘을 기르자." },
+  { character: "解", reading: "해", meaning: "풀 해", strokes: 13, words: ["이해", "해결", "풀이"], sentence: "어려운 문제를 이해하려고 노력했다." },
+  { character: "利", reading: "리", meaning: "이로울 리", strokes: 7, words: ["이익", "편리", "유리"], sentence: "인터넷은 정보 검색에 편리하다." },
+  { character: "益", reading: "익", meaning: "더할 익", strokes: 10, words: ["이익", "유익", "공익"], sentence: "독서는 매우 유익한 활동이다." },
+  { character: "得", reading: "득", meaning: "얻을 득", strokes: 11, words: ["획득", "습득", "납득"], sentence: "노력해서 좋은 결과를 얻었다." },
+  { character: "失", reading: "실", meaning: "잃을 실", strokes: 5, words: ["실수", "실패", "분실"], sentence: "실수를 줄이기 위해 신중하게 행동하자." },
+  { character: "共", reading: "공", meaning: "함께 공", strokes: 6, words: ["공동", "공유", "공통"], sentence: "친구와 공동으로 과제를 했다." },
+  { character: "具", reading: "구", meaning: "갖출 구", strokes: 8, words: ["도구", "가구", "구체"], sentence: "여러 가지 도구를 사용했다." },
+  { character: "相", reading: "상", meaning: "서로 상", strokes: 9, words: ["상대", "서로", "상호"], sentence: "서로 도우며 살아가자." },
+  { character: "對", reading: "대", meaning: "대할 대", strokes: 14, words: ["상대", "반대", "절대"], sentence: "상대방의 의견을 존중하자." },
+  { character: "反", reading: "반", meaning: "돌이킬 반", strokes: 4, words: ["반대", "반성", "반복"], sentence: "잘못을 반성하고 고쳤다." },
+  { character: "比", reading: "비", meaning: "견줄 비", strokes: 4, words: ["비교", "대비", "비율"], sentence: "두 가지를 비교하여 좋은 것을 골랐다." },
+  { character: "差", reading: "차", meaning: "어긋날 차", strokes: 10, words: ["차이", "차별", "격차"], sentence: "성적의 차이를 줄이기 위해 노력했다." },
+  { character: "除", reading: "제", meaning: "덜 제", strokes: 10, words: ["제거", "제외", "삭제"], sentence: "불필요한 부분을 제거했다." },
+  { character: "加", reading: "가", meaning: "더할 가", strokes: 5, words: ["추가", "참가", "가입"], sentence: "대회에 참가하기로 했다." },
+  { character: "特", reading: "특", meaning: "특별할 특", strokes: 10, words: ["특별", "특징", "독특"], sentence: "특별한 경험을 했다." },
+  { character: "別", reading: "별", meaning: "나눌 별", strokes: 7, words: ["특별", "구별", "이별"], sentence: "좋은 것과 나쁜 것을 구별하자." },
+  { character: "請", reading: "청", meaning: "청할 청", strokes: 15, words: ["요청", "신청", "초청"], sentence: "도움을 요청했다." },
+  { character: "受", reading: "수", meaning: "받을 수", strokes: 8, words: ["수상", "접수", "수업"], sentence: "상을 받아 기뻤다." },
+  { character: "授", reading: "수", meaning: "줄 수", strokes: 11, words: ["수여", "교수", "전수"], sentence: "교수님께서 강의하셨다." },
+  { character: "與", reading: "여", meaning: "줄 여", strokes: 14, words: ["참여", "부여", "관여"], sentence: "행사에 적극적으로 참여했다." },
+  { character: "持", reading: "지", meaning: "가질 지", strokes: 10, words: ["유지", "지속", "소지"], sentence: "좋은 습관을 유지하자." },
+  { character: "待", reading: "대", meaning: "기다릴 대", strokes: 9, words: ["기대", "대기", "접대"], sentence: "좋은 결과를 기대한다." },
+  { character: "送", reading: "송", meaning: "보낼 송", strokes: 10, words: ["전송", "배송", "방송"], sentence: "편지를 우체국에서 보냈다." },
+  { character: "運", reading: "운", meaning: "옮길 운", strokes: 13, words: ["운동", "운반", "행운"], sentence: "매일 운동하면 건강해진다." },
+  { character: "配", reading: "배", meaning: "나눌 배", strokes: 10, words: ["배달", "배분", "분배"], sentence: "물자를 공평하게 분배했다." },
+  { character: "位", reading: "위", meaning: "자리 위", strokes: 7, words: ["위치", "단위", "순위"], sentence: "지도에서 우리 집의 위치를 찾았다." },
+  { character: "置", reading: "치", meaning: "둘 치", strokes: 13, words: ["위치", "설치", "배치"], sentence: "새 의자를 교실에 배치했다." },
+  { character: "局", reading: "국", meaning: "판 국", strokes: 7, words: ["우체국", "방송국", "국면"], sentence: "우체국에서 소포를 부쳤다." },
+  { character: "務", reading: "무", meaning: "힘쓸 무", strokes: 11, words: ["의무", "업무", "사무"], sentence: "자기 할 일을 다하는 것이 의무이다." },
+  { character: "任", reading: "임", meaning: "맡길 임", strokes: 6, words: ["책임", "임무", "담임"], sentence: "자기 행동에 책임을 지자." },
+  { character: "責", reading: "책", meaning: "꾸짖을 책", strokes: 11, words: ["책임", "책망", "직책"], sentence: "맡은 일에 책임감을 가지자." },
+  { character: "係", reading: "계", meaning: "맬 계", strokes: 9, words: ["관계", "계원", "연계"], sentence: "친구와 좋은 관계를 유지하자." },
+  { character: "關", reading: "관", meaning: "관계할 관", strokes: 19, words: ["관계", "관심", "관련"], sentence: "환경 문제에 관심을 가지자." },
+];
+
+// ─── Generator Function ─────────────────────────────────────────────────────────
+
+/**
+ * Shuffles an array in place using a seeded PRNG (Fisher-Yates).
+ */
+function shuffle<T>(arr: T[], rng: () => number): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+/**
+ * Generates a pool of Hanja entries appropriate for the given grade level.
+ *
+ * @param grade - Student grade (1-6). Grades 1-2 return empty array.
+ * @param seed - Seed for the PRNG to ensure reproducible results.
+ * @returns Array of 300 HanjaEntry items (or empty for grades 1-2).
+ */
+export function generateHanjaPool(
+  grade: number,
+  seed: number
+): HanjaEntry[] {
+  // Grades 1-2 do not study Hanja
+  if (grade <= 2) {
+    return [];
+  }
+
+  const rng = seededRandom(seed);
+
+  let pool: HanjaData[];
+
+  if (grade <= 4) {
+    // Grade 3-4: Basic Hanja (급수 8-7급)
+    pool = [...GRADE_3_4_HANJA];
+  } else {
+    // Grade 5-6: Intermediate Hanja (급수 6-5급) + some basic for review
+    pool = [...GRADE_5_6_HANJA, ...GRADE_3_4_HANJA];
+  }
+
+  // Shuffle with seeded PRNG
+  const shuffled = shuffle(pool, rng);
+
+  // Return exactly 300 items (cycling if necessary to fill)
+  const TARGET_COUNT = 300;
+  const result: HanjaEntry[] = [];
+
+  for (let i = 0; i < TARGET_COUNT; i++) {
+    const entry = shuffled[i % shuffled.length];
+    result.push({
+      character: entry.character,
+      reading: entry.reading,
+      meaning: entry.meaning,
+      strokes: entry.strokes,
+      words: [...entry.words],
+      sentence: entry.sentence,
+    });
+  }
+
+  return result;
+}
