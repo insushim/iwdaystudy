@@ -153,7 +153,9 @@ export function localSignup(data: SignupData): AuthResult {
  */
 export function localLogin(email: string, password: string): AuthResult {
   const users = getStoredUsers();
-  const user = users.find((u) => u.email === email);
+  // If no @ sign, assume student login ID → append @class.local
+  const normalizedEmail = email.includes("@") ? email : `${email}@class.local`;
+  const user = users.find((u) => u.email === normalizedEmail);
 
   if (!user || user.password_hash !== simpleHash(password)) {
     throw new Error("이메일 또는 비밀번호가 올바르지 않습니다.");

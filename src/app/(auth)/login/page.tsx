@@ -24,13 +24,14 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isStudentMode, setIsStudentMode] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
 
     if (!email.trim()) {
-      setError("이메일을 입력해 주세요.");
+      setError(isStudentMode ? "아이디를 입력해 주세요." : "이메일을 입력해 주세요.");
       return;
     }
     if (!password) {
@@ -76,15 +77,33 @@ export default function LoginPage() {
             </div>
           )}
 
+          {/* Student / Teacher-Parent toggle */}
+          <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-muted">
+            <button
+              type="button"
+              onClick={() => { setIsStudentMode(false); setEmail(""); setError(""); }}
+              className={`py-2 text-sm font-medium rounded-md transition-colors ${!isStudentMode ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              선생님 / 학부모
+            </button>
+            <button
+              type="button"
+              onClick={() => { setIsStudentMode(true); setEmail(""); setError(""); }}
+              className={`py-2 text-sm font-medium rounded-md transition-colors ${isStudentMode ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              학생
+            </button>
+          </div>
+
           <div className="space-y-2">
-            <Label htmlFor="email">이메일</Label>
+            <Label htmlFor="email">{isStudentMode ? "아이디" : "이메일"}</Label>
             <Input
               id="email"
-              type="email"
-              placeholder="name@example.com"
+              type={isStudentMode ? "text" : "email"}
+              placeholder={isStudentMode ? "아이디 입력 (예: ara01)" : "name@example.com"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              autoComplete="email"
+              autoComplete={isStudentMode ? "username" : "email"}
               autoFocus
               className="h-11"
             />
