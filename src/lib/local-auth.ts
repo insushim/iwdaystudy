@@ -332,9 +332,76 @@ export interface BulkCreateResult {
   password: string;
 }
 
+const CLASS_MEMBERS_KEY = "araharu-class-members";
+const CLASSES_KEY = "araharu-classes";
+
+interface ClassMemberLocal {
+  id: string;
+  class_id: string;
+  student_id: string;
+  joined_at: string;
+}
+
+interface ClassDataLocal {
+  id: string;
+  name: string;
+  grade: number;
+  semester: number;
+  studentCount: number;
+  inviteCode: string;
+  isActive: boolean;
+  completionRate: number;
+  avgScore: number;
+  createdAt: string;
+}
+
+function getClassMembers(): ClassMemberLocal[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const data = localStorage.getItem(CLASS_MEMBERS_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveClassMembers(members: ClassMemberLocal[]): void {
+  localStorage.setItem(CLASS_MEMBERS_KEY, JSON.stringify(members));
+}
+
+function getLocalClasses(): ClassDataLocal[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const data = localStorage.getItem(CLASSES_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveLocalClasses(classes: ClassDataLocal[]): void {
+  localStorage.setItem(CLASSES_KEY, JSON.stringify(classes));
+}
+
+/**
+ * Get students belonging to a specific class.
+ */
+export function localGetClassStudents(classId: string): Profile[] {
+  const members = getClassMembers();
+  const studentIds = members
+    .filter((m) => m.class_id === classId)
+    .map((m) => m.student_id);
+  if (studentIds.length === 0) return [];
+  const allUsers = getStoredUsers();
+  return allUsers
+    .filter((u) => studentIds.includes(u.id))
+    .map(stripPasswordHash);
+}
+
 /**
  * Bulk create student accounts by count.
  * Generates ara01, ara02, ... style login IDs and passwords.
+ * Automatically adds students to the specified class.
  * Returns the created accounts.
  */
 export function localBulkCreateStudents(
@@ -344,11 +411,13 @@ export function localBulkCreateStudents(
     grade: number;
     semester: number;
     class_name: string;
+    class_id?: string;
     teacher_id: string;
   },
 ): BulkCreateResult[] {
   const users = getStoredUsers();
   const results: BulkCreateResult[] = [];
+  const newStudentIds: string[] = [];
   const now = new Date().toISOString();
   const prefix = options.prefix || "ara";
 
@@ -362,8 +431,9 @@ export function localBulkCreateStudents(
     // Skip if already exists
     if (users.find((u) => u.email === email)) continue;
 
+    const studentId = generateId();
     const newUser: Profile & { password_hash: string } = {
-      id: generateId(),
+      id: studentId,
       email,
       name: nickname,
       role: "student",
@@ -386,10 +456,37 @@ export function localBulkCreateStudents(
     };
 
     users.push(newUser);
+    newStudentIds.push(studentId);
     results.push({ nickname, loginId, password });
   }
 
   saveStoredUsers(users);
+
+  // Add students to class members and update class studentCount
+  if (options.class_id && newStudentIds.length > 0) {
+    const members = getClassMembers();
+    for (const studentId of newStudentIds) {
+      members.push({
+        id: generateId(),
+        class_id: options.class_id,
+        student_id: studentId,
+        joined_at: now,
+      });
+    }
+    saveClassMembers(members);
+
+    // Update class studentCount
+    const classes = getLocalClasses();
+    const classIdx = classes.findIndex((c) => c.id === options.class_id);
+    if (classIdx !== -1) {
+      const totalMembers = members.filter(
+        (m) => m.class_id === options.class_id,
+      ).length;
+      classes[classIdx].studentCount = totalMembers;
+      saveLocalClasses(classes);
+    }
+  }
+
   return results;
 }
 

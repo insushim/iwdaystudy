@@ -62,12 +62,22 @@ interface ClassData {
 }
 
 const STORAGE_KEY = "araharu-classes";
+const MEMBERS_KEY = "araharu-class-members";
 
 function loadClasses(): ClassData[] {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    const classes: ClassData[] = raw ? JSON.parse(raw) : [];
+    // Sync studentCount from class-members
+    const membersRaw = localStorage.getItem(MEMBERS_KEY);
+    if (membersRaw) {
+      const members: { class_id: string }[] = JSON.parse(membersRaw);
+      for (const cls of classes) {
+        cls.studentCount = members.filter((m) => m.class_id === cls.id).length;
+      }
+    }
+    return classes;
   } catch {
     return [];
   }

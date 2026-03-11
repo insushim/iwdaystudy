@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -9,6 +9,8 @@ import {
   ArrowLeft,
   CheckCircle2,
   Copy,
+  School,
+  AlertCircle,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,25 +28,55 @@ import {
   localBulkCreateStudents,
   type BulkCreateResult,
 } from "@/lib/local-auth";
-import { GRADES, SEMESTERS } from "@/lib/constants";
 import Link from "next/link";
+
+interface ClassData {
+  id: string;
+  name: string;
+  grade: number;
+  semester: number;
+  studentCount: number;
+  inviteCode: string;
+  isActive: boolean;
+  completionRate: number;
+  avgScore: number;
+  createdAt: string;
+}
+
+const CLASSES_KEY = "araharu-classes";
+
+function loadClasses(): ClassData[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(CLASSES_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
 
 export default function BulkCreateStudentsPage() {
   const { user } = useAuthStore();
+  const [classes, setClasses] = useState<ClassData[]>([]);
+  const [selectedClassId, setSelectedClassId] = useState("");
   const [studentCount, setStudentCount] = useState("");
   const [prefix, setPrefix] = useState("ara");
-  const [grade, setGrade] = useState("");
-  const [semester, setSemester] = useState("");
-  const [className, setClassName] = useState("");
   const [results, setResults] = useState<BulkCreateResult[] | null>(null);
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
 
+  useEffect(() => {
+    const allClasses = loadClasses();
+    setClasses(allClasses.filter((c) => c.isActive));
+  }, []);
+
+  const selectedClass = classes.find((c) => c.id === selectedClassId);
+
   function handleCreate() {
     setError("");
 
-    if (!grade || !semester || !className.trim()) {
-      setError("학년, 학기, 반을 모두 입력해주세요.");
+    if (!selectedClassId) {
+      setError("학급을 선택해주세요. 학급이 없다면 먼저 학급 관리에서 생성해주세요.");
       return;
     }
 
@@ -59,13 +91,14 @@ export default function BulkCreateStudentsPage() {
       return;
     }
 
-    if (!user) return;
+    if (!user || !selectedClass) return;
 
     const created = localBulkCreateStudents(count, {
       prefix: prefix.trim().toLowerCase(),
-      grade: Number(grade),
-      semester: Number(semester),
-      class_name: className.trim(),
+      grade: selectedClass.grade,
+      semester: selectedClass.semester,
+      class_name: selectedClass.name,
+      class_id: selectedClass.id,
       teacher_id: user.id,
     });
 
@@ -90,7 +123,7 @@ export default function BulkCreateStudentsPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `학생계정_${className}_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `학생계정_${selectedClass?.name || "학급"}_${new Date().toISOString().slice(0, 10)}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -142,8 +175,8 @@ export default function BulkCreateStudentsPage() {
                 </CardTitle>
               </div>
               <p className="text-sm text-muted-foreground">
-                아래 정보를 학생들에게 배포해주세요. 아이디와 비밀번호가
-                동일합니다.
+                <span className="font-medium">{selectedClass?.name}</span>에
+                자동 배정되었습니다. 아래 정보를 학생들에게 배포해주세요.
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -180,16 +213,24 @@ export default function BulkCreateStudentsPage() {
                 </div>
               </div>
 
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={() => {
-                  setResults(null);
-                  setStudentCount("");
-                }}
-              >
-                추가 생성하기
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex-1" asChild>
+                  <Link href={`/teacher/classes/${selectedClassId}`}>
+                    <School className="h-4 w-4 mr-1" />
+                    학급 상세 보기
+                  </Link>
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => {
+                    setResults(null);
+                    setStudentCount("");
+                  }}
+                >
+                  추가 생성하기
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </motion.div>
@@ -218,7 +259,7 @@ export default function BulkCreateStudentsPage() {
           학생 일괄 생성
         </h1>
         <p className="text-muted-foreground text-sm mt-1">
-          인원수를 입력하면 자동으로 계정이 생성됩니다 (아이디 = 비밀번호)
+          학급을 선택하고 인원수를 입력하면 자동으로 계정이 생성 및 배정됩니다
         </p>
       </motion.div>
 
@@ -228,6 +269,7 @@ export default function BulkCreateStudentsPage() {
         </div>
       )}
 
+      {/* Class Selection */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -235,53 +277,65 @@ export default function BulkCreateStudentsPage() {
       >
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">학급 정보</CardTitle>
+            <CardTitle className="text-base flex items-center gap-2">
+              <School className="h-4 w-4" />
+              학급 선택
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-3 gap-3">
+            {classes.length === 0 ? (
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                <AlertCircle className="h-5 w-5 text-amber-600 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-amber-800 dark:text-amber-200">
+                    등록된 학급이 없습니다
+                  </p>
+                  <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
+                    먼저 학급을 만들어주세요.
+                  </p>
+                </div>
+                <Button size="sm" variant="outline" asChild>
+                  <Link href="/teacher/classes">학급 만들기</Link>
+                </Button>
+              </div>
+            ) : (
               <div className="space-y-2">
-                <Label>학년</Label>
-                <Select value={grade} onValueChange={setGrade}>
+                <Label>배정할 학급</Label>
+                <Select
+                  value={selectedClassId}
+                  onValueChange={setSelectedClassId}
+                >
                   <SelectTrigger>
-                    <SelectValue placeholder="학년" />
+                    <SelectValue placeholder="학급을 선택하세요" />
                   </SelectTrigger>
                   <SelectContent>
-                    {GRADES.map((g) => (
-                      <SelectItem key={g} value={String(g)}>
-                        {g}학년
+                    {classes.map((cls) => (
+                      <SelectItem key={cls.id} value={cls.id}>
+                        {cls.name} ({cls.grade}학년 {cls.semester}학기) -{" "}
+                        {cls.studentCount}명
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
+
+                {selectedClass && (
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2 p-2 bg-muted/50 rounded-lg">
+                    <span>
+                      {selectedClass.grade}학년 {selectedClass.semester}학기
+                    </span>
+                    <span>현재 {selectedClass.studentCount}명</span>
+                    <span className="font-mono">
+                      초대코드: {selectedClass.inviteCode}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="space-y-2">
-                <Label>학기</Label>
-                <Select value={semester} onValueChange={setSemester}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="학기" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {SEMESTERS.map((s) => (
-                      <SelectItem key={s} value={String(s)}>
-                        {s}학기
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>반</Label>
-                <Input
-                  placeholder="예: 1반"
-                  value={className}
-                  onChange={(e) => setClassName(e.target.value)}
-                />
-              </div>
-            </div>
+            )}
           </CardContent>
         </Card>
       </motion.div>
 
+      {/* Account Settings */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -351,9 +405,12 @@ export default function BulkCreateStudentsPage() {
             )}
 
             <div className="flex items-center justify-end">
-              <Button onClick={handleCreate} disabled={!studentCount}>
+              <Button
+                onClick={handleCreate}
+                disabled={!studentCount || !selectedClassId}
+              >
                 <Upload className="h-4 w-4 mr-1" />
-                일괄 생성
+                일괄 생성 및 학급 배정
               </Button>
             </div>
           </CardContent>

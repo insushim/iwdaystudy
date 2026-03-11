@@ -20,8 +20,10 @@ import { useEffect, useState } from "react";
 import {
   localGetPendingTeacherCount,
   localGetAllUsers,
+  shouldUseLocalAuth,
 } from "@/lib/local-auth";
 import { getLearningRecords } from "@/lib/local-storage";
+import { dbGet } from "@/lib/db/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -94,10 +96,138 @@ export default function AdminDashboard() {
   >([]);
 
   useEffect(() => {
+    if (shouldUseLocalAuth()) {
+      loadFromLocal();
+    } else {
+      loadFromApi();
+    }
+  }, []);
+
+  function formatTimeAgo(dateStr: string): string {
+    const now = new Date();
+    const created = new Date(dateStr);
+    const diffMin = Math.round((now.getTime() - created.getTime()) / 60000);
+    if (diffMin < 1) return "방금 전";
+    if (diffMin < 60) return `${diffMin}분 전`;
+    if (diffMin < 1440) return `${Math.floor(diffMin / 60)}시간 전`;
+    return `${Math.floor(diffMin / 1440)}일 전`;
+  }
+
+  function roleLabel(role: string): string {
+    return role === "student" ? "학생" : role === "teacher" ? "교사" : role === "parent" ? "학부모" : "관리자";
+  }
+
+  function applyDashboardData(data: {
+    totalUsers: number;
+    paidSubscriptions: number;
+    activeStudents: number;
+    totalSets: number;
+    pendingTeachers: number;
+    roleCounts: { student: number; teacher: number; parent: number; admin: number };
+    recentUsers: { id: string; name: string; role: string; grade: number | null; created_at: string }[];
+    recentLearning: { studentName: string; setTitle: string; score: number; maxScore: number; completedAt: string }[];
+  }) {
+    setPendingCount(data.pendingTeachers);
+
+    setOverviewCards([
+      {
+        title: "총 사용자",
+        value: data.totalUsers.toLocaleString(),
+        icon: Users,
+        color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30",
+      },
+      {
+        title: "유료 구독",
+        value: data.paidSubscriptions.toLocaleString(),
+        icon: CreditCard,
+        color: "text-green-600 bg-green-100 dark:bg-green-900/30",
+      },
+      {
+        title: "주간 활성 학생",
+        value: data.activeStudents.toLocaleString(),
+        icon: Activity,
+        color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30",
+      },
+      {
+        title: "학습 세트",
+        value: data.totalSets.toLocaleString(),
+        icon: BookOpen,
+        color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
+      },
+    ]);
+
+    setRoleBreakdown([
+      { role: "학생", count: data.roleCounts.student, color: "bg-blue-400" },
+      { role: "교사", count: data.roleCounts.teacher, color: "bg-green-400" },
+      { role: "학부모", count: data.roleCounts.parent, color: "bg-purple-400" },
+      { role: "관리자", count: data.roleCounts.admin, color: "bg-amber-400" },
+    ]);
+
+    const activities: RecentActivity[] = [];
+
+    // Recent signups
+    for (const u of data.recentUsers.slice(0, 5)) {
+      const gradeInfo = u.grade ? ` (${u.grade}학년)` : "";
+      activities.push({
+        action: "사용자 가입",
+        detail: `${u.name}${gradeInfo} (${roleLabel(u.role)})`,
+        time: formatTimeAgo(u.created_at),
+      });
+    }
+
+    // Recent learning completions
+    for (const l of data.recentLearning.slice(0, 5)) {
+      activities.push({
+        action: "학습 완료",
+        detail: `${l.studentName} - ${l.setTitle} (${l.score}/${l.maxScore}점)`,
+        time: formatTimeAgo(l.completedAt),
+      });
+    }
+
+    // Sort combined activities by time (most recent first)
+    activities.sort((a, b) => {
+      const timeOrder = (t: string) => {
+        if (t === "방금 전") return 0;
+        const m = t.match(/(\d+)(분|시간|일)/);
+        if (!m) return 9999;
+        const n = parseInt(m[1]);
+        if (m[2] === "분") return n;
+        if (m[2] === "시간") return n * 60;
+        return n * 1440;
+      };
+      return timeOrder(a.time) - timeOrder(b.time);
+    });
+
+    setRecentActivities(
+      activities.length > 0
+        ? activities.slice(0, 10)
+        : [{ action: "활동 없음", detail: "아직 등록된 활동이 없습니다", time: "-" }],
+    );
+  }
+
+  async function loadFromApi() {
+    try {
+      const data = await dbGet<{
+        totalUsers: number;
+        paidSubscriptions: number;
+        activeStudents: number;
+        totalSets: number;
+        pendingTeachers: number;
+        roleCounts: { student: number; teacher: number; parent: number; admin: number };
+        recentUsers: { id: string; name: string; role: string; grade: number | null; created_at: string }[];
+        recentLearning: { studentName: string; setTitle: string; score: number; maxScore: number; completedAt: string }[];
+      }>("/admin/stats");
+      applyDashboardData(data);
+    } catch {
+      // Fallback to local data if API fails
+      loadFromLocal();
+    }
+  }
+
+  function loadFromLocal() {
     const allUsers = localGetAllUsers();
     setPendingCount(localGetPendingTeacherCount());
 
-    const totalUsers = allUsers.length;
     const students = allUsers.filter((u) => u.role === "student");
     const teachers = allUsers.filter(
       (u) => u.role === "teacher" && u.approval_status === "approved",
@@ -106,15 +236,11 @@ export default function AdminDashboard() {
     const admins = allUsers.filter((u) => u.role === "admin");
 
     const paidSubscriptions = allUsers.filter(
-      (u) =>
-        u.subscription_plan !== "free" && u.subscription_plan !== undefined,
+      (u) => u.subscription_plan !== "free" && u.subscription_plan !== undefined,
     ).length;
 
-    // Count users with learning activity in last 7 days
     const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000)
-      .toISOString()
-      .split("T")[0];
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000).toISOString().split("T")[0];
     let activeStudents = 0;
     for (const student of students) {
       const records = getLearningRecords(student.id);
@@ -125,100 +251,33 @@ export default function AdminDashboard() {
       if (hasRecent) activeStudents++;
     }
 
-    // Count total daily sets from localStorage
     let totalSets = 0;
     try {
       const setsData = localStorage.getItem("araharu_daily_sets");
-      if (setsData) {
-        totalSets = JSON.parse(setsData).length;
-      }
-    } catch {
-      // ignore
-    }
+      if (setsData) totalSets = JSON.parse(setsData).length;
+    } catch { /* ignore */ }
 
-    setOverviewCards([
-      {
-        title: "총 사용자",
-        value: totalUsers.toLocaleString(),
-        icon: Users,
-        color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30",
-      },
-      {
-        title: "유료 구독",
-        value: paidSubscriptions.toLocaleString(),
-        icon: CreditCard,
-        color: "text-green-600 bg-green-100 dark:bg-green-900/30",
-      },
-      {
-        title: "주간 활성 학생",
-        value: activeStudents.toLocaleString(),
-        icon: Activity,
-        color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30",
-      },
-      {
-        title: "학습 세트",
-        value: totalSets.toLocaleString(),
-        icon: BookOpen,
-        color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30",
-      },
-    ]);
-
-    // Role breakdown for chart
-    setRoleBreakdown([
-      { role: "학생", count: students.length, color: "bg-blue-400" },
-      { role: "교사", count: teachers.length, color: "bg-green-400" },
-      { role: "학부모", count: parents.length, color: "bg-purple-400" },
-      { role: "관리자", count: admins.length, color: "bg-amber-400" },
-    ]);
-
-    // Recent activities from real data
-    const activities: RecentActivity[] = [];
-
-    // Sort users by created_at to get recent signups
     const recentUsers = [...allUsers]
-      .sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      )
-      .slice(0, 5);
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 10)
+      .map((u) => ({ id: u.id, name: u.name, role: u.role, grade: u.grade ?? null, created_at: u.created_at }));
 
-    for (const u of recentUsers) {
-      const roleLabel =
-        u.role === "student"
-          ? "학생"
-          : u.role === "teacher"
-            ? "교사"
-            : u.role === "parent"
-              ? "학부모"
-              : "관리자";
-      const gradeInfo = u.grade ? ` (${u.grade}학년)` : "";
-      const created = new Date(u.created_at);
-      const diffMin = Math.round((now.getTime() - created.getTime()) / 60000);
-      let timeStr: string;
-      if (diffMin < 1) timeStr = "방금 전";
-      else if (diffMin < 60) timeStr = `${diffMin}분 전`;
-      else if (diffMin < 1440) timeStr = `${Math.floor(diffMin / 60)}시간 전`;
-      else timeStr = `${Math.floor(diffMin / 1440)}일 전`;
-
-      activities.push({
-        action: "사용자 가입",
-        detail: `${u.name}${gradeInfo} (${roleLabel})`,
-        time: timeStr,
-      });
-    }
-
-    setRecentActivities(
-      activities.length > 0
-        ? activities
-        : [
-            {
-              action: "활동 없음",
-              detail: "아직 등록된 사용자가 없습니다",
-              time: "-",
-            },
-          ],
-    );
-  }, []);
+    applyDashboardData({
+      totalUsers: allUsers.length,
+      paidSubscriptions,
+      activeStudents,
+      totalSets,
+      pendingTeachers: localGetPendingTeacherCount(),
+      roleCounts: {
+        student: students.length,
+        teacher: teachers.length,
+        parent: parents.length,
+        admin: admins.length,
+      },
+      recentUsers,
+      recentLearning: [],
+    });
+  }
 
   const maxRole = Math.max(...roleBreakdown.map((r) => r.count), 1);
 
