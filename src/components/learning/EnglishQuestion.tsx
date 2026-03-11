@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -29,6 +29,25 @@ export default function EnglishQuestion({ content, answer, onAnswer, showResult,
     }
   };
 
+  const handleSpeak = useCallback(() => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(content.word);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.8;
+    utterance.pitch = 1.1;
+    window.speechSynthesis.speak(utterance);
+  }, [content.word]);
+
+  const handleSpeakSentence = useCallback(() => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(content.sentence);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.75;
+    window.speechSynthesis.speak(utterance);
+  }, [content.sentence]);
+
   // Highlight the focus word in the sentence
   const highlightSentence = (sentence: string, word: string) => {
     const lowerSentence = sentence.toLowerCase();
@@ -55,10 +74,14 @@ export default function EnglishQuestion({ content, answer, onAnswer, showResult,
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-lg rounded-2xl bg-gradient-to-r from-[#4169E1]/5 to-[#4169E1]/10 border border-[#4169E1]/20 p-6 text-center"
+        className="w-full max-w-lg rounded-2xl bg-gradient-to-r from-[#4169E1]/5 to-[#4169E1]/10 border border-[#4169E1]/20 p-6 text-center cursor-pointer"
+        onClick={handleSpeakSentence}
       >
         <p className="text-2xl sm:text-3xl font-bold text-foreground leading-relaxed">
           {highlightSentence(content.sentence, content.word)}
+        </p>
+        <p className="text-xs text-muted-foreground mt-2 flex items-center justify-center gap-1">
+          <Volume2 className="h-3 w-3" /> 문장을 클릭하면 들을 수 있어요
         </p>
       </motion.div>
 
@@ -79,10 +102,14 @@ export default function EnglishQuestion({ content, answer, onAnswer, showResult,
         transition={{ delay: 0.3 }}
         className="flex flex-wrap items-center justify-center gap-3"
       >
-        <div className="flex items-center gap-2 rounded-full bg-[#4169E1]/10 px-4 py-2">
+        <button
+          type="button"
+          onClick={handleSpeak}
+          className="flex items-center gap-2 rounded-full bg-[#4169E1]/10 px-4 py-2 hover:bg-[#4169E1]/20 transition-colors cursor-pointer"
+        >
           <Volume2 className="h-4 w-4 text-[#4169E1]" />
           <span className="text-sm font-semibold text-[#4169E1]">{content.word}</span>
-        </div>
+        </button>
         {content.pronunciation && (
           <div className="rounded-full bg-muted px-4 py-2">
             <span className="text-sm text-muted-foreground">[{content.pronunciation}]</span>

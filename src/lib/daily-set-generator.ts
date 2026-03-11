@@ -110,6 +110,40 @@ function seededRandom(seed: number) {
   };
 }
 
+/**
+ * Generate 4 choices (including the correct answer) by picking distractors
+ * from the same pool of entries and shuffling them.
+ */
+function generateChoices<T>(
+  correct: string,
+  pool: T[],
+  extractAnswer: (item: T) => string,
+  random: () => number,
+): string[] {
+  const others = pool
+    .map(extractAnswer)
+    .filter((a) => a !== correct);
+  // Deduplicate
+  const unique = [...new Set(others)];
+  // Shuffle and pick 3
+  for (let i = unique.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [unique[i], unique[j]] = [unique[j], unique[i]];
+  }
+  const distractors = unique.slice(0, 3);
+  // If not enough distractors, pad with variations
+  while (distractors.length < 3) {
+    distractors.push(`${correct}(아님)`);
+  }
+  const choices = [correct, ...distractors];
+  // Shuffle choices
+  for (let i = choices.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [choices[i], choices[j]] = [choices[j], choices[i]];
+  }
+  return choices;
+}
+
 interface GradeData {
   spelling: SpellingEntry[];
   vocab: VocabEntry[];
@@ -355,18 +389,20 @@ function buildVocabQuestion(
   orderIndex: number,
   title: string,
   entry: VocabEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "vocabulary" as SubjectType,
-    question_type: "short_answer" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
-      text: "다음 뜻풀이를 보고 알맞은 낱말을 쓰세요.",
+      text: "다음 뜻풀이를 보고 알맞은 낱말을 고르세요.",
       clues: entry.meanings,
+      choices,
     },
     answer: {
       correct: entry.answer,
@@ -386,18 +422,20 @@ function buildKnowledgeQuestion(
   orderIndex: number,
   title: string,
   entry: KnowledgeEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "general_knowledge" as SubjectType,
-    question_type: "fill_blank" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
       text: entry.text,
       category: entry.category,
+      choices,
     },
     answer: {
       correct: entry.answer,
@@ -417,18 +455,20 @@ function buildSafetyQuestion(
   orderIndex: number,
   title: string,
   entry: SafetyEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "safety" as SubjectType,
-    question_type: "fill_blank" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
       text: entry.text,
       category: entry.category,
+      choices,
     },
     answer: {
       correct: entry.answer,
@@ -542,16 +582,17 @@ function buildSubjectQuestion(
   subject: SubjectType,
   entry: KnowledgeEntry,
   hintPrefix: string,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject,
-    question_type: "fill_blank" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
-    content: { text: entry.text, category: entry.category },
+    content: { text: entry.text, category: entry.category, choices },
     answer: { correct: entry.answer, text: entry.answer },
     explanation: entry.text.replace("___", entry.answer),
     points: 10,
@@ -632,18 +673,21 @@ export function generateDailySet(
         );
       } else if (subject === "vocabulary") {
         const entry = pickUnused(data.vocab, "vocab");
+        const choices = generateChoices(entry.answer, data.vocab, (v) => v.answer, random);
         questions.push(
-          buildVocabQuestion(setId, orderIndex, section.title, entry),
+          buildVocabQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "general_knowledge") {
         const entry = pickUnused(data.knowledge, "knowledge");
+        const choices = generateChoices(entry.answer, data.knowledge, (k) => k.answer, random);
         questions.push(
-          buildKnowledgeQuestion(setId, orderIndex, section.title, entry),
+          buildKnowledgeQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "safety") {
         const entry = pickUnused(data.safety, "safety");
+        const choices = generateChoices(entry.answer, data.safety, (s) => s.answer, random);
         questions.push(
-          buildSafetyQuestion(setId, orderIndex, section.title, entry),
+          buildSafetyQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "writing") {
         const prompt = pickUnused(data.writing, "writing");
@@ -670,15 +714,10 @@ export function generateDailySet(
         data.korean.length > 0
       ) {
         const entry = pickUnused(data.korean, "korean");
+        const pool = data.korean!;
+        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            "korean" as SubjectType,
-            entry,
-            "국어",
-          ),
+          buildSubjectQuestion(setId, orderIndex, section.title, "korean" as SubjectType, entry, "국어", choices),
         );
       } else if (
         subject === "creative" &&
@@ -686,15 +725,10 @@ export function generateDailySet(
         data.creative.length > 0
       ) {
         const entry = pickUnused(data.creative, "creative");
+        const pool = data.creative!;
+        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            "creative" as SubjectType,
-            entry,
-            "창의",
-          ),
+          buildSubjectQuestion(setId, orderIndex, section.title, "creative" as SubjectType, entry, "창의", choices),
         );
       } else if (
         subject === "science" &&
@@ -702,15 +736,10 @@ export function generateDailySet(
         data.science.length > 0
       ) {
         const entry = pickUnused(data.science, "science");
+        const pool = data.science!;
+        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            "science" as SubjectType,
-            entry,
-            "과학",
-          ),
+          buildSubjectQuestion(setId, orderIndex, section.title, "science" as SubjectType, entry, "과학", choices),
         );
       } else if (
         subject === "social" &&
@@ -718,28 +747,17 @@ export function generateDailySet(
         data.social.length > 0
       ) {
         const entry = pickUnused(data.social, "social");
+        const pool = data.social!;
+        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            "social" as SubjectType,
-            entry,
-            "사회",
-          ),
+          buildSubjectQuestion(setId, orderIndex, section.title, "social" as SubjectType, entry, "사회", choices),
         );
       } else {
         // Fallback: use knowledge data as generic question
         const entry = pickUnused(data.knowledge, "knowledge_fallback");
+        const choices = generateChoices(entry.answer, data.knowledge, (k) => k.answer, random);
         questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            (subject as SubjectType) || ("general_knowledge" as SubjectType),
-            entry,
-            "",
-          ),
+          buildSubjectQuestion(setId, orderIndex, section.title, (subject as SubjectType) || ("general_knowledge" as SubjectType), entry, "", choices),
         );
       }
 

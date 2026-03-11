@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { UpdateNotification } from "@/components/common/UpdateNotification";
 import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import NicknameModal from "@/components/common/NicknameModal";
 
 export default function DashboardLayout({
   children,
@@ -87,6 +88,9 @@ export default function DashboardLayout({
 
       {/* Update notification banner */}
       <UpdateNotification />
+
+      {/* Nickname setup for bulk-created students */}
+      <NicknameModal />
     </div>
   );
 }
