@@ -149,7 +149,7 @@ export default function StudentDashboard() {
         <Card>
           <CardContent className="py-4">
             <h3 className="text-sm font-bold text-muted-foreground mb-3">학습 요약</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
                   <Clock className="h-5 w-5 text-primary" />

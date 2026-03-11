@@ -37,7 +37,7 @@ export default function DailyPage() {
 
   if (error) {
     return (
-      <div className="max-w-lg mx-auto space-y-6 py-8">
+      <div className="max-w-lg lg:max-w-2xl mx-auto space-y-6 py-8">
         <Card>
           <CardContent className="py-8 text-center">
             <Mascot state="thinking" message={error} size={80} />
@@ -56,7 +56,7 @@ export default function DailyPage() {
   });
 
   return (
-    <div className="space-y-6 max-w-lg mx-auto">
+    <div className="space-y-6 max-w-lg lg:max-w-2xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}

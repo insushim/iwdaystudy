@@ -232,7 +232,7 @@ export default function LearningSessionClient() {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top bar */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl lg:max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <Button
               variant="ghost"
@@ -260,7 +260,7 @@ export default function LearningSessionClient() {
 
       {/* Main content */}
       <div className="flex-1 py-6 px-4">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl lg:max-w-4xl mx-auto">
           <AnimatePresence mode="wait">
             <QuestionRenderer
               key={currentQuestion.id}
@@ -275,7 +275,7 @@ export default function LearningSessionClient() {
 
       {/* Bottom navigation */}
       <div className="sticky bottom-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
+        <div className="max-w-2xl lg:max-w-4xl mx-auto flex items-center justify-between">
           <Button
             variant="outline"
             onClick={() => handleNavigate(currentIndex - 1)}

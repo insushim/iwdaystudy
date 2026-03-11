@@ -80,7 +80,7 @@ export default function DashboardLayout({
 
       {/* Main content area */}
       <main className="flex-1 pb-20 lg:pb-0 min-h-screen">
-        <div className="max-w-5xl mx-auto p-4 md:p-6">{children}</div>
+        <div className="max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto p-4 md:p-6 lg:p-8">{children}</div>
       </main>
 
       {/* Mobile bottom navigation */}
