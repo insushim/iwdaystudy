@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ExternalLink,
   UserPlus,
+  Trash2,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthStore } from "@/stores/authStore";
-import { localGetAllUsers } from "@/lib/local-auth";
+import { localGetAllUsers, localBulkDeleteStudents } from "@/lib/local-auth";
 import { getLearningRecords, getStreakCount } from "@/lib/local-storage";
 
 interface StudentRow {
@@ -198,12 +199,35 @@ export default function TeacherStudentsPage() {
             전체 학생 목록 ({studentRows.length}명)
           </p>
         </div>
-        <Button asChild>
-          <Link href="/teacher/students/bulk-create">
-            <UserPlus className="h-4 w-4 mr-1" />
-            학생 일괄 생성
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          {studentRows.length > 0 && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => {
+                if (!user) return;
+                if (
+                  !confirm(
+                    `내 학생 ${studentRows.length}명을 모두 삭제하시겠습니까?\n학습 기록도 함께 삭제됩니다. 이 작업은 되돌릴 수 없습니다.`,
+                  )
+                )
+                  return;
+                const deleted = localBulkDeleteStudents(user.id);
+                alert(`${deleted}명의 학생이 삭제되었습니다.`);
+                setStudentRows([]);
+              }}
+            >
+              <Trash2 className="h-4 w-4 mr-1" />
+              전체 삭제
+            </Button>
+          )}
+          <Button asChild>
+            <Link href="/teacher/students/bulk-create">
+              <UserPlus className="h-4 w-4 mr-1" />
+              학생 일괄 생성
+            </Link>
+          </Button>
+        </div>
       </motion.div>
 
       {studentRows.length === 0 ? (

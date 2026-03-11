@@ -324,6 +324,58 @@ export function localGetPendingTeacherCount(): number {
   ).length;
 }
 
+// ---------- Teacher: Bulk Student Deletion ----------
+
+/**
+ * Delete all students belonging to a specific teacher.
+ * Also removes their class_members entries and updates class studentCounts.
+ */
+export function localBulkDeleteStudents(teacherId: string): number {
+  const users = getStoredUsers();
+  const studentIds = new Set(
+    users
+      .filter((u) => u.role === "student" && u.teacher_id === teacherId)
+      .map((u) => u.id),
+  );
+
+  if (studentIds.size === 0) return 0;
+
+  // Remove students from users
+  const remaining = users.filter((u) => !studentIds.has(u.id));
+  saveStoredUsers(remaining);
+
+  // Remove from class_members
+  const members = getClassMembers();
+  const remainingMembers = members.filter((m) => !studentIds.has(m.student_id));
+  saveClassMembers(remainingMembers);
+
+  // Update class studentCounts
+  const classes = getLocalClasses();
+  for (const cls of classes) {
+    cls.studentCount = remainingMembers.filter(
+      (m) => m.class_id === cls.id,
+    ).length;
+  }
+  saveLocalClasses(classes);
+
+  // Clean up learning records
+  try {
+    const recordsRaw = localStorage.getItem("araharu_learning_records");
+    if (recordsRaw) {
+      const records = JSON.parse(recordsRaw);
+      const cleaned = records.filter(
+        (r: any) => !studentIds.has(r.student_id),
+      );
+      localStorage.setItem(
+        "araharu_learning_records",
+        JSON.stringify(cleaned),
+      );
+    }
+  } catch { /* ignore */ }
+
+  return studentIds.size;
+}
+
 // ---------- Teacher: Bulk Student Creation ----------
 
 export interface BulkCreateResult {
