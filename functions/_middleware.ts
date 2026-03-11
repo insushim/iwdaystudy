@@ -1,7 +1,8 @@
-// Cloudflare Pages middleware: CORS headers and auth token validation
+// Cloudflare Pages middleware: CORS headers, auth token validation, and dynamic route rewriting
 
 interface Env {
   DB: D1Database;
+  ASSETS: Fetcher;
 }
 
 // Paths that do NOT require authentication
@@ -9,6 +10,13 @@ const PUBLIC_PATHS = [
   '/api/auth/login',
   '/api/auth/signup',
   '/api/version',
+];
+
+// Dynamic route patterns → placeholder HTML paths
+const DYNAMIC_ROUTES: { pattern: RegExp; rewrite: string }[] = [
+  { pattern: /^\/teacher\/classes\/(?!placeholder)[^/]+\/?$/, rewrite: '/teacher/classes/placeholder/index.html' },
+  { pattern: /^\/teacher\/students\/(?!placeholder|bulk-create)[^/]+\/?$/, rewrite: '/teacher/students/placeholder/index.html' },
+  { pattern: /^\/student\/daily\/(?!placeholder)[^/]+\/?$/, rewrite: '/student/daily/placeholder/index.html' },
 ];
 
 function isPublicPath(pathname: string): boolean {
@@ -43,6 +51,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         'Access-Control-Max-Age': '86400',
       },
     });
+  }
+
+  // Rewrite dynamic routes to placeholder HTML (for Next.js static export)
+  for (const route of DYNAMIC_ROUTES) {
+    if (route.pattern.test(url.pathname)) {
+      const assetUrl = new URL(route.rewrite, url.origin);
+      return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+    }
   }
 
   // Only apply auth checks to /api routes
