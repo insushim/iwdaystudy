@@ -12,11 +12,11 @@ const PUBLIC_PATHS = [
   '/api/version',
 ];
 
-// Dynamic route patterns → placeholder HTML paths
-const DYNAMIC_ROUTES: { pattern: RegExp; rewrite: string }[] = [
-  { pattern: /^\/teacher\/classes\/(?!placeholder)[^/]+\/?$/, rewrite: '/teacher/classes/placeholder/index.html' },
-  { pattern: /^\/teacher\/students\/(?!placeholder|bulk-create)[^/]+\/?$/, rewrite: '/teacher/students/placeholder/index.html' },
-  { pattern: /^\/student\/daily\/(?!placeholder)[^/]+\/?$/, rewrite: '/student/daily/placeholder/index.html' },
+// Dynamic route patterns: prefix to match → placeholder base path
+const DYNAMIC_ROUTE_PREFIXES: { pattern: RegExp; placeholder: string }[] = [
+  { pattern: /^\/teacher\/classes\/(?!placeholder\b)[^/]+/, placeholder: '/teacher/classes/placeholder' },
+  { pattern: /^\/teacher\/students\/(?!placeholder\b|bulk-create\b)[^/]+/, placeholder: '/teacher/students/placeholder' },
+  { pattern: /^\/student\/daily\/(?!placeholder\b)[^/]+/, placeholder: '/student/daily/placeholder' },
 ];
 
 function isPublicPath(pathname: string): boolean {
@@ -53,11 +53,24 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     });
   }
 
-  // Rewrite dynamic routes to placeholder HTML (for Next.js static export)
-  for (const route of DYNAMIC_ROUTES) {
+  // Rewrite dynamic routes to placeholder assets (for Next.js static export)
+  // Handles both HTML pages and internal Next.js files (__next.*.txt, index.txt, etc.)
+  for (const route of DYNAMIC_ROUTE_PREFIXES) {
     if (route.pattern.test(url.pathname)) {
-      const assetUrl = new URL(route.rewrite, url.origin);
-      return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+      // Extract the file portion after the dynamic segment (e.g., "/__next._tree.txt")
+      const match = url.pathname.match(route.pattern);
+      if (match) {
+        const matchedPart = match[0];
+        const rest = url.pathname.slice(matchedPart.length); // e.g., "/__next._tree.txt" or "/" or ""
+        let rewritePath: string;
+        if (!rest || rest === '/') {
+          rewritePath = route.placeholder + '/index.html';
+        } else {
+          rewritePath = route.placeholder + rest;
+        }
+        const assetUrl = new URL(rewritePath, url.origin);
+        return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+      }
     }
   }
 
