@@ -385,16 +385,53 @@ function saveLocalClasses(classes: ClassDataLocal[]): void {
 
 /**
  * Get students belonging to a specific class.
+ * Also auto-migrates students that were created before class_members existed
+ * (matched by class_name and teacher_id).
  */
 export function localGetClassStudents(classId: string): Profile[] {
   const members = getClassMembers();
-  const studentIds = members
-    .filter((m) => m.class_id === classId)
-    .map((m) => m.student_id);
-  if (studentIds.length === 0) return [];
   const allUsers = getStoredUsers();
+  const classes = getLocalClasses();
+  const cls = classes.find((c) => c.id === classId);
+
+  // Find students already in class_members
+  const memberStudentIds = new Set(
+    members.filter((m) => m.class_id === classId).map((m) => m.student_id),
+  );
+
+  // Auto-migrate: find students with matching class_name that aren't in class_members yet
+  if (cls) {
+    const now = new Date().toISOString();
+    let migrated = false;
+    for (const u of allUsers) {
+      if (
+        u.role === "student" &&
+        u.class_name === cls.name &&
+        !memberStudentIds.has(u.id)
+      ) {
+        members.push({
+          id: generateId(),
+          class_id: classId,
+          student_id: u.id,
+          joined_at: now,
+        });
+        memberStudentIds.add(u.id);
+        migrated = true;
+      }
+    }
+    if (migrated) {
+      saveClassMembers(members);
+      // Update class studentCount
+      const classIdx = classes.findIndex((c) => c.id === classId);
+      if (classIdx !== -1) {
+        classes[classIdx].studentCount = memberStudentIds.size;
+        saveLocalClasses(classes);
+      }
+    }
+  }
+
   return allUsers
-    .filter((u) => studentIds.includes(u.id))
+    .filter((u) => memberStudentIds.has(u.id))
     .map(stripPasswordHash);
 }
 

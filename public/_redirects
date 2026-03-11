@@ -1,1 +1,7 @@
+/teacher/classes/:classId/ /teacher/classes/placeholder/index.html 200
+/teacher/classes/:classId /teacher/classes/placeholder/index.html 200
+/teacher/students/:studentId/ /teacher/students/placeholder/index.html 200
+/teacher/students/:studentId /teacher/students/placeholder/index.html 200
+/student/daily/:setId/ /student/daily/placeholder/index.html 200
+/student/daily/:setId /student/daily/placeholder/index.html 200
 /* /index.html 200
