@@ -14,6 +14,8 @@ import {
   ExternalLink,
   UserPlus,
   Trash2,
+  Download,
+  KeyRound,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +36,7 @@ import { getLearningRecords, getStreakCount } from "@/lib/local-storage";
 interface StudentRow {
   id: string;
   name: string;
+  loginId: string;
   grade: number;
   className: string;
   streak: number;
@@ -100,9 +103,15 @@ export default function TeacherStudentsPage() {
         else lastActive = `${diffDays}일 전`;
       }
 
+      // Extract login ID from email (e.g., ara01@class.local → ara01)
+      const loginId = student.email?.includes("@class.local")
+        ? student.email.split("@")[0]
+        : "";
+
       return {
         id: student.id,
         name: student.name,
+        loginId,
         grade: student.grade || 0,
         className: student.class_name || "-",
         streak,
@@ -199,7 +208,35 @@ export default function TeacherStudentsPage() {
             전체 학생 목록 ({studentRows.length}명)
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          {studentRows.length > 0 && studentRows.some((s) => s.loginId) && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const rows = studentRows.filter((s) => s.loginId);
+                const header = "번호,이름,아이디,비밀번호\n";
+                const csv = rows
+                  .map(
+                    (s, i) =>
+                      `${i + 1},${s.name},${s.loginId},${s.loginId}`,
+                  )
+                  .join("\n");
+                const blob = new Blob(["\uFEFF" + header + csv], {
+                  type: "text/csv;charset=utf-8;",
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `학생계정_${new Date().toISOString().slice(0, 10)}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
+              <Download className="h-4 w-4 mr-1" />
+              계정 CSV
+            </Button>
+          )}
           {studentRows.length > 0 && (
             <Button
               variant="destructive"
@@ -304,13 +341,17 @@ export default function TeacherStudentsPage() {
             <Card>
               <CardContent className="p-0">
                 {/* Table Header */}
-                <div className="hidden sm:grid sm:grid-cols-[1fr_80px_80px_100px_80px_40px] gap-3 px-4 py-3 border-b bg-muted/30 text-xs font-medium text-muted-foreground">
+                <div className="hidden sm:grid sm:grid-cols-[1fr_100px_80px_80px_100px_80px_40px] gap-3 px-4 py-3 border-b bg-muted/30 text-xs font-medium text-muted-foreground">
                   <button
                     className="flex items-center gap-1 hover:text-foreground transition-colors text-left"
                     onClick={() => toggleSort("name")}
                   >
                     이름 <SortIcon field="name" />
                   </button>
+                  <span className="flex items-center gap-1">
+                    <KeyRound className="h-3 w-3" />
+                    계정
+                  </span>
                   <span>반</span>
                   <button
                     className="flex items-center gap-1 hover:text-foreground transition-colors"
@@ -352,7 +393,7 @@ export default function TeacherStudentsPage() {
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.02 * idx }}
-                          className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_80px_80px_100px_80px_40px] gap-3 px-4 py-3 hover:bg-muted/30 transition-colors cursor-pointer items-center group"
+                          className="grid grid-cols-[1fr_auto] sm:grid-cols-[1fr_100px_80px_80px_100px_80px_40px] gap-3 px-4 py-3 hover:bg-muted/30 transition-colors cursor-pointer items-center group"
                         >
                           {/* Name */}
                           <div className="flex items-center gap-3">
@@ -363,6 +404,11 @@ export default function TeacherStudentsPage() {
                               <p className="text-sm font-medium">
                                 {student.name}
                               </p>
+                              {student.loginId && (
+                                <p className="text-[10px] font-mono text-primary/70 sm:hidden">
+                                  ID: {student.loginId}
+                                </p>
+                              )}
                               <p className="text-xs text-muted-foreground sm:hidden">
                                 {student.className} | {student.avgScore}점 |{" "}
                                 {student.lastActive}
@@ -382,6 +428,9 @@ export default function TeacherStudentsPage() {
                           </div>
 
                           {/* Desktop columns */}
+                          <span className="hidden sm:block text-xs font-mono text-muted-foreground">
+                            {student.loginId || "-"}
+                          </span>
                           <span className="hidden sm:block text-sm text-muted-foreground">
                             {student.className}
                           </span>
