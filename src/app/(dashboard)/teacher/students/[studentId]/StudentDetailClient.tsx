@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -99,8 +99,8 @@ interface EarnedBadge {
 }
 
 export default function StudentDetailClient() {
-  const params = useParams();
-  const studentId = params.studentId as string;
+  const pathname = usePathname();
+  const studentId = pathname.split("/").filter(Boolean).pop() || "";
 
   const [studentInfo, setStudentInfo] = useState<StudentInfo | null>(null);
   const [subjectRadar, setSubjectRadar] = useState<

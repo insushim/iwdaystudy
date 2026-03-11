@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -128,8 +128,9 @@ function buildStudentStats(students: Profile[]): StudentWithStats[] {
 }
 
 export default function ClassDetailClient() {
-  const params = useParams();
-  const classId = params.classId as string;
+  const pathname = usePathname();
+  // Extract classId from URL: /teacher/classes/{classId}
+  const classId = pathname.split("/").filter(Boolean).pop() || "";
 
   const [classInfo, setClassInfo] = useState<ClassData | null>(null);
   const [students, setStudents] = useState<StudentWithStats[]>([]);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, Send, ArrowLeft } from 'lucide-react';
@@ -20,7 +20,6 @@ import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import type { LearningRecord, QuestionResponse } from '@/types/database';
 
 export default function LearningSessionClient() {
-  const params = useParams();
   const router = useRouter();
   const { user } = useAuthStore();
   const { dailySet, isLoading } = useDailySet();
