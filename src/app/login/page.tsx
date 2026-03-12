@@ -24,7 +24,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isStudentMode, setIsStudentMode] = useState(false);
+  const [isStudentMode, setIsStudentMode] = useState(true);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -81,17 +81,17 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-muted">
             <button
               type="button"
-              onClick={() => { setIsStudentMode(false); setEmail(""); setError(""); }}
-              className={`py-2 text-sm font-medium rounded-md transition-colors ${!isStudentMode ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              선생님 / 학부모
-            </button>
-            <button
-              type="button"
               onClick={() => { setIsStudentMode(true); setEmail(""); setError(""); }}
               className={`py-2 text-sm font-medium rounded-md transition-colors ${isStudentMode ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
             >
               학생
+            </button>
+            <button
+              type="button"
+              onClick={() => { setIsStudentMode(false); setEmail(""); setError(""); }}
+              className={`py-2 text-sm font-medium rounded-md transition-colors ${!isStudentMode ? "bg-background shadow-sm text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              선생님 / 학부모
             </button>
           </div>
 
