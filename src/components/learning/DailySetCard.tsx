@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Play, CheckCircle, Clock, BookOpen, RotateCcw, Sparkles } from 'lucide-react';
+import { Play, CheckCircle, Clock, BookOpen, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { SUBJECTS } from '@/types/learning';
 import type { DailySet, Question } from '@/types/database';
@@ -98,24 +98,21 @@ export default function DailySetCard({ dailySet, questions, isCompleted = false,
           )}
 
           {/* Action button */}
-          <Button
-            className="w-full h-12 text-base font-bold rounded-xl"
-            variant={isCompleted ? 'outline' : 'default'}
-            size="lg"
-            onClick={() => router.push(`/student/daily/${dailySet.id}/`)}
-          >
-            {isCompleted ? (
-              <>
-                <RotateCcw className="w-4 h-4 mr-2" />
-                다시 풀기
-              </>
-            ) : (
-              <>
-                <Play className="w-4 h-4 mr-2" />
-                학습 시작하기
-              </>
-            )}
-          </Button>
+          {isCompleted ? (
+            <div className="w-full h-12 flex items-center justify-center gap-2 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold text-base">
+              <CheckCircle className="w-5 h-5" />
+              오늘 학습 완료! 내일 또 만나요 🌟
+            </div>
+          ) : (
+            <Button
+              className="w-full h-12 text-base font-bold rounded-xl"
+              size="lg"
+              onClick={() => router.push(`/student/daily/${dailySet.id}/`)}
+            >
+              <Play className="w-4 h-4 mr-2" />
+              학습 시작하기
+            </Button>
+          )}
         </CardContent>
       </Card>
     </motion.div>

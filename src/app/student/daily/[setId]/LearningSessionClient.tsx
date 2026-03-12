@@ -9,7 +9,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useLearningStore } from '@/stores/learningStore';
 import { useDailySet } from '@/hooks/useDailySet';
 import { useSound } from '@/hooks/useSound';
-import { saveLearningRecord, saveQuestionResponses, checkAndAwardBadges } from '@/lib/local-storage';
+import { saveLearningRecord, saveQuestionResponses, checkAndAwardBadges, getRecordForSet } from '@/lib/local-storage';
 import { generateId } from '@/lib/utils';
 import QuestionRenderer from '@/components/learning/QuestionRenderer';
 import ProgressBar from '@/components/learning/ProgressBar';
@@ -17,6 +17,7 @@ import Timer from '@/components/learning/Timer';
 import ResultScreen from '@/components/learning/ResultScreen';
 import Mascot from '@/components/learning/Mascot';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { Card, CardContent } from '@/components/ui/card';
 import type { LearningRecord, QuestionResponse } from '@/types/database';
 
 export default function LearningSessionClient() {
@@ -32,14 +33,25 @@ export default function LearningSessionClient() {
   const [isPaused, setIsPaused] = useState(false);
   const [mascotState, setMascotState] = useState<'default' | 'happy' | 'thinking' | 'correct' | 'encourage'>('default');
   const [mascotMessage, setMascotMessage] = useState('');
+  const [alreadyDoneToday, setAlreadyDoneToday] = useState(false);
+
+  // Check if already completed today
+  useEffect(() => {
+    if (user && dailySet) {
+      const record = getRecordForSet(user.id, dailySet.set.id);
+      if (record?.is_completed) {
+        setAlreadyDoneToday(true);
+      }
+    }
+  }, [user, dailySet]);
 
   // Initialize session
   useEffect(() => {
-    if (dailySet && !startedAt) {
+    if (dailySet && !startedAt && !alreadyDoneToday) {
       initSession(dailySet.set, dailySet.questions);
       play('start');
     }
-  }, [dailySet, startedAt, initSession, play]);
+  }, [dailySet, startedAt, alreadyDoneToday, initSession, play]);
 
   // Timer
   useEffect(() => {
@@ -202,7 +214,28 @@ export default function LearningSessionClient() {
     setCurrentIndex(index);
   }, [setCurrentIndex]);
 
-  if (isLoading || !currentQuestion) {
+  if (isLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <LoadingSpinner size="lg" text="학습을 준비하고 있어요..." />
+      </div>
+    );
+  }
+
+  if (alreadyDoneToday) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+          <Mascot state="happy" message="오늘도 최고야!" size={100} />
+          <h2 className="text-2xl font-bold mt-4 mb-2">오늘 학습 완료!</h2>
+          <p className="text-muted-foreground mb-6">내일 새로운 학습이 기다리고 있어요.</p>
+          <Button onClick={() => router.push('/student/')} className="rounded-xl px-8">홈으로</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentQuestion) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <LoadingSpinner size="lg" text="학습을 준비하고 있어요..." />
@@ -227,11 +260,51 @@ export default function LearningSessionClient() {
     );
   }
 
+  const NavButtons = ({ showMascot = false }: { showMascot?: boolean }) => (
+    <>
+      <Button
+        variant="outline"
+        onClick={() => handleNavigate(currentIndex - 1)}
+        disabled={currentIndex === 0}
+        className="gap-1 rounded-xl"
+      >
+        <ChevronLeft className="h-4 w-4" />
+        이전
+      </Button>
+
+      {showMascot && (
+        <div className="flex-shrink-0">
+          <Mascot state={mascotState} message={mascotMessage} size={50} />
+        </div>
+      )}
+
+      {allAnswered ? (
+        <Button onClick={handleComplete} className="gap-1 rounded-xl bg-green-600 hover:bg-green-700">
+          <Send className="h-4 w-4" />
+          제출하기
+        </Button>
+      ) : isLastQuestion ? (
+        <Button variant="outline" disabled className="rounded-xl">
+          모든 문제를 풀어주세요
+        </Button>
+      ) : currentState?.isAnswered ? (
+        <Button onClick={() => handleNavigate(currentIndex + 1)} className="gap-1 rounded-xl">
+          다음
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+      ) : (
+        <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+          문제를 풀어주세요
+        </Button>
+      )}
+    </>
+  );
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top bar */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
-        <div className="max-w-2xl lg:max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <Button
               variant="ghost"
@@ -242,10 +315,7 @@ export default function LearningSessionClient() {
               <ArrowLeft className="h-4 w-4" />
               나가기
             </Button>
-            <Timer
-              onTick={() => {}}
-              paused={isPaused}
-            />
+            <Timer onTick={() => {}} paused={isPaused} />
           </div>
           <ProgressBar
             questions={questions}
@@ -258,67 +328,60 @@ export default function LearningSessionClient() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 py-6 px-4">
-        <div className="max-w-2xl lg:max-w-4xl mx-auto">
-          <AnimatePresence mode="wait">
-            <QuestionRenderer
-              key={currentQuestion.id}
-              question={currentQuestion}
-              onAnswer={handleAnswer}
-              showResult={!!currentState?.isAnswered}
-              isCorrect={currentState?.isCorrect ?? null}
-            />
-          </AnimatePresence>
+      <div className="flex-1 py-6 px-4 pb-24 lg:pb-8">
+        <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[240px,1fr] xl:grid-cols-[280px,1fr] lg:gap-8 lg:items-start">
+
+          {/* Left sidebar — desktop only */}
+          <div className="hidden lg:flex flex-col gap-4 sticky top-[88px]">
+            <Card>
+              <CardContent className="flex flex-col items-center py-6">
+                <Mascot state={mascotState} message={mascotMessage} size={90} />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="py-4 space-y-3 text-sm">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">학습 현황</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">현재 문제</span>
+                  <span className="font-bold">{currentIndex + 1} / {questions.length}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">정답</span>
+                  <span className="font-bold text-green-600">{correctIndices.size}개</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">남은 문제</span>
+                  <span className="font-bold">{questions.length - answeredIndices.size}개</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Question area */}
+          <div>
+            <AnimatePresence mode="wait">
+              <QuestionRenderer
+                key={currentQuestion.id}
+                question={currentQuestion}
+                onAnswer={handleAnswer}
+                showResult={!!currentState?.isAnswered}
+                isCorrect={currentState?.isCorrect ?? null}
+              />
+            </AnimatePresence>
+
+            {/* Desktop inline navigation */}
+            <div className="hidden lg:flex items-center justify-between mt-6">
+              <NavButtons />
+            </div>
+          </div>
+
         </div>
       </div>
 
-      {/* Bottom navigation */}
-      <div className="sticky bottom-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
-        <div className="max-w-2xl lg:max-w-4xl mx-auto flex items-center justify-between">
-          <Button
-            variant="outline"
-            onClick={() => handleNavigate(currentIndex - 1)}
-            disabled={currentIndex === 0}
-            className="gap-1 rounded-xl"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            이전
-          </Button>
-
-          {/* Mascot in center */}
-          <div className="flex-shrink-0">
-            <Mascot
-              state={mascotState}
-              message={mascotMessage}
-              size={50}
-            />
-          </div>
-
-          {allAnswered ? (
-            <Button
-              onClick={handleComplete}
-              className="gap-1 rounded-xl bg-green-600 hover:bg-green-700"
-            >
-              <Send className="h-4 w-4" />
-              제출하기
-            </Button>
-          ) : isLastQuestion ? (
-            <Button variant="outline" disabled className="rounded-xl">
-              모든 문제를 풀어주세요
-            </Button>
-          ) : currentState?.isAnswered ? (
-            <Button
-              onClick={() => handleNavigate(currentIndex + 1)}
-              className="gap-1 rounded-xl"
-            >
-              다음
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          ) : (
-            <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
-              문제를 풀어주세요
-            </Button>
-          )}
+      {/* Mobile bottom navigation */}
+      <div className="lg:hidden sticky bottom-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
+        <div className="max-w-2xl mx-auto flex items-center justify-between">
+          <NavButtons showMascot />
         </div>
       </div>
     </div>

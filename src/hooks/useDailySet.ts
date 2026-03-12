@@ -4,7 +4,14 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import type { DailySetWithQuestions } from '@/types/learning';
 import { generateDailySetWithoutRepeats } from '@/lib/daily-set-generator';
-import { getLearningRecords, getSeenQuestionSignatures, storeDailySet } from '@/lib/local-storage';
+import { getLearningRecords, getSeenQuestionSignatures, storeDailySet, getStoredDailySet } from '@/lib/local-storage';
+
+const TODAY_SET_PREFIX = 'araharu_today_set_';
+
+function getTodayKey(userId: string): string {
+  const today = new Date().toISOString().slice(0, 10);
+  return `${TODAY_SET_PREFIX}${userId}_${today}`;
+}
 
 export function useDailySet() {
   const { user } = useAuthStore();
@@ -23,7 +30,20 @@ export function useDailySet() {
       setIsLoading(true);
       setError(null);
 
-      // Get student's completed set IDs to avoid repeats
+      // Return the same set for the whole day (one session per day)
+      if (typeof window !== 'undefined') {
+        const todaySetId = localStorage.getItem(getTodayKey(user.id));
+        if (todaySetId) {
+          const stored = getStoredDailySet(todaySetId);
+          if (stored) {
+            setDailySet(stored);
+            setIsLoading(false);
+            return;
+          }
+        }
+      }
+
+      // Generate a new set for today
       const records = getLearningRecords(user.id);
       const completedSetIds = new Set(
         records
@@ -39,6 +59,11 @@ export function useDailySet() {
         usedQuestionSignatures,
       );
       storeDailySet(setData.set, setData.questions);
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(getTodayKey(user.id), setData.set.id);
+      }
+
       setDailySet(setData);
     } catch {
       setError('학습 세트를 불러올 수 없습니다.');
