@@ -98,6 +98,20 @@ export const useAuthStore = create<AuthState>()(
           }
           // 2) Fall back to localStorage auth
           const result = localLogin(email, password);
+          // Sync to D1 so other devices can login
+          fetch("/api/auth/signup", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: result.user.email,
+              password,
+              name: result.user.name,
+              role: result.user.role,
+              grade: result.user.grade,
+              semester: result.user.semester,
+              school_name: result.user.school_name,
+            }),
+          }).catch(() => {});
           set({
             user: result.user,
             token: result.token,
