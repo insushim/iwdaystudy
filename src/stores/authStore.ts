@@ -33,13 +33,14 @@ async function apiLogin(
       body: JSON.stringify({ email, password }),
     });
     if (!res.ok) {
-      const err = await res.json().catch(() => null);
-      // 401 = wrong credentials (don't fall back, user error)
-      // 500 = server error (fall back to local)
-      if (res.status === 401 || res.status === 403) {
+      // 403 = teacher pending/rejected (hard error, don't fall back)
+      if (res.status === 403) {
+        const err = await res.json().catch(() => null);
         throw new Error(err?.message || "로그인 실패");
       }
-      return null; // server error → fall back
+      // 401 = user not found OR wrong password → fall back to local auth
+      // 500 = server error → fall back to local
+      return null;
     }
     return await res.json();
   } catch (e) {
