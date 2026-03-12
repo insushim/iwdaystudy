@@ -22,7 +22,7 @@ import SafetyQuiz from './SafetyQuiz';
 
 interface Props {
   question: Question;
-  onAnswer: (answer: any) => void;
+  onAnswer: (answer: unknown) => void;
   showResult: boolean;
   isCorrect: boolean | null;
 }
@@ -41,7 +41,30 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
       isCorrect,
     };
 
-    // Route by subject first
+    // Route special question types first
+    switch (question.question_type) {
+      case 'emotion_check':
+        return (
+          <EmotionCheck
+            onAnswer={onAnswer}
+            showResult={showResult}
+          />
+        );
+
+      case 'readiness_check':
+        return (
+          <ReadinessChecklist
+            content={question.content}
+            onAnswer={onAnswer}
+            showResult={showResult}
+          />
+        );
+
+      default:
+        break;
+    }
+
+    // Route by subject
     switch (question.subject) {
       case 'math':
         return <MathQuestion {...commonProps} />;
@@ -76,29 +99,6 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
       case 'science':
       case 'social':
         return <GeneralKnowledge {...commonProps} />;
-
-      default:
-        break;
-    }
-
-    // Route by question_type for special types
-    switch (question.question_type) {
-      case 'emotion_check':
-        return (
-          <EmotionCheck
-            onAnswer={onAnswer}
-            showResult={showResult}
-          />
-        );
-
-      case 'readiness_check':
-        return (
-          <ReadinessChecklist
-            content={question.content}
-            onAnswer={onAnswer}
-            showResult={showResult}
-          />
-        );
 
       default:
         return <GeneralKnowledge {...commonProps} />;
