@@ -9,6 +9,7 @@ interface Env {
 const PUBLIC_PATHS = [
   '/api/auth/login',
   '/api/auth/signup',
+  '/api/auth/bulk-create',
   '/api/version',
 ];
 

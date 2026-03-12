@@ -5,11 +5,8 @@ import {
   localLogin,
   localSignup,
   localLogout,
-  localGetCurrentUser,
   localUpdateProfile,
-  shouldUseLocalAuth,
   type SignupData,
-  type AuthResult,
 } from "@/lib/local-auth";
 
 interface AuthState {
@@ -24,6 +21,56 @@ interface AuthState {
   setUser: (user: Profile | null) => void;
 }
 
+/** Try D1 API login, then fall back to localStorage */
+async function apiLogin(
+  email: string,
+  password: string,
+): Promise<{ user: Profile; token: string } | null> {
+  try {
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => null);
+      // 401 = wrong credentials (don't fall back, user error)
+      // 500 = server error (fall back to local)
+      if (res.status === 401 || res.status === 403) {
+        throw new Error(err?.message || "로그인 실패");
+      }
+      return null; // server error → fall back
+    }
+    return await res.json();
+  } catch (e) {
+    if (e instanceof TypeError) return null; // network error → fall back
+    throw e; // re-throw auth errors
+  }
+}
+
+async function apiSignup(
+  data: SignupData,
+): Promise<{ user: Profile; token: string } | null> {
+  try {
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => null);
+      if (res.status === 400 || res.status === 409) {
+        throw new Error(err?.message || "회원가입 실패");
+      }
+      return null;
+    }
+    return await res.json();
+  } catch (e) {
+    if (e instanceof TypeError) return null;
+    throw e;
+  }
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -35,37 +82,28 @@ export const useAuthStore = create<AuthState>()(
       login: async (email, password) => {
         set({ isLoading: true });
         try {
-          if (shouldUseLocalAuth()) {
-            // Static export / offline mode: use localStorage auth
-            const result = localLogin(email, password);
+          // 1) Try D1 API first
+          const apiResult = await apiLogin(email, password);
+          if (apiResult) {
+            localStorage.setItem("auth_token", apiResult.token);
+            // Also save to local-auth for offline/local features
+            try { localLogin(email, password); } catch { /* ignore */ }
             set({
-              user: result.user,
-              token: result.token,
+              user: apiResult.user,
+              token: apiResult.token,
               isAuthenticated: true,
               isLoading: false,
             });
-          } else {
-            // Production mode: call Cloudflare Functions API
-            const res = await fetch("/api/auth/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ email, password }),
-            });
-            if (!res.ok) {
-              const err = await res
-                .json()
-                .catch(() => ({ message: "로그인 실패" }));
-              throw new Error(err.message || "로그인 실패");
-            }
-            const data = await res.json();
-            localStorage.setItem("auth_token", data.token);
-            set({
-              user: data.user,
-              token: data.token,
-              isAuthenticated: true,
-              isLoading: false,
-            });
+            return;
           }
+          // 2) Fall back to localStorage auth
+          const result = localLogin(email, password);
+          set({
+            user: result.user,
+            token: result.token,
+            isAuthenticated: true,
+            isLoading: false,
+          });
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -75,61 +113,52 @@ export const useAuthStore = create<AuthState>()(
       signup: async (data) => {
         set({ isLoading: true });
         try {
-          if (shouldUseLocalAuth()) {
-            const result = localSignup(data);
-            // Pending teachers: set user but not authenticated
+          // 1) Try D1 API first
+          const apiResult = await apiSignup(data);
+          if (apiResult) {
+            // Also save to local-auth for offline features
+            try { localSignup(data); } catch { /* ignore duplicate */ }
             if (
-              result.user.role === "teacher" &&
-              result.user.approval_status === "pending"
+              apiResult.user.role === "teacher" &&
+              apiResult.user.approval_status === "pending"
             ) {
               set({
-                user: result.user,
+                user: apiResult.user,
                 token: null,
                 isAuthenticated: false,
                 isLoading: false,
               });
               return;
             }
+            localStorage.setItem("auth_token", apiResult.token);
             set({
-              user: result.user,
-              token: result.token,
+              user: apiResult.user,
+              token: apiResult.token,
               isAuthenticated: true,
               isLoading: false,
             });
-          } else {
-            const res = await fetch("/api/auth/signup", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data),
-            });
-            if (!res.ok) {
-              const err = await res
-                .json()
-                .catch(() => ({ message: "회원가입 실패" }));
-              throw new Error(err.message || "회원가입 실패");
-            }
-            const result = await res.json();
-            // Pending teachers
-            if (
-              result.user.role === "teacher" &&
-              result.user.approval_status === "pending"
-            ) {
-              set({
-                user: result.user,
-                token: null,
-                isAuthenticated: false,
-                isLoading: false,
-              });
-              return;
-            }
-            localStorage.setItem("auth_token", result.token);
-            set({
-              user: result.user,
-              token: result.token,
-              isAuthenticated: true,
-              isLoading: false,
-            });
+            return;
           }
+          // 2) Fall back to localStorage
+          const result = localSignup(data);
+          if (
+            result.user.role === "teacher" &&
+            result.user.approval_status === "pending"
+          ) {
+            set({
+              user: result.user,
+              token: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+            return;
+          }
+          set({
+            user: result.user,
+            token: result.token,
+            isAuthenticated: true,
+            isLoading: false,
+          });
         } catch (error) {
           set({ isLoading: false });
           throw error;
@@ -137,9 +166,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       logout: () => {
-        if (shouldUseLocalAuth()) {
-          localLogout();
-        }
+        localLogout();
         localStorage.removeItem("auth_token");
         set({ user: null, token: null, isAuthenticated: false });
       },
@@ -147,11 +174,10 @@ export const useAuthStore = create<AuthState>()(
       updateProfile: (data) => {
         const user = get().user;
         if (!user) return;
-
-        if (shouldUseLocalAuth()) {
+        try {
           const updated = localUpdateProfile(user.id, data);
           set({ user: updated });
-        } else {
+        } catch {
           set({ user: { ...user, ...data } });
         }
       },

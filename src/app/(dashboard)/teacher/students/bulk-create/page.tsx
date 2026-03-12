@@ -93,8 +93,9 @@ export default function BulkCreateStudentsPage() {
 
     if (!user || !selectedClass) return;
 
+    const pfx = prefix.trim().toLowerCase();
     const created = localBulkCreateStudents(count, {
-      prefix: prefix.trim().toLowerCase(),
+      prefix: pfx,
       grade: selectedClass.grade,
       semester: selectedClass.semester,
       class_name: selectedClass.name,
@@ -106,6 +107,25 @@ export default function BulkCreateStudentsPage() {
       setError("이미 존재하는 계정입니다. 다른 접두어를 사용해주세요.");
       return;
     }
+
+    // D1 API에도 저장 (다른 기기에서 로그인 가능하도록)
+    try {
+      const students = created.map((r, i) => ({
+        email: `${r.loginId}@class.local`,
+        name: r.nickname,
+        password: r.password,
+        grade: selectedClass.grade,
+        semester: selectedClass.semester,
+        class_name: selectedClass.name,
+        teacher_id: user.id,
+        student_number: i + 1,
+      }));
+      fetch("/api/auth/bulk-create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ students }),
+      }).catch(() => {}); // 실패해도 로컬은 이미 생성됨
+    } catch { /* ignore */ }
 
     setResults(created);
   }

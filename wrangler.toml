@@ -8,16 +8,7 @@ APP_ENV = "production"
 [[d1_databases]]
 binding = "DB"
 database_name = "araharu-db"
-database_id = "05bb928d-11d9-4fd8-92d4-17a3f89133cd"
-
-# Environment-specific configuration
-[env.preview]
-name = "araharu-preview"
-
-[[env.preview.d1_databases]]
-binding = "DB"
-database_name = "araharu-db-preview"
-database_id = "5b951024-3b28-4074-adf0-626b4bbe28b9"
+database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
 
 [env.production]
 name = "araharu"
@@ -25,7 +16,7 @@ name = "araharu"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "araharu-db"
-database_id = "05bb928d-11d9-4fd8-92d4-17a3f89133cd"
+database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
 
 # Secrets are set via `wrangler secret put`:
 # wrangler secret put ANTHROPIC_API_KEY
