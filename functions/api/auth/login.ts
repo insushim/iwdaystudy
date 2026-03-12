@@ -1,7 +1,10 @@
 // Cloudflare Pages Function: POST /api/auth/login
 
+import { verifyPassword, isLegacyHash, hashPassword, createToken } from "../../lib/crypto";
+
 interface Env {
   DB: D1Database;
+  AUTH_SECRET: string;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -18,11 +21,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Query D1 for user by email
+    // Normalize student login ID: "ara21" → "ara21@class.local"
+    const normalizedEmail = email.includes("@") ? email : `${email}@class.local`;
+
     const user = await context.env.DB.prepare(
       "SELECT * FROM profiles WHERE email = ?",
     )
-      .bind(email)
+      .bind(normalizedEmail)
       .first();
 
     if (!user) {
@@ -32,21 +37,29 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Verify password hash
-    if (user.password_hash !== simpleHash(password)) {
+    // Verify password (supports both new SHA-256 and legacy simpleHash)
+    const isValid = await verifyPassword(password, user.password_hash as string);
+    if (!isValid) {
       return jsonResponse(
         { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
         401,
       );
     }
 
+    // Auto-migrate legacy hash to SHA-256
+    if (isLegacyHash(user.password_hash as string)) {
+      const newHash = await hashPassword(password);
+      await context.env.DB.prepare(
+        "UPDATE profiles SET password_hash = ?, updated_at = ? WHERE id = ?",
+      )
+        .bind(newHash, new Date().toISOString(), user.id)
+        .run();
+    }
+
     // Block unapproved teachers
     if (user.role === "teacher" && user.approval_status === "pending") {
       return jsonResponse(
-        {
-          message:
-            "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다.",
-        },
+        { message: "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다." },
         403,
       );
     }
@@ -57,36 +70,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Generate auth token (base64 encoded JSON with expiry)
-    const token = btoa(
-      JSON.stringify({
-        id: user.id,
-        email: user.email,
-        exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
-      }),
+    // Generate signed token
+    const token = await createToken(
+      {
+        id: user.id as string,
+        email: user.email as string,
+        exp: Date.now() + 7 * 24 * 60 * 60 * 1000,
+      },
+      context.env.AUTH_SECRET,
     );
 
-    // Return user data without password_hash
     const { password_hash, ...safeUser } = user as Record<string, unknown>;
-
     return jsonResponse({ user: safeUser, token });
   } catch (err: any) {
     return jsonResponse(
-      { message: err.message || "로그인 처리 중 오류가 발생했습니다." },
+      { message: "로그인 처리 중 오류가 발생했습니다." },
       500,
     );
   }
 };
-
-function simpleHash(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(36);
-}
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {

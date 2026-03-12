@@ -21,3 +21,4 @@ database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
 # Secrets are set via `wrangler secret put`:
 # wrangler secret put ANTHROPIC_API_KEY
 # wrangler secret put CRON_SECRET
+# wrangler secret put AUTH_SECRET

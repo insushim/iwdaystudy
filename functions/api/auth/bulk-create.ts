@@ -1,8 +1,11 @@
 // Cloudflare Pages Function: POST /api/auth/bulk-create
 // Creates multiple student accounts in D1 for cross-device login
 
+import { hashPassword } from "../../lib/crypto";
+
 interface Env {
   DB: D1Database;
+  AUTH_SECRET: string;
 }
 
 interface BulkCreateBody {
@@ -75,7 +78,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           s.class_name,
           s.teacher_id,
           s.student_number,
-          simpleHash(s.password),
+          await hashPassword(s.password),
           now,
           now,
         )
@@ -96,16 +99,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 };
-
-function simpleHash(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(36);
-}
 
 function jsonResponse(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {

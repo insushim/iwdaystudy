@@ -1,28 +1,26 @@
 // Cloudflare Pages Function: GET /api/admin/stats
 // Returns admin dashboard statistics from D1 database
 
+import { verifyToken } from "../../lib/crypto";
+
 interface Env {
   DB: D1Database;
+  AUTH_SECRET: string;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
-    // Verify admin role from token
+    // Verify admin role from signed token
     const authHeader = context.request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return jsonResponse({ message: "인증이 필요합니다." }, 401);
     }
 
-    let userId: string;
-    try {
-      const token = JSON.parse(atob(authHeader.slice(7)));
-      if (token.exp < Date.now()) {
-        return jsonResponse({ message: "토큰이 만료되었습니다." }, 401);
-      }
-      userId = token.id;
-    } catch {
+    const tokenData = await verifyToken(authHeader.slice(7), context.env.AUTH_SECRET);
+    if (!tokenData) {
       return jsonResponse({ message: "유효하지 않은 토큰입니다." }, 401);
     }
+    const userId = tokenData.id;
 
     const requester = await context.env.DB.prepare(
       "SELECT role FROM profiles WHERE id = ?"

@@ -120,9 +120,13 @@ export default function BulkCreateStudentsPage() {
         teacher_id: user.id,
         student_number: i + 1,
       }));
+      const token = localStorage.getItem("auth_token");
       fetch("/api/auth/bulk-create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ students }),
       }).catch(() => {}); // 실패해도 로컬은 이미 생성됨
     } catch { /* ignore */ }

@@ -1,15 +1,17 @@
-// Cloudflare Pages middleware: CORS headers, auth token validation, and dynamic route rewriting
+// Cloudflare Pages middleware: CORS headers, auth token validation, security headers, and dynamic route rewriting
+
+import { verifyToken } from "./lib/crypto";
 
 interface Env {
   DB: D1Database;
   ASSETS: Fetcher;
+  AUTH_SECRET: string;
 }
 
 // Paths that do NOT require authentication
 const PUBLIC_PATHS = [
   '/api/auth/login',
   '/api/auth/signup',
-  '/api/auth/bulk-create',
   '/api/version',
 ];
 
@@ -22,19 +24,6 @@ const DYNAMIC_ROUTE_PREFIXES: { pattern: RegExp; placeholder: string }[] = [
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname === `${p}/`);
-}
-
-function parseToken(authHeader: string | null): { id: string; email?: string; exp: number } | null {
-  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
-  try {
-    const token = authHeader.slice(7);
-    const decoded = JSON.parse(atob(token));
-    if (!decoded.id || !decoded.exp) return null;
-    if (decoded.exp < Date.now()) return null;
-    return decoded;
-  } catch {
-    return null;
-  }
 }
 
 export const onRequest: PagesFunction<Env> = async (context) => {
@@ -54,48 +43,53 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     });
   }
 
-  // Rewrite Next.js RSC segment files: __next.X.Y.Z.txt → __next.X/Y/Z.txt
-  // Next.js uses dot-separated URLs but stores files in directories
-  const pathParts = url.pathname.split('/');
-  const lastPart = pathParts[pathParts.length - 1];
-  if (lastPart.startsWith('__next.') && lastPart.endsWith('.txt')) {
-    const segments = lastPart.split('.');
-    // segments like ["__next", "login", "__PAGE__", "txt"] → length 4+
-    // Flat files like ["__next", "_tree", "txt"] → length 3, no rewrite needed
-    if (segments.length > 3) {
-      const dirName = segments[0] + '.' + segments[1]; // __next.login
-      const filePath = segments.slice(2, -1).join('/') + '.txt'; // __PAGE__.txt
-      const basePath = pathParts.slice(0, -1).join('/'); // /login
-      const rewritePath = basePath + '/' + dirName + '/' + filePath;
-      const assetUrl = new URL(rewritePath, url.origin);
-      return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
-    }
-  }
+  // Sequential URL rewriting: dynamic route → RSC segment → fetch asset
+  let assetPath = url.pathname;
+  let needsRewrite = false;
 
-  // Rewrite dynamic routes to placeholder assets (for Next.js static export)
-  // Handles both HTML pages and internal Next.js files (__next.*.txt, index.txt, etc.)
+  // Step 1: Replace dynamic route segments with placeholder
   for (const route of DYNAMIC_ROUTE_PREFIXES) {
-    if (route.pattern.test(url.pathname)) {
-      // Extract the file portion after the dynamic segment (e.g., "/__next._tree.txt")
-      const match = url.pathname.match(route.pattern);
+    if (route.pattern.test(assetPath)) {
+      const match = assetPath.match(route.pattern);
       if (match) {
         const matchedPart = match[0];
-        const rest = url.pathname.slice(matchedPart.length); // e.g., "/__next._tree.txt" or "/" or ""
-        let rewritePath: string;
+        const rest = assetPath.slice(matchedPart.length);
         if (!rest || rest === '/') {
-          rewritePath = route.placeholder + '/index.html';
+          assetPath = route.placeholder + '/index.html';
         } else {
-          rewritePath = route.placeholder + rest;
+          assetPath = route.placeholder + rest;
         }
-        const assetUrl = new URL(rewritePath, url.origin);
-        return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+        needsRewrite = true;
+        break;
       }
     }
   }
 
+  // Step 2: Rewrite RSC segment files: __next.X.Y.Z.txt → __next.X/Y/Z.txt
+  const rewriteParts = assetPath.split('/');
+  const lastPart = rewriteParts[rewriteParts.length - 1];
+  if (lastPart.startsWith('__next.') && lastPart.endsWith('.txt')) {
+    const segments = lastPart.split('.');
+    if (segments.length > 3) {
+      const dirName = segments[0] + '.' + segments[1];
+      const filePath = segments.slice(2, -1).join('/') + '.txt';
+      const basePath = rewriteParts.slice(0, -1).join('/');
+      assetPath = basePath + '/' + dirName + '/' + filePath;
+      needsRewrite = true;
+    }
+  }
+
+  // Fetch rewritten asset
+  if (needsRewrite) {
+    const assetUrl = new URL(assetPath, url.origin);
+    return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+  }
+
   // Only apply auth checks to /api routes
   if (url.pathname.startsWith('/api') && !isPublicPath(url.pathname)) {
-    const tokenData = parseToken(request.headers.get('Authorization'));
+    const authHeader = request.headers.get('Authorization');
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const tokenData = token ? await verifyToken(token, context.env.AUTH_SECRET) : null;
     if (!tokenData) {
       return new Response(
         JSON.stringify({ message: '인증이 필요합니다.' }),
@@ -120,6 +114,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   response.headers.set('Access-Control-Allow-Origin', '*');
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+
+  // Security headers
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
   // Prevent caching of HTML pages (JS/CSS with hashes are fine to cache)
   const ct = response.headers.get('Content-Type') || '';

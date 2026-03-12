@@ -1,0 +1,27 @@
+# HTML pages - always revalidate
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/login
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/login/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/signup
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/signup/
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/student/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/teacher/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/parent/*
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/admin/*
+  Cache-Control: no-cache, no-store, must-revalidate

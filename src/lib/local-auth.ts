@@ -190,7 +190,12 @@ export function localGetCurrentUser(): Profile | null {
   try {
     const tokenStr = localStorage.getItem(TOKEN_KEY);
     if (tokenStr) {
-      const tokenData = JSON.parse(atob(tokenStr));
+      // Support both old (base64) and new (base64url.hmac) token formats
+      const payloadPart = tokenStr.includes(".") ? tokenStr.substring(0, tokenStr.lastIndexOf(".")) : tokenStr;
+      // base64url → base64
+      let b64 = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
+      while (b64.length % 4 !== 0) b64 += "=";
+      const tokenData = JSON.parse(atob(b64));
       if (tokenData.exp < Date.now()) {
         // Token expired - clean up
         localLogout();
