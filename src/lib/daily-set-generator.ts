@@ -224,6 +224,12 @@ function generateSpellingChoices(
   return shuffleChoices([correctSentence, ...distractors], random);
 }
 
+function takeExpandedPortion<T>(items: T[], ratio = 0.5): T[] {
+  if (items.length === 0) return [];
+  const count = Math.max(1, Math.floor(items.length * ratio));
+  return items.slice(0, count);
+}
+
 interface GradeData {
   spelling: SpellingEntry[];
   vocab: VocabEntry[];
@@ -243,114 +249,148 @@ interface GradeData {
 function getGradeData(grade: number, daySeed?: number): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
   const expandedDayOfYear = dayOfYear + 10000;
+  const expandedDayOfYearBonus = dayOfYear + 20000;
   const generatedMath = generateMathPool(grade, dayOfYear);
   const generatedMathExtra = generateMathPool(grade, expandedDayOfYear);
+  const generatedMathBonus = takeExpandedPortion(
+    generateMathPool(grade, expandedDayOfYearBonus),
+  );
   const generatedSpelling = generateSpellingPool(grade, dayOfYear);
   const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear);
+  const generatedSpellingBonus = takeExpandedPortion(
+    generateSpellingPool(grade, expandedDayOfYearBonus),
+  );
   const generatedVocab = generateVocabPool(grade, dayOfYear);
   const generatedVocabExtra = generateVocabPool(grade, expandedDayOfYear);
+  const generatedVocabBonus = takeExpandedPortion(
+    generateVocabPool(grade, expandedDayOfYearBonus),
+  );
   const generatedKnowledge = generateKnowledgePool(grade, dayOfYear);
   const generatedKnowledgeExtra = generateKnowledgePool(grade, expandedDayOfYear);
+  const generatedKnowledgeBonus = takeExpandedPortion(
+    generateKnowledgePool(grade, expandedDayOfYearBonus),
+  );
   const generatedSafety = generateSafetyPool(grade, dayOfYear);
   const generatedSafetyExtra = generateSafetyPool(grade, expandedDayOfYear);
+  const generatedSafetyBonus = takeExpandedPortion(
+    generateSafetyPool(grade, expandedDayOfYearBonus),
+  );
   const generatedHanja = generateHanjaPool(grade, dayOfYear);
   const generatedHanjaExtra = generateHanjaPool(grade, expandedDayOfYear);
+  const generatedHanjaBonus = takeExpandedPortion(
+    generateHanjaPool(grade, expandedDayOfYearBonus),
+  );
   const generatedEnglish = generateEnglishPool(grade, dayOfYear);
   const generatedEnglishExtra = generateEnglishPool(grade, expandedDayOfYear);
+  const generatedEnglishBonus = takeExpandedPortion(
+    generateEnglishPool(grade, expandedDayOfYearBonus),
+  );
   const generatedWriting = generateWritingPool(grade, dayOfYear);
   const generatedWritingExtra = generateWritingPool(grade, expandedDayOfYear);
+  const generatedWritingBonus = takeExpandedPortion(
+    generateWritingPool(grade, expandedDayOfYearBonus),
+  );
   const generatedCreative = generateCreativePool(grade, dayOfYear);
   const generatedCreativeExtra = generateCreativePool(grade, expandedDayOfYear);
+  const generatedCreativeBonus = takeExpandedPortion(
+    generateCreativePool(grade, expandedDayOfYearBonus),
+  );
   const generatedScience = generateSciencePool(grade, dayOfYear);
   const generatedScienceExtra = generateSciencePool(grade, expandedDayOfYear);
+  const generatedScienceBonus = takeExpandedPortion(
+    generateSciencePool(grade, expandedDayOfYearBonus),
+  );
   const generatedSocial = generateSocialPool(grade, dayOfYear);
   const generatedSocialExtra = generateSocialPool(grade, expandedDayOfYear);
+  const generatedSocialBonus = takeExpandedPortion(
+    generateSocialPool(grade, expandedDayOfYearBonus),
+  );
 
   switch (grade) {
     case 1:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
-        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 2:
       return {
-        spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade2MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        korean: [...(grade2KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
-        creative: [...(grade2CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade2MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        korean: [...(grade2KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [...(grade2CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 3:
       return {
-        spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade3MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
-        english: [...(grade3EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
-        creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade3MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        english: [...(grade3EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 4:
       return {
-        spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade4MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
-        english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
-        creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade4MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 5:
       return {
-        spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade5MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
-        english: [...(grade5EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
-        creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
-        science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra],
-        social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra],
+        spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade5MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        english: [...(grade5EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
+        social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     case 6:
       return {
-        spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade6MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
-        english: [...(grade6EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
-        creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
-        science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra],
-        social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra],
+        spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade6MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        english: [...(grade6EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
+        social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     default:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
-        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra],
-        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
-        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra],
-        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
-        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
-        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
+        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
+        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
+        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
+        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
+        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
   }
 }
