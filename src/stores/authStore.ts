@@ -87,6 +87,8 @@ export const useAuthStore = create<AuthState>()(
           const apiResult = await apiLogin(email, password);
           if (apiResult) {
             localStorage.setItem("auth_token", apiResult.token);
+            // Save user to localStorage so dashboard layout can read it
+            localStorage.setItem("araharu_current_user", JSON.stringify(apiResult.user));
             // Also save to local-auth for offline/local features
             try { localLogin(email, password); } catch { /* ignore */ }
             set({
@@ -146,6 +148,7 @@ export const useAuthStore = create<AuthState>()(
               return;
             }
             localStorage.setItem("auth_token", apiResult.token);
+            localStorage.setItem("araharu_current_user", JSON.stringify(apiResult.user));
             set({
               user: apiResult.user,
               token: apiResult.token,
