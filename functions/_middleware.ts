@@ -121,5 +121,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+  // Prevent caching of HTML pages (JS/CSS with hashes are fine to cache)
+  const ct = response.headers.get('Content-Type') || '';
+  if (ct.includes('text/html') || url.pathname === '/' || (!url.pathname.includes('.') && !url.pathname.startsWith('/api'))) {
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+  }
+
   return response;
 };

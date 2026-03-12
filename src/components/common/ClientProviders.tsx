@@ -10,15 +10,14 @@ export function ClientProviders() {
     // Initialize demo accounts on first visit
     initDemoAccounts();
 
-    // Register service worker
+    // Unregister any existing service worker and clear caches
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((reg) => {
-          // Check for SW updates periodically
-          setInterval(() => reg.update(), 60 * 60 * 1000); // hourly
-        })
-        .catch(() => {});
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((r) => r.unregister());
+      });
+      if ("caches" in window) {
+        caches.keys().then((names) => names.forEach((n) => caches.delete(n)));
+      }
     }
   }, []);
 
