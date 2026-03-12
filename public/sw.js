@@ -1,5 +1,5 @@
 // Araharu Service Worker - Version-based cache management
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.1.0";
 const CACHE_NAME = `araharu-v${APP_VERSION}`;
 const STATIC_ASSETS = [
   "/",

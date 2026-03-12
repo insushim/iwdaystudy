@@ -51,8 +51,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const passwordHash = simpleHash(password);
     const now = new Date().toISOString();
 
-    // Teachers require approval; students/parents are auto-approved
-    const approvalStatus = role === "teacher" ? "pending" : "approved";
+    // All roles auto-approved (admin can revoke later if needed)
+    const approvalStatus = "approved";
 
     // Insert new user
     await context.env.DB.prepare(
