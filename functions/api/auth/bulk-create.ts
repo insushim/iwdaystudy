@@ -34,6 +34,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const created: string[] = [];
     const skipped: string[] = [];
 
+    // Ensure teacher exists in D1 (upsert stub if missing)
+    const firstStudent = students[0];
+    if (firstStudent?.teacher_id) {
+      const teacher = await context.env.DB.prepare(
+        "SELECT id FROM profiles WHERE id = ?",
+      ).bind(firstStudent.teacher_id).first();
+      if (!teacher) {
+        await context.env.DB.prepare(
+          `INSERT OR IGNORE INTO profiles (id, email, name, role, password_hash, approval_status, subscription_plan, streak_count, total_points, created_at, updated_at)
+           VALUES (?, ?, 'Teacher', 'teacher', '', 'approved', 'free', 0, 0, ?, ?)`,
+        ).bind(firstStudent.teacher_id, `teacher-${firstStudent.teacher_id.slice(0,8)}@local`, now, now).run();
+      }
+    }
+
     for (const s of students) {
       // Check if email already exists
       const existing = await context.env.DB.prepare(
