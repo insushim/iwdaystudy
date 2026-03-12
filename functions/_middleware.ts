@@ -54,6 +54,24 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     });
   }
 
+  // Rewrite Next.js RSC segment files: __next.X.Y.Z.txt → __next.X/Y/Z.txt
+  // Next.js uses dot-separated URLs but stores files in directories
+  const pathParts = url.pathname.split('/');
+  const lastPart = pathParts[pathParts.length - 1];
+  if (lastPart.startsWith('__next.') && lastPart.endsWith('.txt')) {
+    const segments = lastPart.split('.');
+    // segments like ["__next", "login", "__PAGE__", "txt"] → length 4+
+    // Flat files like ["__next", "_tree", "txt"] → length 3, no rewrite needed
+    if (segments.length > 3) {
+      const dirName = segments[0] + '.' + segments[1]; // __next.login
+      const filePath = segments.slice(2, -1).join('/') + '.txt'; // __PAGE__.txt
+      const basePath = pathParts.slice(0, -1).join('/'); // /login
+      const rewritePath = basePath + '/' + dirName + '/' + filePath;
+      const assetUrl = new URL(rewritePath, url.origin);
+      return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
+    }
+  }
+
   // Rewrite dynamic routes to placeholder assets (for Next.js static export)
   // Handles both HTML pages and internal Next.js files (__next.*.txt, index.txt, etc.)
   for (const route of DYNAMIC_ROUTE_PREFIXES) {
