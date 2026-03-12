@@ -5,6 +5,7 @@
 // Used in static export mode and for offline functionality.
 
 import { generateId } from './utils';
+import { getQuestionSignature } from './daily-set-generator';
 import type {
   LearningRecord,
   QuestionResponse,
@@ -204,6 +205,27 @@ export function getAllResponsesForStudent(studentId: string): QuestionResponse[]
   );
 }
 
+export function getSeenQuestionSignatures(studentId: string): Set<string> {
+  const completedSetIds = new Set(
+    getLearningRecords(studentId)
+      .filter((record) => record.is_completed)
+      .map((record) => record.daily_set_id),
+  );
+
+  const seen = new Set<string>();
+  const questions = getList<Question>(QUESTIONS_KEY);
+
+  for (const question of questions) {
+    if (!completedSetIds.has(question.daily_set_id)) continue;
+    const signature = getQuestionSignature(question);
+    if (signature) {
+      seen.add(signature);
+    }
+  }
+
+  return seen;
+}
+
 // ---------- Streak & Points ----------
 
 /**
@@ -268,8 +290,8 @@ export function updateStreakAndPoints(studentId: string): { streak: number; tota
   try {
     const usersData = localStorage.getItem(USERS_KEY);
     if (usersData) {
-      const users = JSON.parse(usersData);
-      const idx = users.findIndex((u: any) => u.id === studentId);
+      const users = JSON.parse(usersData) as Array<Record<string, unknown>>;
+      const idx = users.findIndex((u) => u.id === studentId);
       if (idx >= 0) {
         users[idx].streak_count = streak;
         users[idx].total_points = totalPoints;
@@ -530,7 +552,6 @@ export function storeDailySet(set: DailySet, questions: Question[]): void {
 
   // Store questions (merge with existing, replace if same ID)
   const existingQuestions = getList<Question>(QUESTIONS_KEY);
-  const existingIds = new Set(existingQuestions.map((q) => q.id));
   const keptQuestions = existingQuestions.filter(
     (q) => q.daily_set_id !== set.id
   );

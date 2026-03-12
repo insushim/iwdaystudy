@@ -3,8 +3,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import type { DailySetWithQuestions } from '@/types/learning';
-import { generateDailySet } from '@/lib/daily-set-generator';
-import { getLearningRecords } from '@/lib/local-storage';
+import { generateDailySetWithoutRepeats } from '@/lib/daily-set-generator';
+import { getLearningRecords, getSeenQuestionSignatures, storeDailySet } from '@/lib/local-storage';
 
 export function useDailySet() {
   const { user } = useAuthStore();
@@ -30,8 +30,15 @@ export function useDailySet() {
           .filter((r) => r.is_completed)
           .map((r) => r.daily_set_id)
       );
+      const usedQuestionSignatures = getSeenQuestionSignatures(user.id);
 
-      const setData = generateDailySet(user.grade, user.semester, completedSetIds);
+      const setData = generateDailySetWithoutRepeats(
+        user.grade,
+        user.semester,
+        completedSetIds,
+        usedQuestionSignatures,
+      );
+      storeDailySet(setData.set, setData.questions);
       setDailySet(setData);
     } catch {
       setError('학습 세트를 불러올 수 없습니다.');

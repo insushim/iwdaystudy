@@ -114,6 +114,19 @@ import {
   grade6SocialData,
 } from "@/lib/curriculum/grade6";
 
+const NON_REPEATABLE_QUESTION_TYPES = new Set([
+  "multiple_choice",
+  "fill_blank",
+  "short_answer",
+  "true_false",
+  "matching",
+  "ordering",
+  "drawing",
+  "calculation",
+  "word_puzzle",
+  "dictation",
+]);
+
 // Seeded PRNG for reproducible daily sets (same seed = same set per day)
 function seededRandom(seed: number) {
   let s = seed;
@@ -157,6 +170,60 @@ function generateChoices<T>(
   return choices;
 }
 
+function shuffleChoices<T>(choices: T[], random: () => number): T[] {
+  const next = [...choices];
+  for (let i = next.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  return next;
+}
+
+function generateMathChoices(correct: number, random: () => number): string[] {
+  const distractors = new Set<string>();
+  const offsets = shuffleChoices([1, 2, 5, 10], random);
+
+  for (const offset of offsets) {
+    const sign = random() > 0.5 ? 1 : -1;
+    const candidate = correct + offset * sign;
+    if (candidate >= 0 && candidate !== correct) {
+      distractors.add(String(candidate));
+    }
+    if (distractors.size === 3) break;
+  }
+
+  let step = 1;
+  while (distractors.size < 3) {
+    const candidate = correct + step;
+    if (candidate !== correct) {
+      distractors.add(String(candidate));
+    }
+    step++;
+  }
+
+  return shuffleChoices([String(correct), ...distractors], random);
+}
+
+function generateSpellingChoices(
+  entry: SpellingEntry,
+  pool: SpellingEntry[],
+  random: () => number,
+): string[] {
+  const correctSentence = entry.answer === 1 ? entry.q1 : entry.q2;
+  const wrongPool = pool
+    .flatMap((item) => {
+      const wrongSentence = item.answer === 1 ? item.q2 : item.q1;
+      return wrongSentence === correctSentence ? [] : [wrongSentence];
+    });
+  const distractors = shuffleChoices([...new Set(wrongPool)], random).slice(0, 3);
+
+  while (distractors.length < 3) {
+    distractors.push(`${correctSentence} (오답)`);
+  }
+
+  return shuffleChoices([correctSentence, ...distractors], random);
+}
+
 interface GradeData {
   spelling: SpellingEntry[];
   vocab: VocabEntry[];
@@ -175,103 +242,115 @@ interface GradeData {
 // Get curriculum data per grade (merges static + procedurally generated)
 function getGradeData(grade: number, daySeed?: number): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
+  const expandedDayOfYear = dayOfYear + 10000;
   const generatedMath = generateMathPool(grade, dayOfYear);
+  const generatedMathExtra = generateMathPool(grade, expandedDayOfYear);
   const generatedSpelling = generateSpellingPool(grade, dayOfYear);
+  const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear);
   const generatedVocab = generateVocabPool(grade, dayOfYear);
+  const generatedVocabExtra = generateVocabPool(grade, expandedDayOfYear);
   const generatedKnowledge = generateKnowledgePool(grade, dayOfYear);
+  const generatedKnowledgeExtra = generateKnowledgePool(grade, expandedDayOfYear);
   const generatedSafety = generateSafetyPool(grade, dayOfYear);
+  const generatedSafetyExtra = generateSafetyPool(grade, expandedDayOfYear);
   const generatedHanja = generateHanjaPool(grade, dayOfYear);
+  const generatedHanjaExtra = generateHanjaPool(grade, expandedDayOfYear);
   const generatedEnglish = generateEnglishPool(grade, dayOfYear);
+  const generatedEnglishExtra = generateEnglishPool(grade, expandedDayOfYear);
   const generatedWriting = generateWritingPool(grade, dayOfYear);
+  const generatedWritingExtra = generateWritingPool(grade, expandedDayOfYear);
   const generatedCreative = generateCreativePool(grade, dayOfYear);
+  const generatedCreativeExtra = generateCreativePool(grade, expandedDayOfYear);
   const generatedScience = generateSciencePool(grade, dayOfYear);
+  const generatedScienceExtra = generateSciencePool(grade, expandedDayOfYear);
   const generatedSocial = generateSocialPool(grade, dayOfYear);
+  const generatedSocialExtra = generateSocialPool(grade, expandedDayOfYear);
 
   switch (grade) {
     case 1:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling],
-        vocab: [...grade1VocabData, ...generatedVocab],
-        math: [...grade1MathData, ...generatedMath],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge],
-        safety: [...grade1SafetyData, ...generatedSafety],
-        writing: [...grade1WritingPrompts, ...generatedWriting],
-        korean: [...(grade1KoreanData || []), ...generatedCreative],
-        creative: [...(grade1CreativeData || []), ...generatedCreative],
+        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
+        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
       };
     case 2:
       return {
-        spelling: [...grade2SpellingData, ...generatedSpelling],
-        vocab: [...grade2VocabData, ...generatedVocab],
-        math: [...grade2MathData, ...generatedMath],
-        knowledge: [...grade2KnowledgeData, ...generatedKnowledge],
-        safety: [...grade2SafetyData, ...generatedSafety],
-        writing: [...grade2WritingPrompts, ...generatedWriting],
-        korean: [...(grade2KoreanData || []), ...generatedCreative],
-        creative: [...(grade2CreativeData || []), ...generatedCreative],
+        spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade2MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        korean: [...(grade2KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
+        creative: [...(grade2CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
       };
     case 3:
       return {
-        spelling: [...grade3SpellingData, ...generatedSpelling],
-        vocab: [...grade3VocabData, ...generatedVocab],
-        math: [...grade3MathData, ...generatedMath],
-        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge],
-        safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety],
-        writing: [...grade3WritingPrompts, ...generatedWriting],
-        hanja: [...(grade3HanjaData || []), ...generatedHanja],
-        english: [...(grade3EnglishData || []), ...generatedEnglish],
-        creative: [...(grade3CreativeData || []), ...generatedCreative],
+        spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade3MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
+        english: [...(grade3EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
+        creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
       };
     case 4:
       return {
-        spelling: [...grade4SpellingData, ...generatedSpelling],
-        vocab: [...grade4VocabData, ...generatedVocab],
-        math: [...grade4MathData, ...generatedMath],
-        knowledge: [...grade4KnowledgeData, ...generatedKnowledge],
-        safety: [...grade4SafetyData, ...generatedSafety],
-        writing: [...grade4WritingPrompts, ...generatedWriting],
-        hanja: [...(grade4HanjaData || []), ...generatedHanja],
-        english: [...(grade4EnglishData || []), ...generatedEnglish],
-        creative: [...(grade4CreativeData || []), ...generatedCreative],
+        spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade4MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
+        english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
+        creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
       };
     case 5:
       return {
-        spelling: [...grade5SpellingData, ...generatedSpelling],
-        vocab: [...grade5VocabData, ...generatedVocab],
-        math: [...grade5MathData, ...generatedMath],
-        knowledge: [...grade5KnowledgeData, ...generatedKnowledge],
-        safety: [...grade5SafetyData, ...generatedSafety],
-        writing: [...grade5WritingPrompts, ...generatedWriting],
-        hanja: [...(grade5HanjaData || []), ...generatedHanja],
-        english: [...(grade5EnglishData || []), ...generatedEnglish],
-        creative: [...(grade5CreativeData || []), ...generatedCreative],
-        science: [...(grade5ScienceData || []), ...generatedScience],
-        social: [...(grade5SocialData || []), ...generatedSocial],
+        spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade5MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
+        english: [...(grade5EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
+        creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra],
+        social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra],
       };
     case 6:
       return {
-        spelling: [...grade6SpellingData, ...generatedSpelling],
-        vocab: [...grade6VocabData, ...generatedVocab],
-        math: [...grade6MathData, ...generatedMath],
-        knowledge: [...grade6KnowledgeData, ...generatedKnowledge],
-        safety: [...grade6SafetyData, ...generatedSafety],
-        writing: [...grade6WritingPrompts, ...generatedWriting],
-        hanja: [...(grade6HanjaData || []), ...generatedHanja],
-        english: [...(grade6EnglishData || []), ...generatedEnglish],
-        creative: [...(grade6CreativeData || []), ...generatedCreative],
-        science: [...(grade6ScienceData || []), ...generatedScience],
-        social: [...(grade6SocialData || []), ...generatedSocial],
+        spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade6MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra],
+        english: [...(grade6EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra],
+        creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
+        science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra],
+        social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra],
       };
     default:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling],
-        vocab: [...grade1VocabData, ...generatedVocab],
-        math: [...grade1MathData, ...generatedMath],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge],
-        safety: [...grade1SafetyData, ...generatedSafety],
-        writing: [...grade1WritingPrompts, ...generatedWriting],
-        korean: [...(grade1KoreanData || []), ...generatedCreative],
-        creative: [...(grade1CreativeData || []), ...generatedCreative],
+        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra],
+        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra],
+        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra],
+        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra],
+        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra],
+        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra],
+        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra],
+        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra],
       };
   }
 }
@@ -338,22 +417,24 @@ function buildMathQuestion(
   orderIndex: number,
   title: string,
   entry: MathEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "math" as SubjectType,
-    question_type: "calculation" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
       text: "다음을 계산하세요.",
       expression: entry.expression || "",
       unit: entry.unit,
+      choices,
     },
     answer: {
-      correct: entry.answer,
+      correct: String(entry.answer),
       text: String(entry.answer),
       steps: entry.steps || [],
     },
@@ -381,7 +462,9 @@ function buildSpellingQuestion(
   orderIndex: number,
   title: string,
   entry: SpellingEntry,
+  choices: string[],
 ): Question {
+  const correctSentence = entry.answer === 1 ? entry.q1 : entry.q2;
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
@@ -392,11 +475,11 @@ function buildSpellingQuestion(
     title,
     content: {
       text: "다음 중 맞춤법이 올바른 문장을 고르세요.",
-      options: [entry.q1, entry.q2],
+      options: choices,
     },
     answer: {
-      correct: entry.answer - 1,
-      text: entry.answer === 1 ? entry.q1 : entry.q2,
+      correct: correctSentence,
+      text: correctSentence,
     },
     explanation: entry.explanation,
     points: 10,
@@ -541,13 +624,14 @@ function buildHanjaQuestion(
   orderIndex: number,
   title: string,
   entry: HanjaEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "hanja" as SubjectType,
-    question_type: "fill_blank" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
@@ -556,6 +640,7 @@ function buildHanjaQuestion(
       meaning: entry.meaning,
       strokes: entry.strokes,
       words: entry.words,
+      choices,
     },
     answer: { correct: entry.reading, text: entry.reading },
     explanation: `${entry.character}는 '${entry.meaning}'으로, '${entry.reading}'이라 읽습니다. 예: ${entry.words.join(", ")}`,
@@ -572,13 +657,14 @@ function buildEnglishQuestion(
   orderIndex: number,
   title: string,
   entry: EnglishEntry,
+  choices: string[],
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "english" as SubjectType,
-    question_type: "fill_blank" as QuestionType,
+    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
     content: {
@@ -587,8 +673,9 @@ function buildEnglishQuestion(
       word: entry.word,
       pronunciation: entry.pronunciation,
       practice: entry.practice,
+      choices,
     },
-    answer: { correct: entry.translation, text: entry.translation },
+    answer: { correct: entry.word, text: entry.word },
     explanation: `"${entry.sentence}" → ${entry.translation}`,
     points: 10,
     hint: `[${entry.pronunciation}]로 발음해요.`,
@@ -625,6 +712,36 @@ function buildSubjectQuestion(
   };
 }
 
+export function getQuestionSignature(question: Question): string | null {
+  if (!NON_REPEATABLE_QUESTION_TYPES.has(question.question_type)) {
+    return null;
+  }
+
+  return JSON.stringify({
+    subject: question.subject,
+    question_type: question.question_type,
+    content: question.content,
+    answer: question.answer,
+  });
+}
+
+function countRepeatedQuestions(
+  questions: Question[],
+  usedQuestionSignatures?: Set<string>,
+): number {
+  if (!usedQuestionSignatures || usedQuestionSignatures.size === 0) {
+    return 0;
+  }
+
+  return questions.reduce((count, question) => {
+    const signature = getQuestionSignature(question);
+    if (!signature || !usedQuestionSignatures.has(signature)) {
+      return count;
+    }
+    return count + 1;
+  }, 0);
+}
+
 /**
  * Generate a daily set that the student has NOT completed yet.
  * @param completedSetIds - set IDs the student already completed (from learning records)
@@ -638,7 +755,7 @@ export function generateDailySet(
 
   // Try current day's seed first, then increment to find an unused set
   let attempt = 0;
-  let baseSeed = dayOfYear;
+  const baseSeed = dayOfYear;
   let setId = "";
 
   // Try up to 1000 different seeds to find a set the student hasn't done
@@ -707,13 +824,15 @@ export function generateDailySet(
         );
       } else if (subject === "math") {
         const entry = pickUnused(data.math, "math");
+        const choices = generateMathChoices(Number(entry.answer), random);
         questions.push(
-          buildMathQuestion(setId, orderIndex, section.title, entry),
+          buildMathQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "spelling") {
         const entry = pickUnused(data.spelling, "spelling");
+        const choices = generateSpellingChoices(entry, data.spelling, random);
         questions.push(
-          buildSpellingQuestion(setId, orderIndex, section.title, entry),
+          buildSpellingQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "vocabulary") {
         const entry = pickUnused(data.vocab, "vocab");
@@ -740,8 +859,9 @@ export function generateDailySet(
         );
       } else if (subject === "hanja" && data.hanja && data.hanja.length > 0) {
         const entry = pickUnused(data.hanja, "hanja");
+        const choices = generateChoices(entry.reading, data.hanja, (h) => h.reading, random);
         questions.push(
-          buildHanjaQuestion(setId, orderIndex, section.title, entry),
+          buildHanjaQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (
         subject === "english" &&
@@ -749,8 +869,9 @@ export function generateDailySet(
         data.english.length > 0
       ) {
         const entry = pickUnused(data.english, "english");
+        const choices = generateChoices(entry.word, data.english, (e) => e.word, random);
         questions.push(
-          buildEnglishQuestion(setId, orderIndex, section.title, entry),
+          buildEnglishQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (
         subject === "korean" &&
@@ -810,4 +931,41 @@ export function generateDailySet(
   }
 
   return { set: dailySet, questions };
+}
+
+export function generateDailySetWithoutRepeats(
+  grade: number,
+  semester: number,
+  completedSetIds?: Set<string>,
+  usedQuestionSignatures?: Set<string>,
+  maxAttempts = 200,
+): DailySetWithQuestions {
+  if (!usedQuestionSignatures || usedQuestionSignatures.size === 0) {
+    return generateDailySet(grade, semester, completedSetIds);
+  }
+
+  const triedSetIds = new Set(completedSetIds ?? []);
+  let bestCandidate: DailySetWithQuestions | null = null;
+  let bestRepeatCount = Number.POSITIVE_INFINITY;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const candidate = generateDailySet(grade, semester, triedSetIds);
+    triedSetIds.add(candidate.set.id);
+
+    const repeatCount = countRepeatedQuestions(
+      candidate.questions,
+      usedQuestionSignatures,
+    );
+
+    if (repeatCount < bestRepeatCount) {
+      bestCandidate = candidate;
+      bestRepeatCount = repeatCount;
+    }
+
+    if (repeatCount === 0) {
+      return candidate;
+    }
+  }
+
+  return bestCandidate ?? generateDailySet(grade, semester, completedSetIds);
 }

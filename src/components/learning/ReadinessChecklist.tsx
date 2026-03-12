@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { CheckCircle, Backpack } from 'lucide-react';
+import { Backpack, CheckCircle } from 'lucide-react';
 import type { ReadinessData } from '@/types/learning';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 
 export default function ReadinessChecklist({ content, onAnswer, showResult }: Props) {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>(
-    Object.fromEntries(content.items.map((item) => [item, false]))
+    Object.fromEntries(content.items.map((item) => [item, false])),
   );
 
   const toggleItem = (item: string) => {
@@ -34,21 +34,25 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
   };
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center gap-6">
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-2"
+        className="flex flex-col items-center gap-2 text-center"
       >
-        <Backpack className="h-5 w-5 text-[#4ECDC4]" />
-        <p className="text-lg font-medium text-muted-foreground">
-          오늘 가져올 것을 확인해요!
+        <div className="flex items-center gap-2">
+          <Backpack className="h-5 w-5 text-[#4ECDC4]" />
+          <p className="text-lg font-medium text-muted-foreground">
+            오늘 가져올 것을 확인해요!
+          </p>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          준비물이 없으면 체크하지 않고 그대로 넘어가도 됩니다.
         </p>
       </motion.div>
 
-      {/* Progress indicator */}
       <div className="flex items-center gap-2 text-sm font-medium">
-        <div className="h-2.5 w-32 rounded-full bg-muted overflow-hidden">
+        <div className="h-2.5 w-32 overflow-hidden rounded-full bg-muted">
           <motion.div
             className="h-full rounded-full bg-[#4ECDC4]"
             animate={{ width: `${(checkedCount / totalCount) * 100}%` }}
@@ -60,19 +64,18 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
         </span>
       </div>
 
-      {/* Checklist */}
       <div className="w-full space-y-2">
-        {content.items.map((item, i) => {
+        {content.items.map((item, index) => {
           const isChecked = !!checkedItems[item];
           return (
             <motion.button
               key={item}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.08 }}
+              transition={{ delay: index * 0.08 }}
               onClick={() => !showResult && toggleItem(item)}
               disabled={showResult}
-              className={`w-full flex items-center gap-4 rounded-xl border-2 p-4 transition-all cursor-pointer disabled:cursor-default ${
+              className={`flex w-full cursor-pointer items-center gap-4 rounded-xl border-2 p-4 transition-all disabled:cursor-default ${
                 isChecked
                   ? 'border-[#4ECDC4] bg-[#4ECDC4]/5'
                   : 'border-border hover:border-[#4ECDC4]/40'
@@ -81,7 +84,7 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
               <Checkbox
                 checked={isChecked}
                 onCheckedChange={() => !showResult && toggleItem(item)}
-                className="h-6 w-6 rounded-lg data-[state=checked]:bg-[#4ECDC4] data-[state=checked]:border-[#4ECDC4]"
+                className="h-6 w-6 rounded-lg data-[state=checked]:border-[#4ECDC4] data-[state=checked]:bg-[#4ECDC4]"
                 disabled={showResult}
               />
               <span className={`text-lg font-medium transition-all ${
@@ -106,7 +109,6 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
         })}
       </div>
 
-      {/* Submit */}
       {!showResult && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -115,9 +117,13 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
         >
           <Button
             onClick={handleSubmit}
-            className="h-12 px-8 rounded-xl text-lg font-bold bg-[#4ECDC4] hover:bg-[#4ECDC4]/90"
+            className="h-12 rounded-xl bg-[#4ECDC4] px-8 text-lg font-bold hover:bg-[#4ECDC4]/90"
           >
-            {allChecked ? '완벽하게 준비됐어요!' : '확인 완료!'}
+            {checkedCount === 0
+              ? '준비물이 없어요'
+              : allChecked
+                ? '완벽하게 준비됐어요!'
+                : '확인 완료!'}
           </Button>
         </motion.div>
       )}
@@ -126,9 +132,13 @@ export default function ReadinessChecklist({ content, onAnswer, showResult }: Pr
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="flex items-center gap-2 rounded-full bg-[#4ECDC4]/10 border border-[#4ECDC4]/20 px-5 py-2 text-sm font-bold text-[#4ECDC4]"
+          className="flex items-center gap-2 rounded-full border border-[#4ECDC4]/20 bg-[#4ECDC4]/10 px-5 py-2 text-sm font-bold text-[#4ECDC4]"
         >
-          {allChecked ? '모두 챙겼어요! 잘했어요!' : `${checkedCount}개 확인했어요!`}
+          {checkedCount === 0
+            ? '준비물이 없어요. 다음으로 넘어가요!'
+            : allChecked
+              ? '모두 챙겼어요! 훌륭해요!'
+              : `${checkedCount}개 확인했어요`}
         </motion.div>
       )}
     </div>

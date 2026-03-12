@@ -72,7 +72,7 @@ export default function LearningSessionClient() {
 
   const maxScore = dailySet?.set.total_points || questions.reduce((acc, q) => acc + q.points, 0);
 
-  const handleAnswer = useCallback((answer: any) => {
+  const handleAnswer = useCallback((answer: unknown) => {
     if (!currentQuestion || currentState?.isAnswered) return;
 
     let isCorrect = false;
@@ -96,9 +96,8 @@ export default function LearningSessionClient() {
           isCorrect = String(answer).trim() === correctVal.trim();
           break;
         case 'spelling':
-          // SpellingQuestion returns 1 or 2, answer.correct is 0-based index
-          correctVal = String(qAnswer?.correct ?? '');
-          isCorrect = String(Number(answer) - 1) === correctVal || String(answer) === correctVal;
+          correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? '');
+          isCorrect = String(answer).trim() === correctVal.trim();
           break;
         case 'vocabulary':
           correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');

@@ -2,52 +2,43 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Lightbulb } from 'lucide-react';
+import { CheckCircle, Lightbulb, XCircle } from 'lucide-react';
 
 interface Props {
-  content: any;
-  answer: any;
+  content: Record<string, unknown>;
+  answer: Record<string, unknown>;
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
 }
 
+const OPTION_LABELS = ['1', '2', '3', '4'];
+
 export default function MathQuestion({ content, answer, onAnswer, showResult, isCorrect }: Props) {
-  const [inputValue, setInputValue] = useState('');
+  const [selected, setSelected] = useState<string | null>(null);
   const [showSteps, setShowSteps] = useState(false);
 
   const expression = content?.expression || '';
-  // Handle both generator format (answer.correct) and curriculum format (answer.answer)
-  const correctAnswer = answer?.correct ?? answer?.answer ?? '';
+  const correctAnswer = String(answer?.correct ?? answer?.answer ?? answer?.text ?? '');
+  const choices: string[] = content?.choices || [];
   const steps: string[] = answer?.steps || [];
-  const parts = expression.split(/([+\-x÷×])/);
-
-  const isVerticalLayout = expression.includes('+') || expression.includes('-');
   const operator = expression.match(/[+\-]/)?.[0] || '';
-  const operands = expression.split(/\s*[+\-]\s*/).map((s: string) => s.trim());
+  const operands = expression.split(/\s*[+\-]\s*/).map((item: string) => item.trim());
+  const isVerticalLayout = (expression.includes('+') || expression.includes('-')) && operands.length === 2;
 
-  const handleSubmit = () => {
-    if (inputValue.trim()) {
-      onAnswer(inputValue.trim());
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSubmit();
-    }
+  const handleSelect = (choice: string) => {
+    if (showResult) return;
+    setSelected(choice);
+    onAnswer(choice);
   };
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* Unit badge */}
       <span className="inline-flex items-center gap-1 rounded-full bg-[#FF6B35]/10 px-3 py-1 text-xs font-semibold text-[#FF6B35]">
         {content.unit}
       </span>
 
-      {/* Expression display - horizontal */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -58,8 +49,7 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
         </div>
       </motion.div>
 
-      {/* Vertical layout for addition/subtraction */}
-      {isVerticalLayout && operands.length === 2 && (
+      {isVerticalLayout && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,35 +69,31 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
         </motion.div>
       )}
 
-      {/* Input area */}
       {!showResult && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="flex items-center gap-3 w-full max-w-xs"
+          className="grid grid-cols-2 gap-3 w-full max-w-md"
         >
-          <Input
-            type="number"
-            inputMode="numeric"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="답을 입력하세요"
-            className="h-14 text-center text-2xl font-bold rounded-xl border-2 border-[#FF6B35]/30 focus-visible:border-[#FF6B35] focus-visible:ring-[#FF6B35]/20"
-            autoFocus
-          />
-          <Button
-            onClick={handleSubmit}
-            disabled={!inputValue.trim()}
-            className="h-14 px-6 rounded-xl text-lg font-bold bg-[#FF6B35] hover:bg-[#FF6B35]/90"
-          >
-            확인
-          </Button>
+          {choices.map((choice, index) => (
+            <Button
+              key={choice}
+              variant="outline"
+              onClick={() => handleSelect(choice)}
+              className={`h-14 text-lg font-bold rounded-xl border-2 transition-all ${
+                selected === choice
+                  ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35]'
+                  : 'border-border hover:border-[#FF6B35]/40'
+              }`}
+            >
+              <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+              {choice}
+            </Button>
+          ))}
         </motion.div>
       )}
 
-      {/* Result display */}
       <AnimatePresence>
         {showResult && (
           <motion.div
@@ -126,12 +112,29 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
               ) : (
                 <XCircle className="h-6 w-6 text-red-500" />
               )}
-              <span>
-                {isCorrect ? '정답이에요!' : `정답: ${correctAnswer}`}
-              </span>
+              <span>{isCorrect ? '정답이에요' : `정답: ${correctAnswer}`}</span>
             </div>
 
-            {/* Step-by-step solution */}
+            {choices.length > 0 && (
+              <div className="grid grid-cols-2 gap-2 w-full max-w-md">
+                {choices.map((choice, index) => (
+                  <div
+                    key={choice}
+                    className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold ${
+                      choice === correctAnswer
+                        ? 'border-green-400 bg-green-50 text-green-700'
+                        : selected === choice
+                          ? 'border-red-300 bg-red-50 text-red-500'
+                          : 'border-border text-muted-foreground'
+                    }`}
+                  >
+                    <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+                    {choice}
+                  </div>
+                ))}
+              </div>
+            )}
+
             {steps.length > 0 && (
               <div className="w-full max-w-sm">
                 <Button
@@ -141,7 +144,7 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                   className="gap-1 text-muted-foreground"
                 >
                   <Lightbulb className="h-4 w-4" />
-                  {showSteps ? '풀이 접기' : '풀이 보기'}
+                  {showSteps ? '풀이 숨기기' : '풀이 보기'}
                 </Button>
                 <AnimatePresence>
                   {showSteps && (
@@ -152,19 +155,13 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                       className="overflow-hidden"
                     >
                       <div className="mt-2 rounded-xl bg-muted/50 p-4 space-y-2">
-                        {steps.map((step: string, i: number) => (
-                          <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: i * 0.15 }}
-                            className="flex items-start gap-2 text-sm"
-                          >
-                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#FF6B35]/10 text-[#FF6B35] flex items-center justify-center text-xs font-bold">
-                              {i + 1}
+                        {steps.map((step: string, index: number) => (
+                          <div key={`${step}-${index}`} className="flex items-start gap-2 text-sm">
+                            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FF6B35]/10 text-xs font-bold text-[#FF6B35]">
+                              {index + 1}
                             </span>
                             <span className="pt-0.5">{step}</span>
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </motion.div>
