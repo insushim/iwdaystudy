@@ -17,7 +17,6 @@ import Timer from '@/components/learning/Timer';
 import ResultScreen from '@/components/learning/ResultScreen';
 import Mascot from '@/components/learning/Mascot';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import { Card, CardContent } from '@/components/ui/card';
 import type { LearningRecord, QuestionResponse } from '@/types/database';
 
 export default function LearningSessionClient() {
@@ -328,53 +327,22 @@ export default function LearningSessionClient() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 py-6 px-4 pb-24 lg:pb-8">
-        <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[240px,1fr] xl:grid-cols-[280px,1fr] lg:gap-8 lg:items-start">
+      <div className="flex-1 py-4 px-4 pb-24 lg:pb-8">
+        <div className="max-w-3xl mx-auto">
+          <AnimatePresence mode="wait">
+            <QuestionRenderer
+              key={currentQuestion.id}
+              question={currentQuestion}
+              onAnswer={handleAnswer}
+              showResult={!!currentState?.isAnswered}
+              isCorrect={currentState?.isCorrect ?? null}
+            />
+          </AnimatePresence>
 
-          {/* Left sidebar — desktop only */}
-          <div className="hidden lg:flex flex-col gap-4">
-            <Card>
-              <CardContent className="flex flex-col items-center py-6">
-                <Mascot state={mascotState} message={mascotMessage} size={90} />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="py-4 space-y-3 text-sm">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">학습 현황</p>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">현재 문제</span>
-                  <span className="font-bold">{currentIndex + 1} / {questions.length}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">정답</span>
-                  <span className="font-bold text-green-600">{correctIndices.size}개</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">남은 문제</span>
-                  <span className="font-bold">{questions.length - answeredIndices.size}개</span>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Desktop inline navigation */}
+          <div className="hidden lg:flex items-center justify-between mt-6">
+            <NavButtons />
           </div>
-
-          {/* Question area */}
-          <div>
-            <AnimatePresence mode="wait">
-              <QuestionRenderer
-                key={currentQuestion.id}
-                question={currentQuestion}
-                onAnswer={handleAnswer}
-                showResult={!!currentState?.isAnswered}
-                isCorrect={currentState?.isCorrect ?? null}
-              />
-            </AnimatePresence>
-
-            {/* Desktop inline navigation */}
-            <div className="hidden lg:flex items-center justify-between mt-6">
-              <NavButtons />
-            </div>
-          </div>
-
         </div>
       </div>
 
