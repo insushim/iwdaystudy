@@ -332,7 +332,7 @@ export default function LearningSessionClient() {
         <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-[240px,1fr] xl:grid-cols-[280px,1fr] lg:gap-8 lg:items-start">
 
           {/* Left sidebar — desktop only */}
-          <div className="hidden lg:flex flex-col gap-4 sticky top-[88px]">
+          <div className="hidden lg:flex flex-col gap-4">
             <Card>
               <CardContent className="flex flex-col items-center py-6">
                 <Mascot state={mascotState} message={mascotMessage} size={90} />
