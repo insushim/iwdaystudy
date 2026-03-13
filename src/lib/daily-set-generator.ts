@@ -21,7 +21,7 @@ import type {
   EnglishEntry,
 } from "@/types/curriculum";
 import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
-import { getAvailableMathUnits } from "@/lib/curriculum/curriculum-sequence";
+import { getAvailableMathUnits, getAvailableScienceUnits, getAvailableEnglishUnits } from "@/lib/curriculum/curriculum-sequence";
 import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
 import { generateVocabPool } from "@/lib/curriculum/generators/vocab-generator";
 import { generateKnowledgePool } from "@/lib/curriculum/generators/knowledge-generator";
@@ -260,6 +260,28 @@ function filterMathByProgress(items: MathEntry[], grade: number, semester: numbe
   return items.filter(m => !m.unit || available.has(m.unit));
 }
 
+/**
+ * Filter science items to only include units unlocked so far this semester.
+ * Uses week-based curriculum sequencing for grades 3-6.
+ * Returns all items for grades 1-2 (no science curriculum).
+ */
+function filterScienceByProgress(items: KnowledgeEntry[], grade: number, semester: number): KnowledgeEntry[] {
+  const available = getAvailableScienceUnits(grade, semester);
+  if (available.size === 0) return items; // grades 1-2 or no sequence defined
+  return items.filter(m => !m.unit || available.has(m.unit));
+}
+
+/**
+ * Filter English items to only include units unlocked so far this semester.
+ * Uses week-based curriculum sequencing for grades 3-6.
+ * Returns all items for grades 1-2 (no English curriculum).
+ */
+function filterEnglishByProgress(items: EnglishEntry[], grade: number, semester: number): EnglishEntry[] {
+  const available = getAvailableEnglishUnits(grade, semester);
+  if (available.size === 0) return items; // grades 1-2 or no sequence defined
+  return items.filter(m => !m.unit || available.has(m.unit));
+}
+
 // Get curriculum data per grade (merges static + procedurally generated)
 function getGradeData(grade: number, semester: number, daySeed?: number): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
@@ -324,6 +346,10 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
   // Pre-filter generated math by curriculum progress (week-based unit sequencing)
   const filtMath = filterMathByProgress([...generatedMath, ...generatedMathExtra, ...generatedMathBonus], grade, semester);
 
+  // Pre-filter science and English by curriculum progress (week-based unit sequencing)
+  const filtScience = filterScienceByProgress([...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus], grade, semester);
+  const filtEnglish = filterEnglishByProgress([...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus], grade, semester);
+
   switch (grade) {
     case 1:
       return {
@@ -356,7 +382,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade3EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        english: [...(grade3EnglishData || []), ...filtEnglish],
         creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 4:
@@ -368,7 +394,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        english: [...(grade4EnglishData || []), ...filtEnglish],
         creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 5:
@@ -380,9 +406,9 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade5EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        english: [...(grade5EnglishData || []), ...filtEnglish],
         creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
+        science: [...(grade5ScienceData || []), ...filtScience],
         social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     case 6:
@@ -394,9 +420,9 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade6EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+        english: [...(grade6EnglishData || []), ...filtEnglish],
         creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
+        science: [...(grade6ScienceData || []), ...filtScience],
         social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     default:

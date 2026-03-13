@@ -1169,17 +1169,19 @@ const FIXED_CAN: EnglishEntry[] = [
 // Generator Functions
 // ============================================================
 
-function makeEntry(word: W, tmpl: Tmpl): EnglishEntry {
-  return {
+function makeEntry(word: W, tmpl: Tmpl, unit?: string): EnglishEntry {
+  const entry: EnglishEntry = {
     sentence: tmpl.s(word.w),
     translation: tmpl.t(word.k),
     word: word.w,
     pronunciation: word.p,
     practice: word.pr,
   };
+  if (unit) entry.unit = unit;
+  return entry;
 }
 
-function generateFromBank(rng: () => number, words: W[], templates: Tmpl[], entriesPerWord: number = 2): EnglishEntry[] {
+function generateFromBank(rng: () => number, words: W[], templates: Tmpl[], entriesPerWord: number = 2, unit?: string): EnglishEntry[] {
   const entries: EnglishEntry[] = [];
   for (const word of words) {
     const used = new Set<number>();
@@ -1187,7 +1189,7 @@ function generateFromBank(rng: () => number, words: W[], templates: Tmpl[], entr
       let idx: number;
       do { idx = Math.floor(rng() * templates.length); } while (used.has(idx) && used.size < templates.length);
       used.add(idx);
-      entries.push(makeEntry(word, templates[idx]));
+      entries.push(makeEntry(word, templates[idx], unit));
     }
   }
   return entries;
@@ -1196,18 +1198,19 @@ function generateFromBank(rng: () => number, words: W[], templates: Tmpl[], entr
 function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
   const entries: EnglishEntry[] = [];
 
-  // Greetings (direct sentences)
+  // Greetings (direct sentences) → "인사와 소개"
   for (const g of G34_GREETINGS) {
     entries.push({
       sentence: `${g.w.charAt(0).toUpperCase() + g.w.slice(1)}.`,
       translation: `${g.k}.`,
       word: g.w, pronunciation: g.p, practice: g.pr,
+      unit: '인사와 소개',
     });
   }
 
-  // Colors - 2 templates each
-  entries.push(...generateFromBank(rng, G34_COLORS, BASIC_TEMPLATES, 2));
-  // Numbers
+  // Colors - 2 templates each → "숫자와 색깔"
+  entries.push(...generateFromBank(rng, G34_COLORS, BASIC_TEMPLATES, 2, '숫자와 색깔'));
+  // Numbers → "숫자와 색깔"
   for (const n of G34_NUMBERS) {
     const items = ['apples', 'books', 'pencils', 'friends', 'toys', 'balls', 'cats', 'dogs'];
     const itemsK = ['개의 사과가', '권의 책이', '개의 연필이', '명의 친구가', '개의 장난감이', '개의 공이', '마리의 고양이가', '마리의 강아지가'];
@@ -1216,24 +1219,25 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
       sentence: `I have ${n.w} ${items[idx]}.`,
       translation: `나는 ${n.k} ${itemsK[idx]} 있어요.`,
       word: n.w, pronunciation: n.p, practice: n.pr,
+      unit: '숫자와 색깔',
     });
   }
 
-  // Animals - 2 templates
-  entries.push(...generateFromBank(rng, G34_ANIMALS, BASIC_TEMPLATES, 2));
-  // Family - 2 templates
-  entries.push(...generateFromBank(rng, G34_FAMILY, FAMILY_TEMPLATES, 2));
-  // Food - 2 templates
-  entries.push(...generateFromBank(rng, G34_FOOD, BASIC_TEMPLATES, 2));
-  // Body - 2 templates
-  entries.push(...generateFromBank(rng, G34_BODY, BASIC_TEMPLATES, 2));
-  // Daily actions - 2 templates
-  entries.push(...generateFromBank(rng, G34_DAILY, ACTION_TEMPLATES, 2));
-  // School items - 2 templates
-  entries.push(...generateFromBank(rng, G34_SCHOOL, BASIC_TEMPLATES, 2));
-  // Adjectives - 2 templates
+  // Animals - 2 templates → "동물과 자연"
+  entries.push(...generateFromBank(rng, G34_ANIMALS, BASIC_TEMPLATES, 2, '동물과 자연'));
+  // Family - 2 templates → "가족과 신체"
+  entries.push(...generateFromBank(rng, G34_FAMILY, FAMILY_TEMPLATES, 2, '가족과 신체'));
+  // Food - 2 templates → "음식과 맛"
+  entries.push(...generateFromBank(rng, G34_FOOD, BASIC_TEMPLATES, 2, '음식과 맛'));
+  // Body - 2 templates → "가족과 신체"
+  entries.push(...generateFromBank(rng, G34_BODY, BASIC_TEMPLATES, 2, '가족과 신체'));
+  // Daily actions - 2 templates → "일상표현"
+  entries.push(...generateFromBank(rng, G34_DAILY, ACTION_TEMPLATES, 2, '일상표현'));
+  // School items - 2 templates → "학교생활"
+  entries.push(...generateFromBank(rng, G34_SCHOOL, BASIC_TEMPLATES, 2, '학교생활'));
+  // Adjectives - 2 templates (general, no unit)
   entries.push(...generateFromBank(rng, G34_ADJECTIVES, BASIC_TEMPLATES, 2));
-  // Clothing - 2 templates
+  // Clothing - 2 templates (general, no unit)
   const clothingTmpls: Tmpl[] = [
     { s: w => `I wear ${w}.`, t: k => `나는 ${k}을(를) 입어요.` },
     { s: w => `This ${w} is nice.`, t: k => `이 ${k}은(는) 멋져요.` },
@@ -1242,29 +1246,29 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
     { s: w => `Where are my ${w}?`, t: k => `내 ${k}이(가) 어디 있어요?` },
   ];
   entries.push(...generateFromBank(rng, G34_CLOTHING, clothingTmpls, 2));
-  // Transport
+  // Transport → "교통과 이동"
   const transportTmpls: Tmpl[] = [
     { s: w => `I go by ${w}.`, t: k => `나는 ${k}로 가요.` },
     { s: w => `This is a ${w}.`, t: k => `이것은 ${k}이에요.` },
     { s: w => `I ride the ${w}.`, t: k => `나는 ${k}을(를) 타요.` },
     { s: w => `The ${w} is fast.`, t: k => `${k}은(는) 빨라요.` },
   ];
-  entries.push(...generateFromBank(rng, G34_TRANSPORT, transportTmpls, 2));
-  // Nature
+  entries.push(...generateFromBank(rng, G34_TRANSPORT, transportTmpls, 2, '교통과 이동'));
+  // Nature → "동물과 자연"
   const natureTmpls: Tmpl[] = [
     { s: w => `I see the ${w}.`, t: k => `나는 ${k}을(를) 봐요.` },
     { s: w => `The ${w} is beautiful.`, t: k => `${k}은(는) 아름다워요.` },
     { s: w => `Look at the ${w}!`, t: k => `${k}을(를) 봐요!` },
     { s: w => `I like the ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
   ];
-  entries.push(...generateFromBank(rng, G34_NATURE, natureTmpls, 2));
-  // Positions (direct)
+  entries.push(...generateFromBank(rng, G34_NATURE, natureTmpls, 2, '동물과 자연'));
+  // Positions → "위치와 장소"
   for (const pos of G34_POSITIONS) {
-    entries.push(makeEntry(pos, pickOne(rng, BASIC_TEMPLATES)));
+    entries.push(makeEntry(pos, pickOne(rng, BASIC_TEMPLATES), '위치와 장소'));
   }
-  // House items
+  // House items (general, no unit)
   entries.push(...generateFromBank(rng, G34_HOUSE, BASIC_TEMPLATES, 2));
-  // Commands
+  // Commands (general, no unit)
   entries.push(...FIXED_COMMANDS);
 
   return entries;
@@ -1273,7 +1277,7 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
 function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
   const entries: EnglishEntry[] = [];
 
-  // Subjects - 2 templates
+  // Subjects - 2 templates → "학교와 직업"
   const subjectTmpls: Tmpl[] = [
     { s: w => `I like ${w} class.`, t: k => `나는 ${k} 수업을 좋아해요.` },
     { s: w => `${w} is my favorite subject.`, t: k => `${k}은(는) 내가 가장 좋아하는 과목이에요.` },
@@ -1281,34 +1285,34 @@ function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
     { s: w => `${w} class is interesting.`, t: k => `${k} 수업은 재미있어요.` },
     { s: w => `I have ${w} on Monday.`, t: k => `월요일에 ${k} 수업이 있어요.` },
   ];
-  entries.push(...generateFromBank(rng, G56_SUBJECTS, subjectTmpls, 2));
-  // Weather
-  entries.push(...generateFromBank(rng, G56_WEATHER, WEATHER_TEMPLATES, 2));
-  // Hobbies
-  entries.push(...generateFromBank(rng, G56_HOBBIES, HOBBY_TEMPLATES, 2));
-  // Places
-  entries.push(...generateFromBank(rng, G56_PLACES, INTERMEDIATE_TEMPLATES, 2));
-  // Emotions
-  entries.push(...generateFromBank(rng, G56_EMOTIONS, EMOTION_TEMPLATES, 2));
-  // Time & Days
+  entries.push(...generateFromBank(rng, G56_SUBJECTS, subjectTmpls, 2, '학교와 직업'));
+  // Weather → "날씨와 자연"
+  entries.push(...generateFromBank(rng, G56_WEATHER, WEATHER_TEMPLATES, 2, '날씨와 자연'));
+  // Hobbies → "일상과 취미"
+  entries.push(...generateFromBank(rng, G56_HOBBIES, HOBBY_TEMPLATES, 2, '일상과 취미'));
+  // Places → "위치와 장소"
+  entries.push(...generateFromBank(rng, G56_PLACES, INTERMEDIATE_TEMPLATES, 2, '위치와 장소'));
+  // Emotions → "감정과 상태"
+  entries.push(...generateFromBank(rng, G56_EMOTIONS, EMOTION_TEMPLATES, 2, '감정과 상태'));
+  // Time & Days → "시간과 날짜"
   const timeTmpls: Tmpl[] = [
     { s: w => `Today is ${w}.`, t: k => `오늘은 ${k}이에요.` },
     { s: w => `I like ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
     { s: w => `See you on ${w}.`, t: k => `${k}에 만나요.` },
     { s: w => `What do you do on ${w}?`, t: k => `${k}에 뭐 해요?` },
   ];
-  entries.push(...generateFromBank(rng, G56_TIME, timeTmpls, 2));
-  // Seasons & Months
+  entries.push(...generateFromBank(rng, G56_TIME, timeTmpls, 2, '시간과 날짜'));
+  // Seasons & Months → "날씨와 계절"
   const seasonTmpls: Tmpl[] = [
     { s: w => `I like ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
     { s: w => `${w} is beautiful.`, t: k => `${k}은(는) 아름다워요.` },
     { s: w => `My birthday is in ${w}.`, t: k => `내 생일은 ${k}에 있어요.` },
     { s: w => `We have a holiday in ${w}.`, t: k => `${k}에 공휴일이 있어요.` },
   ];
-  entries.push(...generateFromBank(rng, G56_SEASONS, seasonTmpls, 2));
-  // Intermediate adjectives
-  entries.push(...generateFromBank(rng, G56_INTERMEDIATE_ADJ, COMPARISON_TEMPLATES, 2));
-  // Past tense
+  entries.push(...generateFromBank(rng, G56_SEASONS, seasonTmpls, 2, '날씨와 계절'));
+  // Intermediate adjectives → "비교와 묘사"
+  entries.push(...generateFromBank(rng, G56_INTERMEDIATE_ADJ, COMPARISON_TEMPLATES, 2, '비교와 묘사'));
+  // Past tense → "과거경험"
   const pastTmpls: Tmpl[] = [
     { s: w => `I ${w} yesterday.`, t: k => `나는 어제 ${k}.` },
     { s: w => `She ${w} last night.`, t: k => `그녀는 어젯밤에 ${k}.` },
@@ -1316,15 +1320,15 @@ function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
     { s: w => `He ${w} in the park.`, t: k => `그는 공원에서 ${k}.` },
     { s: w => `They ${w} last weekend.`, t: k => `그들은 지난 주말에 ${k}.` },
   ];
-  entries.push(...generateFromBank(rng, G56_PAST_TENSE, pastTmpls, 2));
-  // Jobs
-  entries.push(...generateFromBank(rng, G56_JOBS, JOB_TEMPLATES, 2));
-  // Technology
-  entries.push(...generateFromBank(rng, G56_TECHNOLOGY, BASIC_TEMPLATES, 2));
-  // Health
-  entries.push(...generateFromBank(rng, G56_HEALTH, BASIC_TEMPLATES, 2));
+  entries.push(...generateFromBank(rng, G56_PAST_TENSE, pastTmpls, 2, '과거경험'));
+  // Jobs → "진로와 직업"
+  entries.push(...generateFromBank(rng, G56_JOBS, JOB_TEMPLATES, 2, '진로와 직업'));
+  // Technology → "과학과 기술"
+  entries.push(...generateFromBank(rng, G56_TECHNOLOGY, BASIC_TEMPLATES, 2, '과학과 기술'));
+  // Health → "건강과 운동"
+  entries.push(...generateFromBank(rng, G56_HEALTH, BASIC_TEMPLATES, 2, '건강과 운동'));
 
-  // Fixed sentence collections
+  // Fixed sentence collections (general, no unit for fixed sentences)
   entries.push(...FIXED_BECAUSE);
   entries.push(...FIXED_IF);
   entries.push(...FIXED_ROUTINE);

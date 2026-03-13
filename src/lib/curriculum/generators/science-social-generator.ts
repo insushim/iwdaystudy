@@ -28,6 +28,7 @@ interface ScienceItem {
   answer: string;
   category: string;
   gradeGroup: 'lower' | 'upper' | 'both';
+  unit?: string;
 }
 
 const SCIENCE_ITEMS: ScienceItem[] = [
@@ -632,7 +633,9 @@ function buildPool(
     const key = item.text + '|' + item.answer;
     if (!seen.has(key)) {
       seen.add(key);
-      pool.push({ text: item.text, answer: item.answer, category: item.category });
+      const entry: KnowledgeEntry = { text: item.text, answer: item.answer, category: item.category };
+      if ((item as ScienceItem).unit) entry.unit = (item as ScienceItem).unit;
+      pool.push(entry);
     }
   }
 
@@ -1033,8 +1036,71 @@ const SOC_X: [string,string,string,'lower'|'upper'|'both'][] = [
 ];
 const SOCIAL_EXTRA: ScienceItem[] = SOC_X.map(([text,answer,category,gradeGroup]) => ({text,answer,category,gradeGroup}));
 
+/**
+ * Maps a science KnowledgeEntry to a curriculum unit string based on its category and content.
+ * Only assigns units for specific textbook units; general items get no unit (always show).
+ */
+function assignScienceUnit(entry: KnowledgeEntry): string | undefined {
+  const text = entry.text;
+  const cat = entry.category;
+
+  // 지구과학 mappings
+  if (cat === '지구과학' || cat === '지구') {
+    if (text.includes('지층') || text.includes('화석') || text.includes('퇴적암') || text.includes('암석')) return '지층과 화석';
+    if (text.includes('화산') || text.includes('지진') || text.includes('마그마') || text.includes('용암')) return '화산과 지진';
+    if (text.includes('태양계') || text.includes('행성') || text.includes('별자리') || text.includes('북극성')) return '태양계와 별';
+    if (text.includes('날씨') || text.includes('기압') || text.includes('태풍') || text.includes('계절') && text.includes('기후')) return '날씨와 우리 생활';
+    if (text.includes('지구') && (text.includes('달') || text.includes('공전') || text.includes('자전'))) return '지구와 달의 운동';
+    if (text.includes('계절') && !text.includes('날씨')) return '계절의 변화';
+    if (text.includes('지구의 모습') || text.includes('지각') || text.includes('침식') || text.includes('퇴적') && !text.includes('암')) return '지구의 모습';
+  }
+
+  // 물리 mappings
+  if (cat === '물리') {
+    if (text.includes('무게') || text.includes('수평') || text.includes('용수철 저울')) return '물체의 무게';
+    if (text.includes('열') && (text.includes('온도') || text.includes('전도') || text.includes('대류') || text.includes('복사'))) return '온도와 열';
+    if (text.includes('속력') || text.includes('운동') && (text.includes('등속') || text.includes('가속') || text.includes('빠르기'))) return '물체의 운동';
+    if (text.includes('소리') || text.includes('진동') || text.includes('메아리')) return '소리의 성질';
+    if (text.includes('그림자') || text.includes('렌즈') || text.includes('빛') && (text.includes('굴절') || text.includes('반사'))) return '그림자와 거울';
+    if (text.includes('렌즈') || (text.includes('빛') && text.includes('렌즈'))) return '빛과 렌즈';
+  }
+
+  // 화학 mappings
+  if (cat === '화학') {
+    if (text.includes('혼합물') || text.includes('분리') || text.includes('거르기')) return '혼합물의 분리';
+    if (text.includes('상태') || (text.includes('물') && (text.includes('얼음') || text.includes('수증기') || text.includes('끓')))) return '물의 상태 변화';
+    if (text.includes('용해') || text.includes('용액') || text.includes('용매') || text.includes('용질')) return '용해와 용액';
+    if (text.includes('산') && text.includes('염기') || text.includes('리트머스') || text.includes('중화')) return '산과 염기';
+    if (text.includes('기체') && (text.includes('산소') || text.includes('이산화탄소') || text.includes('수소'))) return '여러 가지 기체';
+    if (text.includes('연소') || text.includes('소화') || text.includes('불') && (text.includes('산소') || text.includes('탈'))) return '연소와 소화';
+  }
+
+  // 생물 mappings
+  if (cat === '생물' || cat === '동물' || cat === '식물') {
+    if (text.includes('한살이') && (text.includes('나비') || text.includes('개구리') || text.includes('알') || text.includes('번데기'))) return '동물의 한살이';
+    if (text.includes('한살이') && (text.includes('씨') || text.includes('싹') || text.includes('꽃') || text.includes('열매'))) return '식물의 한살이';
+    if (text.includes('다양한 생물') || text.includes('균류') || text.includes('미생물') || text.includes('곰팡이') || text.includes('세균')) return '다양한 생물과 우리 생활';
+    if (text.includes('생물과 환경') || text.includes('생태계') || text.includes('먹이사슬') || text.includes('먹이그물')) return '생물과 환경';
+    if (text.includes('식물의 구조') || text.includes('광합성') || text.includes('증산') || text.includes('물관') || text.includes('체관') || text.includes('엽록')) return '식물의 구조와 기능';
+    if (text.includes('우리 몸') || text.includes('심장') || text.includes('혈액순환') || text.includes('소화기관') || text.includes('폐') || text.includes('뼈') && text.includes('근육')) return '우리 몸의 구조와 기능';
+  }
+
+  // 인체 mappings
+  if (cat === '인체') {
+    return '우리 몸의 구조와 기능';
+  }
+
+  return undefined;
+}
+
 export function generateSciencePool(grade: number, seed: number): KnowledgeEntry[] {
-  return buildPool([...SCIENCE_ITEMS, ...SCIENCE_EXTRA], grade, seed, 500);
+  const pool = buildPool([...SCIENCE_ITEMS, ...SCIENCE_EXTRA], grade, seed, 500);
+  // Assign curriculum units to items based on content
+  return pool.map(entry => {
+    const unit = assignScienceUnit(entry);
+    if (unit) return { ...entry, unit };
+    return entry;
+  });
 }
 
 export function generateSocialPool(grade: number, seed: number): KnowledgeEntry[] {

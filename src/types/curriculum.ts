@@ -39,6 +39,7 @@ export interface KnowledgeEntry {
   text: string;
   answer: string;
   category: string;
+  unit?: string;
 }
 
 export interface SafetyEntry {
@@ -53,6 +54,7 @@ export interface EnglishEntry {
   word: string;
   pronunciation: string;
   practice?: string[];
+  unit?: string;
 }
 
 export interface MathEntry {
