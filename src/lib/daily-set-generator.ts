@@ -21,6 +21,7 @@ import type {
   EnglishEntry,
 } from "@/types/curriculum";
 import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
+import { getAvailableMathUnits } from "@/lib/curriculum/curriculum-sequence";
 import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
 import { generateVocabPool } from "@/lib/curriculum/generators/vocab-generator";
 import { generateKnowledgePool } from "@/lib/curriculum/generators/knowledge-generator";
@@ -245,23 +246,18 @@ interface GradeData {
   social?: KnowledgeEntry[];
 }
 
-// Units that belong to each semester for grade 5 math
-const GRADE5_SEM1_UNITS = new Set(["혼합 계산", "약수와 배수", "최대공약수", "최소공배수", "약분과 통분", "분수의 덧셈", "분수의 뺄셈"]);
-const GRADE5_SEM2_UNITS = new Set(["분수의 곱셈", "소수의 곱셈", "소수의 덧셈", "넓이", "평균", "합동", "대칭"]);
-// Units for grade 6 semester split
-const GRADE6_SEM1_UNITS = new Set(["비와 비율", "백분율", "직육면체의 부피", "비례식"]);
-const GRADE6_SEM2_UNITS = new Set(["원의 넓이", "경우의 수", "비례배분"]);
+/**
+ * Filter math items to only include units unlocked so far this semester.
+ * Uses week-based curriculum sequencing for all grades.
+ * Falls back to no filtering if no sequence is defined.
+ */
+function filterMathByProgress(items: MathEntry[], grade: number, semester: number): MathEntry[] {
+  const available = getAvailableMathUnits(grade, semester);
+  if (available.size === 0) return items; // no sequence defined
 
-function filterMathBySemester(items: MathEntry[], grade: number, semester: number): MathEntry[] {
-  if (grade === 5) {
-    const allowed = semester === 1 ? GRADE5_SEM1_UNITS : GRADE5_SEM2_UNITS;
-    return items.filter(m => !m.unit || allowed.has(m.unit));
-  }
-  if (grade === 6) {
-    const allowed = semester === 1 ? GRADE6_SEM1_UNITS : GRADE6_SEM2_UNITS;
-    return items.filter(m => !m.unit || allowed.has(m.unit));
-  }
-  return items;
+  const filtered = items.filter(m => !m.unit || available.has(m.unit));
+  // Safety: if too few remain, return unfiltered so students always get problems
+  return filtered.length >= 15 ? filtered : items;
 }
 
 // Get curriculum data per grade (merges static + procedurally generated)
@@ -325,12 +321,15 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
     generateSocialPool(grade, expandedDayOfYearBonus),
   );
 
+  // Pre-filter generated math by curriculum progress (week-based unit sequencing)
+  const filtMath = filterMathByProgress([...generatedMath, ...generatedMathExtra, ...generatedMathBonus], grade, semester);
+
   switch (grade) {
     case 1:
       return {
         spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade1MathData, grade, semester), ...filtMath],
         knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -341,7 +340,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
       return {
         spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade2MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade2MathData, grade, semester), ...filtMath],
         knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -352,7 +351,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
       return {
         spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade3MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade3MathData, grade, semester), ...filtMath],
         knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -364,7 +363,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
       return {
         spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade4MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade4MathData, grade, semester), ...filtMath],
         knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -372,12 +371,11 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
         creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
-    case 5: {
-      const staticMath5 = filterMathBySemester(grade5MathData, 5, semester);
+    case 5:
       return {
         spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...staticMath5, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade5MathData, grade, semester), ...filtMath],
         knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -387,13 +385,11 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
         social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
-    }
-    case 6: {
-      const staticMath6 = filterMathBySemester(grade6MathData, 6, semester);
+    case 6:
       return {
         spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...staticMath6, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade6MathData, grade, semester), ...filtMath],
         knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -403,12 +399,11 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
         social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
-    }
     default:
       return {
         spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade1MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...filterMathByProgress(grade1MathData, grade, semester), ...filtMath],
         knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
