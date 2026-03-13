@@ -253,11 +253,11 @@ interface GradeData {
  */
 function filterMathByProgress(items: MathEntry[], grade: number, semester: number): MathEntry[] {
   const available = getAvailableMathUnits(grade, semester);
-  if (available.size === 0) return items; // no sequence defined
+  if (available.size === 0) return items; // no sequence defined for this grade/semester
 
-  const filtered = items.filter(m => !m.unit || available.has(m.unit));
-  // Safety: if too few remain, return unfiltered so students always get problems
-  return filtered.length >= 15 ? filtered : items;
+  // Return only items matching unlocked units. Items without a unit field pass through.
+  // If nothing matches, return [] — the generated math pool handles coverage.
+  return items.filter(m => !m.unit || available.has(m.unit));
 }
 
 // Get curriculum data per grade (merges static + procedurally generated)

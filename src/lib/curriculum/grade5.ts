@@ -859,7 +859,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "1/3 + 1/4",
     answer: 7,
     steps: ["통분: 4/12 + 3/12", "분자끼리 더하기: 4 + 3 = 7", "답: 7/12"],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [1, 3, 1, 4],
   },
   {
@@ -867,7 +867,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "2/5 + 1/3",
     answer: 11,
     steps: ["통분: 6/15 + 5/15", "분자끼리 더하기: 6 + 5 = 11", "답: 11/15"],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [2, 5, 1, 3],
   },
   {
@@ -875,7 +875,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "3/4 - 1/6",
     answer: 7,
     steps: ["통분: 9/12 - 2/12", "분자끼리 빼기: 9 - 2 = 7", "답: 7/12"],
-    unit: "분수 뺄셈",
+    unit: "분수의 뺄셈",
     numbers: [3, 4, 1, 6],
   },
   {
@@ -883,7 +883,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "5/6 - 2/9",
     answer: 11,
     steps: ["통분: 15/18 - 4/18", "분자끼리 빼기: 15 - 4 = 11", "답: 11/18"],
-    unit: "분수 뺄셈",
+    unit: "분수의 뺄셈",
     numbers: [5, 6, 2, 9],
   },
   // 분수의 곱셈
@@ -1081,7 +1081,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "1/2 + 1/5",
     answer: 7,
     steps: ["통분: 5/10 + 2/10", "분자끼리 더하기: 5 + 2 = 7", "답: 7/10"],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [1, 2, 1, 5],
   },
   {
@@ -1089,7 +1089,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "3/8 + 1/4",
     answer: 5,
     steps: ["통분: 3/8 + 2/8", "분자끼리 더하기: 3 + 2 = 5", "답: 5/8"],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [3, 8, 1, 4],
   },
   {
@@ -1101,7 +1101,7 @@ export const grade5MathData: MathEntry[] = [
       "분자끼리 더하기: 10 + 9 = 19",
       "답: 19/15 = 1과 4/15",
     ],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [2, 3, 3, 5],
   },
   {
@@ -1109,7 +1109,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "5/8 - 1/3",
     answer: 7,
     steps: ["통분: 15/24 - 8/24", "분자끼리 빼기: 15 - 8 = 7", "답: 7/24"],
-    unit: "분수 뺄셈",
+    unit: "분수의 뺄셈",
     numbers: [5, 8, 1, 3],
   },
   {
@@ -1117,7 +1117,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "7/10 - 2/5",
     answer: 3,
     steps: ["통분: 7/10 - 4/10", "분자끼리 빼기: 7 - 4 = 3", "답: 3/10"],
-    unit: "분수 뺄셈",
+    unit: "분수의 뺄셈",
     numbers: [7, 10, 2, 5],
   },
   {
@@ -1129,7 +1129,7 @@ export const grade5MathData: MathEntry[] = [
       "분자끼리 더하기: 12 + 14 = 26",
       "답: 26/21 = 1과 5/21",
     ],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [4, 7, 2, 3],
   },
   {
@@ -1141,7 +1141,7 @@ export const grade5MathData: MathEntry[] = [
       "분자끼리 빼기: 11 - 9 = 2",
       "답: 2/12 = 1/6",
     ],
-    unit: "분수 뺄셈",
+    unit: "분수의 뺄셈",
     numbers: [11, 12, 3, 4],
   },
   {
@@ -1149,7 +1149,7 @@ export const grade5MathData: MathEntry[] = [
     expression: "1/6 + 3/8",
     answer: 13,
     steps: ["통분: 4/24 + 9/24", "분자끼리 더하기: 4 + 9 = 13", "답: 13/24"],
-    unit: "분수 덧셈",
+    unit: "분수의 덧셈",
     numbers: [1, 6, 3, 8],
   },
 

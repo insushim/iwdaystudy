@@ -833,7 +833,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "1/4 + 1/4",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 더합니다", "1 + 1 = 2", "답: 2/4"],
-    unit: "분수 덧셈",
+    unit: "분수의 기초",
     numbers: [1, 4, 1, 4],
   },
   {
@@ -841,7 +841,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "3/5 - 1/5",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "3 - 1 = 2", "답: 2/5"],
-    unit: "분수 뺄셈",
+    unit: "분수의 기초",
     numbers: [3, 5, 1, 5],
   },
   {
@@ -1378,7 +1378,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "2/5 + 1/5",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 더합니다", "2 + 1 = 3", "답: 3/5"],
-    unit: "분수 덧셈",
+    unit: "분수의 기초",
     numbers: [2, 5, 1, 5],
   },
   {
@@ -1386,7 +1386,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "4/6 - 2/6",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "4 - 2 = 2", "답: 2/6"],
-    unit: "분수 뺄셈",
+    unit: "분수의 기초",
     numbers: [4, 6, 2, 6],
   },
   {
@@ -1394,7 +1394,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "3/8 + 2/8",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 더합니다", "3 + 2 = 5", "답: 5/8"],
-    unit: "분수 덧셈",
+    unit: "분수의 기초",
     numbers: [3, 8, 2, 8],
   },
   {
@@ -1402,7 +1402,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "5/7 - 3/7",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "5 - 3 = 2", "답: 2/7"],
-    unit: "분수 뺄셈",
+    unit: "분수의 기초",
     numbers: [5, 7, 3, 7],
   },
   {
@@ -1410,7 +1410,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "1/3 + 1/3",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 더합니다", "1 + 1 = 2", "답: 2/3"],
-    unit: "분수 덧셈",
+    unit: "분수의 기초",
     numbers: [1, 3, 1, 3],
   },
   {
@@ -1418,7 +1418,7 @@ export const grade3MathData: MathEntry[] = [
     expression: "6/9 - 4/9",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "6 - 4 = 2", "답: 2/9"],
-    unit: "분수 뺄셈",
+    unit: "분수의 기초",
     numbers: [6, 9, 4, 9],
   },
   // 시간 계산 추가

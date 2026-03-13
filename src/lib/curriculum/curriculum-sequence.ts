@@ -67,9 +67,11 @@ export const MATH_UNIT_SEQUENCE: Record<number, Record<number, UnitSchedule[]>> 
       { unit: "나머지가 있는 나눗셈",     startWeek: 9 },
       { unit: "각도",                     startWeek: 12 },
       { unit: "동분모 분수 덧셈",         startWeek: 15 },
+      { unit: "동분모 분수 뺄셈",         startWeek: 15 },
     ],
     2: [
       { unit: "동분모 분수 덧셈",         startWeek: 1 },
+      { unit: "동분모 분수 뺄셈",         startWeek: 1 },
       { unit: "두 자리 × 한 자리 곱셈",   startWeek: 4 },
       { unit: "나머지가 있는 나눗셈",     startWeek: 6 },
       { unit: "각도",                     startWeek: 9 },
@@ -82,6 +84,7 @@ export const MATH_UNIT_SEQUENCE: Record<number, Record<number, UnitSchedule[]>> 
       { unit: "혼합 계산",   startWeek: 1 },
       { unit: "약수와 배수", startWeek: 4 },
       { unit: "최대공약수",  startWeek: 5 },
+      { unit: "최소공배수",  startWeek: 5 },
       { unit: "분수의 덧셈", startWeek: 7 },
       { unit: "분수의 뺄셈", startWeek: 7 },
     ],
@@ -90,6 +93,7 @@ export const MATH_UNIT_SEQUENCE: Record<number, Record<number, UnitSchedule[]>> 
       { unit: "소수의 덧셈", startWeek: 5 },
       { unit: "소수의 곱셈", startWeek: 7 },
       { unit: "넓이",        startWeek: 10 },
+      { unit: "평균",        startWeek: 13 },
     ],
   },
   6: {

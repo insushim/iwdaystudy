@@ -835,7 +835,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "3/8 + 2/8",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 더합니다", "3 + 2 = 5", "답: 5/8"],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [3, 8, 2, 8],
   },
   {
@@ -843,7 +843,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "5/6 - 2/6",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "5 - 2 = 3", "답: 3/6 = 1/2"],
-    unit: "분수 뺄셈",
+    unit: "동분모 분수 뺄셈",
     numbers: [5, 6, 2, 6],
   },
   {
@@ -855,7 +855,7 @@ export const grade4MathData: MathEntry[] = [
       "7 + 4 = 11",
       "답: 11/10 = 1과 1/10",
     ],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [7, 10, 4, 10],
   },
   {
@@ -1190,7 +1190,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "4/9 + 3/9",
     answer: 7,
     steps: ["분모가 같으므로 분자끼리 더합니다", "4 + 3 = 7", "답: 7/9"],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [4, 9, 3, 9],
   },
   {
@@ -1198,7 +1198,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "8/12 - 5/12",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "8 - 5 = 3", "답: 3/12 = 1/4"],
-    unit: "분수 뺄셈",
+    unit: "동분모 분수 뺄셈",
     numbers: [8, 12, 5, 12],
   },
   {
@@ -1210,7 +1210,7 @@ export const grade4MathData: MathEntry[] = [
       "5 + 4 = 9",
       "답: 9/7 = 1과 2/7",
     ],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [5, 7, 4, 7],
   },
   {
@@ -1218,7 +1218,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "9/10 - 3/10",
     answer: 6,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "9 - 3 = 6", "답: 6/10 = 3/5"],
-    unit: "분수 뺄셈",
+    unit: "동분모 분수 뺄셈",
     numbers: [9, 10, 3, 10],
   },
   {
@@ -1230,7 +1230,7 @@ export const grade4MathData: MathEntry[] = [
       "6 + 5 = 11",
       "답: 11/8 = 1과 3/8",
     ],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [6, 8, 5, 8],
   },
   {
@@ -1238,7 +1238,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "7/11 - 2/11",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "7 - 2 = 5", "답: 5/11"],
-    unit: "분수 뺄셈",
+    unit: "동분모 분수 뺄셈",
     numbers: [7, 11, 2, 11],
   },
   {
@@ -1250,7 +1250,7 @@ export const grade4MathData: MathEntry[] = [
       "3 + 4 = 7",
       "답: 7/5 = 1과 2/5",
     ],
-    unit: "분수 덧셈",
+    unit: "동분모 분수 덧셈",
     numbers: [3, 5, 4, 5],
   },
   {
@@ -1258,7 +1258,7 @@ export const grade4MathData: MathEntry[] = [
     expression: "11/15 - 4/15",
     answer: 7,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "11 - 4 = 7", "답: 7/15"],
-    unit: "분수 뺄셈",
+    unit: "동분모 분수 뺄셈",
     numbers: [11, 15, 4, 15],
   },
   // 소수 추가
