@@ -245,15 +245,34 @@ interface GradeData {
   social?: KnowledgeEntry[];
 }
 
+// Units that belong to each semester for grade 5 math
+const GRADE5_SEM1_UNITS = new Set(["혼합 계산", "약수와 배수", "최대공약수", "최소공배수", "약분과 통분", "분수의 덧셈", "분수의 뺄셈"]);
+const GRADE5_SEM2_UNITS = new Set(["분수의 곱셈", "소수의 곱셈", "소수의 덧셈", "넓이", "평균", "합동", "대칭"]);
+// Units for grade 6 semester split
+const GRADE6_SEM1_UNITS = new Set(["비와 비율", "백분율", "직육면체의 부피", "비례식"]);
+const GRADE6_SEM2_UNITS = new Set(["원의 넓이", "경우의 수", "비례배분"]);
+
+function filterMathBySemester(items: MathEntry[], grade: number, semester: number): MathEntry[] {
+  if (grade === 5) {
+    const allowed = semester === 1 ? GRADE5_SEM1_UNITS : GRADE5_SEM2_UNITS;
+    return items.filter(m => !m.unit || allowed.has(m.unit));
+  }
+  if (grade === 6) {
+    const allowed = semester === 1 ? GRADE6_SEM1_UNITS : GRADE6_SEM2_UNITS;
+    return items.filter(m => !m.unit || allowed.has(m.unit));
+  }
+  return items;
+}
+
 // Get curriculum data per grade (merges static + procedurally generated)
-function getGradeData(grade: number, daySeed?: number): GradeData {
+function getGradeData(grade: number, semester: number, daySeed?: number): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
   const expandedDayOfYear = dayOfYear + 10000;
   const expandedDayOfYearBonus = dayOfYear + 20000;
-  const generatedMath = generateMathPool(grade, dayOfYear);
-  const generatedMathExtra = generateMathPool(grade, expandedDayOfYear);
+  const generatedMath = generateMathPool(grade, dayOfYear, semester);
+  const generatedMathExtra = generateMathPool(grade, expandedDayOfYear, semester);
   const generatedMathBonus = takeExpandedPortion(
-    generateMathPool(grade, expandedDayOfYearBonus),
+    generateMathPool(grade, expandedDayOfYearBonus, semester),
   );
   const generatedSpelling = generateSpellingPool(grade, dayOfYear);
   const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear);
@@ -353,11 +372,12 @@ function getGradeData(grade: number, daySeed?: number): GradeData {
         english: [...(grade4EnglishData || []), ...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
         creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
-    case 5:
+    case 5: {
+      const staticMath5 = filterMathBySemester(grade5MathData, 5, semester);
       return {
         spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade5MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...staticMath5, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
         knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -367,11 +387,13 @@ function getGradeData(grade: number, daySeed?: number): GradeData {
         science: [...(grade5ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
         social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
-    case 6:
+    }
+    case 6: {
+      const staticMath6 = filterMathBySemester(grade6MathData, 6, semester);
       return {
         spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...grade6MathData, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+        math: [...staticMath6, ...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
         knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
@@ -381,6 +403,7 @@ function getGradeData(grade: number, daySeed?: number): GradeData {
         science: [...(grade6ScienceData || []), ...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
         social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
+    }
     default:
       return {
         spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
@@ -813,7 +836,7 @@ export function generateDailySet(
   const random = seededRandom(seed);
   const gradeGroup = getGradeGroup(grade);
   const composition = GRADE_SET_COMPOSITION[gradeGroup];
-  const data = getGradeData(grade, finalSeed);
+  const data = getGradeData(grade, semester, finalSeed);
 
   const setNumber = (finalSeed % 10000) + 1;
 

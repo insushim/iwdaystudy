@@ -22,6 +22,10 @@ function pickOne<T>(rng: () => number, arr: T[]): T {
   return arr[Math.floor(rng() * arr.length)];
 }
 
+function gcdCalc(a: number, b: number): number {
+  return b === 0 ? a : gcdCalc(b, a % b);
+}
+
 // ============================================================
 // Grade 1: 0~100, basic addition/subtraction, shapes
 // ============================================================
@@ -359,16 +363,13 @@ function generateGrade4Math(rng: () => number): MathEntry {
 
 // ============================================================
 // Grade 5: 약수/배수, 소수 연산, 넓이, 대칭, 혼합계산
+// 1학기: 혼합계산, 약수와 배수, 최대공약수/최소공배수, 분수의 덧셈/뺄셈
+// 2학기: 분수의 곱셈, 소수의 곱셈, 소수의 덧셈, 넓이
 // ============================================================
-function generateGrade5Math(rng: () => number): MathEntry {
-  const type = pickOne(rng, [
-    "mixed_ops",
-    "decimal_add",
-    "decimal_multiply",
-    "factor",
-    "area",
-    "lcm_gcd",
-  ]);
+function generateGrade5Math(rng: () => number, semester = 1): MathEntry {
+  const sem1Types = ["mixed_ops", "factor", "lcm_gcd", "fraction_sub", "fraction_sub"];
+  const sem2Types = ["decimal_multiply", "decimal_add", "area", "fraction_multiply"];
+  const type = pickOne(rng, semester === 1 ? sem1Types : sem2Types);
 
   if (type === "mixed_ops") {
     const a = randInt(rng, 2, 20);
@@ -424,6 +425,50 @@ function generateGrade5Math(rng: () => number): MathEntry {
       steps: [`${n}의 약수: ${factors.join(", ")}`, `총 ${factors.length}개`],
       unit: "약수와 배수",
       numbers: [n],
+    };
+  } else if (type === "fraction_sub") {
+    // 통분 후 분수 덧셈/뺄셈 (5학년 1학기)
+    const denoms: [number, number][] = [[2,3],[2,4],[2,5],[3,4],[3,6],[4,6],[2,6],[3,5]];
+    const [d1, d2] = pickOne(rng, denoms);
+    const lcm = (d1 * d2) / gcdCalc(d1, d2);
+    const n1 = randInt(rng, 1, d1 - 1);
+    const n2 = randInt(rng, 1, d2 - 1);
+    const isAdd = rng() > 0.4;
+    const n1c = n1 * (lcm / d1);
+    const n2c = n2 * (lcm / d2);
+    const resultNum = isAdd ? n1c + n2c : Math.abs(n1c - n2c);
+    const op = isAdd ? "+" : "-";
+    return {
+      type: "fraction",
+      expression: `${n1}/${d1} ${op} ${n2}/${d2} = ? (분자만 입력)`,
+      answer: resultNum,
+      steps: [
+        `공통분모: ${lcm}`,
+        `${n1c}/${lcm} ${op} ${n2c}/${lcm} = ${resultNum}/${lcm}`,
+      ],
+      unit: isAdd ? "분수의 덧셈" : "분수의 뺄셈",
+      numbers: [n1, d1, n2, d2],
+    };
+  } else if (type === "fraction_multiply") {
+    // 분수의 곱셈 (5학년 2학기)
+    const n1 = randInt(rng, 1, 5);
+    const d1 = randInt(rng, 2, 8);
+    const n2 = randInt(rng, 1, 5);
+    const d2 = randInt(rng, 2, 8);
+    const gcdN = gcdCalc(n1 * n2, d1 * d2);
+    const resultN = (n1 * n2) / gcdN;
+    const resultD = (d1 * d2) / gcdN;
+    return {
+      type: "fraction",
+      expression: `${n1}/${d1} × ${n2}/${d2} = ? (분자만 입력)`,
+      answer: resultN,
+      steps: [
+        `분자끼리: ${n1} × ${n2} = ${n1 * n2}`,
+        `분모끼리: ${d1} × ${d2} = ${d1 * d2}`,
+        `약분하면: ${resultN}/${resultD}`,
+      ],
+      unit: "분수의 곱셈",
+      numbers: [n1, d1, n2, d2],
     };
   } else if (type === "area") {
     const w = randInt(rng, 3, 15);
@@ -576,23 +621,26 @@ function generateGrade6Math(rng: () => number): MathEntry {
 // ============================================================
 // Public API: Generate N math problems for a given grade
 // ============================================================
-const generators: Record<number, (rng: () => number) => MathEntry> = {
-  1: generateGrade1Math,
-  2: generateGrade2Math,
-  3: generateGrade3Math,
-  4: generateGrade4Math,
-  5: generateGrade5Math,
-  6: generateGrade6Math,
-};
-
 export function generateMathProblems(
   grade: number,
   count: number,
   seed: number,
+  semester = 1,
 ): MathEntry[] {
-  const gen = generators[grade] || generators[1];
   const rng = seededRandom(seed);
   const problems: MathEntry[] = [];
+
+  const gen = (r: () => number): MathEntry => {
+    switch (grade) {
+      case 1: return generateGrade1Math(r);
+      case 2: return generateGrade2Math(r);
+      case 3: return generateGrade3Math(r);
+      case 4: return generateGrade4Math(r);
+      case 5: return generateGrade5Math(r, semester);
+      case 6: return generateGrade6Math(r);
+      default: return generateGrade1Math(r);
+    }
+  };
 
   for (let i = 0; i < count; i++) {
     problems.push(gen(rng));
@@ -602,13 +650,13 @@ export function generateMathProblems(
 }
 
 /**
- * Generate a large pool of math problems for a grade.
+ * Generate a large pool of math problems for a grade + semester.
  * Used to supplement static data, giving 10x+ content.
  */
 export function generateMathPool(
   grade: number,
   dayOfYear: number,
+  semester = 1,
 ): MathEntry[] {
-  // Generate 500 problems per grade per day-cycle (wraps every 365 days)
-  return generateMathProblems(grade, 500, dayOfYear * 1000 + grade);
+  return generateMathProblems(grade, 500, dayOfYear * 1000 + grade, semester);
 }
