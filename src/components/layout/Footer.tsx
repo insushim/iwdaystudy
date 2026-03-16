@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 const footerLinks = {
   서비스: [
     { href: "#features", label: "소개" },
-    { href: "#pricing", label: "요금제" },
     { href: "#how-it-works", label: "이용 방법" },
   ],
   지원: [

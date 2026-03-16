@@ -147,13 +147,8 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.7 }}
             className="mt-12 flex flex-col items-center gap-3"
           >
-            <div className="flex items-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-ara-yellow text-ara-yellow" />
-              ))}
-            </div>
             <p className="text-sm text-muted-foreground">
-              <span className="font-semibold text-foreground">1,200+</span> 가정에서 매일 사용하고 있어요
+              2022 개정 교육과정 기반 · 초등 1~6학년 맞춤 학습
             </p>
           </motion.div>
         </div>

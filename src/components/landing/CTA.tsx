@@ -47,7 +47,7 @@ export function CTA() {
 
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             매일 30분의 작은 습관이 아이의 학습 자신감을 키워요.
-            지금 무료로 시작하고, 일주일간 모든 기능을 체험해 보세요.
+            지금 바로 시작해 보세요.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -57,15 +57,11 @@ export function CTA() {
               asChild
             >
               <Link href="/signup/">
-                무료 체험 시작하기
+                지금 시작하기
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
           </div>
-
-          <p className="mt-6 text-sm text-muted-foreground">
-            신용카드 없이 시작 &middot; 언제든 해지 가능 &middot; 7일 무료 체험
-          </p>
         </motion.div>
       </div>
     </section>

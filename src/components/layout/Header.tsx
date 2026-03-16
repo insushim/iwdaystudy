@@ -17,7 +17,6 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#features", label: "소개" },
-  { href: "#pricing", label: "요금제" },
   { href: "#contact", label: "문의" },
 ];
 

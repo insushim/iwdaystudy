@@ -282,16 +282,89 @@ function filterEnglishByProgress(items: EnglishEntry[], grade: number, semester:
   return items.filter(m => !m.unit || available.has(m.unit));
 }
 
+// ============================================================
+// Static data accessors for core subjects (used for grade offset)
+// ============================================================
+function getStaticMathData(g: number): MathEntry[] {
+  switch (g) {
+    case 1: return grade1MathData;
+    case 2: return grade2MathData;
+    case 3: return grade3MathData;
+    case 4: return grade4MathData;
+    case 5: return grade5MathData;
+    case 6: return grade6MathData;
+    default: return grade1MathData;
+  }
+}
+
+function getStaticEnglishData(g: number): EnglishEntry[] {
+  switch (g) {
+    case 3: return grade3EnglishData ?? [];
+    case 4: return grade4EnglishData ?? [];
+    case 5: return grade5EnglishData ?? [];
+    case 6: return grade6EnglishData ?? [];
+    default: return [];
+  }
+}
+
+function getStaticScienceData(g: number): KnowledgeEntry[] {
+  switch (g) {
+    case 5: return grade5ScienceData ?? [];
+    case 6: return grade6ScienceData ?? [];
+    default: return [];
+  }
+}
+
+function getStaticSocialData(g: number): KnowledgeEntry[] {
+  switch (g) {
+    case 5: return grade5SocialData ?? [];
+    case 6: return grade6SocialData ?? [];
+    default: return [];
+  }
+}
+
+function getStaticKoreanData(g: number): KnowledgeEntry[] {
+  switch (g) {
+    case 1: return grade1KoreanData ?? [];
+    case 2: return grade2KoreanData ?? [];
+    default: return [];
+  }
+}
+
 // Get curriculum data per grade (merges static + procedurally generated)
+// 선행학습법 준수: 주지과목(수학·국어·영어·과학)은 전 학년 내용을 제공합니다.
 function getGradeData(grade: number, semester: number, daySeed?: number): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
   const expandedDayOfYear = dayOfYear + 10000;
   const expandedDayOfYearBonus = dayOfYear + 20000;
-  const generatedMath = generateMathPool(grade, dayOfYear, semester);
-  const generatedMathExtra = generateMathPool(grade, expandedDayOfYear, semester);
+
+  // 선행학습법: 주지과목은 현재 학년 - 1의 내용 사용
+  // 수학·국어: 최소 1학년
+  // 영어: 최소 3학년 (3학년부터 영어 교육 시작)
+  // 과학·사회: 최소 5학년 (5학년부터 교육 시작)
+  const coreMathGrade = Math.max(1, grade - 1);
+  const coreEnglishGrade = Math.max(3, grade - 1);
+  const coreScienceGrade = Math.max(5, grade - 1);
+  const coreSocialGrade = Math.max(5, grade - 1);
+
+  // ---- 주지과목 풀 생성 (전 학년 기준) ----
+  const generatedMath = generateMathPool(coreMathGrade, dayOfYear, semester);
+  const generatedMathExtra = generateMathPool(coreMathGrade, expandedDayOfYear, semester);
   const generatedMathBonus = takeExpandedPortion(
-    generateMathPool(grade, expandedDayOfYearBonus, semester),
+    generateMathPool(coreMathGrade, expandedDayOfYearBonus, semester),
   );
+  const generatedEnglish = generateEnglishPool(coreEnglishGrade, dayOfYear);
+  const generatedEnglishExtra = generateEnglishPool(coreEnglishGrade, expandedDayOfYear);
+  const generatedEnglishBonus = takeExpandedPortion(
+    generateEnglishPool(coreEnglishGrade, expandedDayOfYearBonus),
+  );
+  const generatedScience = generateSciencePool(coreScienceGrade, dayOfYear);
+  const generatedScienceExtra = generateSciencePool(coreScienceGrade, expandedDayOfYear);
+  const generatedScienceBonus = takeExpandedPortion(
+    generateSciencePool(coreScienceGrade, expandedDayOfYearBonus),
+  );
+
+  // ---- 비주지과목 풀 생성 (현재 학년 기준) ----
   const generatedSpelling = generateSpellingPool(grade, dayOfYear);
   const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear);
   const generatedSpellingBonus = takeExpandedPortion(
@@ -317,11 +390,6 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
   const generatedHanjaBonus = takeExpandedPortion(
     generateHanjaPool(grade, expandedDayOfYearBonus),
   );
-  const generatedEnglish = generateEnglishPool(grade, dayOfYear);
-  const generatedEnglishExtra = generateEnglishPool(grade, expandedDayOfYear);
-  const generatedEnglishBonus = takeExpandedPortion(
-    generateEnglishPool(grade, expandedDayOfYearBonus),
-  );
   const generatedWriting = generateWritingPool(grade, dayOfYear);
   const generatedWritingExtra = generateWritingPool(grade, expandedDayOfYear);
   const generatedWritingBonus = takeExpandedPortion(
@@ -332,108 +400,117 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
   const generatedCreativeBonus = takeExpandedPortion(
     generateCreativePool(grade, expandedDayOfYearBonus),
   );
-  const generatedScience = generateSciencePool(grade, dayOfYear);
-  const generatedScienceExtra = generateSciencePool(grade, expandedDayOfYear);
-  const generatedScienceBonus = takeExpandedPortion(
-    generateSciencePool(grade, expandedDayOfYearBonus),
-  );
-  const generatedSocial = generateSocialPool(grade, dayOfYear);
-  const generatedSocialExtra = generateSocialPool(grade, expandedDayOfYear);
+  const generatedSocial = generateSocialPool(coreSocialGrade, dayOfYear);
+  const generatedSocialExtra = generateSocialPool(coreSocialGrade, expandedDayOfYear);
   const generatedSocialBonus = takeExpandedPortion(
-    generateSocialPool(grade, expandedDayOfYearBonus),
+    generateSocialPool(coreSocialGrade, expandedDayOfYearBonus),
   );
 
-  // Pre-filter generated math by curriculum progress (week-based unit sequencing)
-  const filtMath = filterMathByProgress([...generatedMath, ...generatedMathExtra, ...generatedMathBonus], grade, semester);
+  // ---- 주지과목 단원 진도 필터링 (전 학년 기준) ----
+  const filtMath = filterMathByProgress(
+    [...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
+    coreMathGrade, semester,
+  );
+  const filtScience = filterScienceByProgress(
+    [...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
+    coreScienceGrade, semester,
+  );
+  const filtEnglish = filterEnglishByProgress(
+    [...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
+    coreEnglishGrade, semester,
+  );
 
-  // Pre-filter science and English by curriculum progress (week-based unit sequencing)
-  const filtScience = filterScienceByProgress([...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus], grade, semester);
-  const filtEnglish = filterEnglishByProgress([...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus], grade, semester);
+  // ---- 주지과목 정적 데이터 (전 학년 기준) ----
+  const staticMathData = getStaticMathData(coreMathGrade);
+  const staticEnglishData = getStaticEnglishData(coreEnglishGrade);
+  const staticScienceData = getStaticScienceData(coreScienceGrade);
+  const staticSocialData = getStaticSocialData(coreSocialGrade);
+  const staticKoreanData = getStaticKoreanData(coreMathGrade);
 
   switch (grade) {
     case 1:
       return {
         spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade1MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
         creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 2:
       return {
         spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade2MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...(grade2KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
         creative: [...(grade2CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 3:
       return {
         spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade3MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade3EnglishData || []), ...filtEnglish],
+        english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 4:
       return {
         spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade4MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade4EnglishData || []), ...filtEnglish],
+        english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
     case 5:
       return {
         spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade5MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade5EnglishData || []), ...filtEnglish],
+        english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        science: [...(grade5ScienceData || []), ...filtScience],
-        social: [...(grade5SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
+        science: [...staticScienceData, ...filtScience],
+        social: [...staticSocialData, ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     case 6:
       return {
         spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade6MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
         hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
-        english: [...(grade6EnglishData || []), ...filtEnglish],
+        english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        science: [...(grade6ScienceData || []), ...filtScience],
-        social: [...(grade6SocialData || []), ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
+        science: [...staticScienceData, ...filtScience],
+        social: [...staticSocialData, ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
       };
     default:
       return {
         spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
         vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(grade1MathData, grade, semester), ...filtMath],
+        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
         knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
         safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
         writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...(grade1KoreanData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
         creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
       };
   }
