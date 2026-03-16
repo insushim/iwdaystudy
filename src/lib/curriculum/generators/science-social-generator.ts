@@ -1103,6 +1103,31 @@ export function generateSciencePool(grade: number, seed: number): KnowledgeEntry
   });
 }
 
+/**
+ * Maps a social studies KnowledgeEntry to a curriculum unit string based on its category.
+ * Unit names must match SOCIAL_UNIT_SEQUENCE in curriculum-sequence.ts.
+ */
+function assignSocialUnit(entry: KnowledgeEntry, grade: number): string | undefined {
+  const cat = entry.category;
+  if (grade === 5) {
+    if (cat === '지리') return '국토와 자연환경';
+    if (cat === '정치' || cat === '법') return '민주주의와 인권';
+    if (cat === '경제') return '경제생활과 합리적 선택';
+    if (cat === '역사' || cat === '문화') return '옛사람들의 삶과 문화';
+  } else if (grade === 6) {
+    if (cat === '정치' || cat === '법') return '우리나라의 정치 발전';
+    if (cat === '경제') return '우리나라의 경제 발전';
+    if (cat === '지리' || cat === '문화') return '세계 여러 나라의 자연과 문화';
+    if (cat === '역사') return '통일과 한반도의 미래';
+  }
+  return undefined; // 지역사회 등 나머지는 항상 표시
+}
+
 export function generateSocialPool(grade: number, seed: number): KnowledgeEntry[] {
-  return buildPool([...SOCIAL_ITEMS, ...SOCIAL_EXTRA], grade, seed, 500);
+  const pool = buildPool([...SOCIAL_ITEMS, ...SOCIAL_EXTRA], grade, seed, 500);
+  return pool.map(entry => {
+    const unit = assignSocialUnit(entry, grade);
+    if (unit) return { ...entry, unit };
+    return entry;
+  });
 }

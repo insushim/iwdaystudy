@@ -177,6 +177,38 @@ export const SCIENCE_UNIT_SEQUENCE: Record<number, Record<number, UnitSchedule[]
 };
 
 /**
+ * Social Studies unit introduction schedule for grades 5-6.
+ * Unit names must match the `unit` field set in science-social-generator.ts.
+ */
+export const SOCIAL_UNIT_SEQUENCE: Record<number, Record<number, UnitSchedule[]>> = {
+  5: {
+    1: [
+      { unit: '국토와 자연환경',         startWeek: 1  },
+      { unit: '민주주의와 인권',          startWeek: 6  },
+      { unit: '경제생활과 합리적 선택',   startWeek: 12 },
+    ],
+    2: [
+      { unit: '옛사람들의 삶과 문화',     startWeek: 1  },
+      { unit: '사회 변화와 문화 다양성',  startWeek: 7  },
+      { unit: '경제생활과 합리적 선택',   startWeek: 12 },
+    ],
+  },
+  6: {
+    1: [
+      { unit: '우리나라의 정치 발전',          startWeek: 1  },
+      { unit: '우리나라의 경제 발전',          startWeek: 7  },
+      { unit: '세계 여러 나라의 자연과 문화',  startWeek: 12 },
+    ],
+    2: [
+      { unit: '세계 여러 나라의 자연과 문화',  startWeek: 1  },
+      { unit: '통일과 한반도의 미래',          startWeek: 7  },
+      { unit: '우리나라의 정치 발전',          startWeek: 10 },
+      { unit: '우리나라의 경제 발전',          startWeek: 13 },
+    ],
+  },
+};
+
+/**
  * English topic unit introduction schedule for grades 3-6.
  * Unit names must match the `unit` field set in english-generator.ts.
  */
@@ -300,6 +332,32 @@ export function getAvailableScienceUnits(
 ): Set<string> {
   if (grade < 3) return new Set();
   const sequence = SCIENCE_UNIT_SEQUENCE[grade]?.[semester];
+  if (!sequence || sequence.length === 0) return new Set();
+
+  const week = currentWeek ?? getCurrentSemesterWeek(semester);
+  const unlocked = sequence
+    .filter(u => u.startWeek <= week)
+    .map(u => u.unit);
+
+  if (unlocked.length === 0) {
+    unlocked.push(sequence[0].unit);
+  }
+
+  return new Set(unlocked);
+}
+
+/**
+ * Returns the set of social studies unit names unlocked so far.
+ * Returns empty Set for grades 1-4 (no social in this app) or when no sequence is defined.
+ * Always includes at least the first unit in the sequence.
+ */
+export function getAvailableSocialUnits(
+  grade: number,
+  semester: number,
+  currentWeek?: number,
+): Set<string> {
+  if (grade < 5) return new Set();
+  const sequence = SOCIAL_UNIT_SEQUENCE[grade]?.[semester];
   if (!sequence || sequence.length === 0) return new Set();
 
   const week = currentWeek ?? getCurrentSemesterWeek(semester);

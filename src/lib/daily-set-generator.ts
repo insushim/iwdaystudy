@@ -21,7 +21,7 @@ import type {
   EnglishEntry,
 } from "@/types/curriculum";
 import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
-import { getAvailableMathUnits, getAvailableScienceUnits, getAvailableEnglishUnits } from "@/lib/curriculum/curriculum-sequence";
+import { getAvailableMathUnits, getAvailableScienceUnits, getAvailableEnglishUnits, getAvailableSocialUnits } from "@/lib/curriculum/curriculum-sequence";
 import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
 import { generateVocabPool } from "@/lib/curriculum/generators/vocab-generator";
 import { generateKnowledgePool } from "@/lib/curriculum/generators/knowledge-generator";
@@ -282,6 +282,17 @@ function filterEnglishByProgress(items: EnglishEntry[], grade: number, semester:
   return items.filter(m => !m.unit || available.has(m.unit));
 }
 
+/**
+ * Filter social studies items to only include units unlocked so far this semester.
+ * Uses week-based curriculum sequencing for grades 5-6.
+ * Returns all items for grades 1-4 (no social curriculum).
+ */
+function filterSocialByProgress(items: KnowledgeEntry[], grade: number, semester: number): KnowledgeEntry[] {
+  const available = getAvailableSocialUnits(grade, semester);
+  if (available.size === 0) return items; // grades 1-4 or no sequence defined
+  return items.filter(m => !m.unit || available.has(m.unit));
+}
+
 // ============================================================
 // Static data accessors for core subjects (used for grade offset)
 // ============================================================
@@ -419,6 +430,10 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
     [...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
     coreEnglishGrade, semester,
   );
+  const filtSocial = filterSocialByProgress(
+    [...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
+    coreSocialGrade, semester,
+  );
 
   // ---- 주지과목 정적 데이터 (전 학년 기준) ----
   const staticMathData = getStaticMathData(coreMathGrade);
@@ -486,7 +501,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
         science: [...staticScienceData, ...filtScience],
-        social: [...staticSocialData, ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
+        social: [...filterSocialByProgress(staticSocialData, coreSocialGrade, semester), ...filtSocial],
       };
     case 6:
       return {
@@ -500,7 +515,7 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
         english: [...staticEnglishData, ...filtEnglish],
         creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
         science: [...staticScienceData, ...filtScience],
-        social: [...staticSocialData, ...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
+        social: [...filterSocialByProgress(staticSocialData, coreSocialGrade, semester), ...filtSocial],
       };
     default:
       return {
