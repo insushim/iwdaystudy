@@ -9,8 +9,11 @@ import { getLearningRecords, getSeenQuestionSignatures, storeDailySet, getStored
 const TODAY_SET_PREFIX = 'araharu_today_set_';
 
 function getTodayKey(userId: string): string {
-  const today = new Date().toISOString().slice(0, 10);
-  return `${TODAY_SET_PREFIX}${userId}_${today}`;
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${TODAY_SET_PREFIX}${userId}_${y}-${m}-${d}`;
 }
 
 export function useDailySet() {
