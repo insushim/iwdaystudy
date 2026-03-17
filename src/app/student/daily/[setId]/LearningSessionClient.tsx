@@ -11,6 +11,7 @@ import { useDailySet } from '@/hooks/useDailySet';
 import { useSound } from '@/hooks/useSound';
 import { saveLearningRecord, saveQuestionResponses, checkAndAwardBadges, getRecordForSet } from '@/lib/local-storage';
 import { generateId } from '@/lib/utils';
+import { evaluateWriting } from '@/lib/writing-evaluator';
 import QuestionRenderer from '@/components/learning/QuestionRenderer';
 import ProgressBar from '@/components/learning/ProgressBar';
 import Timer from '@/components/learning/Timer';
@@ -94,9 +95,21 @@ export default function LearningSessionClient() {
     const qAnswer = currentQuestion.answer;
 
     // Non-graded types
-    if (qType === 'emotion_check' || qType === 'readiness_check' || subject === 'writing' || subject === 'creative') {
+    if (qType === 'emotion_check' || qType === 'readiness_check' || subject === 'creative') {
       isCorrect = true;
       score = currentQuestion.points;
+    } else if (subject === 'writing') {
+      // 코드 기반 글쓰기 평가 (API 없음, 외부 전송 없음)
+      const minChars = currentQuestion.content?.min_chars || currentQuestion.content?.minChars || 20;
+      const evalResult = evaluateWriting(String(answer), minChars);
+      isCorrect = true;
+      score = evalResult.score;
+      // 마스코트 메시지에 별점 반영
+      setMascotState(evalResult.stars >= 4 ? 'correct' : evalResult.stars >= 3 ? 'happy' : 'encourage');
+      setMascotMessage(evalResult.feedback);
+      setTimeout(() => { setMascotState('default'); setMascotMessage(''); }, 3500);
+      answerQuestion(currentQuestion.id, answer, true, score);
+      return;
     } else {
       // Determine correct answer based on subject
       let correctVal: string = '';

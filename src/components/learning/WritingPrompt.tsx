@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Pencil, CheckCircle } from 'lucide-react';
+import { Pencil, Star } from 'lucide-react';
+import { evaluateWriting, type WritingEvalResult } from '@/lib/writing-evaluator';
 
 interface Props {
   content: any;
@@ -15,17 +16,27 @@ interface Props {
 
 const MIN_CHARS_DEFAULT = 20;
 
-export default function WritingPrompt({ content, onAnswer, showResult, isCorrect }: Props) {
+const DETAIL_LABELS = [
+  { key: 'length' as const,    label: '글자 수',   max: 3, color: '#2ECC71' },
+  { key: 'sentences' as const, label: '문장 구성', max: 2, color: '#3498DB' },
+  { key: 'variety' as const,   label: '어휘 다양성', max: 3, color: '#9B59B6' },
+  { key: 'structure' as const, label: '내용 구조', max: 2, color: '#E67E22' },
+];
+
+export default function WritingPrompt({ content, onAnswer, showResult }: Props) {
   const [text, setText] = useState('');
+  const [evalResult, setEvalResult] = useState<WritingEvalResult | null>(null);
+
   const prompt = content?.prompt || content?.text || '자유롭게 써보세요.';
   const minChars = content?.minChars || content?.min_chars || MIN_CHARS_DEFAULT;
   const charCount = text.length;
   const meetsMinimum = charCount >= minChars;
 
   const handleSubmit = () => {
-    if (text.trim()) {
-      onAnswer(text.trim());
-    }
+    if (!text.trim()) return;
+    const result = evaluateWriting(text.trim(), minChars);
+    setEvalResult(result);
+    onAnswer(text.trim());
   };
 
   return (
@@ -63,10 +74,10 @@ export default function WritingPrompt({ content, onAnswer, showResult, isCorrect
             style={{ fontFamily: 'var(--font-handwriting, inherit)' }}
           />
 
-          {/* Character count and submit */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className={`h-2 rounded-full transition-all ${meetsMinimum ? 'bg-[#2ECC71]' : 'bg-muted'}`}
+              <div
+                className={`h-2 rounded-full transition-all ${meetsMinimum ? 'bg-[#2ECC71]' : 'bg-muted'}`}
                 style={{ width: `${Math.min((charCount / minChars) * 100, 100)}%`, minWidth: 8, maxWidth: 120 }}
               />
               <span className={`text-xs font-medium ${meetsMinimum ? 'text-[#2ECC71]' : 'text-muted-foreground'}`}>
@@ -85,27 +96,90 @@ export default function WritingPrompt({ content, onAnswer, showResult, isCorrect
       )}
 
       {/* Result */}
-      {showResult && (
+      {showResult && evalResult && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="w-full flex flex-col items-center gap-4"
         >
-          {/* Show submitted text */}
+          {/* 내가 쓴 글 */}
           <div className="w-full rounded-xl bg-muted/50 p-4 border">
             <p className="text-sm text-muted-foreground mb-2 font-medium">내가 쓴 글</p>
             <p className="text-base leading-relaxed whitespace-pre-wrap"
-              style={{ fontFamily: 'var(--font-handwriting, inherit)' }}
-            >
+              style={{ fontFamily: 'var(--font-handwriting, inherit)' }}>
               {text || '(작성한 내용)'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-5 py-2 text-sm font-bold text-green-700">
-            <CheckCircle className="h-5 w-5 text-green-500" />
-            <span>잘 썼어요! {charCount}자를 썼어요</span>
-          </div>
+          {/* 별점 + 점수 */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="flex flex-col items-center gap-2"
+          >
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <motion.div
+                  key={n}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.1 + n * 0.08, type: 'spring', stiffness: 300 }}
+                >
+                  <Star
+                    className="h-8 w-8"
+                    style={{
+                      fill: n <= evalResult.stars ? '#F1C40F' : 'transparent',
+                      stroke: n <= evalResult.stars ? '#F1C40F' : '#CBD5E1',
+                    }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+            <p className="text-2xl font-black text-foreground">
+              {evalResult.score}
+              <span className="text-base font-medium text-muted-foreground"> / 10점</span>
+            </p>
+            <p className="text-base font-semibold text-[#2ECC71]">{evalResult.feedback}</p>
+          </motion.div>
+
+          {/* 세부 항목 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="w-full rounded-xl border bg-card p-4 flex flex-col gap-3"
+          >
+            {DETAIL_LABELS.map(({ key, label, max, color }) => {
+              const val = evalResult.details[key];
+              const pct = (val / max) * 100;
+              return (
+                <div key={key} className="flex items-center gap-3">
+                  <span className="text-xs text-muted-foreground w-20 shrink-0">{label}</span>
+                  <div className="flex-1 h-2.5 rounded-full bg-muted overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pct}%` }}
+                      transition={{ duration: 0.6, delay: 0.7 }}
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: color }}
+                    />
+                  </div>
+                  <span className="text-xs font-semibold w-10 text-right">
+                    {val}/{max}
+                  </span>
+                </div>
+              );
+            })}
+          </motion.div>
         </motion.div>
+      )}
+
+      {/* showResult이지만 evalResult가 없는 경우 (이전 세션 복구 등) */}
+      {showResult && !evalResult && (
+        <div className="flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-5 py-2 text-sm font-bold text-green-700">
+          <span>잘 썼어요! {charCount}자를 썼어요</span>
+        </div>
       )}
     </div>
   );
