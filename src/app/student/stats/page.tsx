@@ -50,7 +50,6 @@ import {
   getTotalPoints,
   getLearningRecords,
   getLocalReport,
-  seedStudentDemoData,
 } from "@/lib/local-storage";
 import { getSubjectColor } from "@/lib/utils";
 
@@ -365,25 +364,14 @@ export default function StudentStatsPage() {
           </p>
         </motion.div>
         <Card>
-          <CardContent className="flex flex-col items-center justify-center py-16 gap-4">
-            <BookOpen className="h-12 w-12 text-muted-foreground/50" />
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <BookOpen className="h-12 w-12 text-muted-foreground/50 mb-3" />
             <p className="text-lg font-medium text-muted-foreground">
               아직 학습 기록이 없습니다
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground mt-1">
               학습을 시작하면 여기에 통계가 표시됩니다
             </p>
-            {user?.grade && user?.semester && (
-              <button
-                onClick={() => {
-                  seedStudentDemoData(user.id, user.grade!, user.semester!);
-                  window.location.reload();
-                }}
-                className="mt-2 px-4 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-primary text-sm font-medium transition-colors"
-              >
-                데모 데이터 채우기
-              </button>
-            )}
           </CardContent>
         </Card>
       </div>
