@@ -60,6 +60,16 @@ export default function LearningSessionClient() {
     return () => clearInterval(timer);
   }, [startedAt, isPaused, isCompleted, incrementTime]);
 
+  // 웨일북 등 터치 기기에서 오른쪽 스와이프 → 브라우저 뒤로가기 방지
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    const handlePopState = () => {
+      window.history.pushState(null, '', window.location.href);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const currentQuestion = questions[currentIndex];
   const currentState = questionStates[currentIndex];
   const isLastQuestion = currentIndex === questions.length - 1;
@@ -313,7 +323,7 @@ export default function LearningSessionClient() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col" style={{ overscrollBehavior: 'none' }}>
       {/* Top bar */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
         <div className="max-w-7xl mx-auto">
