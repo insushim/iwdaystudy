@@ -141,6 +141,7 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
               <span className="text-base font-medium text-muted-foreground"> / 10점</span>
             </p>
             <p className="text-base font-semibold text-[#2ECC71]">{evalResult.feedback}</p>
+            <p className="text-sm text-muted-foreground mt-1 text-center">{evalResult.tip}</p>
           </motion.div>
 
           {/* 세부 항목 */}
