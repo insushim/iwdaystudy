@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Pencil, Star } from 'lucide-react';
+import { Pencil, Star, RotateCcw, ArrowRight } from 'lucide-react';
 import { evaluateWriting, type WritingEvalResult } from '@/lib/writing-evaluator';
 
 interface Props {
@@ -15,6 +15,8 @@ interface Props {
 }
 
 const MIN_CHARS_DEFAULT = 20;
+const PASS_SCORE = 7; // 7점 초과(8점 이상)만 통과, 7점 이하는 다시 쓰기
+const MAX_RETRIES = 2; // 최대 재시도 횟수 (총 3번 기회)
 
 const DETAIL_LABELS = [
   { key: 'length' as const,    label: '글자 수',   max: 3, color: '#2ECC71' },
@@ -26,18 +28,46 @@ const DETAIL_LABELS = [
 export default function WritingPrompt({ content, onAnswer, showResult }: Props) {
   const [text, setText] = useState('');
   const [evalResult, setEvalResult] = useState<WritingEvalResult | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [previewMode, setPreviewMode] = useState(false); // 점수 미리보기 (다시쓰기 전)
+  const [submitted, setSubmitted] = useState(false); // 최종 제출 완료
 
   const prompt = content?.prompt || content?.text || '자유롭게 써보세요.';
   const minChars = content?.minChars || content?.min_chars || MIN_CHARS_DEFAULT;
   const charCount = text.length;
   const meetsMinimum = charCount >= minChars;
+  const canRetry = retryCount < MAX_RETRIES;
 
   const handleSubmit = () => {
     if (!text.trim()) return;
     const result = evaluateWriting(text.trim(), minChars);
     setEvalResult(result);
+
+    if (result.score > PASS_SCORE || !canRetry) {
+      // 통과했거나 재시도 횟수 초과 → 최종 제출
+      setSubmitted(true);
+      onAnswer(text.trim());
+    } else {
+      // 70점 이하 + 재시도 가능 → 미리보기 모드
+      setPreviewMode(true);
+    }
+  };
+
+  const handleRetry = () => {
+    setRetryCount(prev => prev + 1);
+    setPreviewMode(false);
+    setEvalResult(null);
+    // text는 유지 (이어서 수정 가능)
+  };
+
+  const handleForceSubmit = () => {
+    // 점수 낮아도 강제 제출
+    setSubmitted(true);
+    setPreviewMode(false);
     onAnswer(text.trim());
   };
+
+  const isShowingResult = showResult || submitted;
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto">
@@ -58,14 +88,27 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
         </div>
       </motion.div>
 
-      {/* Textarea */}
-      {!showResult && (
+      {/* Textarea - 작성 모드 (미리보기가 아니고 최종 제출도 아닌 경우) */}
+      {!isShowingResult && !previewMode && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="w-full flex flex-col gap-3"
         >
+          {retryCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-2 rounded-lg bg-amber-50 border border-amber-200 px-4 py-2"
+            >
+              <RotateCcw className="h-4 w-4 text-amber-600" />
+              <span className="text-sm font-medium text-amber-700">
+                {retryCount}/{MAX_RETRIES}번째 다시쓰기 — 피드백을 참고해서 더 잘 써봐요!
+              </span>
+            </motion.div>
+          )}
+
           <Textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -95,8 +138,96 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
         </motion.div>
       )}
 
-      {/* Result */}
-      {showResult && evalResult && (
+      {/* 미리보기 모드 — 점수가 낮아서 다시 쓸 기회 */}
+      <AnimatePresence mode="wait">
+        {previewMode && evalResult && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="w-full flex flex-col items-center gap-4"
+          >
+            {/* 경고 배너 */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="w-full rounded-xl bg-amber-50 border-2 border-amber-200 p-4"
+            >
+              <p className="text-base font-bold text-amber-800 text-center mb-1">
+                조금만 더 노력해볼까요?
+              </p>
+              <p className="text-sm text-amber-700 text-center">
+                {evalResult.score * 10}점이에요. 80점 이상이면 통과!
+                {canRetry
+                  ? ` (다시쓰기 ${MAX_RETRIES - retryCount}번 남음)`
+                  : ' (마지막 기회였어요)'}
+              </p>
+            </motion.div>
+
+            {/* 현재 점수 요약 */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star
+                    key={n}
+                    className="h-6 w-6"
+                    style={{
+                      fill: n <= evalResult.stars ? '#F1C40F' : 'transparent',
+                      stroke: n <= evalResult.stars ? '#F1C40F' : '#CBD5E1',
+                    }}
+                  />
+                ))}
+              </div>
+              <span className="text-xl font-black">{evalResult.score}<span className="text-sm font-medium text-muted-foreground">/10</span></span>
+            </div>
+
+            {/* 개선 팁 (강조) */}
+            <div className="w-full rounded-xl bg-blue-50 border border-blue-200 p-4">
+              <p className="text-sm font-bold text-blue-800 mb-1">개선 팁</p>
+              <p className="text-sm text-blue-700">{evalResult.tip}</p>
+            </div>
+
+            {/* 세부 점수 */}
+            <div className="w-full rounded-xl border bg-card p-4 flex flex-col gap-2.5">
+              {DETAIL_LABELS.map(({ key, label, max, color }) => {
+                const val = evalResult.details[key];
+                const pct = (val / max) * 100;
+                return (
+                  <div key={key} className="flex items-center gap-3">
+                    <span className="text-xs text-muted-foreground w-20 shrink-0">{label}</span>
+                    <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
+                      <div className="h-full rounded-full" style={{ backgroundColor: color, width: `${pct}%` }} />
+                    </div>
+                    <span className="text-xs font-semibold w-10 text-right">{val}/{max}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* 버튼 */}
+            <div className="flex items-center gap-3 w-full">
+              <Button
+                variant="outline"
+                onClick={handleForceSubmit}
+                className="flex-1 h-12 rounded-xl font-bold gap-2"
+              >
+                <ArrowRight className="h-4 w-4" />
+                이대로 제출
+              </Button>
+              <Button
+                onClick={handleRetry}
+                className="flex-1 h-12 rounded-xl font-bold bg-[#2ECC71] hover:bg-[#2ECC71]/90 gap-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+                다시 쓰기
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 최종 결과 (통과 또는 최종 제출 후) */}
+      {isShowingResult && evalResult && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -104,7 +235,14 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
         >
           {/* 내가 쓴 글 */}
           <div className="w-full rounded-xl bg-muted/50 p-4 border">
-            <p className="text-sm text-muted-foreground mb-2 font-medium">내가 쓴 글</p>
+            <div className="flex items-center justify-between mb-2">
+              <p className="text-sm text-muted-foreground font-medium">내가 쓴 글</p>
+              {retryCount > 0 && (
+                <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                  {retryCount}번 수정
+                </span>
+              )}
+            </div>
             <p className="text-base leading-relaxed whitespace-pre-wrap"
               style={{ fontFamily: 'var(--font-handwriting, inherit)' }}>
               {text || '(작성한 내용)'}
@@ -177,7 +315,7 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
       )}
 
       {/* showResult이지만 evalResult가 없는 경우 (이전 세션 복구 등) */}
-      {showResult && !evalResult && (
+      {isShowingResult && !evalResult && (
         <div className="flex items-center gap-2 rounded-full bg-green-50 border border-green-200 px-5 py-2 text-sm font-bold text-green-700">
           <span>잘 썼어요! {charCount}자를 썼어요</span>
         </div>
