@@ -40,7 +40,7 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.15 }}
-            className="flex items-center gap-3 rounded-xl border-2 border-[#FF8BA7]/20 bg-[#FF8BA7]/5 px-5 py-4"
+            className="flex items-center gap-3 rounded-xl border-2 border-[#FF8BA7]/20 bg-[#FF8BA7]/5 px-5 py-4 min-h-[52px]"
           >
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FF8BA7]/20 flex items-center justify-center">
               <HelpCircle className="h-4 w-4 text-[#FF8BA7]" />
@@ -59,18 +59,19 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
           className="grid grid-cols-2 gap-3 w-full max-w-md"
         >
           {choices.map((choice, i) => (
-            <Button
-              key={i}
-              variant="outline"
-              onClick={() => handleSelect(choice)}
-              className={`h-14 text-lg font-bold rounded-xl border-2 transition-all ${
-                selected === choice
-                  ? 'border-[#FF8BA7] bg-[#FF8BA7]/10 text-[#FF8BA7]'
-                  : 'border-border hover:border-[#FF8BA7]/40'
-              }`}
-            >
-              {choice}
-            </Button>
+            <motion.div key={i} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => handleSelect(choice)}
+                className={`w-full h-14 min-h-[48px] text-lg font-bold rounded-xl border-2 transition-all ${
+                  selected === choice
+                    ? 'border-[#FF8BA7] bg-[#FF8BA7]/10 text-[#FF8BA7] shadow-md shadow-[#FF8BA7]/10'
+                    : 'border-border hover:border-[#FF8BA7]/40'
+                }`}
+              >
+                {choice}
+              </Button>
+            </motion.div>
           ))}
         </motion.div>
       )}
@@ -89,13 +90,13 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
             onChange={(e) => setSelected(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && selected?.trim()) onAnswer(selected.trim()); }}
             placeholder="낱말을 입력하세요"
-            className="flex-1 h-14 text-center text-xl font-bold rounded-xl border-2 border-[#FF8BA7]/30 focus:border-[#FF8BA7] focus:ring-2 focus:ring-[#FF8BA7]/20 outline-none px-4"
+            className="flex-1 h-14 min-h-[48px] text-center text-xl font-bold rounded-xl border-2 border-[#FF8BA7]/30 focus:border-[#FF8BA7] focus:ring-2 focus:ring-[#FF8BA7]/20 outline-none px-4"
             autoFocus
           />
           <Button
             onClick={() => selected?.trim() && onAnswer(selected.trim())}
             disabled={!selected?.trim()}
-            className="h-14 px-6 rounded-xl text-lg font-bold bg-[#FF8BA7] hover:bg-[#FF8BA7]/90"
+            className="h-14 min-h-[48px] px-6 rounded-xl text-lg font-bold bg-[#FF8BA7] hover:bg-[#FF8BA7]/90"
           >
             확인
           </Button>
@@ -125,11 +126,16 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
               <span className="font-medium">뜻:</span> {meanings.join(', ')}
             </div>
 
-            <div className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
-              isCorrect
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}>
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
+                isCorrect
+                  ? 'bg-green-50 text-green-700 border border-green-200'
+                  : 'bg-red-50 text-red-700 border border-red-200'
+              }`}
+            >
               {isCorrect ? (
                 <>
                   <CheckCircle className="h-5 w-5 text-green-500" />
@@ -141,7 +147,7 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
                   <span>정답은 &ldquo;{correctAnswer}&rdquo; 이에요</span>
                 </>
               )}
-            </div>
+            </motion.div>
 
             {/* Show all choices with correct highlighted */}
             {choices.length > 0 && (
@@ -149,7 +155,7 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
                 {choices.map((choice, i) => (
                   <div
                     key={i}
-                    className={`h-12 flex items-center justify-center text-base font-bold rounded-xl border-2 ${
+                    className={`h-12 min-h-[44px] flex items-center justify-center text-base font-bold rounded-xl border-2 ${
                       choice === correctAnswer
                         ? 'border-green-400 bg-green-50 text-green-700'
                         : selected === choice

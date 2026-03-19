@@ -48,7 +48,7 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
     );
   };
 
-  const OPTION_LABELS = ['①', '②', '③', '④'];
+  const OPTION_LABELS = ['\u2460', '\u2461', '\u2462', '\u2463'];
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -81,19 +81,20 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
           className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg"
         >
           {choices.map((choice, i) => (
-            <Button
-              key={i}
-              variant="outline"
-              onClick={() => handleSelect(choice)}
-              className={`h-auto min-h-[52px] py-3 px-4 text-base font-bold rounded-xl border-2 whitespace-normal text-left transition-all ${
-                selected === choice
-                  ? 'border-[#F9CA24] bg-[#F9CA24]/10 text-[#B8860B]'
-                  : 'border-border hover:border-[#F9CA24]/40'
-              }`}
-            >
-              <span className="text-muted-foreground mr-2 flex-shrink-0">{OPTION_LABELS[i]}</span>
-              {choice}
-            </Button>
+            <motion.div key={i} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => handleSelect(choice)}
+                className={`w-full h-auto min-h-[52px] py-3 px-4 text-base font-bold rounded-xl border-2 whitespace-normal text-left transition-all ${
+                  selected === choice
+                    ? 'border-[#F9CA24] bg-[#F9CA24]/10 text-[#B8860B] shadow-md shadow-[#F9CA24]/10'
+                    : 'border-border hover:border-[#F9CA24]/40'
+                }`}
+              >
+                <span className="text-muted-foreground mr-2 flex-shrink-0">{OPTION_LABELS[i]}</span>
+                {choice}
+              </Button>
+            </motion.div>
           ))}
         </motion.div>
       )}
@@ -112,13 +113,13 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
             onChange={(e) => setSelected(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && selected?.trim()) onAnswer(selected.trim()); }}
             placeholder="답을 입력하세요"
-            className="flex-1 h-14 text-center text-xl font-bold rounded-xl border-2 border-[#F9CA24]/30 focus:border-[#F9CA24] focus:ring-2 focus:ring-[#F9CA24]/20 outline-none px-4"
+            className="flex-1 h-14 min-h-[48px] text-center text-xl font-bold rounded-xl border-2 border-[#F9CA24]/30 focus:border-[#F9CA24] focus:ring-2 focus:ring-[#F9CA24]/20 outline-none px-4"
             autoFocus
           />
           <Button
             onClick={() => selected?.trim() && onAnswer(selected.trim())}
             disabled={!selected?.trim()}
-            className="h-14 px-6 rounded-xl text-lg font-bold bg-[#F9CA24] hover:bg-[#F9CA24]/90 text-[#1A1A2E]"
+            className="h-14 min-h-[48px] px-6 rounded-xl text-lg font-bold bg-[#F9CA24] hover:bg-[#F9CA24]/90 text-[#1A1A2E]"
           >
             확인
           </Button>
@@ -134,11 +135,16 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-3 w-full"
           >
-            <div className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
-              isCorrect
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}>
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
+                isCorrect
+                  ? 'bg-green-50 text-green-700 border border-green-200'
+                  : 'bg-red-50 text-red-700 border border-red-200'
+              }`}
+            >
               {isCorrect ? (
                 <>
                   <CheckCircle className="h-5 w-5 text-green-500" />
@@ -150,7 +156,7 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
                   <span>정답: {correctAnswer}</span>
                 </>
               )}
-            </div>
+            </motion.div>
 
             {/* Show choices with correct highlighted */}
             {choices.length > 0 && (

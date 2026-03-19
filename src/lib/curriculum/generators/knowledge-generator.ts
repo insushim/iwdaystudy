@@ -290,6 +290,59 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: '물에 소금을 녹이면 ___이 된다.', answer: '소금물', category: '과학' },
   { text: '빛이 물체에 가로막혀 생기는 것은 ___이다.', answer: '그림자', category: '과학' },
   { text: '공룡은 약 ___년 전에 살았다.', answer: '6500만', category: '과학' },
+
+  // ──── 추가: 우리나라 상식 (30) ────
+  { text: '우리나라의 수도는 ___이다.', answer: '서울', category: '문화' },
+  { text: '우리나라의 화폐 단위는 ___이다.', answer: '원', category: '생활상식' },
+  { text: '우리나라의 국화는 ___이다.', answer: '무궁화', category: '문화' },
+  { text: '설날에 먹는 음식은 ___이다.', answer: '떡국', category: '문화' },
+  { text: '추석에 먹는 음식은 ___이다.', answer: '송편', category: '문화' },
+  { text: '어린이날은 ___월 5일이다.', answer: '5', category: '문화' },
+  { text: '한글날은 ___월 9일이다.', answer: '10', category: '문화' },
+  { text: '한복은 우리나라의 전통 ___이다.', answer: '옷', category: '문화' },
+  { text: '씨름은 우리나라의 전통 ___이다.', answer: '운동', category: '문화' },
+  { text: '윷놀이는 ___에 하는 전통 놀이이다.', answer: '설날', category: '문화' },
+  { text: '강강술래는 ___에 하는 놀이이다.', answer: '추석', category: '문화' },
+  { text: '삼계탕은 복날에 먹는 ___이다.', answer: '보양식', category: '문화' },
+  { text: '가위바위보에서 가위는 ___을 이긴다.', answer: '보', category: '생활상식' },
+  { text: '우리나라 동전 중 가장 큰 것은 ___원짜리이다.', answer: '500', category: '생활상식' },
+  { text: '우리나라에서 가장 작은 지폐는 ___원권이다.', answer: '1000', category: '생활상식' },
+
+  // ──── 추가: 과학 상식 (25) ────
+  { text: '지구는 태양 주위를 도는데 이것을 ___이라 한다.', answer: '공전', category: '과학' },
+  { text: '지구가 스스로 도는 것을 ___이라 한다.', answer: '자전', category: '과학' },
+  { text: '사과가 땅에 떨어지는 이유는 ___때문이다.', answer: '중력', category: '과학' },
+  { text: '물이 높은 곳에서 낮은 곳으로 흐르는 이유는 ___때문이다.', answer: '중력', category: '과학' },
+  { text: '고무풍선을 머리에 문지르면 ___가 생긴다.', answer: '정전기', category: '과학' },
+  { text: '사람의 몸은 약 ___퍼센트가 물이다.', answer: '70', category: '인체' },
+  { text: '사람의 젖니는 모두 ___개이다.', answer: '20', category: '인체' },
+  { text: '영구치는 모두 ___개이다.', answer: '32', category: '인체' },
+  { text: '사람의 뼈는 약 ___개이다.', answer: '206', category: '인체' },
+  { text: '우리 몸에서 가장 긴 뼈는 ___뼈이다.', answer: '넓적다리', category: '인체' },
+  { text: '눈을 감으면 볼 수 ___다.', answer: '없', category: '인체' },
+  { text: '토마토는 과일이 아니라 ___이다.', answer: '채소', category: '식물' },
+  { text: '수박의 줄무늬는 ___색이다.', answer: '초록', category: '식물' },
+  { text: '개미는 자기 몸무게의 ___배를 들 수 있다.', answer: '50', category: '동물' },
+  { text: '거미줄은 같은 굵기의 강철보다 ___다.', answer: '강하', category: '동물' },
+
+  // ──── 추가: 수학 상식 (10) ────
+  { text: '동전을 던지면 앞면이 나올 확률은 ___이다.', answer: '반', category: '과학' },
+  { text: '직사각형에는 꼭짓점이 ___개 있다.', answer: '4', category: '과학' },
+  { text: '정삼각형의 세 변의 길이는 모두 ___다.', answer: '같', category: '과학' },
+  { text: '원을 그리는 도구를 ___라 한다.', answer: '컴퍼스', category: '생활상식' },
+  { text: '더하기의 반대 연산은 ___이다.', answer: '빼기', category: '생활상식' },
+
+  // ──── 추가: 세계 상식 (10) ────
+  { text: '세계에서 가장 큰 동물은 ___이다.', answer: '대왕고래', category: '동물' },
+  { text: '세계에서 가장 빠른 동물은 ___이다.', answer: '치타', category: '동물' },
+  { text: '세계에서 가장 긴 동물은 ___이다.', answer: '흰긴수염고래', category: '동물' },
+  { text: '세계에서 가장 작은 새는 ___이다.', answer: '벌새', category: '동물' },
+  { text: '북극에 사는 하얀 곰은 ___곰이다.', answer: '북극', category: '동물' },
+  { text: '대나무를 먹는 흑백 곰은 ___이다.', answer: '판다', category: '동물' },
+  { text: '오스트레일리아에만 사는 동물은 ___이다.', answer: '캥거루', category: '동물' },
+  { text: '세계에서 가장 높은 산은 ___이다.', answer: '에베레스트', category: '자연' },
+  { text: '세계에서 가장 긴 강은 ___이다.', answer: '나일강', category: '자연' },
+  { text: '세계에서 가장 큰 사막은 ___사막이다.', answer: '사하라', category: '자연' },
 ];
 
 // ============================================================
@@ -517,6 +570,47 @@ const GRADE_3_4: KnowledgeEntry[] = [
   { text: '대한민국의 대통령이 사는 곳은 ___이다.', answer: '용산', category: '문화' },
   { text: '우리 몸에서 음식을 소화하는 기관은 ___이다.', answer: '위', category: '인체' },
   { text: '식물의 잎이 하는 가장 중요한 일은 ___이다.', answer: '광합성', category: '과학' },
+
+  // ──── 추가: 우리나라 지리 심화 (20) ────
+  { text: '우리나라에서 가장 넓은 평야는 ___이다.', answer: '호남평야', category: '지리' },
+  { text: '지리산은 경상남도, 전라남도, ___도에 걸쳐 있다.', answer: '전라북', category: '지리' },
+  { text: '속초는 ___도에 있는 도시이다.', answer: '강원', category: '지리' },
+  { text: '청주는 ___도의 도청 소재지이다.', answer: '충청북', category: '지리' },
+  { text: '울산은 ___산업이 발달한 도시이다.', answer: '자동차', category: '지리' },
+  { text: '포항은 ___산업이 발달한 도시이다.', answer: '철강', category: '지리' },
+  { text: '보성은 ___으로 유명한 지역이다.', answer: '녹차', category: '지리' },
+  { text: '안동은 ___으로 유명한 도시이다.', answer: '하회탈', category: '문화' },
+  { text: '전주는 ___으로 유명한 도시이다.', answer: '비빔밥', category: '문화' },
+  { text: '춘천은 ___으로 유명한 도시이다.', answer: '닭갈비', category: '문화' },
+
+  // ──── 추가: 과학 심화 (20) ────
+  { text: '식물이 이산화탄소를 흡수하고 ___를 내뿜는다.', answer: '산소', category: '과학' },
+  { text: '혼합물에서 물질을 분리하는 방법 중 하나는 ___이다.', answer: '거르기', category: '과학' },
+  { text: '열은 뜨거운 곳에서 ___곳으로 이동한다.', answer: '차가운', category: '과학' },
+  { text: '전류가 흐르는 길이 끊어지면 전구가 ___진다.', answer: '꺼', category: '과학' },
+  { text: '자석의 같은 극끼리는 서로 ___한다.', answer: '밀어냄', category: '과학' },
+  { text: '자석의 다른 극끼리는 서로 ___한다.', answer: '끌어당김', category: '과학' },
+  { text: '용수철은 힘을 가하면 ___는 성질이 있다.', answer: '늘어나', category: '과학' },
+  { text: '빛이 통과하지 못하는 물체를 ___체라 한다.', answer: '불투명', category: '과학' },
+  { text: '빛이 통과하는 물체를 ___체라 한다.', answer: '투명', category: '과학' },
+  { text: '지구의 위도 0도 선을 ___라 한다.', answer: '적도', category: '지구과학' },
+
+  // ──── 추가: 세계 상식 (15) ────
+  { text: '세계 4대 문명 중 하나는 ___문명이다.', answer: '메소포타미아', category: '역사' },
+  { text: '올림픽의 상징인 오륜기에는 ___개의 고리가 있다.', answer: '5', category: '생활상식' },
+  { text: '올림픽의 오륜기는 ___개의 대륙을 상징한다.', answer: '5', category: '생활상식' },
+  { text: '세계 최초로 인쇄술을 발명한 나라는 ___이다.', answer: '한국', category: '역사' },
+  { text: '피라미드는 ___에 있는 건축물이다.', answer: '이집트', category: '지리' },
+  { text: '만리장성은 ___에 있다.', answer: '중국', category: '지리' },
+  { text: '자유의 여신상은 ___에 있다.', answer: '미국', category: '지리' },
+  { text: '에펠탑은 ___에 있다.', answer: '프랑스', category: '지리' },
+  { text: '세계에서 인구가 가장 많은 나라는 ___이다.', answer: '중국', category: '지리' },
+  { text: '세계에서 면적이 가장 큰 나라는 ___이다.', answer: '러시아', category: '지리' },
+  { text: '아프리카에서 가장 높은 산은 ___산이다.', answer: '킬리만자로', category: '지리' },
+  { text: '세계에서 가장 넓은 호수는 ___해이다.', answer: '카스피', category: '지리' },
+  { text: '남극에는 ___이 많이 살고 있다.', answer: '펭귄', category: '동물' },
+  { text: '타조는 날지 못하는 세계에서 가장 ___새이다.', answer: '큰', category: '동물' },
+  { text: '돌고래는 매우 ___한 동물이다.', answer: '똑똑', category: '동물' },
 ];
 
 // ============================================================
@@ -746,6 +840,47 @@ const GRADE_5_6: KnowledgeEntry[] = [
   { text: '현재 한글의 자모 수는 ___개이다.', answer: '24', category: '문화' },
   { text: '한글의 자음은 ___개이다.', answer: '14', category: '문화' },
   { text: '화산 활동으로 생긴 바위를 ___암이라 한다.', answer: '화성', category: '지구과학' },
+
+  // ──── 추가: 물리/화학 심화 (20) ────
+  { text: '옴의 법칙에서 전압은 전류 곱하기 ___이다.', answer: '저항', category: '물리' },
+  { text: '물체가 빠르게 움직이면 ___이 커진다.', answer: '운동에너지', category: '물리' },
+  { text: '높은 곳에 있는 물체가 가진 에너지를 ___에너지라 한다.', answer: '위치', category: '물리' },
+  { text: '소리는 진공에서 전달되지 ___는다.', answer: '않', category: '물리' },
+  { text: '빛이 물에서 공기로 나올 때 꺾이는 현상을 ___이라 한다.', answer: '굴절', category: '물리' },
+  { text: '색의 삼원색은 빨강, 파랑, ___이다.', answer: '노랑', category: '과학' },
+  { text: '산소의 원소 기호는 ___이다.', answer: 'O', category: '화학' },
+  { text: '탄소의 원소 기호는 ___이다.', answer: 'C', category: '화학' },
+  { text: '금의 원소 기호는 ___이다.', answer: 'Au', category: '화학' },
+  { text: '소금의 화학식은 ___이다.', answer: 'NaCl', category: '화학' },
+
+  // ──── 추가: 생물/환경 심화 (15) ────
+  { text: '생태계에서 에너지의 흐름을 ___사슬이라 한다.', answer: '먹이', category: '생물' },
+  { text: '꿀벌이 사라지면 식물의 ___이 어려워진다.', answer: '수분', category: '환경' },
+  { text: '매립지는 ___를 묻는 곳이다.', answer: '쓰레기', category: '환경' },
+  { text: '플라스틱이 분해되는 데 약 ___년이 걸린다.', answer: '500', category: '환경' },
+  { text: '온실가스 중 대표적인 것은 ___이다.', answer: '이산화탄소', category: '환경' },
+  { text: '멸종 위기 동물을 보호하는 단체로 ___가 있다.', answer: 'WWF', category: '환경' },
+  { text: '바다에 떠다니는 플라스틱 쓰레기를 ___쓰레기라 한다.', answer: '해양', category: '환경' },
+  { text: '미세먼지의 주요 원인 물질은 ___이다.', answer: '질소산화물', category: '환경' },
+  { text: '탄소 발자국은 ___배출량을 나타내는 지표이다.', answer: '탄소', category: '환경' },
+  { text: '지구의 평균 기온이 올라가는 현상을 ___라 한다.', answer: '지구온난화', category: '환경' },
+
+  // ──── 추가: 역사 심화 (15) ────
+  { text: '고구려의 가장 넓은 영토를 가진 왕은 ___이다.', answer: '광개토대왕', category: '역사' },
+  { text: '백제의 문화를 ___에 전파하였다.', answer: '일본', category: '역사' },
+  { text: '신라의 삼국 통일은 ___년에 이루어졌다.', answer: '676', category: '역사' },
+  { text: '발해를 세운 사람은 ___이다.', answer: '대조영', category: '역사' },
+  { text: '조선시대에 농사에 대해 쓴 책은 ___이다.', answer: '농사직설', category: '역사' },
+  { text: '조선시대 천문학 기구 ___는 하늘을 관측했다.', answer: '혼천의', category: '역사' },
+  { text: '장영실이 만든 물시계는 ___이다.', answer: '자격루', category: '역사' },
+  { text: '조선시대 양반들이 쓴 모자는 ___이다.', answer: '갓', category: '문화' },
+  { text: '나전칠기는 조개껍데기로 장식한 ___이다.', answer: '공예품', category: '문화' },
+  { text: '유네스코에 등록된 한국의 전통 음악은 ___이다.', answer: '판소리', category: '문화' },
+  { text: '김정호가 만든 정밀한 지도는 ___이다.', answer: '대동여지도', category: '역사' },
+  { text: '병인양요는 ___나라와의 전쟁이다.', answer: '프랑스', category: '역사' },
+  { text: '신미양요는 ___나라와의 전쟁이다.', answer: '미국', category: '역사' },
+  { text: '세계 인권 선언은 ___년에 발표되었다.', answer: '1948', category: '역사' },
+  { text: '넬슨 만델라는 ___의 인권 운동가이다.', answer: '남아프리카공화국', category: '역사' },
 ];
 
 // ============================================================

@@ -364,6 +364,300 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
     explanation: "'일찍이'가 올바른 부사형입니다.",
     gradeMin: 5,
   },
+
+  // ──── 추가: Grade 1-2 기초 맞춤법 ────
+  {
+    correct: "예쁘다",
+    wrong: "이쁘다",
+    explanation: "'예쁘다'가 표준어입니다.",
+    gradeMin: 1,
+  },
+  {
+    correct: "아니요",
+    wrong: "아니오",
+    explanation: "'아니요'가 올바른 대답 표현입니다.",
+    gradeMin: 1,
+  },
+  {
+    correct: "됐다",
+    wrong: "됬다",
+    explanation: "'됐다'(되었다)가 올바른 표기입니다.",
+    gradeMin: 1,
+  },
+  {
+    correct: "갖다",
+    wrong: "갗다",
+    explanation: "'갖다'가 올바른 표기입니다.",
+    gradeMin: 1,
+  },
+  {
+    correct: "짧다",
+    wrong: "짦다",
+    explanation: "'짧다'가 올바른 표기입니다. 겹받침 ㄼ.",
+    gradeMin: 1,
+  },
+  {
+    correct: "넓다",
+    wrong: "널다",
+    explanation: "'넓다'가 올바른 표기입니다. 겹받침 ㄼ.",
+    gradeMin: 1,
+  },
+  {
+    correct: "삶다",
+    wrong: "삼다",
+    explanation: "'삶다'가 올바른 표기입니다. 겹받침 ㄻ.",
+    gradeMin: 1,
+  },
+  {
+    correct: "앉다",
+    wrong: "안다",
+    explanation: "'앉다'가 올바른 표기입니다. 겹받침 ㄵ.",
+    gradeMin: 1,
+  },
+  {
+    correct: "값",
+    wrong: "갑",
+    explanation: "'값'이 올바른 표기입니다. 겹받침 ㄿ.",
+    gradeMin: 1,
+  },
+
+  // ──── 추가: Grade 2-3 띄어쓰기·의존명사 ────
+  {
+    correct: "할 것",
+    wrong: "할것",
+    explanation: "'것'은 의존명사이므로 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "될 수 있다",
+    wrong: "될수있다",
+    explanation: "'수'는 의존명사이므로 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "갈 곳",
+    wrong: "갈곳",
+    explanation: "관형사형 뒤 명사는 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "한 번",
+    wrong: "한번",
+    explanation: "횟수를 나타낼 때 '번'은 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "열 개",
+    wrong: "열개",
+    explanation: "수 관형사와 단위명사는 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "다섯 명",
+    wrong: "다섯명",
+    explanation: "수 관형사와 단위명사는 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "네 시",
+    wrong: "네시",
+    explanation: "수 관형사와 단위명사는 띄어 씁니다.",
+    gradeMin: 2,
+  },
+  {
+    correct: "만큼",
+    wrong: "만큼(붙여쓰기 오류)",
+    explanation: "조사 '만큼'은 붙여, 의존명사 '만큼'은 띄어 씁니다.",
+    gradeMin: 2,
+  },
+
+  // ──── 추가: Grade 3-4 사이시옷·된소리 ────
+  {
+    correct: "머릿속",
+    wrong: "머리속",
+    explanation: "'머릿속'이 올바른 표기입니다. 사이시옷 규칙.",
+    gradeMin: 3,
+  },
+  {
+    correct: "뒷문",
+    wrong: "뒤문",
+    explanation: "'뒷문'이 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "윗옷",
+    wrong: "위옷",
+    explanation: "'윗옷'이 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "아랫사람",
+    wrong: "아래사람",
+    explanation: "'아랫사람'이 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "찻잔",
+    wrong: "차잔",
+    explanation: "'찻잔'이 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "뱃사람",
+    wrong: "배사람",
+    explanation: "'뱃사람'이 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "곰곰이",
+    wrong: "곰곰히",
+    explanation: "'곰곰이'가 올바른 부사형입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "일일이",
+    wrong: "일일히",
+    explanation: "'일일이'가 올바른 부사형입니다.",
+    gradeMin: 3,
+  },
+
+  // ──── 추가: Grade 3-4 혼동 표현 ────
+  {
+    correct: "벌이다",
+    wrong: "벌리다",
+    explanation: "'벌이다'(일을 시작하다)와 '벌리다'(넓게 펴다)는 다릅니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "잠그다",
+    wrong: "잠구다",
+    explanation: "'잠그다'가 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "담그다",
+    wrong: "담구다",
+    explanation: "'담그다'가 올바른 표기입니다.",
+    gradeMin: 3,
+  },
+  {
+    correct: "시키다",
+    wrong: "식히다(주문)",
+    explanation: "주문하다의 뜻일 때 '시키다'가 올바릅니다.",
+    gradeMin: 3,
+  },
+
+  // ──── 추가: Grade 4-5 높임·겸양 ────
+  {
+    correct: "여쭈다",
+    wrong: "여쭤보다",
+    explanation: "'여쭈다'가 올바른 높임말입니다.",
+    gradeMin: 4,
+  },
+  {
+    correct: "진지",
+    wrong: "밥(높임)",
+    explanation: "어른의 식사는 '진지'라 합니다.",
+    gradeMin: 4,
+  },
+  {
+    correct: "댁",
+    wrong: "집(높임)",
+    explanation: "어른의 집은 '댁'이라 합니다.",
+    gradeMin: 4,
+  },
+  {
+    correct: "성함",
+    wrong: "이름(높임)",
+    explanation: "어른의 이름은 '성함'이라 합니다.",
+    gradeMin: 4,
+  },
+  {
+    correct: "생신",
+    wrong: "생일(높임)",
+    explanation: "어른의 생일은 '생신'이라 합니다.",
+    gradeMin: 4,
+  },
+
+  // ──── 추가: Grade 5-6 어려운 맞춤법 ────
+  {
+    correct: "오랫동안",
+    wrong: "오랫 동안",
+    explanation: "'오랫동안'은 한 단어로 붙여 씁니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "금세",
+    wrong: "금새",
+    explanation: "'금세'(금시에)가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "어이없다",
+    wrong: "어의없다",
+    explanation: "'어이없다'가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "오랜만",
+    wrong: "오랫만",
+    explanation: "'오랜만'이 아니라 '오랜만에'가 올바릅니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "뒤치다꺼리",
+    wrong: "뒷치닥거리",
+    explanation: "'뒤치다꺼리'가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "윗어른",
+    wrong: "위어른",
+    explanation: "'윗어른'이 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "째",
+    wrong: "채(순서)",
+    explanation: "순서를 나타낼 때 '째'가 올바릅니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "이따가",
+    wrong: "있다가",
+    explanation: "'이따가'(잠시 후에)가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "알맞은",
+    wrong: "알맞는",
+    explanation: "'알맞은'이 올바른 관형형입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "역할",
+    wrong: "역활",
+    explanation: "'역할'이 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "되레",
+    wrong: "도리어",
+    explanation: "'되레'와 '도리어' 모두 표준어이나, '되려'는 비표준입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "거칠다",
+    wrong: "거치르다",
+    explanation: "'거칠다'가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
+  {
+    correct: "삼가다",
+    wrong: "삼가하다",
+    explanation: "'삼가다'가 올바른 표기입니다.",
+    gradeMin: 5,
+  },
 ];
 
 // Sentence templates that incorporate the patterns
@@ -391,6 +685,26 @@ const SENTENCE_TEMPLATES: SentenceTemplate[] = [
   { template: "발표할 때 {word}.", gradeMin: 5 },
   { template: "보고서를 쓸 때 {word}.", gradeMin: 5 },
   { template: "토론에서 {word}.", gradeMin: 6 },
+
+  // ──── 추가 문장 템플릿 ────
+  { template: "집에서 {word}.", gradeMin: 1 },
+  { template: "아침에 {word}.", gradeMin: 1 },
+  { template: "저녁에 {word}.", gradeMin: 1 },
+  { template: "동물원에서 {word}.", gradeMin: 1 },
+  { template: "가게에서 {word}.", gradeMin: 1 },
+  { template: "할머니 댁에서 {word}.", gradeMin: 2 },
+  { template: "공원에서 {word}.", gradeMin: 2 },
+  { template: "수업 시간에 {word}.", gradeMin: 2 },
+  { template: "점심시간에 {word}.", gradeMin: 2 },
+  { template: "체험학습에서 {word}.", gradeMin: 3 },
+  { template: "미술 시간에 {word}.", gradeMin: 3 },
+  { template: "음악 시간에 {word}.", gradeMin: 3 },
+  { template: "체육 시간에 {word}.", gradeMin: 3 },
+  { template: "시험 볼 때 {word}.", gradeMin: 4 },
+  { template: "편지를 쓸 때 {word}.", gradeMin: 4 },
+  { template: "일기를 쓸 때 {word}.", gradeMin: 4 },
+  { template: "독후감에서 {word}.", gradeMin: 5 },
+  { template: "논설문에서 {word}.", gradeMin: 6 },
 ];
 
 export function generateSpellingProblems(

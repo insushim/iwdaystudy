@@ -77,19 +77,20 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
           className="grid grid-cols-2 gap-3 w-full max-w-md"
         >
           {choices.map((choice, index) => (
-            <Button
-              key={choice}
-              variant="outline"
-              onClick={() => handleSelect(choice)}
-              className={`h-14 text-lg font-bold rounded-xl border-2 transition-all ${
-                selected === choice
-                  ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35]'
-                  : 'border-border hover:border-[#FF6B35]/40'
-              }`}
-            >
-              <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
-              {choice}
-            </Button>
+            <motion.div key={choice} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => handleSelect(choice)}
+                className={`w-full h-14 min-h-[48px] text-lg font-bold rounded-xl border-2 transition-all ${
+                  selected === choice
+                    ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] shadow-md shadow-[#FF6B35]/10'
+                    : 'border-border hover:border-[#FF6B35]/40'
+                }`}
+              >
+                <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+                {choice}
+              </Button>
+            </motion.div>
           ))}
         </motion.div>
       )}
@@ -102,25 +103,30 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
             exit={{ opacity: 0, scale: 0.8 }}
             className="flex flex-col items-center gap-4 w-full"
           >
-            <div className={`flex items-center gap-3 rounded-2xl px-6 py-4 text-lg font-bold ${
-              isCorrect
-                ? 'bg-green-50 text-green-700 border-2 border-green-200'
-                : 'bg-red-50 text-red-700 border-2 border-red-200'
-            }`}>
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`flex items-center gap-3 rounded-2xl px-6 py-4 text-lg font-bold ${
+                isCorrect
+                  ? 'bg-green-50 text-green-700 border-2 border-green-200'
+                  : 'bg-red-50 text-red-700 border-2 border-red-200'
+              }`}
+            >
               {isCorrect ? (
                 <CheckCircle className="h-6 w-6 text-green-500" />
               ) : (
                 <XCircle className="h-6 w-6 text-red-500" />
               )}
               <span>{isCorrect ? '정답이에요' : `정답: ${correctAnswer}`}</span>
-            </div>
+            </motion.div>
 
             {choices.length > 0 && (
               <div className="grid grid-cols-2 gap-2 w-full max-w-md">
                 {choices.map((choice, index) => (
                   <div
                     key={choice}
-                    className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold ${
+                    className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
                       choice === correctAnswer
                         ? 'border-green-400 bg-green-50 text-green-700'
                         : selected === choice
@@ -141,7 +147,7 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowSteps(!showSteps)}
-                  className="gap-1 text-muted-foreground"
+                  className="gap-1 text-muted-foreground min-h-[36px]"
                 >
                   <Lightbulb className="h-4 w-4" />
                   {showSteps ? '풀이 숨기기' : '풀이 보기'}

@@ -525,6 +525,69 @@ const G34_HOUSE: W[] = [
 ];
 
 // ============================================================
+// Grade 3-4 Additional Word Banks (추가)
+// ============================================================
+
+const G34_PHONICS: W[] = [
+  { w: 'cat', p: '캣', k: '고양이 (c-a-t)', pr: ['bat', 'hat'] },
+  { w: 'bat', p: '뱃', k: '방망이 (b-a-t)', pr: ['cat', 'hat'] },
+  { w: 'hat', p: '햇', k: '모자 (h-a-t)', pr: ['cat', 'bat'] },
+  { w: 'mat', p: '맷', k: '깔개 (m-a-t)', pr: ['cat', 'sat'] },
+  { w: 'sat', p: '샛', k: '앉았다 (s-a-t)', pr: ['hat', 'mat'] },
+  { w: 'fan', p: '팬', k: '부채 (f-a-n)', pr: ['man', 'can'] },
+  { w: 'man', p: '맨', k: '남자 (m-a-n)', pr: ['fan', 'can'] },
+  { w: 'can', p: '캔', k: '캔 (c-a-n)', pr: ['fan', 'man'] },
+  { w: 'pen', p: '펜', k: '펜 (p-e-n)', pr: ['hen', 'ten'] },
+  { w: 'hen', p: '헨', k: '암탉 (h-e-n)', pr: ['pen', 'ten'] },
+  { w: 'ten', p: '텐', k: '열 (t-e-n)', pr: ['pen', 'hen'] },
+  { w: 'sun', p: '선', k: '태양 (s-u-n)', pr: ['fun', 'run'] },
+  { w: 'fun', p: '펀', k: '재미 (f-u-n)', pr: ['sun', 'run'] },
+  { w: 'cup', p: '컵', k: '컵 (c-u-p)', pr: ['up', 'pup'] },
+  { w: 'top', p: '탑', k: '꼭대기 (t-o-p)', pr: ['hop', 'pop'] },
+  { w: 'hop', p: '합', k: '깡충 뛰다 (h-o-p)', pr: ['top', 'pop'] },
+  { w: 'pin', p: '핀', k: '핀 (p-i-n)', pr: ['bin', 'tin'] },
+  { w: 'bin', p: '빈', k: '통 (b-i-n)', pr: ['pin', 'tin'] },
+  { w: 'map', p: '맵', k: '지도 (m-a-p)', pr: ['cap', 'tap'] },
+  { w: 'bug', p: '벅', k: '벌레 (b-u-g)', pr: ['mug', 'hug'] },
+];
+
+const G34_DAILY_ROUTINE: W[] = [
+  { w: 'wake up', p: '웨이크 업', k: '일어나다', pr: ['get up', 'alarm'] },
+  { w: 'brush teeth', p: '브러시 티쓰', k: '양치하다', pr: ['toothpaste', 'morning'] },
+  { w: 'get dressed', p: '겟 드레스드', k: '옷을 입다', pr: ['clothes', 'wear'] },
+  { w: 'eat breakfast', p: '잇 브렉퍼스트', k: '아침을 먹다', pr: ['cereal', 'toast'] },
+  { w: 'go to school', p: '고 투 스쿨', k: '학교에 가다', pr: ['bus', 'walk'] },
+  { w: 'come home', p: '컴 홈', k: '집에 오다', pr: ['arrive', 'return'] },
+  { w: 'do homework', p: '두 홈워크', k: '숙제를 하다', pr: ['study', 'write'] },
+  { w: 'take a bath', p: '테이크 어 배쓰', k: '목욕하다', pr: ['shower', 'wash'] },
+  { w: 'go to bed', p: '고 투 베드', k: '잠자리에 들다', pr: ['sleep', 'night'] },
+  { w: 'have lunch', p: '해브 런치', k: '점심을 먹다', pr: ['food', 'noon'] },
+  { w: 'watch TV', p: '워치 티비', k: 'TV를 보다', pr: ['show', 'screen'] },
+  { w: 'play outside', p: '플레이 아웃사이드', k: '밖에서 놀다', pr: ['fun', 'park'] },
+  { w: 'clean room', p: '클린 룸', k: '방을 정리하다', pr: ['tidy', 'organize'] },
+  { w: 'feed pet', p: '피드 펫', k: '반려동물 밥 주다', pr: ['dog', 'cat'] },
+  { w: 'read book', p: '리드 북', k: '책을 읽다', pr: ['story', 'library'] },
+];
+
+const G34_COMMON_EXPRESSIONS: W[] = [
+  { w: 'I am fine', p: '아이 엠 파인', k: '나는 괜찮아요', pr: ['good', 'okay'] },
+  { w: 'I don\'t know', p: '아이 돈 노', k: '모르겠어요', pr: ['question', 'think'] },
+  { w: 'I am hungry', p: '아이 엠 헝그리', k: '배고파요', pr: ['food', 'eat'] },
+  { w: 'I am thirsty', p: '아이 엠 써스티', k: '목말라요', pr: ['water', 'drink'] },
+  { w: 'I am sleepy', p: '아이 엠 슬리피', k: '졸려요', pr: ['tired', 'bed'] },
+  { w: 'I am sorry', p: '아이 엠 쏘리', k: '미안해요', pr: ['forgive', 'mistake'] },
+  { w: 'I am happy', p: '아이 엠 해피', k: '행복해요', pr: ['glad', 'joy'] },
+  { w: 'let\'s go', p: '렛츠 고', k: '가자', pr: ['come', 'move'] },
+  { w: 'wait a moment', p: '웨이트 어 모먼트', k: '잠깐만요', pr: ['stop', 'hold'] },
+  { w: 'help me', p: '헬프 미', k: '도와주세요', pr: ['please', 'assist'] },
+  { w: 'what time is it', p: '왓 타임 이즈 잇', k: '몇 시예요?', pr: ['clock', 'hour'] },
+  { w: 'how much', p: '하우 머치', k: '얼마예요?', pr: ['price', 'cost'] },
+  { w: 'I like it', p: '아이 라이크 잇', k: '마음에 들어요', pr: ['love', 'enjoy'] },
+  { w: 'me too', p: '미 투', k: '나도요', pr: ['same', 'also'] },
+  { w: 'good job', p: '굿 잡', k: '잘했어요', pr: ['great', 'well done'] },
+];
+
+// ============================================================
 // Grade 5-6 Word Banks (additional)
 // ============================================================
 
@@ -1270,6 +1333,32 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
   entries.push(...generateFromBank(rng, G34_HOUSE, BASIC_TEMPLATES, 2));
   // Commands (general, no unit)
   entries.push(...FIXED_COMMANDS);
+
+  // Phonics → "파닉스"
+  const phonicsTmpls: Tmpl[] = [
+    { s: w => `This is a ${w}.`, t: k => `이것은 ${k}이에요.` },
+    { s: w => `I see a ${w}.`, t: k => `나는 ${k}을(를) 봐요.` },
+    { s: w => `The ${w} is here.`, t: k => `${k}이(가) 여기 있어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_PHONICS, phonicsTmpls, 2, '파닉스'));
+
+  // Daily routine → "일과표현"
+  const routineTmpls: Tmpl[] = [
+    { s: w => `I ${w} every day.`, t: k => `나는 매일 ${k}.` },
+    { s: w => `Do you ${w}?`, t: k => `${k} 해요?` },
+    { s: w => `I like to ${w}.`, t: k => `나는 ${k} 것을 좋아해요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_DAILY_ROUTINE, routineTmpls, 2, '일과표현'));
+
+  // Common expressions → "일상표현"
+  for (const expr of G34_COMMON_EXPRESSIONS) {
+    entries.push({
+      sentence: `${expr.w.charAt(0).toUpperCase() + expr.w.slice(1)}.`,
+      translation: `${expr.k}.`,
+      word: expr.w, pronunciation: expr.p, practice: expr.pr,
+      unit: '일상표현',
+    });
+  }
 
   return entries;
 }

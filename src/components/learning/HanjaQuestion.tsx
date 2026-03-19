@@ -84,19 +84,20 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
           className="grid grid-cols-2 gap-3 w-full max-w-md"
         >
           {choices.map((choice, index) => (
-            <Button
-              key={choice}
-              variant="outline"
-              onClick={() => handleSelect(choice)}
-              className={`h-14 text-lg font-bold rounded-xl border-2 transition-all ${
-                selected === choice
-                  ? 'border-[#8B4513] bg-[#8B4513]/10 text-[#8B4513]'
-                  : 'border-border hover:border-[#8B4513]/40'
-              }`}
-            >
-              <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
-              {choice}
-            </Button>
+            <motion.div key={choice} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => handleSelect(choice)}
+                className={`w-full h-14 min-h-[48px] text-lg font-bold rounded-xl border-2 transition-all ${
+                  selected === choice
+                    ? 'border-[#8B4513] bg-[#8B4513]/10 text-[#8B4513] shadow-md shadow-[#8B4513]/10'
+                    : 'border-border hover:border-[#8B4513]/40'
+                }`}
+              >
+                <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+                {choice}
+              </Button>
+            </motion.div>
           ))}
         </motion.div>
       )}
@@ -109,20 +110,25 @@ export default function HanjaQuestion({ content, answer, onAnswer, showResult, i
             exit={{ opacity: 0 }}
             className="flex flex-col items-center gap-3 w-full"
           >
-            <div className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
-              isCorrect
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}>
+            <motion.div
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+              className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
+                isCorrect
+                  ? 'bg-green-50 text-green-700 border border-green-200'
+                  : 'bg-red-50 text-red-700 border border-red-200'
+              }`}
+            >
               {isCorrect ? <CheckCircle className="h-5 w-5 text-green-500" /> : <XCircle className="h-5 w-5 text-red-500" />}
               <span>{isCorrect ? '정답이에요' : `정답: ${correctReading}`}</span>
-            </div>
+            </motion.div>
 
             <div className="grid grid-cols-2 gap-2 w-full max-w-md">
               {choices.map((choice, index) => (
                 <div
                   key={choice}
-                  className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold ${
+                  className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
                     choice === correctReading
                       ? 'border-green-400 bg-green-50 text-green-700'
                       : selected === choice

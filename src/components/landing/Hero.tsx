@@ -1,25 +1,149 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, BookOpen, Star } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, Sparkles, BookOpen, Shield, Lock, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 const floatingItems = [
-  { icon: "📐", x: "10%", y: "20%", delay: 0 },
-  { icon: "✏️", x: "85%", y: "15%", delay: 0.5 },
-  { icon: "📖", x: "5%", y: "70%", delay: 1 },
-  { icon: "🎨", x: "90%", y: "65%", delay: 1.5 },
-  { icon: "🔢", x: "15%", y: "45%", delay: 0.8 },
-  { icon: "💡", x: "80%", y: "40%", delay: 1.2 },
+  { icon: "\uD83D\uDCD0", x: "10%", y: "20%", delay: 0 },
+  { icon: "\u270F\uFE0F", x: "85%", y: "15%", delay: 0.5 },
+  { icon: "\uD83D\uDCD6", x: "5%", y: "70%", delay: 1 },
+  { icon: "\uD83C\uDFA8", x: "90%", y: "65%", delay: 1.5 },
+  { icon: "\uD83D\uDD22", x: "15%", y: "45%", delay: 0.8 },
+  { icon: "\uD83D\uDCA1", x: "80%", y: "40%", delay: 1.2 },
 ];
+
+// Animated counter component
+function AnimatedStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!started) return;
+    let current = 0;
+    const step = Math.max(1, Math.floor(value / 40));
+    const interval = setInterval(() => {
+      current += step;
+      if (current >= value) {
+        setCount(value);
+        clearInterval(interval);
+      } else {
+        setCount(current);
+      }
+    }, 30);
+    return () => clearInterval(interval);
+  }, [value, started]);
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <span className="text-2xl sm:text-3xl font-black text-primary">
+        {count}{suffix}
+      </span>
+      <span className="text-xs sm:text-sm text-muted-foreground font-medium">{label}</span>
+    </div>
+  );
+}
+
+// Grade selector preview
+function GradeSelector() {
+  const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+  const grades = [1, 2, 3, 4, 5, 6];
+  const gradeColors = ['#FF8BA7', '#F9CA24', '#4ECDC4', '#4169E1', '#A18CD1', '#2ECC71'];
+  const gradeSubjects: Record<number, string[]> = {
+    1: ['수학', '국어', '맞춤법', '안전'],
+    2: ['수학', '국어', '맞춤법', '한자'],
+    3: ['수학', '국어', '영어', '한자', '상식'],
+    4: ['수학', '국어', '영어', '한자', '상식'],
+    5: ['수학', '국어', '영어', '한자', '어휘'],
+    6: ['수학', '국어', '영어', '한자', '어휘'],
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6, duration: 0.5 }}
+      className="w-full max-w-md mx-auto mt-4"
+    >
+      <p className="text-xs text-muted-foreground text-center mb-3 font-medium">
+        학년을 눌러 과목을 미리 보세요
+      </p>
+      <div className="flex items-center justify-center gap-2">
+        {grades.map((g, i) => (
+          <motion.button
+            key={g}
+            onClick={() => setSelectedGrade(selectedGrade === g ? null : g)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className={`relative w-11 h-11 sm:w-12 sm:h-12 rounded-xl font-bold text-sm transition-all ${
+              selectedGrade === g
+                ? 'text-white shadow-lg scale-105'
+                : 'bg-white/80 border-2 border-border hover:border-primary/30 text-foreground'
+            }`}
+            style={selectedGrade === g ? { backgroundColor: gradeColors[i] } : {}}
+          >
+            {g}
+            {selectedGrade === g && (
+              <motion.div
+                layoutId="grade-indicator"
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-white"
+              />
+            )}
+          </motion.button>
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        {selectedGrade && (
+          <motion.div
+            key={selectedGrade}
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden"
+          >
+            <div className="flex flex-wrap justify-center gap-2 mt-3 pt-3 border-t border-border/50">
+              {gradeSubjects[selectedGrade]?.map((subject, idx) => (
+                <motion.span
+                  key={subject}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="rounded-full bg-primary/10 text-primary text-xs font-medium px-3 py-1"
+                >
+                  {subject}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#E8F5E8] via-background to-background" />
+
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, var(--primary) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+        }}
+      />
 
       {/* Floating decorations */}
       {floatingItems.map((item, i) => (
@@ -42,7 +166,7 @@ export function Hero() {
         </motion.div>
       ))}
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 md:py-28">
         <div className="flex flex-col items-center text-center">
           {/* Badge */}
           <motion.div
@@ -98,10 +222,27 @@ export function Hero() {
                   <path d="M50 40 L44 24 L50 12 L56 24 Z" fill="#F9CA24" />
                   <path d="M50 12 L47 18 L53 18 Z" fill="#1A1A2E" />
                   {/* Sparkles */}
-                  <motion.circle cx="68" cy="18" r="2" fill="#F9CA24" opacity="0.8"
+                  <motion.circle cx="68" cy="18" r="2" fill="#F9CA24"
+                    animate={{ opacity: [0.4, 1, 0.4], scale: [0.8, 1.2, 0.8] }}
+                    transition={{ duration: 2, repeat: Infinity }}
                     style={{ transformOrigin: "68px 18px" }} />
-                  <motion.circle cx="32" cy="28" r="1.5" fill="#F9CA24" opacity="0.6"
+                  <motion.circle cx="32" cy="28" r="1.5" fill="#F9CA24"
+                    animate={{ opacity: [0.3, 0.9, 0.3], scale: [0.8, 1.1, 0.8] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
                     style={{ transformOrigin: "32px 28px" }} />
+                  {/* Blinking animation */}
+                  <motion.rect
+                    x="41" y="48" width="4" height="5" rx="2" fill="#FAFDF7"
+                    animate={{ scaleY: [0, 0, 1, 0, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, times: [0, 0.48, 0.5, 0.52, 1] }}
+                    style={{ transformOrigin: "43px 50px" }}
+                  />
+                  <motion.rect
+                    x="55" y="48" width="4" height="5" rx="2" fill="#FAFDF7"
+                    animate={{ scaleY: [0, 0, 1, 0, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, times: [0, 0.48, 0.5, 0.52, 1] }}
+                    style={{ transformOrigin: "57px 50px" }}
+                  />
                 </svg>
               </motion.div>
             </div>
@@ -119,6 +260,18 @@ export function Hero() {
             수학, 국어, 영어, 한자까지 학습 습관을 만들어요.
           </motion.p>
 
+          {/* Animated stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="mt-8 grid grid-cols-3 gap-6 sm:gap-10"
+          >
+            <AnimatedStat value={12} label="학습 과목" suffix="개" />
+            <AnimatedStat value={6} label="학년 커리큘럼" suffix="학년" />
+            <AnimatedStat value={30} label="하루 학습 시간" suffix="분" />
+          </motion.div>
+
           {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,13 +279,17 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.55 }}
             className="mt-10 flex flex-col sm:flex-row items-center gap-4"
           >
-            <Button size="lg" className="h-12 px-8 text-base font-semibold gap-2" asChild>
+            <Button
+              size="lg"
+              className="h-14 px-10 text-base font-bold gap-2 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow"
+              asChild
+            >
               <Link href="/signup/">
                 무료로 시작하기
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="h-12 px-8 text-base gap-2" asChild>
+            <Button variant="outline" size="lg" className="h-14 px-10 text-base gap-2" asChild>
               <a href="#features">
                 <BookOpen className="h-4 w-4" />
                 자세히 알아보기
@@ -140,16 +297,34 @@ export function Hero() {
             </Button>
           </motion.div>
 
-          {/* Social proof */}
+          {/* Grade selector preview */}
+          <GradeSelector />
+
+          {/* Trust badges */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="mt-12 flex flex-col items-center gap-3"
+            className="mt-10 flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
           >
-            <p className="text-sm text-muted-foreground">
-              2022 개정 교육과정 기반 · 초등 1~6학년 맞춤 학습
-            </p>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                <GraduationCap className="h-4 w-4 text-primary" />
+              </div>
+              <span>교육부 교육과정 기반</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-50">
+                <Lock className="h-4 w-4 text-blue-500" />
+              </div>
+              <span>개인정보 보호</span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-50">
+                <Shield className="h-4 w-4 text-amber-500" />
+              </div>
+              <span>광고 없는 학습 환경</span>
+            </div>
           </motion.div>
         </div>
       </div>

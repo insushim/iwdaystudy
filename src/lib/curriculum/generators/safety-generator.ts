@@ -1072,6 +1072,66 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
 ];
 
 // ─────────────────────────────────────────────
+// 16. 약물오남용 예방 (추가)
+// ─────────────────────────────────────────────
+const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
+  // Grade 1-2
+  { text: "약은 반드시 ___의 허락을 받고 먹어야 한다.", answer: "어른", category: "약물안전", gradeGroup: "1-2" },
+  { text: "처방전 없이 약을 사서 먹으면 ___하다.", answer: "위험", category: "약물안전", gradeGroup: "1-2" },
+  { text: "사탕처럼 생긴 약을 함부로 ___면 안 된다.", answer: "먹", category: "약물안전", gradeGroup: "1-2" },
+  { text: "약을 먹고 이상이 생기면 바로 ___에게 알려야 한다.", answer: "부모님", category: "약물안전", gradeGroup: "1-2" },
+  { text: "약은 정해진 ___만큼만 먹어야 한다.", answer: "양", category: "약물안전", gradeGroup: "1-2" },
+  { text: "다른 사람의 약을 ___먹으면 안 된다.", answer: "함부로", category: "약물안전", gradeGroup: "1-2" },
+  { text: "약은 어린이 손이 닿지 않는 ___에 보관한다.", answer: "곳", category: "약물안전", gradeGroup: "1-2" },
+  { text: "세제나 살충제는 ___가 아니므로 절대 먹으면 안 된다.", answer: "음식", category: "약물안전", gradeGroup: "1-2" },
+  // Grade 3-4
+  { text: "약물 오남용이란 약을 잘못 사용하거나 ___하게 사용하는 것이다.", answer: "과다", category: "약물안전", gradeGroup: "3-4" },
+  { text: "카페인이 많이 든 음료를 마시면 ___이 빨라질 수 있다.", answer: "심장박동", category: "약물안전", gradeGroup: "3-4" },
+  { text: "흡연은 ___에 매우 해롭다.", answer: "건강", category: "약물안전", gradeGroup: "3-4" },
+  { text: "음주는 청소년의 ___발달에 나쁜 영향을 준다.", answer: "뇌", category: "약물안전", gradeGroup: "3-4" },
+  { text: "약의 부작용이 나타나면 ___에게 알려야 한다.", answer: "의사", category: "약물안전", gradeGroup: "3-4" },
+  { text: "약의 유통기한이 지나면 ___해야 한다.", answer: "폐기", category: "약물안전", gradeGroup: "3-4" },
+  { text: "에너지 음료를 많이 마시면 ___장애가 올 수 있다.", answer: "수면", category: "약물안전", gradeGroup: "3-4" },
+  { text: "담배 연기는 ___는 사람에게도 해롭다.", answer: "옆에 있", category: "약물안전", gradeGroup: "3-4" },
+  // Grade 5-6
+  { text: "약물 의존성이란 약 없이는 ___하기 어려운 상태이다.", answer: "생활", category: "약물안전", gradeGroup: "5-6" },
+  { text: "청소년 흡연은 성인보다 ___에 더 큰 피해를 준다.", answer: "폐", category: "약물안전", gradeGroup: "5-6" },
+  { text: "간접흡연은 ___담배 연기를 마시는 것이다.", answer: "다른 사람의", category: "약물안전", gradeGroup: "5-6" },
+  { text: "전자담배도 유해물질이 포함되어 ___에 해롭다.", answer: "건강", category: "약물안전", gradeGroup: "5-6" },
+  { text: "마약류는 ___에 의해 강력히 처벌받는 불법 약물이다.", answer: "법률", category: "약물안전", gradeGroup: "5-6" },
+  { text: "본드나 가스 흡입은 ___세포를 파괴하는 행위이다.", answer: "뇌", category: "약물안전", gradeGroup: "5-6" },
+  { text: "약물 관련 고민은 ___상담 전화로 도움을 받을 수 있다.", answer: "1388", category: "약물안전", gradeGroup: "5-6" },
+  { text: "약물 남용 예방을 위해 ___교육이 정기적으로 실시된다.", answer: "예방", category: "약물안전", gradeGroup: "5-6" },
+];
+
+// ─────────────────────────────────────────────
+// 17. 식품 알레르기 안전 (추가)
+// ─────────────────────────────────────────────
+const ALLERGY_SAFETY: SafetyTemplate[] = [
+  // Grade 1-2
+  { text: "음식을 먹고 두드러기가 나면 ___가 있을 수 있다.", answer: "알레르기", category: "식품알레르기", gradeGroup: "1-2" },
+  { text: "알레르기가 있는 음식은 먹기 전에 ___에게 알려야 한다.", answer: "어른", category: "식품알레르기", gradeGroup: "1-2" },
+  { text: "급식 시 알레르기 음식이 있으면 ___에게 말해야 한다.", answer: "선생님", category: "식품알레르기", gradeGroup: "1-2" },
+  { text: "음식을 먹고 입이 ___거리면 바로 어른에게 알린다.", answer: "가려", category: "식품알레르기", gradeGroup: "1-2" },
+  { text: "알레르기가 있는 친구에게 음식을 ___주면 안 된다.", answer: "함부로", category: "식품알레르기", gradeGroup: "1-2" },
+  { text: "음식을 먹고 숨쉬기 어려우면 바로 ___에 전화한다.", answer: "119", category: "식품알레르기", gradeGroup: "1-2" },
+  // Grade 3-4
+  { text: "식품 알레르기를 일으키는 대표적 식품으로 ___이 있다.", answer: "땅콩", category: "식품알레르기", gradeGroup: "3-4" },
+  { text: "우유, 계란, ___은 흔한 알레르기 유발 식품이다.", answer: "밀", category: "식품알레르기", gradeGroup: "3-4" },
+  { text: "식품 포장지의 ___표시를 확인하면 알레르기 유발 성분을 알 수 있다.", answer: "알레르기", category: "식품알레르기", gradeGroup: "3-4" },
+  { text: "알레르기 반응으로 얼굴이 ___는 증상이 나타날 수 있다.", answer: "붓", category: "식품알레르기", gradeGroup: "3-4" },
+  { text: "학교 급식 식단에 알레르기 유발 식품 ___이 표시되어 있다.", answer: "번호", category: "식품알레르기", gradeGroup: "3-4" },
+  { text: "갑각류(새우, 게) 알레르기가 있으면 ___종류를 피해야 한다.", answer: "해산물", category: "식품알레르기", gradeGroup: "3-4" },
+  // Grade 5-6
+  { text: "심한 알레르기 반응을 ___라고 한다.", answer: "아나필락시스", category: "식품알레르기", gradeGroup: "5-6" },
+  { text: "아나필락시스가 발생하면 ___을 주사해야 한다.", answer: "에피네프린", category: "식품알레르기", gradeGroup: "5-6" },
+  { text: "식품 알레르기 검사는 ___과에서 받을 수 있다.", answer: "알레르기", category: "식품알레르기", gradeGroup: "5-6" },
+  { text: "식품 알레르기가 있으면 응급 ___을 항상 지참해야 한다.", answer: "약", category: "식품알레르기", gradeGroup: "5-6" },
+  { text: "글루텐 알레르기가 있으면 ___이 들어간 음식을 피해야 한다.", answer: "밀가루", category: "식품알레르기", gradeGroup: "5-6" },
+  { text: "유당불내증은 ___를 소화하지 못하는 것이다.", answer: "우유", category: "식품알레르기", gradeGroup: "5-6" },
+];
+
+// ─────────────────────────────────────────────
 // All templates combined
 // ─────────────────────────────────────────────
 const ALL_TEMPLATES: SafetyTemplate[] = [
@@ -1090,6 +1150,8 @@ const ALL_TEMPLATES: SafetyTemplate[] = [
   ...PRIVACY_SAFETY,
   ...SEXUAL_VIOLENCE_PREVENTION,
   ...SCHOOL_VIOLENCE_PREVENTION,
+  ...DRUG_ABUSE_PREVENTION,
+  ...ALLERGY_SAFETY,
 ];
 
 function getGradeGroup(grade: number): GradeGroup {

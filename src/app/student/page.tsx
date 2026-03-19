@@ -3,13 +3,14 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Flame, Star, Trophy, BookOpen, TrendingUp, Clock } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { useDailySet } from '@/hooks/useDailySet';
 import { getStreakCount, getTotalPoints, getCompletedDates, getRecordForSet, getEarnedBadges } from '@/lib/local-storage';
 import DailySetCard from '@/components/learning/DailySetCard';
 import Mascot from '@/components/learning/Mascot';
+import XPLevelDisplay from '@/components/learning/XPLevelDisplay';
+import StreakDisplay from '@/components/learning/StreakDisplay';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 export default function StudentDashboard() {
@@ -21,13 +22,16 @@ export default function StudentDashboard() {
   const [todayCompleted, setTodayCompleted] = useState(false);
   const [todayScore, setTodayScore] = useState<number | undefined>();
   const [completedDays, setCompletedDays] = useState(0);
+  const [completedDates, setCompletedDates] = useState<string[]>([]);
 
   useEffect(() => {
     if (!user) return;
     setStreak(getStreakCount(user.id));
     setPoints(getTotalPoints(user.id));
     setBadgeCount(getEarnedBadges(user.id).length);
-    setCompletedDays(getCompletedDates(user.id).length);
+    const dates = getCompletedDates(user.id);
+    setCompletedDates(dates);
+    setCompletedDays(dates.length);
 
     if (dailySet) {
       const record = getRecordForSet(user.id, dailySet.set.id);
@@ -88,6 +92,7 @@ export default function StudentDashboard() {
               questions={dailySet.questions}
               isCompleted={todayCompleted}
               score={todayScore}
+              streak={streak}
             />
           ) : (
             <Card className="py-8">
@@ -111,6 +116,19 @@ export default function StudentDashboard() {
             </Card>
           </motion.div>
         )}
+
+        {/* XP Level Display - Mobile only (shows below learning card) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="lg:hidden"
+        >
+          <XPLevelDisplay
+            totalPoints={points}
+            todayPoints={todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0}
+          />
+        </motion.div>
       </div>
 
       {/* Right column */}
@@ -120,7 +138,12 @@ export default function StudentDashboard() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <Card className="text-center py-4 px-3 lg:text-left lg:py-3">
               <CardContent className="p-0 lg:flex lg:items-center lg:gap-3 lg:px-2">
-                <Flame className="w-6 h-6 mx-auto mb-1 lg:mx-0 lg:mb-0 lg:flex-shrink-0 text-orange-500" />
+                <motion.div
+                  animate={streak > 0 ? { scale: [1, 1.1, 1] } : {}}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <Flame className="w-6 h-6 mx-auto mb-1 lg:mx-0 lg:mb-0 lg:flex-shrink-0 text-orange-500" />
+                </motion.div>
                 <div>
                   <div className="text-2xl font-black text-orange-500 lg:text-xl">{streak}</div>
                   <div className="text-xs text-muted-foreground">연속 학습</div>
@@ -152,11 +175,36 @@ export default function StudentDashboard() {
           </motion.div>
         </div>
 
-        {/* Quick stats summary */}
+        {/* XP Level Display - Desktop only */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
+          className="hidden lg:block"
+        >
+          <XPLevelDisplay
+            totalPoints={points}
+            todayPoints={todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0}
+          />
+        </motion.div>
+
+        {/* Streak calendar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <StreakDisplay
+            currentStreak={streak}
+            completedDates={completedDates}
+          />
+        </motion.div>
+
+        {/* Quick stats summary */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
         >
           <Card>
             <CardContent className="py-4">

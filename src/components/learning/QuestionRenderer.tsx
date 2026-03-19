@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -27,10 +27,56 @@ interface Props {
   isCorrect: boolean | null;
 }
 
+// Mini confetti burst for correct answers
+function CorrectBurst() {
+  const particles = Array.from({ length: 12 }).map((_, i) => ({
+    id: i,
+    angle: (i / 12) * 360,
+    color: ['#2ECC71', '#F9CA24', '#FF6B35', '#4ECDC4', '#FF8BA7', '#A18CD1'][i % 6],
+  }));
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+      {particles.map(p => (
+        <motion.div
+          key={p.id}
+          className="absolute left-1/2 top-1/2 w-2 h-2 rounded-full"
+          style={{ backgroundColor: p.color }}
+          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+          animate={{
+            x: Math.cos((p.angle * Math.PI) / 180) * 80,
+            y: Math.sin((p.angle * Math.PI) / 180) * 60,
+            opacity: 0,
+            scale: 0,
+          }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function QuestionRenderer({ question, onAnswer, showResult, isCorrect }: Props) {
   const [showHint, setShowHint] = useState(false);
-  const subjectInfo = SUBJECTS[question.subject] || { name: question.subject, icon: '📝', color: '#2ECC71' };
+  const [showBurst, setShowBurst] = useState(false);
+  const subjectInfo = SUBJECTS[question.subject] || { name: question.subject, icon: '\uD83D\uDCDD', color: '#2ECC71' };
   const color = getSubjectColor(question.subject);
+
+  // Trigger confetti burst on correct answer
+  const handleShowResult = () => {
+    if (isCorrect) {
+      setShowBurst(true);
+      setTimeout(() => setShowBurst(false), 700);
+    }
+  };
+
+  // Watch for showResult changing to true
+  useEffect(() => {
+    if (showResult && isCorrect) {
+      handleShowResult();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResult, isCorrect]);
 
   const renderQuestion = () => {
     const commonProps = {
@@ -113,7 +159,10 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
       exit={{ opacity: 0, x: -30 }}
       transition={{ type: 'spring', stiffness: 200, damping: 25 }}
     >
-      <Card className="w-full max-w-2xl mx-auto overflow-hidden">
+      <Card className="relative w-full max-w-2xl mx-auto overflow-hidden">
+        {/* Correct answer confetti burst */}
+        {showBurst && <CorrectBurst />}
+
         {/* Subject-colored header */}
         <CardHeader
           className="py-3 px-4"
@@ -121,7 +170,13 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="text-2xl">{subjectInfo.icon}</span>
+              <motion.span
+                className="text-2xl"
+                animate={showResult && isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
+                transition={{ duration: 0.5 }}
+              >
+                {subjectInfo.icon}
+              </motion.span>
               <CardTitle className="text-base font-bold" style={{ color }}>
                 {question.title || subjectInfo.name}
               </CardTitle>
@@ -136,10 +191,10 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-7 px-2 text-xs"
+                  className="h-8 px-3 text-xs min-h-[32px] gap-1"
                   onClick={() => setShowHint(!showHint)}
                 >
-                  <Lightbulb className="w-3 h-3 mr-1" />
+                  <Lightbulb className="w-3.5 h-3.5" />
                   힌트
                 </Button>
               )}
@@ -165,9 +220,20 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
         </CardHeader>
 
         <CardContent className="p-4 sm:p-6">
-          <div className={showResult ? (isCorrect ? 'animate-correct' : (isCorrect === false ? 'animate-wrong' : '')) : ''}>
+          <motion.div
+            animate={
+              showResult
+                ? isCorrect
+                  ? { scale: [1, 1.02, 1] }
+                  : isCorrect === false
+                  ? { x: [0, -6, 6, -4, 4, 0] }
+                  : {}
+                : {}
+            }
+            transition={{ duration: isCorrect ? 0.4 : 0.3 }}
+          >
             {renderQuestion()}
-          </div>
+          </motion.div>
 
           {/* Explanation on result */}
           <AnimatePresence>

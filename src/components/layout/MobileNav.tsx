@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -27,23 +28,23 @@ interface MobileNavItem {
 
 const MOBILE_NAV: Record<UserRole, MobileNavItem[]> = {
   student: [
-    { href: "/student", label: "홈", icon: LayoutDashboard },
-    { href: "/student/daily", label: "학습", icon: BookOpen },
-    { href: "/student/stats", label: "통계", icon: BarChart3 },
-    { href: "/student/history", label: "기록", icon: History },
-    { href: "/student/rewards", label: "뱃지", icon: Award },
+    { href: "/student", label: "\uD648", icon: LayoutDashboard },
+    { href: "/student/daily", label: "\uD559\uC2B5", icon: BookOpen },
+    { href: "/student/stats", label: "\uD1B5\uACC4", icon: BarChart3 },
+    { href: "/student/history", label: "\uAE30\uB85D", icon: History },
+    { href: "/student/rewards", label: "\uBCA7\uC9C0", icon: Award },
   ],
   teacher: [
-    { href: "/teacher", label: "홈", icon: LayoutDashboard },
-    { href: "/teacher/classes", label: "학급", icon: School },
-    { href: "/teacher/students", label: "학생", icon: Users },
-    { href: "/teacher/assignments", label: "과제", icon: ClipboardList },
-    { href: "/teacher/reports", label: "리포트", icon: FileText },
+    { href: "/teacher", label: "\uD648", icon: LayoutDashboard },
+    { href: "/teacher/classes", label: "\uD559\uAE09", icon: School },
+    { href: "/teacher/students", label: "\uD559\uC0DD", icon: Users },
+    { href: "/teacher/assignments", label: "\uACFC\uC81C", icon: ClipboardList },
+    { href: "/teacher/reports", label: "\uB9AC\uD3EC\uD2B8", icon: FileText },
   ],
   parent: [
-    { href: "/parent", label: "홈", icon: LayoutDashboard },
-    { href: "/parent/children", label: "자녀", icon: Heart },
-    { href: "/parent/reports", label: "리포트", icon: FileText },
+    { href: "/parent", label: "\uD648", icon: LayoutDashboard },
+    { href: "/parent/children", label: "\uC790\uB140", icon: Heart },
+    { href: "/parent/reports", label: "\uB9AC\uD3EC\uD2B8", icon: FileText },
   ],
 };
 
@@ -71,23 +72,29 @@ export function MobileNav({ role }: MobileNavProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 px-2 py-1 rounded-lg transition-colors min-w-[56px]",
+                "relative flex flex-col items-center justify-center gap-0.5 px-2 py-1 rounded-lg transition-colors min-w-[56px] min-h-[44px]",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <item.icon
-                className={cn(
-                  "h-5 w-5 transition-transform",
-                  isActive && "scale-110"
-                )}
-              />
-              <span className={cn("text-[10px] font-medium", isActive && "font-semibold")}>
+              <div className="relative">
+                <motion.div
+                  animate={isActive ? { scale: 1.1 } : { scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <item.icon className="h-5 w-5" />
+                </motion.div>
+              </div>
+              <span className={cn("text-[10px] font-medium", isActive && "font-bold")}>
                 {item.label}
               </span>
               {isActive && (
-                <span className="absolute bottom-1 h-1 w-6 rounded-full bg-primary" />
+                <motion.span
+                  layoutId="mobile-nav-indicator"
+                  className="absolute -bottom-0.5 h-1 w-8 rounded-full bg-primary"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
               )}
             </Link>
           );

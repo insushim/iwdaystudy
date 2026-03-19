@@ -37,12 +37,12 @@ export default function SpellingQuestion({ content, answer, onAnswer, showResult
           <motion.button
             key={`${option}-${index}`}
             whileHover={!showResult ? { scale: 1.02 } : undefined}
-            whileTap={!showResult ? { scale: 0.98 } : undefined}
+            whileTap={!showResult ? { scale: 0.97 } : undefined}
             onClick={() => handleSelect(option)}
             disabled={showResult}
-            className={`relative flex flex-col items-center gap-3 rounded-2xl border-2 p-6 text-left transition-all disabled:cursor-default ${
+            className={`relative flex flex-col items-center gap-3 rounded-2xl border-2 p-6 text-left transition-all disabled:cursor-default min-h-[72px] ${
               selected === option && !showResult
-                ? 'border-[#A18CD1] bg-[#A18CD1]/10 ring-2 ring-[#A18CD1]/30'
+                ? 'border-[#A18CD1] bg-[#A18CD1]/10 ring-2 ring-[#A18CD1]/30 shadow-md shadow-[#A18CD1]/10'
                 : 'border-border hover:border-[#A18CD1]/50 hover:bg-[#A18CD1]/5'
             } ${
               showResult && option === correctSentence
@@ -54,7 +54,7 @@ export default function SpellingQuestion({ content, answer, onAnswer, showResult
                 : ''
             }`}
           >
-            <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#A18CD1]/10">
+            <div className="absolute left-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-[#A18CD1]/10 min-w-[32px]">
               <span className="text-sm font-bold text-[#A18CD1]">{OPTION_LABELS[index]}</span>
             </div>
 
@@ -63,10 +63,14 @@ export default function SpellingQuestion({ content, answer, onAnswer, showResult
             </p>
 
             {showResult && option === correctSentence && (
-              <CheckCircle className="h-8 w-8 text-green-500" />
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+                <CheckCircle className="h-8 w-8 text-green-500" />
+              </motion.div>
             )}
             {showResult && selected === option && option !== correctSentence && (
-              <XCircle className="h-8 w-8 text-red-500" />
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}>
+                <XCircle className="h-8 w-8 text-red-500" />
+              </motion.div>
             )}
           </motion.button>
         ))}
