@@ -21,7 +21,12 @@ import type {
   EnglishEntry,
 } from "@/types/curriculum";
 import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
-import { getAvailableMathUnits, getAvailableScienceUnits, getAvailableEnglishUnits, getAvailableSocialUnits } from "@/lib/curriculum/curriculum-sequence";
+import {
+  getAvailableMathUnits,
+  getAvailableScienceUnits,
+  getAvailableEnglishUnits,
+  getAvailableSocialUnits,
+} from "@/lib/curriculum/curriculum-sequence";
 import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
 import { generateVocabPool } from "@/lib/curriculum/generators/vocab-generator";
 import { generateKnowledgePool } from "@/lib/curriculum/generators/knowledge-generator";
@@ -147,9 +152,7 @@ function generateChoices<T>(
   extractAnswer: (item: T) => string,
   random: () => number,
 ): string[] {
-  const others = pool
-    .map(extractAnswer)
-    .filter((a) => a !== correct);
+  const others = pool.map(extractAnswer).filter((a) => a !== correct);
   // Deduplicate
   const unique = [...new Set(others)];
   // Shuffle and pick 3
@@ -211,12 +214,14 @@ function generateSpellingChoices(
   random: () => number,
 ): string[] {
   const correctSentence = entry.answer === 1 ? entry.q1 : entry.q2;
-  const wrongPool = pool
-    .flatMap((item) => {
-      const wrongSentence = item.answer === 1 ? item.q2 : item.q1;
-      return wrongSentence === correctSentence ? [] : [wrongSentence];
-    });
-  const distractors = shuffleChoices([...new Set(wrongPool)], random).slice(0, 3);
+  const wrongPool = pool.flatMap((item) => {
+    const wrongSentence = item.answer === 1 ? item.q2 : item.q1;
+    return wrongSentence === correctSentence ? [] : [wrongSentence];
+  });
+  const distractors = shuffleChoices([...new Set(wrongPool)], random).slice(
+    0,
+    3,
+  );
 
   while (distractors.length < 3) {
     distractors.push(`${correctSentence} (오답)`);
@@ -238,8 +243,8 @@ function takeExpandedPortion<T>(items: T[], ratio = 0.5): T[] {
 /** 과목별 정답률에 따라 난이도 결정 (1=쉬움, 2=보통, 3=어려움) */
 function getDifficultyLevel(accuracy: number | undefined): 1 | 2 | 3 {
   if (accuracy === undefined) return 2; // 데이터 없으면 보통
-  if (accuracy >= 85) return 3;  // 잘 맞추면 어려운 문제
-  if (accuracy <= 45) return 1;  // 많이 틀리면 쉬운 문제
+  if (accuracy >= 85) return 3; // 잘 맞추면 어려운 문제
+  if (accuracy <= 45) return 1; // 많이 틀리면 쉬운 문제
   return 2;
 }
 
@@ -263,13 +268,17 @@ interface GradeData {
  * Uses week-based curriculum sequencing for all grades.
  * Falls back to no filtering if no sequence is defined.
  */
-function filterMathByProgress(items: MathEntry[], grade: number, semester: number): MathEntry[] {
+function filterMathByProgress(
+  items: MathEntry[],
+  grade: number,
+  semester: number,
+): MathEntry[] {
   const available = getAvailableMathUnits(grade, semester);
   if (available.size === 0) return items; // no sequence defined for this grade/semester
 
   // Return only items matching unlocked units. Items without a unit field pass through.
   // If nothing matches, return [] — the generated math pool handles coverage.
-  return items.filter(m => !m.unit || available.has(m.unit));
+  return items.filter((m) => !m.unit || available.has(m.unit));
 }
 
 /**
@@ -277,10 +286,14 @@ function filterMathByProgress(items: MathEntry[], grade: number, semester: numbe
  * Uses week-based curriculum sequencing for grades 3-6.
  * Returns all items for grades 1-2 (no science curriculum).
  */
-function filterScienceByProgress(items: KnowledgeEntry[], grade: number, semester: number): KnowledgeEntry[] {
+function filterScienceByProgress(
+  items: KnowledgeEntry[],
+  grade: number,
+  semester: number,
+): KnowledgeEntry[] {
   const available = getAvailableScienceUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-2 or no sequence defined
-  return items.filter(m => !m.unit || available.has(m.unit));
+  return items.filter((m) => !m.unit || available.has(m.unit));
 }
 
 /**
@@ -288,10 +301,14 @@ function filterScienceByProgress(items: KnowledgeEntry[], grade: number, semeste
  * Uses week-based curriculum sequencing for grades 3-6.
  * Returns all items for grades 1-2 (no English curriculum).
  */
-function filterEnglishByProgress(items: EnglishEntry[], grade: number, semester: number): EnglishEntry[] {
+function filterEnglishByProgress(
+  items: EnglishEntry[],
+  grade: number,
+  semester: number,
+): EnglishEntry[] {
   const available = getAvailableEnglishUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-2 or no sequence defined
-  return items.filter(m => !m.unit || available.has(m.unit));
+  return items.filter((m) => !m.unit || available.has(m.unit));
 }
 
 /**
@@ -299,10 +316,14 @@ function filterEnglishByProgress(items: EnglishEntry[], grade: number, semester:
  * Uses week-based curriculum sequencing for grades 5-6.
  * Returns all items for grades 1-4 (no social curriculum).
  */
-function filterSocialByProgress(items: KnowledgeEntry[], grade: number, semester: number): KnowledgeEntry[] {
+function filterSocialByProgress(
+  items: KnowledgeEntry[],
+  grade: number,
+  semester: number,
+): KnowledgeEntry[] {
   const available = getAvailableSocialUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-4 or no sequence defined
-  return items.filter(m => !m.unit || available.has(m.unit));
+  return items.filter((m) => !m.unit || available.has(m.unit));
 }
 
 // ============================================================
@@ -310,68 +331,95 @@ function filterSocialByProgress(items: KnowledgeEntry[], grade: number, semester
 // ============================================================
 function getStaticMathData(g: number): MathEntry[] {
   switch (g) {
-    case 1: return grade1MathData;
-    case 2: return grade2MathData;
-    case 3: return grade3MathData;
-    case 4: return grade4MathData;
-    case 5: return grade5MathData;
-    case 6: return grade6MathData;
-    default: return grade1MathData;
+    case 1:
+      return grade1MathData;
+    case 2:
+      return grade2MathData;
+    case 3:
+      return grade3MathData;
+    case 4:
+      return grade4MathData;
+    case 5:
+      return grade5MathData;
+    case 6:
+      return grade6MathData;
+    default:
+      return grade1MathData;
   }
 }
 
 function getStaticEnglishData(g: number): EnglishEntry[] {
   switch (g) {
-    case 3: return grade3EnglishData ?? [];
-    case 4: return grade4EnglishData ?? [];
-    case 5: return grade5EnglishData ?? [];
-    case 6: return grade6EnglishData ?? [];
-    default: return [];
+    case 3:
+      return grade3EnglishData ?? [];
+    case 4:
+      return grade4EnglishData ?? [];
+    case 5:
+      return grade5EnglishData ?? [];
+    case 6:
+      return grade6EnglishData ?? [];
+    default:
+      return [];
   }
 }
 
 function getStaticScienceData(g: number): KnowledgeEntry[] {
   switch (g) {
-    case 5: return grade5ScienceData ?? [];
-    case 6: return grade6ScienceData ?? [];
-    default: return [];
+    case 5:
+      return grade5ScienceData ?? [];
+    case 6:
+      return grade6ScienceData ?? [];
+    default:
+      return [];
   }
 }
 
 function getStaticSocialData(g: number): KnowledgeEntry[] {
   switch (g) {
-    case 5: return grade5SocialData ?? [];
-    case 6: return grade6SocialData ?? [];
-    default: return [];
+    case 5:
+      return grade5SocialData ?? [];
+    case 6:
+      return grade6SocialData ?? [];
+    default:
+      return [];
   }
 }
 
 function getStaticKoreanData(g: number): KnowledgeEntry[] {
   switch (g) {
-    case 1: return grade1KoreanData ?? [];
-    case 2: return grade2KoreanData ?? [];
-    default: return [];
+    case 1:
+      return grade1KoreanData ?? [];
+    case 2:
+      return grade2KoreanData ?? [];
+    default:
+      return [];
   }
 }
 
 // Get curriculum data per grade (merges static + procedurally generated)
 // 선행학습법 준수: 주지과목(수학·국어·영어·과학)은 전 학년 내용을 제공합니다.
-function getGradeData(grade: number, semester: number, daySeed?: number, subjectAccuracy?: Record<string, { accuracy: number }>): GradeData {
+function getGradeData(
+  grade: number,
+  semester: number,
+  daySeed?: number,
+  subjectAccuracy?: Record<string, { accuracy: number }>,
+): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
   const expandedDayOfYear = dayOfYear + 10000;
   const expandedDayOfYearBonus = dayOfYear + 20000;
 
   // 적응형 난이도: 같은 학년·성취기준 내에서 난이도만 조정 (학년 변경 없음)
-  const diff = (subject: string) => getDifficultyLevel(subjectAccuracy?.[subject]?.accuracy);
-  const mathDiff = diff('math');
-  const spellingDiff = diff('spelling');
-  const vocabDiff = diff('vocabulary');
-  const knowledgeDiff = diff('general_knowledge');
-  const safetyDiff = diff('safety');
-  const hanjaDiff = diff('hanja');
-  const englishDiff = diff('english');
-  const scienceDiff = diff('science');
-  const socialDiff = diff('social');
+  const diff = (subject: string) =>
+    getDifficultyLevel(subjectAccuracy?.[subject]?.accuracy);
+  const mathDiff = diff("math");
+  const spellingDiff = diff("spelling");
+  const vocabDiff = diff("vocabulary");
+  const knowledgeDiff = diff("general_knowledge");
+  const safetyDiff = diff("safety");
+  const hanjaDiff = diff("hanja");
+  const englishDiff = diff("english");
+  const scienceDiff = diff("science");
+  const socialDiff = diff("social");
 
   // 선행학습법: 주지과목은 현재 학년 - 1의 내용 사용 (학년 변경 없음)
   const coreMathGrade = Math.max(1, grade - 1);
@@ -380,45 +428,99 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   const coreSocialGrade = Math.max(5, grade - 1);
 
   // ---- 주지과목 풀 생성 (전 학년 기준 + 난이도 적용) ----
-  const generatedMath = generateMathPool(coreMathGrade, dayOfYear, semester, mathDiff);
-  const generatedMathExtra = generateMathPool(coreMathGrade, expandedDayOfYear, semester, mathDiff);
+  const generatedMath = generateMathPool(
+    coreMathGrade,
+    dayOfYear,
+    semester,
+    mathDiff,
+  );
+  const generatedMathExtra = generateMathPool(
+    coreMathGrade,
+    expandedDayOfYear,
+    semester,
+    mathDiff,
+  );
   const generatedMathBonus = takeExpandedPortion(
     generateMathPool(coreMathGrade, expandedDayOfYearBonus, semester, mathDiff),
   );
-  const generatedEnglish = generateEnglishPool(coreEnglishGrade, dayOfYear, englishDiff);
-  const generatedEnglishExtra = generateEnglishPool(coreEnglishGrade, expandedDayOfYear, englishDiff);
+  const generatedEnglish = generateEnglishPool(
+    coreEnglishGrade,
+    dayOfYear,
+    englishDiff,
+  );
+  const generatedEnglishExtra = generateEnglishPool(
+    coreEnglishGrade,
+    expandedDayOfYear,
+    englishDiff,
+  );
   const generatedEnglishBonus = takeExpandedPortion(
     generateEnglishPool(coreEnglishGrade, expandedDayOfYearBonus, englishDiff),
   );
-  const generatedScience = generateSciencePool(coreScienceGrade, dayOfYear, scienceDiff);
-  const generatedScienceExtra = generateSciencePool(coreScienceGrade, expandedDayOfYear, scienceDiff);
+  const generatedScience = generateSciencePool(
+    coreScienceGrade,
+    dayOfYear,
+    scienceDiff,
+  );
+  const generatedScienceExtra = generateSciencePool(
+    coreScienceGrade,
+    expandedDayOfYear,
+    scienceDiff,
+  );
   const generatedScienceBonus = takeExpandedPortion(
     generateSciencePool(coreScienceGrade, expandedDayOfYearBonus, scienceDiff),
   );
 
   // ---- 비주지과목 풀 생성 (같은 학년 + 난이도 적용) ----
-  const generatedSpelling = generateSpellingPool(grade, dayOfYear, spellingDiff);
-  const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear, spellingDiff);
+  const generatedSpelling = generateSpellingPool(
+    grade,
+    dayOfYear,
+    spellingDiff,
+  );
+  const generatedSpellingExtra = generateSpellingPool(
+    grade,
+    expandedDayOfYear,
+    spellingDiff,
+  );
   const generatedSpellingBonus = takeExpandedPortion(
     generateSpellingPool(grade, expandedDayOfYearBonus, spellingDiff),
   );
   const generatedVocab = generateVocabPool(grade, dayOfYear, vocabDiff);
-  const generatedVocabExtra = generateVocabPool(grade, expandedDayOfYear, vocabDiff);
+  const generatedVocabExtra = generateVocabPool(
+    grade,
+    expandedDayOfYear,
+    vocabDiff,
+  );
   const generatedVocabBonus = takeExpandedPortion(
     generateVocabPool(grade, expandedDayOfYearBonus, vocabDiff),
   );
-  const generatedKnowledge = generateKnowledgePool(grade, dayOfYear, knowledgeDiff);
-  const generatedKnowledgeExtra = generateKnowledgePool(grade, expandedDayOfYear, knowledgeDiff);
+  const generatedKnowledge = generateKnowledgePool(
+    grade,
+    dayOfYear,
+    knowledgeDiff,
+  );
+  const generatedKnowledgeExtra = generateKnowledgePool(
+    grade,
+    expandedDayOfYear,
+    knowledgeDiff,
+  );
   const generatedKnowledgeBonus = takeExpandedPortion(
     generateKnowledgePool(grade, expandedDayOfYearBonus, knowledgeDiff),
   );
   const generatedSafety = generateSafetyPool(grade, dayOfYear, safetyDiff);
-  const generatedSafetyExtra = generateSafetyPool(grade, expandedDayOfYear, safetyDiff);
+  const generatedSafetyExtra = generateSafetyPool(
+    grade,
+    expandedDayOfYear,
+    safetyDiff,
+  );
   const generatedSafetyBonus = takeExpandedPortion(
     generateSafetyPool(grade, expandedDayOfYearBonus, safetyDiff),
   );
   const generatedHanja = generateHanjaPool(grade, dayOfYear, hanjaDiff);
-  const generatedHanjaExtra = generateHanjaPool(grade, expandedDayOfYear, hanjaDiff);
+  const generatedHanjaExtra = generateHanjaPool(
+    grade,
+    expandedDayOfYear,
+    hanjaDiff,
+  );
   const generatedHanjaBonus = takeExpandedPortion(
     generateHanjaPool(grade, expandedDayOfYearBonus, hanjaDiff),
   );
@@ -432,8 +534,16 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   const generatedCreativeBonus = takeExpandedPortion(
     generateCreativePool(grade, expandedDayOfYearBonus),
   );
-  const generatedSocial = generateSocialPool(coreSocialGrade, dayOfYear, socialDiff);
-  const generatedSocialExtra = generateSocialPool(coreSocialGrade, expandedDayOfYear, socialDiff);
+  const generatedSocial = generateSocialPool(
+    coreSocialGrade,
+    dayOfYear,
+    socialDiff,
+  );
+  const generatedSocialExtra = generateSocialPool(
+    coreSocialGrade,
+    expandedDayOfYear,
+    socialDiff,
+  );
   const generatedSocialBonus = takeExpandedPortion(
     generateSocialPool(coreSocialGrade, expandedDayOfYearBonus, socialDiff),
   );
@@ -441,19 +551,23 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   // ---- 주지과목 단원 진도 필터링 (전 학년 기준) ----
   const filtMath = filterMathByProgress(
     [...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
-    coreMathGrade, semester,
+    coreMathGrade,
+    semester,
   );
   const filtScience = filterScienceByProgress(
     [...generatedScience, ...generatedScienceExtra, ...generatedScienceBonus],
-    coreScienceGrade, semester,
+    coreScienceGrade,
+    semester,
   );
   const filtEnglish = filterEnglishByProgress(
     [...generatedEnglish, ...generatedEnglishExtra, ...generatedEnglishBonus],
-    coreEnglishGrade, semester,
+    coreEnglishGrade,
+    semester,
   );
   const filtSocial = filterSocialByProgress(
     [...generatedSocial, ...generatedSocialExtra, ...generatedSocialBonus],
-    coreSocialGrade, semester,
+    coreSocialGrade,
+    semester,
   );
 
   // ---- 주지과목 정적 데이터 (전 학년 기준) ----
@@ -466,88 +580,370 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   switch (grade) {
     case 1:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        spelling: [
+          ...grade1SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade1VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade1KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade1SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade1WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        korean: [
+          ...staticKoreanData,
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
+        creative: [
+          ...(grade1CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
       };
     case 2:
       return {
-        spelling: [...grade2SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade2VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade2KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade2SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade2WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        creative: [...(grade2CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        spelling: [
+          ...grade2SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade2VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade2KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade2SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade2WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        korean: [
+          ...staticKoreanData,
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
+        creative: [
+          ...(grade2CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
       };
     case 3:
       return {
-        spelling: [...grade3SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade3VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade3KnowledgeData, ...grade3KnowledgeDataExtra, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade3SafetyData, ...grade3SafetyDataExtra, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade3WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        hanja: [...(grade3HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        spelling: [
+          ...grade3SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade3VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade3KnowledgeData,
+          ...grade3KnowledgeDataExtra,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade3SafetyData,
+          ...grade3SafetyDataExtra,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade3WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        hanja: [
+          ...(grade3HanjaData || []),
+          ...generatedHanja,
+          ...generatedHanjaExtra,
+          ...generatedHanjaBonus,
+        ],
         english: [...staticEnglishData, ...filtEnglish],
-        creative: [...(grade3CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [
+          ...(grade3CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
       };
     case 4:
       return {
-        spelling: [...grade4SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade4VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade4KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade4SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade4WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        hanja: [...(grade4HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        spelling: [
+          ...grade4SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade4VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade4KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade4SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade4WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        hanja: [
+          ...(grade4HanjaData || []),
+          ...generatedHanja,
+          ...generatedHanjaExtra,
+          ...generatedHanjaBonus,
+        ],
         english: [...staticEnglishData, ...filtEnglish],
-        creative: [...(grade4CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [
+          ...(grade4CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
       };
     case 5:
       return {
-        spelling: [...grade5SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade5VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade5KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade5SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade5WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        hanja: [...(grade5HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        spelling: [
+          ...grade5SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade5VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade5KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade5SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade5WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        hanja: [
+          ...(grade5HanjaData || []),
+          ...generatedHanja,
+          ...generatedHanjaExtra,
+          ...generatedHanjaBonus,
+        ],
         english: [...staticEnglishData, ...filtEnglish],
-        creative: [...(grade5CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [
+          ...(grade5CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
         science: [...staticScienceData, ...filtScience],
-        social: [...filterSocialByProgress(staticSocialData, coreSocialGrade, semester), ...filtSocial],
+        social: [
+          ...filterSocialByProgress(
+            staticSocialData,
+            coreSocialGrade,
+            semester,
+          ),
+          ...filtSocial,
+        ],
       };
     case 6:
       return {
-        spelling: [...grade6SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade6VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade6KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade6SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade6WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        hanja: [...(grade6HanjaData || []), ...generatedHanja, ...generatedHanjaExtra, ...generatedHanjaBonus],
+        spelling: [
+          ...grade6SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade6VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade6KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade6SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade6WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        hanja: [
+          ...(grade6HanjaData || []),
+          ...generatedHanja,
+          ...generatedHanjaExtra,
+          ...generatedHanjaBonus,
+        ],
         english: [...staticEnglishData, ...filtEnglish],
-        creative: [...(grade6CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        creative: [
+          ...(grade6CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
         science: [...staticScienceData, ...filtScience],
-        social: [...filterSocialByProgress(staticSocialData, coreSocialGrade, semester), ...filtSocial],
+        social: [
+          ...filterSocialByProgress(
+            staticSocialData,
+            coreSocialGrade,
+            semester,
+          ),
+          ...filtSocial,
+        ],
       };
     default:
       return {
-        spelling: [...grade1SpellingData, ...generatedSpelling, ...generatedSpellingExtra, ...generatedSpellingBonus],
-        vocab: [...grade1VocabData, ...generatedVocab, ...generatedVocabExtra, ...generatedVocabBonus],
-        math: [...filterMathByProgress(staticMathData, coreMathGrade, semester), ...filtMath],
-        knowledge: [...grade1KnowledgeData, ...generatedKnowledge, ...generatedKnowledgeExtra, ...generatedKnowledgeBonus],
-        safety: [...grade1SafetyData, ...generatedSafety, ...generatedSafetyExtra, ...generatedSafetyBonus],
-        writing: [...grade1WritingPrompts, ...generatedWriting, ...generatedWritingExtra, ...generatedWritingBonus],
-        korean: [...staticKoreanData, ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
-        creative: [...(grade1CreativeData || []), ...generatedCreative, ...generatedCreativeExtra, ...generatedCreativeBonus],
+        spelling: [
+          ...grade1SpellingData,
+          ...generatedSpelling,
+          ...generatedSpellingExtra,
+          ...generatedSpellingBonus,
+        ],
+        vocab: [
+          ...grade1VocabData,
+          ...generatedVocab,
+          ...generatedVocabExtra,
+          ...generatedVocabBonus,
+        ],
+        math: [
+          ...filterMathByProgress(staticMathData, coreMathGrade, semester),
+          ...filtMath,
+        ],
+        knowledge: [
+          ...grade1KnowledgeData,
+          ...generatedKnowledge,
+          ...generatedKnowledgeExtra,
+          ...generatedKnowledgeBonus,
+        ],
+        safety: [
+          ...grade1SafetyData,
+          ...generatedSafety,
+          ...generatedSafetyExtra,
+          ...generatedSafetyBonus,
+        ],
+        writing: [
+          ...grade1WritingPrompts,
+          ...generatedWriting,
+          ...generatedWritingExtra,
+          ...generatedWritingBonus,
+        ],
+        korean: [
+          ...staticKoreanData,
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
+        creative: [
+          ...(grade1CreativeData || []),
+          ...generatedCreative,
+          ...generatedCreativeExtra,
+          ...generatedCreativeBonus,
+        ],
       };
   }
 }
@@ -815,37 +1211,133 @@ function buildWritingQuestion(
   };
 }
 
-// Build a hanja question from HanjaEntry data
+// Build a hanja question with variant types
+type HanjaVariant = "reading" | "meaning" | "character" | "word" | "writing";
+
 function buildHanjaQuestion(
   setId: string,
   orderIndex: number,
   title: string,
   entry: HanjaEntry,
   choices: string[],
+  variant: HanjaVariant = "reading",
 ): Question {
-  return {
+  const base = {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "hanja" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
     order_index: orderIndex,
     title,
-    content: {
-      text: `${entry.character}(${entry.meaning}): 이 한자의 음(소리)은 무엇일까요?`,
-      character: entry.character,
-      meaning: entry.meaning,
-      strokes: entry.strokes,
-      words: entry.words,
-      choices,
-    },
-    answer: { correct: entry.reading, text: entry.reading },
-    explanation: `${entry.character}는 '${entry.meaning}'으로, '${entry.reading}'이라 읽습니다. 예: ${entry.words.join(", ")}`,
     points: 10,
-    hint: `'${entry.meaning}'에서 힌트를 찾아보세요.`,
-    metadata: { strokes: entry.strokes, sentence: entry.sentence },
+    metadata: { strokes: entry.strokes, sentence: entry.sentence, variant },
     created_at: new Date().toISOString(),
   };
+
+  const explanation = `${entry.character}는 '${entry.meaning}'으로, '${entry.reading}'이라 읽습니다. 예: ${entry.words.join(", ")}`;
+
+  switch (variant) {
+    case "reading": // 음 맞추기 (4지선다)
+      return {
+        ...base,
+        question_type: "multiple_choice" as QuestionType,
+        content: {
+          variant: "reading",
+          text: `${entry.character}(${entry.meaning}): 이 한자의 음(소리)은?`,
+          character: entry.character,
+          meaning: entry.meaning,
+          reading: entry.reading,
+          strokes: entry.strokes,
+          words: entry.words,
+          sentence: entry.sentence,
+          choices,
+        },
+        answer: { correct: entry.reading, text: entry.reading },
+        explanation,
+        hint: `'${entry.meaning}'에서 힌트를 찾아보세요.`,
+      };
+
+    case "meaning": // 뜻 맞추기 (4지선다)
+      return {
+        ...base,
+        question_type: "multiple_choice" as QuestionType,
+        content: {
+          variant: "meaning",
+          text: `${entry.character}(${entry.reading}): 이 한자의 뜻(훈)은?`,
+          character: entry.character,
+          meaning: entry.meaning,
+          reading: entry.reading,
+          strokes: entry.strokes,
+          words: entry.words,
+          choices,
+        },
+        answer: { correct: entry.meaning, text: entry.meaning },
+        explanation,
+        hint: `${entry.words[0]}에서 힌트를 찾아보세요.`,
+      };
+
+    case "character": // 한자 맞추기 (4지선다)
+      return {
+        ...base,
+        question_type: "multiple_choice" as QuestionType,
+        content: {
+          variant: "character",
+          text: `'${entry.meaning}' = '${entry.reading}': 맞는 한자는?`,
+          character: entry.character,
+          meaning: entry.meaning,
+          reading: entry.reading,
+          strokes: entry.strokes,
+          words: entry.words,
+          choices,
+        },
+        answer: { correct: entry.character, text: entry.character },
+        explanation,
+        hint: `획수가 ${entry.strokes}획인 글자예요.`,
+      };
+
+    case "word": // 단어 맞추기 (4지선다)
+      return {
+        ...base,
+        question_type: "multiple_choice" as QuestionType,
+        content: {
+          variant: "word",
+          text: `${entry.character}(${entry.meaning}/${entry.reading})가 들어간 단어는?`,
+          character: entry.character,
+          meaning: entry.meaning,
+          reading: entry.reading,
+          strokes: entry.strokes,
+          words: entry.words,
+          choices,
+        },
+        answer: {
+          correct:
+            choices.find((c) => entry.words.includes(c)) || entry.words[0],
+          text: entry.words[0],
+        },
+        explanation: `${entry.character}(${entry.reading})가 들어간 단어: ${entry.words.join(", ")}`,
+        hint: `'${entry.reading}'이 들어간 단어를 찾아보세요.`,
+      };
+
+    case "writing": // 따라쓰기 (직접 입력)
+      return {
+        ...base,
+        question_type: "short_answer" as QuestionType,
+        content: {
+          variant: "writing",
+          text: `${entry.character}(${entry.meaning}): 음을 직접 써보세요`,
+          character: entry.character,
+          meaning: entry.meaning,
+          reading: entry.reading,
+          strokes: entry.strokes,
+          words: entry.words,
+          sentence: entry.sentence,
+          choices: [],
+        },
+        answer: { correct: entry.reading, text: entry.reading },
+        explanation,
+        hint: `${entry.words[0]}에서 '${entry.reading}'을 찾아보세요.`,
+      };
+  }
 }
 
 // Build an english question from EnglishEntry data
@@ -1030,23 +1522,50 @@ export function generateDailySet(
         const entry = pickUnused(data.spelling, "spelling");
         const choices = generateSpellingChoices(entry, data.spelling, random);
         questions.push(
-          buildSpellingQuestion(setId, orderIndex, section.title, entry, choices),
+          buildSpellingQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+          ),
         );
       } else if (subject === "vocabulary") {
         const entry = pickUnused(data.vocab, "vocab");
-        const choices = generateChoices(entry.answer, data.vocab, (v) => v.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          data.vocab,
+          (v) => v.answer,
+          random,
+        );
         questions.push(
           buildVocabQuestion(setId, orderIndex, section.title, entry, choices),
         );
       } else if (subject === "general_knowledge") {
         const entry = pickUnused(data.knowledge, "knowledge");
-        const choices = generateChoices(entry.answer, data.knowledge, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          data.knowledge,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildKnowledgeQuestion(setId, orderIndex, section.title, entry, choices),
+          buildKnowledgeQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+          ),
         );
       } else if (subject === "safety") {
         const entry = pickUnused(data.safety, "safety");
-        const choices = generateChoices(entry.answer, data.safety, (s) => s.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          data.safety,
+          (s) => s.answer,
+          random,
+        );
         questions.push(
           buildSafetyQuestion(setId, orderIndex, section.title, entry, choices),
         );
@@ -1057,9 +1576,69 @@ export function generateDailySet(
         );
       } else if (subject === "hanja" && data.hanja && data.hanja.length > 0) {
         const entry = pickUnused(data.hanja, "hanja");
-        const choices = generateChoices(entry.reading, data.hanja, (h) => h.reading, random);
+        const hvariants: HanjaVariant[] = [
+          "reading",
+          "meaning",
+          "character",
+          "word",
+          "writing",
+        ];
+        const hvariant = hvariants[Math.floor(random() * hvariants.length)];
+        let hchoices: string[];
+        if (hvariant === "meaning") {
+          hchoices = generateChoices(
+            entry.meaning,
+            data.hanja,
+            (h) => h.meaning,
+            random,
+          );
+        } else if (hvariant === "character") {
+          hchoices = generateChoices(
+            entry.character,
+            data.hanja,
+            (h) => h.character,
+            random,
+          );
+        } else if (hvariant === "word") {
+          const cw = entry.words[Math.floor(random() * entry.words.length)];
+          const ow = [
+            ...new Set(
+              data.hanja
+                .filter((h) => h.character !== entry.character)
+                .flatMap((h) => h.words)
+                .filter((w) => !entry.words.includes(w)),
+            ),
+          ];
+          for (let i = ow.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [ow[i], ow[j]] = [ow[j], ow[i]];
+          }
+          const ds = ow.slice(0, 3);
+          while (ds.length < 3) ds.push(`${cw}(아님)`);
+          hchoices = [cw, ...ds];
+          for (let i = hchoices.length - 1; i > 0; i--) {
+            const j = Math.floor(random() * (i + 1));
+            [hchoices[i], hchoices[j]] = [hchoices[j], hchoices[i]];
+          }
+        } else if (hvariant === "writing") {
+          hchoices = [];
+        } else {
+          hchoices = generateChoices(
+            entry.reading,
+            data.hanja,
+            (h) => h.reading,
+            random,
+          );
+        }
         questions.push(
-          buildHanjaQuestion(setId, orderIndex, section.title, entry, choices),
+          buildHanjaQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            hchoices,
+            hvariant,
+          ),
         );
       } else if (
         subject === "english" &&
@@ -1067,9 +1646,20 @@ export function generateDailySet(
         data.english.length > 0
       ) {
         const entry = pickUnused(data.english, "english");
-        const choices = generateChoices(entry.word, data.english, (e) => e.word, random);
+        const choices = generateChoices(
+          entry.word,
+          data.english,
+          (e) => e.word,
+          random,
+        );
         questions.push(
-          buildEnglishQuestion(setId, orderIndex, section.title, entry, choices),
+          buildEnglishQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+          ),
         );
       } else if (
         subject === "korean" &&
@@ -1078,9 +1668,22 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.korean, "korean");
         const pool = data.korean!;
-        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildSubjectQuestion(setId, orderIndex, section.title, "korean" as SubjectType, entry, "국어", choices),
+          buildSubjectQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            "korean" as SubjectType,
+            entry,
+            "국어",
+            choices,
+          ),
         );
       } else if (
         subject === "creative" &&
@@ -1089,9 +1692,22 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.creative, "creative");
         const pool = data.creative!;
-        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildSubjectQuestion(setId, orderIndex, section.title, "creative" as SubjectType, entry, "창의", choices),
+          buildSubjectQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            "creative" as SubjectType,
+            entry,
+            "창의",
+            choices,
+          ),
         );
       } else if (
         subject === "science" &&
@@ -1100,9 +1716,22 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.science, "science");
         const pool = data.science!;
-        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildSubjectQuestion(setId, orderIndex, section.title, "science" as SubjectType, entry, "과학", choices),
+          buildSubjectQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            "science" as SubjectType,
+            entry,
+            "과학",
+            choices,
+          ),
         );
       } else if (
         subject === "social" &&
@@ -1111,16 +1740,42 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.social, "social");
         const pool = data.social!;
-        const choices = generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildSubjectQuestion(setId, orderIndex, section.title, "social" as SubjectType, entry, "사회", choices),
+          buildSubjectQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            "social" as SubjectType,
+            entry,
+            "사회",
+            choices,
+          ),
         );
       } else {
         // Fallback: use knowledge data as generic question
         const entry = pickUnused(data.knowledge, "knowledge_fallback");
-        const choices = generateChoices(entry.answer, data.knowledge, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          data.knowledge,
+          (k) => k.answer,
+          random,
+        );
         questions.push(
-          buildSubjectQuestion(setId, orderIndex, section.title, (subject as SubjectType) || ("general_knowledge" as SubjectType), entry, "", choices),
+          buildSubjectQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            (subject as SubjectType) || ("general_knowledge" as SubjectType),
+            entry,
+            "",
+            choices,
+          ),
         );
       }
 
@@ -1148,7 +1803,12 @@ export function generateDailySetWithoutRepeats(
   let bestRepeatCount = Number.POSITIVE_INFINITY;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const candidate = generateDailySet(grade, semester, triedSetIds, subjectAccuracy);
+    const candidate = generateDailySet(
+      grade,
+      semester,
+      triedSetIds,
+      subjectAccuracy,
+    );
     triedSetIds.add(candidate.set.id);
 
     const repeatCount = countRepeatedQuestions(
@@ -1166,5 +1826,8 @@ export function generateDailySetWithoutRepeats(
     }
   }
 
-  return bestCandidate ?? generateDailySet(grade, semester, completedSetIds, subjectAccuracy);
+  return (
+    bestCandidate ??
+    generateDailySet(grade, semester, completedSetIds, subjectAccuracy)
+  );
 }
