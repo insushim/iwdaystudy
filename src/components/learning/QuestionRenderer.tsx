@@ -1,24 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Lightbulb, MessageCircle } from 'lucide-react';
-import { SUBJECTS } from '@/types/learning';
-import { getSubjectColor } from '@/lib/utils';
-import type { Question } from '@/types/database';
-import MathQuestion from './MathQuestion';
-import SpellingQuestion from './SpellingQuestion';
-import VocabQuestion from './VocabQuestion';
-import HanjaQuestion from './HanjaQuestion';
-import EnglishQuestion from './EnglishQuestion';
-import WritingPrompt from './WritingPrompt';
-import EmotionCheck from './EmotionCheck';
-import ReadinessChecklist from './ReadinessChecklist';
-import GeneralKnowledge from './GeneralKnowledge';
-import SafetyQuiz from './SafetyQuiz';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Lightbulb, MessageCircle } from "lucide-react";
+import { SUBJECTS } from "@/types/learning";
+import { getSubjectColor } from "@/lib/utils";
+import type { Question } from "@/types/database";
+import MathQuestion from "./MathQuestion";
+import SpellingQuestion from "./SpellingQuestion";
+import VocabQuestion from "./VocabQuestion";
+import HanjaQuestion from "./HanjaQuestion";
+import EnglishQuestion from "./EnglishQuestion";
+import WritingPrompt from "./WritingPrompt";
+import EmotionCheck from "./EmotionCheck";
+import ReadinessChecklist from "./ReadinessChecklist";
+import GeneralKnowledge from "./GeneralKnowledge";
+import SafetyQuiz from "./SafetyQuiz";
 
 interface Props {
   question: Question;
@@ -32,12 +32,14 @@ function CorrectBurst() {
   const particles = Array.from({ length: 12 }).map((_, i) => ({
     id: i,
     angle: (i / 12) * 360,
-    color: ['#2ECC71', '#F9CA24', '#FF6B35', '#4ECDC4', '#FF8BA7', '#A18CD1'][i % 6],
+    color: ["#2ECC71", "#F9CA24", "#FF6B35", "#4ECDC4", "#FF8BA7", "#A18CD1"][
+      i % 6
+    ],
   }));
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-      {particles.map(p => (
+      {particles.map((p) => (
         <motion.div
           key={p.id}
           className="absolute left-1/2 top-1/2 w-2 h-2 rounded-full"
@@ -49,17 +51,26 @@ function CorrectBurst() {
             opacity: 0,
             scale: 0,
           }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         />
       ))}
     </div>
   );
 }
 
-export default function QuestionRenderer({ question, onAnswer, showResult, isCorrect }: Props) {
+export default function QuestionRenderer({
+  question,
+  onAnswer,
+  showResult,
+  isCorrect,
+}: Props) {
   const [showHint, setShowHint] = useState(false);
   const [showBurst, setShowBurst] = useState(false);
-  const subjectInfo = SUBJECTS[question.subject] || { name: question.subject, icon: '\uD83D\uDCDD', color: '#2ECC71' };
+  const subjectInfo = SUBJECTS[question.subject] || {
+    name: question.subject,
+    icon: "\uD83D\uDCDD",
+    color: "#2ECC71",
+  };
   const color = getSubjectColor(question.subject);
 
   // Trigger confetti burst on correct answer
@@ -75,7 +86,7 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
     if (showResult && isCorrect) {
       handleShowResult();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showResult, isCorrect]);
 
   const renderQuestion = () => {
@@ -89,15 +100,10 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
 
     // Route special question types first
     switch (question.question_type) {
-      case 'emotion_check':
-        return (
-          <EmotionCheck
-            onAnswer={onAnswer}
-            showResult={showResult}
-          />
-        );
+      case "emotion_check":
+        return <EmotionCheck onAnswer={onAnswer} showResult={showResult} />;
 
-      case 'readiness_check':
+      case "readiness_check":
         return (
           <ReadinessChecklist
             content={question.content}
@@ -112,23 +118,22 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
 
     // Route by subject
     switch (question.subject) {
-      case 'math':
+      case "math":
         return <MathQuestion {...commonProps} />;
 
-      case 'spelling':
+      case "spelling":
         return <SpellingQuestion {...commonProps} />;
 
-      case 'vocabulary':
+      case "vocabulary":
         return <VocabQuestion {...commonProps} />;
 
-      case 'hanja':
+      case "hanja":
         return <HanjaQuestion {...commonProps} />;
 
-      case 'english':
+      case "english":
         return <EnglishQuestion {...commonProps} />;
 
-      case 'writing':
-      case 'creative':
+      case "writing":
         return (
           <WritingPrompt
             content={question.content}
@@ -138,12 +143,13 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
           />
         );
 
-      case 'safety':
+      case "safety":
         return <SafetyQuiz {...commonProps} />;
 
-      case 'general_knowledge':
-      case 'science':
-      case 'social':
+      case "creative":
+      case "general_knowledge":
+      case "science":
+      case "social":
         return <GeneralKnowledge {...commonProps} />;
 
       default:
@@ -157,22 +163,29 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
       initial={{ opacity: 0, x: 30 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -30 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 25 }}
+      transition={{ type: "spring", stiffness: 200, damping: 25 }}
     >
-      <Card className="relative w-full max-w-2xl mx-auto overflow-hidden">
+      <Card className="relative w-full max-w-4xl mx-auto overflow-hidden">
         {/* Correct answer confetti burst */}
         {showBurst && <CorrectBurst />}
 
         {/* Subject-colored header */}
         <CardHeader
           className="py-3 px-4"
-          style={{ backgroundColor: `${color}15`, borderBottom: `2px solid ${color}` }}
+          style={{
+            backgroundColor: `${color}15`,
+            borderBottom: `2px solid ${color}`,
+          }}
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <motion.span
                 className="text-2xl"
-                animate={showResult && isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
+                animate={
+                  showResult && isCorrect
+                    ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] }
+                    : {}
+                }
                 transition={{ duration: 0.5 }}
               >
                 {subjectInfo.icon}
@@ -182,11 +195,18 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
               </CardTitle>
             </div>
             <div className="flex items-center gap-2">
-              {question.points > 0 && !['emotion_check', 'readiness_check'].includes(question.question_type) && (
-                <Badge variant="outline" className="text-xs" style={{ borderColor: color, color }}>
-                  {question.points}점
-                </Badge>
-              )}
+              {question.points > 0 &&
+                !["emotion_check", "readiness_check"].includes(
+                  question.question_type,
+                ) && (
+                  <Badge
+                    variant="outline"
+                    className="text-xs"
+                    style={{ borderColor: color, color }}
+                  >
+                    {question.points}점
+                  </Badge>
+                )}
               {question.hint && !showResult && (
                 <Button
                   variant="ghost"
@@ -206,7 +226,7 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
             {showHint && question.hint && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
@@ -226,8 +246,8 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
                 ? isCorrect
                   ? { scale: [1, 1.02, 1] }
                   : isCorrect === false
-                  ? { x: [0, -6, 6, -4, 4, 0] }
-                  : {}
+                    ? { x: [0, -6, 6, -4, 4, 0] }
+                    : {}
                 : {}
             }
             transition={{ duration: isCorrect ? 0.4 : 0.3 }}
@@ -240,15 +260,19 @@ export default function QuestionRenderer({ question, onAnswer, showResult, isCor
             {showResult && question.explanation && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
+                animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 flex items-start gap-2">
                   <MessageCircle className="h-4 w-4 flex-shrink-0 mt-0.5 text-blue-500" />
                   <div>
-                    <p className="text-sm font-medium text-blue-800 mb-0.5">해설</p>
-                    <p className="text-sm text-blue-700">{question.explanation}</p>
+                    <p className="text-sm font-medium text-blue-800 mb-0.5">
+                      해설
+                    </p>
+                    <p className="text-sm text-blue-700">
+                      {question.explanation}
+                    </p>
                   </div>
                 </div>
               </motion.div>

@@ -1,6 +1,10 @@
-import { create } from 'zustand';
-import type { Question, DailySet } from '@/types/database';
-import type { QuestionState, EmotionData, ReadinessData } from '@/types/learning';
+import { create } from "zustand";
+import type { Question, DailySet } from "@/types/database";
+import type {
+  QuestionState,
+  EmotionData,
+  ReadinessData,
+} from "@/types/learning";
 
 interface LearningState {
   currentSet: DailySet | null;
@@ -24,7 +28,12 @@ interface LearningState {
 
   initSession: (set: DailySet, questions: Question[]) => void;
   setCurrentIndex: (index: number) => void;
-  answerQuestion: (questionId: string, answer: unknown, isCorrect: boolean, score: number) => void;
+  answerQuestion: (
+    questionId: string,
+    answer: unknown,
+    isCorrect: boolean,
+    score: number,
+  ) => void;
   setEmotionBefore: (data: EmotionData) => void;
   setEmotionAfter: (data: EmotionData) => void;
   setReadiness: (data: ReadinessData) => void;
@@ -87,8 +96,14 @@ export const useLearningStore = create<LearningState>((set, get) => ({
     set((state) => {
       const newStates = state.questionStates.map((qs) =>
         qs.questionId === questionId
-          ? { ...qs, answer, isCorrect, isAnswered: true, timeSpent: state.timeSpent }
-          : qs
+          ? {
+              ...qs,
+              answer,
+              isCorrect,
+              isAnswered: true,
+              timeSpent: state.timeSpent,
+            }
+          : qs,
       );
       return {
         questionStates: newStates,
@@ -151,12 +166,26 @@ export const useLearningStore = create<LearningState>((set, get) => ({
     const nextIndex = state.reviewIndex + 1;
 
     if (nextIndex >= state.reviewQueue.length) {
-      set({
-        reviewCorrected: newCorrected,
-        reviewIndex: nextIndex,
-        isReviewMode: false,
-        isCompleted: true,
-      });
+      // 아직 틀린 문제가 남아있으면 다시 반복
+      const stillWrong = state.reviewQueue.filter(
+        (idx) => !newCorrected.includes(idx),
+      );
+      if (stillWrong.length > 0) {
+        // 틀린 문제만 다시 큐에 넣어서 반복
+        set({
+          reviewCorrected: newCorrected,
+          reviewQueue: stillWrong,
+          reviewIndex: 0,
+        });
+      } else {
+        // 전부 맞춤 → 복습 완료
+        set({
+          reviewCorrected: newCorrected,
+          reviewIndex: nextIndex,
+          isReviewMode: false,
+          isCompleted: true,
+        });
+      }
     } else {
       set({
         reviewCorrected: newCorrected,

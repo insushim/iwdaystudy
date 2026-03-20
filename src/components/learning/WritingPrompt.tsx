@@ -1,11 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Pencil, Star, RotateCcw, ArrowRight } from 'lucide-react';
-import { evaluateWriting, type WritingEvalResult } from '@/lib/writing-evaluator';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Pencil, Star, RotateCcw, ArrowRight } from "lucide-react";
+import {
+  evaluateWriting,
+  type WritingEvalResult,
+} from "@/lib/writing-evaluator";
 
 interface Props {
   content: any;
@@ -19,20 +22,26 @@ const PASS_SCORE = 7; // 7점 초과(8점 이상)만 통과, 7점 이하는 다�
 const MAX_RETRIES = 2; // 최대 재시도 횟수 (총 3번 기회)
 
 const DETAIL_LABELS = [
-  { key: 'length' as const,    label: '글자 수',   max: 3, color: '#2ECC71' },
-  { key: 'sentences' as const, label: '문장 구성', max: 2, color: '#3498DB' },
-  { key: 'variety' as const,   label: '어휘 다양성', max: 3, color: '#9B59B6' },
-  { key: 'structure' as const, label: '내용 구조', max: 2, color: '#E67E22' },
+  { key: "length" as const, label: "글자 수", max: 3, color: "#2ECC71" },
+  { key: "sentences" as const, label: "문장 구성", max: 2, color: "#3498DB" },
+  { key: "variety" as const, label: "어휘 다양성", max: 3, color: "#9B59B6" },
+  { key: "structure" as const, label: "내용 구조", max: 2, color: "#E67E22" },
 ];
 
-export default function WritingPrompt({ content, onAnswer, showResult }: Props) {
-  const [text, setText] = useState('');
+export default function WritingPrompt({
+  content,
+  onAnswer,
+  showResult,
+}: Props) {
+  const [text, setText] = useState("");
   const [evalResult, setEvalResult] = useState<WritingEvalResult | null>(null);
   const [retryCount, setRetryCount] = useState(0);
   const [previewMode, setPreviewMode] = useState(false); // 점수 미리보기 (다시쓰기 전)
   const [submitted, setSubmitted] = useState(false); // 최종 제출 완료
+  const [prevScore, setPrevScore] = useState(0); // 이전 점수 (monotonic 보정용)
+  const [prevTextLen, setPrevTextLen] = useState(0); // 이전 제출 글자수
 
-  const prompt = content?.prompt || content?.text || '자유롭게 써보세요.';
+  const prompt = content?.prompt || content?.text || "자유롭게 써보세요.";
   const minChars = content?.minChars || content?.min_chars || MIN_CHARS_DEFAULT;
   const charCount = text.length;
   const meetsMinimum = charCount >= minChars;
@@ -40,7 +49,31 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
 
   const handleSubmit = () => {
     if (!text.trim()) return;
-    const result = evaluateWriting(text.trim(), minChars);
+    const rawResult = evaluateWriting(text.trim(), minChars);
+    const currentLen = text.trim().length;
+    // 다시 쓰기 시: 글이 줄지 않았고 raw 점수가 이전보다 낮으면 이전 점수 유지
+    // 글을 지웠으면 (10% 이상 줄었으면) 그대로 재평가
+    const adjustedScore =
+      prevTextLen > 0 && currentLen >= prevTextLen * 0.9
+        ? Math.max(rawResult.score, prevScore)
+        : rawResult.score;
+    setPrevTextLen(currentLen);
+    const adjustedStars =
+      adjustedScore <= 2
+        ? 1
+        : adjustedScore <= 4
+          ? 2
+          : adjustedScore <= 6
+            ? 3
+            : adjustedScore <= 8
+              ? 4
+              : 5;
+    const result: WritingEvalResult = {
+      ...rawResult,
+      score: adjustedScore,
+      stars: adjustedStars,
+    };
+    setPrevScore(adjustedScore);
     setEvalResult(result);
 
     if (result.score > PASS_SCORE || !canRetry) {
@@ -54,7 +87,7 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
   };
 
   const handleRetry = () => {
-    setRetryCount(prev => prev + 1);
+    setRetryCount((prev) => prev + 1);
     setPreviewMode(false);
     setEvalResult(null);
     // text는 유지 (이어서 수정 가능)
@@ -82,8 +115,12 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
             <Pencil className="h-5 w-5 text-[#2ECC71]" />
           </div>
           <div>
-            <p className="text-xs font-medium text-[#2ECC71] mb-1">오늘의 글밥</p>
-            <p className="text-xl font-bold leading-relaxed break-keep">{prompt}</p>
+            <p className="text-xs font-medium text-[#2ECC71] mb-1">
+              오늘의 글밥
+            </p>
+            <p className="text-xl font-bold leading-relaxed break-keep">
+              {prompt}
+            </p>
           </div>
         </div>
       </motion.div>
@@ -104,7 +141,8 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
             >
               <RotateCcw className="h-4 w-4 text-amber-600" />
               <span className="text-sm font-medium text-amber-700">
-                {retryCount}/{MAX_RETRIES}번째 다시쓰기 — 피드백을 참고해서 더 잘 써봐요!
+                {retryCount}/{MAX_RETRIES}번째 다시쓰기 — 피드백을 참고해서 더
+                잘 써봐요!
               </span>
             </motion.div>
           )}
@@ -113,17 +151,27 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="여기에 자유롭게 써 보세요..."
-            className="min-h-[180px] text-lg leading-relaxed rounded-xl border-2 border-[#2ECC71]/20 focus-visible:border-[#2ECC71] focus-visible:ring-[#2ECC71]/20 resize-none p-4"
-            style={{ fontFamily: 'var(--font-handwriting, inherit)' }}
+            className="min-h-[200px] text-xl leading-relaxed rounded-xl border-2 border-[#2ECC71]/20 focus-visible:border-[#2ECC71] focus-visible:ring-[#2ECC71]/20 resize-none p-4"
+            style={{
+              fontSize: "1.25rem",
+              lineHeight: "1.8",
+              fontFamily: "var(--font-handwriting, inherit)",
+            }}
           />
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div
-                className={`h-2 rounded-full transition-all ${meetsMinimum ? 'bg-[#2ECC71]' : 'bg-muted'}`}
-                style={{ width: `${Math.min((charCount / minChars) * 100, 100)}%`, minWidth: 8, maxWidth: 120 }}
+                className={`h-2 rounded-full transition-all ${meetsMinimum ? "bg-[#2ECC71]" : "bg-muted"}`}
+                style={{
+                  width: `${Math.min((charCount / minChars) * 100, 100)}%`,
+                  minWidth: 8,
+                  maxWidth: 120,
+                }}
               />
-              <span className={`text-xs font-medium ${meetsMinimum ? 'text-[#2ECC71]' : 'text-muted-foreground'}`}>
+              <span
+                className={`text-xs font-medium ${meetsMinimum ? "text-[#2ECC71]" : "text-muted-foreground"}`}
+              >
                 {charCount}자 / 최소 {minChars}자
               </span>
             </div>
@@ -132,7 +180,9 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
               disabled={!meetsMinimum}
               className="rounded-xl font-bold bg-[#2ECC71] hover:bg-[#2ECC71]/90"
             >
-              {meetsMinimum ? '제출하기' : `${minChars - charCount}자 더 써주세요`}
+              {meetsMinimum
+                ? "제출하기"
+                : `${minChars - charCount}자 더 써주세요`}
             </Button>
           </div>
         </motion.div>
@@ -160,7 +210,7 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
                 {evalResult.score * 10}점이에요. 80점 이상이면 통과!
                 {canRetry
                   ? ` (다시쓰기 ${MAX_RETRIES - retryCount}번 남음)`
-                  : ' (마지막 기회였어요)'}
+                  : " (마지막 기회였어요)"}
               </p>
             </motion.div>
 
@@ -172,13 +222,18 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
                     key={n}
                     className="h-6 w-6"
                     style={{
-                      fill: n <= evalResult.stars ? '#F1C40F' : 'transparent',
-                      stroke: n <= evalResult.stars ? '#F1C40F' : '#CBD5E1',
+                      fill: n <= evalResult.stars ? "#F1C40F" : "transparent",
+                      stroke: n <= evalResult.stars ? "#F1C40F" : "#CBD5E1",
                     }}
                   />
                 ))}
               </div>
-              <span className="text-xl font-black">{evalResult.score}<span className="text-sm font-medium text-muted-foreground">/10</span></span>
+              <span className="text-xl font-black">
+                {evalResult.score}
+                <span className="text-sm font-medium text-muted-foreground">
+                  /10
+                </span>
+              </span>
             </div>
 
             {/* 개선 팁 (강조) */}
@@ -194,11 +249,18 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
                 const pct = (val / max) * 100;
                 return (
                   <div key={key} className="flex items-center gap-3">
-                    <span className="text-xs text-muted-foreground w-20 shrink-0">{label}</span>
+                    <span className="text-xs text-muted-foreground w-20 shrink-0">
+                      {label}
+                    </span>
                     <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-                      <div className="h-full rounded-full" style={{ backgroundColor: color, width: `${pct}%` }} />
+                      <div
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: color, width: `${pct}%` }}
+                      />
                     </div>
-                    <span className="text-xs font-semibold w-10 text-right">{val}/{max}</span>
+                    <span className="text-xs font-semibold w-10 text-right">
+                      {val}/{max}
+                    </span>
                   </div>
                 );
               })}
@@ -236,16 +298,20 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
           {/* 내가 쓴 글 */}
           <div className="w-full rounded-xl bg-muted/50 p-4 border">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm text-muted-foreground font-medium">내가 쓴 글</p>
+              <p className="text-sm text-muted-foreground font-medium">
+                내가 쓴 글
+              </p>
               {retryCount > 0 && (
                 <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
                   {retryCount}번 수정
                 </span>
               )}
             </div>
-            <p className="text-base leading-relaxed whitespace-pre-wrap"
-              style={{ fontFamily: 'var(--font-handwriting, inherit)' }}>
-              {text || '(작성한 내용)'}
+            <p
+              className="text-base leading-relaxed whitespace-pre-wrap"
+              style={{ fontFamily: "var(--font-handwriting, inherit)" }}
+            >
+              {text || "(작성한 내용)"}
             </p>
           </div>
 
@@ -262,13 +328,17 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
                   key={n}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  transition={{ delay: 0.1 + n * 0.08, type: 'spring', stiffness: 300 }}
+                  transition={{
+                    delay: 0.1 + n * 0.08,
+                    type: "spring",
+                    stiffness: 300,
+                  }}
                 >
                   <Star
                     className="h-8 w-8"
                     style={{
-                      fill: n <= evalResult.stars ? '#F1C40F' : 'transparent',
-                      stroke: n <= evalResult.stars ? '#F1C40F' : '#CBD5E1',
+                      fill: n <= evalResult.stars ? "#F1C40F" : "transparent",
+                      stroke: n <= evalResult.stars ? "#F1C40F" : "#CBD5E1",
                     }}
                   />
                 </motion.div>
@@ -276,10 +346,17 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
             </div>
             <p className="text-2xl font-black text-foreground">
               {evalResult.score}
-              <span className="text-base font-medium text-muted-foreground"> / 10점</span>
+              <span className="text-base font-medium text-muted-foreground">
+                {" "}
+                / 10점
+              </span>
             </p>
-            <p className="text-base font-semibold text-[#2ECC71]">{evalResult.feedback}</p>
-            <p className="text-sm text-muted-foreground mt-1 text-center">{evalResult.tip}</p>
+            <p className="text-base font-semibold text-[#2ECC71]">
+              {evalResult.feedback}
+            </p>
+            <p className="text-sm text-muted-foreground mt-1 text-center">
+              {evalResult.tip}
+            </p>
           </motion.div>
 
           {/* 세부 항목 */}
@@ -294,7 +371,9 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
               const pct = (val / max) * 100;
               return (
                 <div key={key} className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground w-20 shrink-0">{label}</span>
+                  <span className="text-xs text-muted-foreground w-20 shrink-0">
+                    {label}
+                  </span>
                   <div className="flex-1 h-2.5 rounded-full bg-muted overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}

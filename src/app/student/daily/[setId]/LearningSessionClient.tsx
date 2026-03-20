@@ -1,49 +1,76 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Send, ArrowLeft, RotateCcw } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
-import { useLearningStore } from '@/stores/learningStore';
-import { useDailySet } from '@/hooks/useDailySet';
-import { useSound } from '@/hooks/useSound';
-import { saveLearningRecord, saveQuestionResponses, checkAndAwardBadges, getRecordForSet } from '@/lib/local-storage';
-import { generateId } from '@/lib/utils';
-import { evaluateWriting } from '@/lib/writing-evaluator';
-import QuestionRenderer from '@/components/learning/QuestionRenderer';
-import ProgressBar from '@/components/learning/ProgressBar';
-import Timer from '@/components/learning/Timer';
-import ResultScreen from '@/components/learning/ResultScreen';
-import Mascot from '@/components/learning/Mascot';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import type { LearningRecord, QuestionResponse, Question } from '@/types/database';
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Send,
+  ArrowLeft,
+  RotateCcw,
+} from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
+import { useLearningStore } from "@/stores/learningStore";
+import { useDailySet } from "@/hooks/useDailySet";
+import { useSound } from "@/hooks/useSound";
+import {
+  saveLearningRecord,
+  saveQuestionResponses,
+  checkAndAwardBadges,
+  getRecordForSet,
+} from "@/lib/local-storage";
+import { generateId } from "@/lib/utils";
+import { evaluateWriting } from "@/lib/writing-evaluator";
+import QuestionRenderer from "@/components/learning/QuestionRenderer";
+import ProgressBar from "@/components/learning/ProgressBar";
+import Timer from "@/components/learning/Timer";
+import ResultScreen from "@/components/learning/ResultScreen";
+import Mascot from "@/components/learning/Mascot";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
+import type {
+  LearningRecord,
+  QuestionResponse,
+  Question,
+} from "@/types/database";
 
 // ── Helper: evaluate a graded question answer ──
 function evaluateGradedAnswer(question: Question, answer: unknown): boolean {
   const qAnswer = question.answer;
   const subject = question.subject;
-  let correctVal = '';
+  let correctVal = "";
 
   switch (subject) {
-    case 'math':
-      correctVal = String(qAnswer?.correct ?? qAnswer?.answer ?? qAnswer?.text ?? '');
+    case "math":
+      correctVal = String(
+        qAnswer?.correct ?? qAnswer?.answer ?? qAnswer?.text ?? "",
+      );
       return String(answer).trim() === correctVal.trim();
-    case 'spelling':
-      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? '');
+    case "spelling":
+      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? "");
       return String(answer).trim() === correctVal.trim();
-    case 'vocabulary':
-      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
+    case "vocabulary":
+      correctVal = String(
+        qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? "",
+      );
       return String(answer).trim() === correctVal.trim();
-    case 'hanja':
-      correctVal = String(qAnswer?.correct ?? qAnswer?.reading ?? qAnswer?.text ?? '');
+    case "hanja":
+      correctVal = String(
+        qAnswer?.correct ?? qAnswer?.reading ?? qAnswer?.text ?? "",
+      );
       return String(answer).trim() === correctVal.trim();
-    case 'english':
-      correctVal = String(qAnswer?.correct ?? qAnswer?.word ?? qAnswer?.text ?? '');
-      return String(answer).trim().toLowerCase() === correctVal.trim().toLowerCase();
+    case "english":
+      correctVal = String(
+        qAnswer?.correct ?? qAnswer?.word ?? qAnswer?.text ?? "",
+      );
+      return (
+        String(answer).trim().toLowerCase() === correctVal.trim().toLowerCase()
+      );
     default:
-      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
+      correctVal = String(
+        qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? "",
+      );
       return String(answer).trim() === correctVal.trim();
   }
 }
@@ -54,16 +81,36 @@ export default function LearningSessionClient() {
   const { dailySet, isLoading } = useDailySet();
   const { play } = useSound();
   const {
-    questions, questionStates, currentIndex, startedAt, isCompleted, totalScore, timeSpent,
-    initSession, setCurrentIndex, answerQuestion, completeSession, resetSession, incrementTime,
+    questions,
+    questionStates,
+    currentIndex,
+    startedAt,
+    isCompleted,
+    totalScore,
+    timeSpent,
+    initSession,
+    setCurrentIndex,
+    answerQuestion,
+    completeSession,
+    resetSession,
+    incrementTime,
     // Review state
-    isReviewMode, showReviewIntro, reviewQueue, reviewIndex, reviewCorrected,
-    startReview, dismissReviewIntro, advanceReview, skipReview,
+    isReviewMode,
+    showReviewIntro,
+    reviewQueue,
+    reviewIndex,
+    reviewCorrected,
+    startReview,
+    dismissReviewIntro,
+    advanceReview,
+    skipReview,
   } = useLearningStore();
 
   const [isPaused, setIsPaused] = useState(false);
-  const [mascotState, setMascotState] = useState<'default' | 'happy' | 'thinking' | 'correct' | 'encourage'>('default');
-  const [mascotMessage, setMascotMessage] = useState('');
+  const [mascotState, setMascotState] = useState<
+    "default" | "happy" | "thinking" | "correct" | "encourage"
+  >("default");
+  const [mascotMessage, setMascotMessage] = useState("");
   const [alreadyDoneToday, setAlreadyDoneToday] = useState(false);
 
   // Review phase local state
@@ -90,7 +137,7 @@ export default function LearningSessionClient() {
   useEffect(() => {
     if (dailySet && !startedAt && !alreadyDoneToday) {
       initSession(dailySet.set, dailySet.questions);
-      play('start');
+      play("start");
     }
   }, [dailySet, startedAt, alreadyDoneToday, initSession, play]);
 
@@ -103,12 +150,12 @@ export default function LearningSessionClient() {
 
   // 웨일북 등 터치 기기에서 오른쪽 스와이프 → 브라우저 뒤로가기 방지
   useEffect(() => {
-    window.history.pushState(null, '', window.location.href);
+    window.history.pushState(null, "", window.location.href);
     const handlePopState = () => {
-      window.history.pushState(null, '', window.location.href);
+      window.history.pushState(null, "", window.location.href);
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   const currentQuestion = questions[currentIndex];
@@ -133,95 +180,123 @@ export default function LearningSessionClient() {
     return set;
   }, [questionStates]);
 
-  const maxScore = dailySet?.set.total_points || questions.reduce((acc, q) => acc + q.points, 0);
+  const maxScore =
+    dailySet?.set.total_points ||
+    questions.reduce((acc, q) => acc + q.points, 0);
 
-  const handleAnswer = useCallback((answer: unknown) => {
-    if (!currentQuestion || currentState?.isAnswered) return;
+  const handleAnswer = useCallback(
+    (answer: unknown) => {
+      if (!currentQuestion || currentState?.isAnswered) return;
 
-    let isCorrect = false;
-    let score = 0;
+      let isCorrect = false;
+      let score = 0;
 
-    const qType = currentQuestion.question_type;
-    const subject = currentQuestion.subject;
+      const qType = currentQuestion.question_type;
+      const subject = currentQuestion.subject;
 
-    // Non-graded types
-    if (qType === 'emotion_check' || qType === 'readiness_check' || subject === 'creative') {
-      isCorrect = true;
-      score = currentQuestion.points;
-    } else if (subject === 'writing') {
-      // 코드 기반 글쓰기 평가 (API 없음, 외부 전송 없음)
-      const minChars = currentQuestion.content?.min_chars || currentQuestion.content?.minChars || 20;
-      const evalResult = evaluateWriting(String(answer), minChars);
-      isCorrect = true;
-      score = evalResult.score;
-      // 마스코트 메시지에 별점 반영
-      setMascotState(evalResult.stars >= 4 ? 'correct' : evalResult.stars >= 3 ? 'happy' : 'encourage');
-      setMascotMessage(evalResult.feedback);
-      setTimeout(() => { setMascotState('default'); setMascotMessage(''); }, 3500);
-      answerQuestion(currentQuestion.id, answer, true, score);
-      return;
-    } else {
-      // Evaluate graded question
-      isCorrect = evaluateGradedAnswer(currentQuestion, answer);
-      score = isCorrect ? currentQuestion.points : 0;
-    }
+      // Non-graded types
+      if (
+        qType === "emotion_check" ||
+        qType === "readiness_check" ||
+        subject === "creative"
+      ) {
+        isCorrect = true;
+        score = currentQuestion.points;
+      } else if (subject === "writing") {
+        // 코드 기반 글쓰기 평가 (API 없음, 외부 전송 없음)
+        const minChars =
+          currentQuestion.content?.min_chars ||
+          currentQuestion.content?.minChars ||
+          20;
+        const evalResult = evaluateWriting(String(answer), minChars);
+        isCorrect = true;
+        score = evalResult.score;
+        // 마스코트 메시지에 별점 반영
+        setMascotState(
+          evalResult.stars >= 4
+            ? "correct"
+            : evalResult.stars >= 3
+              ? "happy"
+              : "encourage",
+        );
+        setMascotMessage(evalResult.feedback);
+        setTimeout(() => {
+          setMascotState("default");
+          setMascotMessage("");
+        }, 3500);
+        answerQuestion(currentQuestion.id, answer, true, score);
+        return;
+      } else {
+        // Evaluate graded question
+        isCorrect = evaluateGradedAnswer(currentQuestion, answer);
+        score = isCorrect ? currentQuestion.points : 0;
+      }
 
-    answerQuestion(currentQuestion.id, answer, isCorrect, score);
+      answerQuestion(currentQuestion.id, answer, isCorrect, score);
 
-    // Mascot feedback
-    const isSpecial = qType === 'emotion_check' || qType === 'readiness_check' || subject === 'writing' || subject === 'creative';
-    if (isSpecial) {
-      setMascotState('happy');
-      setMascotMessage('잘했어요!');
-    } else if (isCorrect) {
-      setMascotState('correct');
-      setMascotMessage('정답! 대단해요!');
-      play('correct');
-    } else {
-      setMascotState('encourage');
-      setMascotMessage('괜찮아요, 다음엔 맞출 수 있어요!');
-      play('wrong');
-    }
+      // Mascot feedback
+      const isSpecial =
+        qType === "emotion_check" ||
+        qType === "readiness_check" ||
+        subject === "writing" ||
+        subject === "creative";
+      if (isSpecial) {
+        setMascotState("happy");
+        setMascotMessage("잘했어요!");
+      } else if (isCorrect) {
+        setMascotState("correct");
+        setMascotMessage("정답! 대단해요!");
+        play("correct");
+      } else {
+        setMascotState("encourage");
+        setMascotMessage("괜찮아요, 다음엔 맞출 수 있어요!");
+        play("wrong");
+      }
 
-    setTimeout(() => {
-      setMascotState('default');
-      setMascotMessage('');
-    }, 3000);
-  }, [currentQuestion, currentState, answerQuestion, play]);
+      setTimeout(() => {
+        setMascotState("default");
+        setMascotMessage("");
+      }, 3000);
+    },
+    [currentQuestion, currentState, answerQuestion, play],
+  );
 
   // ── Review answer handler ──
-  const handleReviewAnswer = useCallback((answer: unknown) => {
-    if (reviewAnswered) return;
+  const handleReviewAnswer = useCallback(
+    (answer: unknown) => {
+      if (reviewAnswered) return;
 
-    const originalIndex = reviewQueue[reviewIndex];
-    const question = questions[originalIndex];
-    const isCorrect = evaluateGradedAnswer(question, answer);
+      const originalIndex = reviewQueue[reviewIndex];
+      const question = questions[originalIndex];
+      const isCorrect = evaluateGradedAnswer(question, answer);
 
-    setReviewAnswered(true);
-    setReviewIsCorrect(isCorrect);
+      setReviewAnswered(true);
+      setReviewIsCorrect(isCorrect);
 
-    if (isCorrect) {
-      play('correct');
-      setMascotState('correct');
-      setMascotMessage('맞았어요! 복습 효과 만점!');
-    } else {
-      play('wrong');
-      setMascotState('encourage');
-      setMascotMessage('정답을 잘 기억해둬요!');
-    }
+      if (isCorrect) {
+        play("correct");
+        setMascotState("correct");
+        setMascotMessage("맞았어요! 복습 효과 만점!");
+      } else {
+        play("wrong");
+        setMascotState("encourage");
+        setMascotMessage("정답을 잘 기억해둬요!");
+      }
 
-    setTimeout(() => {
-      setMascotState('default');
-      setMascotMessage('');
-    }, 3000);
-  }, [reviewAnswered, reviewQueue, reviewIndex, questions, play]);
+      setTimeout(() => {
+        setMascotState("default");
+        setMascotMessage("");
+      }, 3000);
+    },
+    [reviewAnswered, reviewQueue, reviewIndex, questions, play],
+  );
 
   // Advance to next review question
   const handleReviewAdvance = useCallback(() => {
     advanceReview(reviewIsCorrect);
     // Play complete sound when review finishes
     if (reviewIndex + 1 >= reviewQueue.length) {
-      play('complete');
+      play("complete");
     }
   }, [advanceReview, reviewIsCorrect, reviewIndex, reviewQueue.length, play]);
 
@@ -267,11 +342,12 @@ export default function LearningSessionClient() {
     // Collect wrong answer indices (graded questions only)
     const wrongIndices = questions
       .map((q, i) => ({ q, i, qs: states[i] }))
-      .filter(({ q, qs }) =>
-        !['emotion_check', 'readiness_check'].includes(q.question_type)
-        && !['writing', 'creative'].includes(q.subject)
-        && qs?.isAnswered
-        && !qs?.isCorrect
+      .filter(
+        ({ q, qs }) =>
+          !["emotion_check", "readiness_check"].includes(q.question_type) &&
+          !["writing", "creative"].includes(q.subject) &&
+          qs?.isAnswered &&
+          !qs?.isCorrect,
       )
       .map(({ i }) => i);
 
@@ -280,27 +356,39 @@ export default function LearningSessionClient() {
       startReview(wrongIndices);
     } else {
       completeSession();
-      play('complete');
+      play("complete");
     }
-  }, [user, dailySet, startedAt, timeSpent, questions, completeSession, startReview, play]);
+  }, [
+    user,
+    dailySet,
+    startedAt,
+    timeSpent,
+    questions,
+    completeSession,
+    startReview,
+    play,
+  ]);
 
   const handleRetry = useCallback(() => {
     if (dailySet) {
       resetSession();
       initSession(dailySet.set, dailySet.questions);
-      setMascotState('default');
-      setMascotMessage('다시 도전해봐요!');
-      play('start');
+      setMascotState("default");
+      setMascotMessage("다시 도전해봐요!");
+      play("start");
     }
   }, [dailySet, resetSession, initSession, play]);
 
   const handleGoHome = useCallback(() => {
-    router.push('/student/');
+    router.push("/student/");
   }, [router]);
 
-  const handleNavigate = useCallback((index: number) => {
-    setCurrentIndex(index);
-  }, [setCurrentIndex]);
+  const handleNavigate = useCallback(
+    (index: number) => {
+      setCurrentIndex(index);
+    },
+    [setCurrentIndex],
+  );
 
   if (isLoading) {
     return (
@@ -316,8 +404,15 @@ export default function LearningSessionClient() {
         <div className="text-center max-w-sm">
           <Mascot state="happy" message="오늘도 최고야!" size={100} />
           <h2 className="text-2xl font-bold mt-4 mb-2">오늘 학습 완료!</h2>
-          <p className="text-muted-foreground mb-6">내일 새로운 학습이 기다리고 있어요.</p>
-          <Button onClick={() => router.push('/student/')} className="rounded-xl px-8">홈으로</Button>
+          <p className="text-muted-foreground mb-6">
+            내일 새로운 학습이 기다리고 있어요.
+          </p>
+          <Button
+            onClick={() => router.push("/student/")}
+            className="rounded-xl px-8"
+          >
+            홈으로
+          </Button>
         </div>
       </div>
     );
@@ -347,7 +442,9 @@ export default function LearningSessionClient() {
               {reviewQueue.length}문제를 틀렸어요!
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              틀린 문제를 다시 풀어보면<br />기억에 오래 남아요.
+              틀린 문제를 다시 풀어보면
+              <br />
+              기억에 오래 남아요.
             </p>
           </div>
 
@@ -359,13 +456,9 @@ export default function LearningSessionClient() {
               <RotateCcw className="h-4 w-4" />
               복습 시작하기
             </Button>
-            <Button
-              variant="ghost"
-              onClick={() => { skipReview(); play('complete'); }}
-              className="text-muted-foreground"
-            >
-              건너뛰기
-            </Button>
+            <p className="text-xs text-muted-foreground text-center">
+              모든 문제를 맞출 때까지 반복해요!
+            </p>
           </div>
         </motion.div>
       </div>
@@ -378,7 +471,10 @@ export default function LearningSessionClient() {
     const reviewQuestion = questions[reviewOriginalIndex];
 
     return (
-      <div className="min-h-screen bg-background flex flex-col" style={{ overscrollBehavior: 'none' }}>
+      <div
+        className="min-h-screen bg-background flex flex-col"
+        style={{ overscrollBehavior: "none" }}
+      >
         {/* Top bar */}
         <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
           <div className="max-w-7xl mx-auto">
@@ -395,7 +491,9 @@ export default function LearningSessionClient() {
             <div className="h-2 rounded-full bg-muted overflow-hidden">
               <motion.div
                 className="h-full rounded-full bg-amber-400"
-                animate={{ width: `${((reviewIndex + (reviewAnswered ? 1 : 0)) / reviewQueue.length) * 100}%` }}
+                animate={{
+                  width: `${((reviewIndex + (reviewAnswered ? 1 : 0)) / reviewQueue.length) * 100}%`,
+                }}
                 transition={{ duration: 0.3 }}
               />
             </div>
@@ -404,7 +502,7 @@ export default function LearningSessionClient() {
 
         {/* Main content */}
         <div className="flex-1 py-4 px-4 pb-24 lg:pb-8">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             {/* Review hint banner */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -435,11 +533,17 @@ export default function LearningSessionClient() {
                   onClick={handleReviewAdvance}
                   className="gap-1 rounded-xl bg-[#2ECC71] hover:bg-[#2ECC71]/90 font-bold"
                 >
-                  {reviewIndex + 1 >= reviewQueue.length ? '복습 완료' : '다음 문제'}
+                  {reviewIndex + 1 >= reviewQueue.length
+                    ? "복습 완료"
+                    : "다음 문제"}
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               ) : (
-                <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+                <Button
+                  variant="outline"
+                  disabled
+                  className="rounded-xl text-muted-foreground"
+                >
                   문제를 풀어주세요
                 </Button>
               )}
@@ -459,11 +563,17 @@ export default function LearningSessionClient() {
                 onClick={handleReviewAdvance}
                 className="gap-1 rounded-xl bg-[#2ECC71] hover:bg-[#2ECC71]/90 font-bold"
               >
-                {reviewIndex + 1 >= reviewQueue.length ? '복습 완료' : '다음 문제'}
+                {reviewIndex + 1 >= reviewQueue.length
+                  ? "복습 완료"
+                  : "다음 문제"}
                 <ChevronRight className="h-4 w-4" />
               </Button>
             ) : (
-              <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+              <Button
+                variant="outline"
+                disabled
+                className="rounded-xl text-muted-foreground"
+              >
                 문제를 풀어주세요
               </Button>
             )}
@@ -511,7 +621,10 @@ export default function LearningSessionClient() {
       )}
 
       {allAnswered ? (
-        <Button onClick={handleComplete} className="gap-1 rounded-xl bg-green-600 hover:bg-green-700">
+        <Button
+          onClick={handleComplete}
+          className="gap-1 rounded-xl bg-green-600 hover:bg-green-700"
+        >
           <Send className="h-4 w-4" />
           제출하기
         </Button>
@@ -520,12 +633,19 @@ export default function LearningSessionClient() {
           모든 문제를 풀어주세요
         </Button>
       ) : currentState?.isAnswered ? (
-        <Button onClick={() => handleNavigate(currentIndex + 1)} className="gap-1 rounded-xl">
+        <Button
+          onClick={() => handleNavigate(currentIndex + 1)}
+          className="gap-1 rounded-xl"
+        >
           다음
           <ChevronRight className="h-4 w-4" />
         </Button>
       ) : (
-        <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+        <Button
+          variant="outline"
+          disabled
+          className="rounded-xl text-muted-foreground"
+        >
           문제를 풀어주세요
         </Button>
       )}
@@ -533,7 +653,10 @@ export default function LearningSessionClient() {
   );
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" style={{ overscrollBehavior: 'none' }}>
+    <div
+      className="min-h-screen bg-background flex flex-col"
+      style={{ overscrollBehavior: "none" }}
+    >
       {/* Top bar */}
       <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
         <div className="max-w-7xl mx-auto">
@@ -541,7 +664,7 @@ export default function LearningSessionClient() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => router.push('/student/')}
+              onClick={() => router.push("/student/")}
               className="gap-1 text-muted-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -561,7 +684,7 @@ export default function LearningSessionClient() {
 
       {/* Main content */}
       <div className="flex-1 py-4 px-4 pb-24 lg:pb-8">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <QuestionRenderer
               key={currentQuestion.id}
