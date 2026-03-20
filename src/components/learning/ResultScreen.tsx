@@ -28,6 +28,8 @@ interface Props {
   elapsedSeconds: number;
   onRetry: () => void;
   onGoHome: () => void;
+  reviewCorrected?: number[];
+  reviewTotal?: number;
 }
 
 // --- Confetti Piece ---
@@ -140,6 +142,8 @@ export default function ResultScreen({
   elapsedSeconds,
   onRetry,
   onGoHome,
+  reviewCorrected,
+  reviewTotal,
 }: Props) {
   const [showConfetti, setShowConfetti] = useState(false);
   const [showXPAnimation, setShowXPAnimation] = useState(false);
@@ -354,6 +358,33 @@ export default function ResultScreen({
           <span className="text-xs text-blue-600">걸린 시간</span>
         </div>
       </motion.div>
+
+      {/* Review stats (Duolingo-style) */}
+      {reviewTotal != null && reviewTotal > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="w-full rounded-2xl border p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200"
+        >
+          <div className="flex items-center gap-2 mb-2">
+            <RotateCcw className="h-4 w-4 text-amber-600" />
+            <span className="font-bold text-amber-800 text-sm">복습 결과</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex-1">
+              <p className="text-sm text-amber-700">
+                틀린 {reviewTotal}문제 중 <span className="font-bold text-green-600">{reviewCorrected?.length || 0}문제</span>를 복습으로 맞혔어요!
+              </p>
+            </div>
+            {(reviewCorrected?.length || 0) === reviewTotal && (
+              <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full border border-green-200">
+                완벽한 복습!
+              </span>
+            )}
+          </div>
+        </motion.div>
+      )}
 
       {/* Tab switcher for detail views */}
       {subjectScores.length > 0 && (

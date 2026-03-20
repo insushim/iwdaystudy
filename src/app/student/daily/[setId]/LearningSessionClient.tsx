@@ -2,9 +2,9 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Send, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Send, ArrowLeft, RotateCcw } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { useLearningStore } from '@/stores/learningStore';
 import { useDailySet } from '@/hooks/useDailySet';
@@ -18,7 +18,35 @@ import Timer from '@/components/learning/Timer';
 import ResultScreen from '@/components/learning/ResultScreen';
 import Mascot from '@/components/learning/Mascot';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
-import type { LearningRecord, QuestionResponse } from '@/types/database';
+import type { LearningRecord, QuestionResponse, Question } from '@/types/database';
+
+// ── Helper: evaluate a graded question answer ──
+function evaluateGradedAnswer(question: Question, answer: unknown): boolean {
+  const qAnswer = question.answer;
+  const subject = question.subject;
+  let correctVal = '';
+
+  switch (subject) {
+    case 'math':
+      correctVal = String(qAnswer?.correct ?? qAnswer?.answer ?? qAnswer?.text ?? '');
+      return String(answer).trim() === correctVal.trim();
+    case 'spelling':
+      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? '');
+      return String(answer).trim() === correctVal.trim();
+    case 'vocabulary':
+      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
+      return String(answer).trim() === correctVal.trim();
+    case 'hanja':
+      correctVal = String(qAnswer?.correct ?? qAnswer?.reading ?? qAnswer?.text ?? '');
+      return String(answer).trim() === correctVal.trim();
+    case 'english':
+      correctVal = String(qAnswer?.correct ?? qAnswer?.word ?? qAnswer?.text ?? '');
+      return String(answer).trim().toLowerCase() === correctVal.trim().toLowerCase();
+    default:
+      correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
+      return String(answer).trim() === correctVal.trim();
+  }
+}
 
 export default function LearningSessionClient() {
   const router = useRouter();
@@ -28,12 +56,25 @@ export default function LearningSessionClient() {
   const {
     questions, questionStates, currentIndex, startedAt, isCompleted, totalScore, timeSpent,
     initSession, setCurrentIndex, answerQuestion, completeSession, resetSession, incrementTime,
+    // Review state
+    isReviewMode, showReviewIntro, reviewQueue, reviewIndex, reviewCorrected,
+    startReview, dismissReviewIntro, advanceReview, skipReview,
   } = useLearningStore();
 
   const [isPaused, setIsPaused] = useState(false);
   const [mascotState, setMascotState] = useState<'default' | 'happy' | 'thinking' | 'correct' | 'encourage'>('default');
   const [mascotMessage, setMascotMessage] = useState('');
   const [alreadyDoneToday, setAlreadyDoneToday] = useState(false);
+
+  // Review phase local state
+  const [reviewAnswered, setReviewAnswered] = useState(false);
+  const [reviewIsCorrect, setReviewIsCorrect] = useState(false);
+
+  // Reset review answer state when review question changes
+  useEffect(() => {
+    setReviewAnswered(false);
+    setReviewIsCorrect(false);
+  }, [reviewIndex]);
 
   // Check if already completed today
   useEffect(() => {
@@ -102,7 +143,6 @@ export default function LearningSessionClient() {
 
     const qType = currentQuestion.question_type;
     const subject = currentQuestion.subject;
-    const qAnswer = currentQuestion.answer;
 
     // Non-graded types
     if (qType === 'emotion_check' || qType === 'readiness_check' || subject === 'creative') {
@@ -121,35 +161,8 @@ export default function LearningSessionClient() {
       answerQuestion(currentQuestion.id, answer, true, score);
       return;
     } else {
-      // Determine correct answer based on subject
-      let correctVal: string = '';
-
-      switch (subject) {
-        case 'math':
-          correctVal = String(qAnswer?.correct ?? qAnswer?.answer ?? qAnswer?.text ?? '');
-          isCorrect = String(answer).trim() === correctVal.trim();
-          break;
-        case 'spelling':
-          correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? '');
-          isCorrect = String(answer).trim() === correctVal.trim();
-          break;
-        case 'vocabulary':
-          correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
-          isCorrect = String(answer).trim() === correctVal.trim();
-          break;
-        case 'hanja':
-          correctVal = String(qAnswer?.correct ?? qAnswer?.reading ?? qAnswer?.text ?? '');
-          isCorrect = String(answer).trim() === correctVal.trim();
-          break;
-        case 'english':
-          correctVal = String(qAnswer?.correct ?? qAnswer?.word ?? qAnswer?.text ?? '');
-          isCorrect = String(answer).trim().toLowerCase() === correctVal.trim().toLowerCase();
-          break;
-        default:
-          correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? '');
-          isCorrect = String(answer).trim() === correctVal.trim();
-      }
-
+      // Evaluate graded question
+      isCorrect = evaluateGradedAnswer(currentQuestion, answer);
       score = isCorrect ? currentQuestion.points : 0;
     }
 
@@ -176,10 +189,47 @@ export default function LearningSessionClient() {
     }, 3000);
   }, [currentQuestion, currentState, answerQuestion, play]);
 
+  // ── Review answer handler ──
+  const handleReviewAnswer = useCallback((answer: unknown) => {
+    if (reviewAnswered) return;
+
+    const originalIndex = reviewQueue[reviewIndex];
+    const question = questions[originalIndex];
+    const isCorrect = evaluateGradedAnswer(question, answer);
+
+    setReviewAnswered(true);
+    setReviewIsCorrect(isCorrect);
+
+    if (isCorrect) {
+      play('correct');
+      setMascotState('correct');
+      setMascotMessage('맞았어요! 복습 효과 만점!');
+    } else {
+      play('wrong');
+      setMascotState('encourage');
+      setMascotMessage('정답을 잘 기억해둬요!');
+    }
+
+    setTimeout(() => {
+      setMascotState('default');
+      setMascotMessage('');
+    }, 3000);
+  }, [reviewAnswered, reviewQueue, reviewIndex, questions, play]);
+
+  // Advance to next review question
+  const handleReviewAdvance = useCallback(() => {
+    advanceReview(reviewIsCorrect);
+    // Play complete sound when review finishes
+    if (reviewIndex + 1 >= reviewQueue.length) {
+      play('complete');
+    }
+  }, [advanceReview, reviewIsCorrect, reviewIndex, reviewQueue.length, play]);
+
   const handleComplete = useCallback(() => {
     if (!user || !dailySet) return;
 
     const finalScore = useLearningStore.getState().totalScore;
+    const states = useLearningStore.getState().questionStates;
 
     const recordId = generateId();
     const record: LearningRecord = {
@@ -200,7 +250,7 @@ export default function LearningSessionClient() {
     };
     saveLearningRecord(record);
 
-    const responses: QuestionResponse[] = questionStates.map((qs, i) => ({
+    const responses: QuestionResponse[] = states.map((qs, i) => ({
       id: generateId(),
       learning_record_id: recordId,
       question_id: qs.questionId,
@@ -212,11 +262,27 @@ export default function LearningSessionClient() {
       created_at: new Date().toISOString(),
     }));
     saveQuestionResponses(responses);
-
     checkAndAwardBadges(user.id);
-    completeSession();
-    play('complete');
-  }, [user, dailySet, startedAt, timeSpent, questionStates, questions, completeSession, play]);
+
+    // Collect wrong answer indices (graded questions only)
+    const wrongIndices = questions
+      .map((q, i) => ({ q, i, qs: states[i] }))
+      .filter(({ q, qs }) =>
+        !['emotion_check', 'readiness_check'].includes(q.question_type)
+        && !['writing', 'creative'].includes(q.subject)
+        && qs?.isAnswered
+        && !qs?.isCorrect
+      )
+      .map(({ i }) => i);
+
+    if (wrongIndices.length > 0) {
+      // Enter review phase (Duolingo-style)
+      startReview(wrongIndices);
+    } else {
+      completeSession();
+      play('complete');
+    }
+  }, [user, dailySet, startedAt, timeSpent, questions, completeSession, startReview, play]);
 
   const handleRetry = useCallback(() => {
     if (dailySet) {
@@ -265,6 +331,148 @@ export default function LearningSessionClient() {
     );
   }
 
+  // ── Review intro screen (Duolingo-style) ──────────────────────
+  if (showReviewIntro) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center max-w-sm flex flex-col items-center gap-6"
+        >
+          <Mascot state="thinking" message="복습할 시간이에요!" size={100} />
+
+          <div>
+            <h2 className="text-2xl font-bold mb-2">
+              {reviewQueue.length}문제를 틀렸어요!
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              틀린 문제를 다시 풀어보면<br />기억에 오래 남아요.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-3 w-full">
+            <Button
+              onClick={dismissReviewIntro}
+              className="h-12 rounded-xl font-bold text-base bg-[#2ECC71] hover:bg-[#2ECC71]/90 gap-2"
+            >
+              <RotateCcw className="h-4 w-4" />
+              복습 시작하기
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => { skipReview(); play('complete'); }}
+              className="text-muted-foreground"
+            >
+              건너뛰기
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // ── Review mode (re-present wrong questions) ──────────────────
+  if (isReviewMode) {
+    const reviewOriginalIndex = reviewQueue[reviewIndex];
+    const reviewQuestion = questions[reviewOriginalIndex];
+
+    return (
+      <div className="min-h-screen bg-background flex flex-col" style={{ overscrollBehavior: 'none' }}>
+        {/* Top bar */}
+        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b px-4 py-3">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-2">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1 text-xs font-bold">
+                <RotateCcw className="h-3 w-3" />
+                복습 모드
+              </span>
+              <span className="text-sm font-bold text-muted-foreground">
+                {reviewIndex + 1} / {reviewQueue.length}
+              </span>
+            </div>
+            {/* Review progress bar */}
+            <div className="h-2 rounded-full bg-muted overflow-hidden">
+              <motion.div
+                className="h-full rounded-full bg-amber-400"
+                animate={{ width: `${((reviewIndex + (reviewAnswered ? 1 : 0)) / reviewQueue.length) * 100}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div className="flex-1 py-4 px-4 pb-24 lg:pb-8">
+          <div className="max-w-3xl mx-auto">
+            {/* Review hint banner */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-2.5 flex items-center gap-2"
+            >
+              <RotateCcw className="h-4 w-4 text-amber-500 flex-shrink-0" />
+              <span className="text-amber-700 text-sm font-medium">
+                이 문제를 틀렸어요. 다시 풀어보세요!
+              </span>
+            </motion.div>
+
+            <AnimatePresence mode="wait">
+              <QuestionRenderer
+                key={`review-${reviewIndex}-${reviewOriginalIndex}`}
+                question={reviewQuestion}
+                onAnswer={handleReviewAnswer}
+                showResult={reviewAnswered}
+                isCorrect={reviewIsCorrect}
+              />
+            </AnimatePresence>
+
+            {/* Desktop nav */}
+            <div className="hidden lg:flex items-center justify-end mt-6 gap-3">
+              <Mascot state={mascotState} message={mascotMessage} size={50} />
+              {reviewAnswered ? (
+                <Button
+                  onClick={handleReviewAdvance}
+                  className="gap-1 rounded-xl bg-[#2ECC71] hover:bg-[#2ECC71]/90 font-bold"
+                >
+                  {reviewIndex + 1 >= reviewQueue.length ? '복습 완료' : '다음 문제'}
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+                  문제를 풀어주세요
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile bottom navigation */}
+        <div className="lg:hidden sticky bottom-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
+          <div className="max-w-2xl mx-auto flex items-center justify-between">
+            <div className="flex-shrink-0">
+              <Mascot state={mascotState} message={mascotMessage} size={50} />
+            </div>
+
+            {reviewAnswered ? (
+              <Button
+                onClick={handleReviewAdvance}
+                className="gap-1 rounded-xl bg-[#2ECC71] hover:bg-[#2ECC71]/90 font-bold"
+              >
+                {reviewIndex + 1 >= reviewQueue.length ? '복습 완료' : '다음 문제'}
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            ) : (
+              <Button variant="outline" disabled className="rounded-xl text-muted-foreground">
+                문제를 풀어주세요
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isCompleted) {
     return (
       <div className="min-h-screen bg-background py-6 px-4">
@@ -277,6 +485,8 @@ export default function LearningSessionClient() {
           elapsedSeconds={timeSpent}
           onRetry={handleRetry}
           onGoHome={handleGoHome}
+          reviewCorrected={reviewCorrected}
+          reviewTotal={reviewQueue.length}
         />
       </div>
     );

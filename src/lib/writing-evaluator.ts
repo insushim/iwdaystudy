@@ -206,13 +206,16 @@ export function evaluateWriting(text: string, minChars: number): WritingEvalResu
   // 유효 글자 수 기준 (쓰레기 텍스트 제외)
   let lengthScore = 0;
   if (effectiveCharCount >= minChars)             lengthScore = 1;
-  if (effectiveCharCount >= minChars * 1.6)       lengthScore = 2;
-  if (effectiveCharCount >= minChars * 2.5)       lengthScore = 3;
+  if (effectiveCharCount >= minChars * 2.0)       lengthScore = 2;
+  if (effectiveCharCount >= minChars * 3.0)       lengthScore = 3;
 
   // 쓰레기 비율이 40% 이상이면 글자수 최대 1점
   if (jRatio >= 0.4) lengthScore = Math.min(lengthScore, 1);
   // 쓰레기 비율이 60% 이상이면 0점
   if (jRatio >= 0.6) lengthScore = 0;
+
+  // 유효 단어 4개 미만이면 글자 수 점수 제한
+  if (words.length < 4) lengthScore = Math.min(lengthScore, 1);
 
   // ── B. 문장 구성 (0~2점) ────────────────────────────────────
   const validSentences = sentences.filter(s => s.length >= 5);
@@ -255,13 +258,13 @@ export function evaluateWriting(text: string, minChars: number): WritingEvalResu
     const hasPlaceExpr = PLACE_WORDS.some(p => cleaned.includes(p));
 
     // 기본 점수
-    if (uniqueWords.size >= 5  || uniqueRatio >= 0.50) varietyScore = 1;
-    if (uniqueWords.size >= 10 || uniqueRatio >= 0.60) varietyScore = 2;
+    if (uniqueWords.size >= 6) varietyScore = 1;
+    if (uniqueWords.size >= 12) varietyScore = 2;
 
     // 3점 조건: 풍부한 어휘 + 감정/묘사 + 과도 반복 없음
-    if ((uniqueWords.size >= 14 || uniqueRatio >= 0.70) && hasRichVocab && !hasExcessRepeat) varietyScore = 3;
+    if (uniqueWords.size >= 15 && hasRichVocab && !hasExcessRepeat) varietyScore = 3;
     // 어휘가 매우 풍부하면 감정어 없어도 3점
-    if (uniqueWords.size >= 20 && uniqueRatio >= 0.75 && !hasExcessRepeat) varietyScore = 3;
+    if (uniqueWords.size >= 18 && !hasExcessRepeat) varietyScore = 3;
     // 감정 + 묘사 + 시간 + 장소 모두 있으면 어휘 12개만 되어도 3점
     if (uniqueWords.size >= 12 && hasEmotion && hasDescriptive && (hasTimeExpr || hasPlaceExpr) && !hasExcessRepeat) varietyScore = 3;
 

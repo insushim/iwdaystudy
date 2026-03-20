@@ -67,7 +67,7 @@ export default function WritingPrompt({ content, onAnswer, showResult }: Props) 
     onAnswer(text.trim());
   };
 
-  const isShowingResult = showResult || submitted;
+  const isShowingResult = (showResult || submitted) && !previewMode;
 
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-lg mx-auto">

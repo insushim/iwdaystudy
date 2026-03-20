@@ -15,6 +15,13 @@ interface LearningState {
   readiness: ReadinessData | null;
   timeSpent: number;
 
+  // Review phase (Duolingo-style wrong answer review)
+  isReviewMode: boolean;
+  showReviewIntro: boolean;
+  reviewQueue: number[];
+  reviewIndex: number;
+  reviewCorrected: number[];
+
   initSession: (set: DailySet, questions: Question[]) => void;
   setCurrentIndex: (index: number) => void;
   answerQuestion: (questionId: string, answer: unknown, isCorrect: boolean, score: number) => void;
@@ -24,6 +31,11 @@ interface LearningState {
   completeSession: () => void;
   resetSession: () => void;
   incrementTime: () => void;
+
+  startReview: (wrongIndices: number[]) => void;
+  dismissReviewIntro: () => void;
+  advanceReview: (isCorrect: boolean) => void;
+  skipReview: () => void;
 }
 
 export const useLearningStore = create<LearningState>((set, get) => ({
@@ -38,6 +50,12 @@ export const useLearningStore = create<LearningState>((set, get) => ({
   emotionAfter: null,
   readiness: null,
   timeSpent: 0,
+
+  isReviewMode: false,
+  showReviewIntro: false,
+  reviewQueue: [],
+  reviewIndex: 0,
+  reviewCorrected: [],
 
   initSession: (dailySet, questions) => {
     set({
@@ -55,6 +73,11 @@ export const useLearningStore = create<LearningState>((set, get) => ({
       isCompleted: false,
       totalScore: 0,
       timeSpent: 0,
+      isReviewMode: false,
+      showReviewIntro: false,
+      reviewQueue: [],
+      reviewIndex: 0,
+      reviewCorrected: [],
     });
   },
 
@@ -93,7 +116,59 @@ export const useLearningStore = create<LearningState>((set, get) => ({
       emotionAfter: null,
       readiness: null,
       timeSpent: 0,
+      isReviewMode: false,
+      showReviewIntro: false,
+      reviewQueue: [],
+      reviewIndex: 0,
+      reviewCorrected: [],
     }),
 
   incrementTime: () => set((state) => ({ timeSpent: state.timeSpent + 1 })),
+
+  // ── Review actions ──
+  startReview: (wrongIndices) =>
+    set({
+      showReviewIntro: true,
+      isReviewMode: false,
+      reviewQueue: wrongIndices,
+      reviewIndex: 0,
+      reviewCorrected: [],
+    }),
+
+  dismissReviewIntro: () =>
+    set({
+      showReviewIntro: false,
+      isReviewMode: true,
+    }),
+
+  advanceReview: (isCorrect) => {
+    const state = get();
+    const originalIndex = state.reviewQueue[state.reviewIndex];
+    const newCorrected = isCorrect
+      ? [...state.reviewCorrected, originalIndex]
+      : state.reviewCorrected;
+
+    const nextIndex = state.reviewIndex + 1;
+
+    if (nextIndex >= state.reviewQueue.length) {
+      set({
+        reviewCorrected: newCorrected,
+        reviewIndex: nextIndex,
+        isReviewMode: false,
+        isCompleted: true,
+      });
+    } else {
+      set({
+        reviewCorrected: newCorrected,
+        reviewIndex: nextIndex,
+      });
+    }
+  },
+
+  skipReview: () =>
+    set({
+      showReviewIntro: false,
+      isReviewMode: false,
+      isCompleted: true,
+    }),
 }));
