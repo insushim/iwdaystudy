@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, Lightbulb, XCircle } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CheckCircle, Lightbulb, XCircle } from "lucide-react";
 
 interface Props {
   content: Record<string, unknown>;
@@ -13,24 +14,44 @@ interface Props {
   isCorrect: boolean | null;
 }
 
-const OPTION_LABELS = ['1', '2', '3', '4'];
+const OPTION_LABELS = ["1", "2", "3", "4"];
 
-export default function MathQuestion({ content, answer, onAnswer, showResult, isCorrect }: Props) {
+export default function MathQuestion({
+  content,
+  answer,
+  onAnswer,
+  showResult,
+  isCorrect,
+}: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [showSteps, setShowSteps] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
-  const expression = content?.expression || '';
-  const correctAnswer = String(answer?.correct ?? answer?.answer ?? answer?.text ?? '');
+  const variant = (content?.variant as string) || "choice";
+  const expression = content?.expression || "";
+  const correctAnswer = String(
+    answer?.correct ?? answer?.answer ?? answer?.text ?? "",
+  );
   const choices: string[] = content?.choices || [];
   const steps: string[] = answer?.steps || [];
-  const operator = expression.match(/[+\-]/)?.[0] || '';
-  const operands = expression.split(/\s*[+\-]\s*/).map((item: string) => item.trim());
-  const isVerticalLayout = (expression.includes('+') || expression.includes('-')) && operands.length === 2;
+  const operator = expression.match(/[+\-]/)?.[0] || "";
+  const operands = expression
+    .split(/\s*[+\-]\s*/)
+    .map((item: string) => item.trim());
+  const isVerticalLayout =
+    (expression.includes("+") || expression.includes("-")) &&
+    operands.length === 2;
 
   const handleSelect = (choice: string) => {
     if (showResult) return;
     setSelected(choice);
     onAnswer(choice);
+  };
+
+  const handleInputSubmit = () => {
+    if (showResult || !inputValue.trim()) return;
+    setSelected(inputValue.trim());
+    onAnswer(inputValue.trim());
   };
 
   return (
@@ -45,11 +66,19 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
         className="flex items-center justify-center gap-2"
       >
         <div className="text-4xl sm:text-5xl font-black tracking-wide text-foreground select-none text-center leading-relaxed">
-          {expression} = <span className="text-muted-foreground/50">?</span>
+          {variant === "reverse" ? (
+            <>
+              {expression} = {String(content.result ?? "")}
+            </>
+          ) : (
+            <>
+              {expression} = <span className="text-muted-foreground/50">?</span>
+            </>
+          )}
         </div>
       </motion.div>
 
-      {isVerticalLayout && (
+      {isVerticalLayout && variant !== "reverse" && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -63,13 +92,40 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
               <span>{operands[1]}</span>
             </div>
             <div className="pr-2 pt-1 text-muted-foreground/40">
-              {showResult ? correctAnswer : '?'}
+              {showResult ? correctAnswer : "?"}
             </div>
           </div>
         </motion.div>
       )}
 
-      {!showResult && (
+      {!showResult && variant === "input" && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex gap-3 w-full max-w-md items-center"
+        >
+          <Input
+            type="number"
+            inputMode="numeric"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleInputSubmit()}
+            placeholder="답을 입력하세요"
+            className="h-14 text-xl font-bold text-center rounded-xl border-2 border-[#FF6B35]/30 focus:border-[#FF6B35]"
+            autoFocus
+          />
+          <Button
+            onClick={handleInputSubmit}
+            disabled={!inputValue.trim()}
+            className="h-14 px-6 text-lg font-bold rounded-xl bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white"
+          >
+            확인
+          </Button>
+        </motion.div>
+      )}
+
+      {!showResult && variant !== "input" && choices.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -83,11 +139,13 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                 onClick={() => handleSelect(choice)}
                 className={`w-full h-14 min-h-[48px] text-lg font-bold rounded-xl border-2 transition-all ${
                   selected === choice
-                    ? 'border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] shadow-md shadow-[#FF6B35]/10'
-                    : 'border-border hover:border-[#FF6B35]/40'
+                    ? "border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35] shadow-md shadow-[#FF6B35]/10"
+                    : "border-border hover:border-[#FF6B35]/40"
                 }`}
               >
-                <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+                <span className="mr-2 text-sm text-muted-foreground">
+                  {OPTION_LABELS[index]}
+                </span>
                 {choice}
               </Button>
             </motion.div>
@@ -106,11 +164,11 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              transition={{ type: "spring", stiffness: 300 }}
               className={`flex items-center gap-3 rounded-2xl px-6 py-4 text-lg font-bold ${
                 isCorrect
-                  ? 'bg-green-50 text-green-700 border-2 border-green-200'
-                  : 'bg-red-50 text-red-700 border-2 border-red-200'
+                  ? "bg-green-50 text-green-700 border-2 border-green-200"
+                  : "bg-red-50 text-red-700 border-2 border-red-200"
               }`}
             >
               {isCorrect ? (
@@ -118,7 +176,7 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
               ) : (
                 <XCircle className="h-6 w-6 text-red-500" />
               )}
-              <span>{isCorrect ? '정답이에요' : `정답: ${correctAnswer}`}</span>
+              <span>{isCorrect ? "정답이에요" : `정답: ${correctAnswer}`}</span>
             </motion.div>
 
             {choices.length > 0 && (
@@ -128,13 +186,15 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                     key={choice}
                     className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
                       choice === correctAnswer
-                        ? 'border-green-400 bg-green-50 text-green-700'
+                        ? "border-green-400 bg-green-50 text-green-700"
                         : selected === choice
-                          ? 'border-red-300 bg-red-50 text-red-500'
-                          : 'border-border text-muted-foreground'
+                          ? "border-red-300 bg-red-50 text-red-500"
+                          : "border-border text-muted-foreground"
                     }`}
                   >
-                    <span className="mr-2 text-sm text-muted-foreground">{OPTION_LABELS[index]}</span>
+                    <span className="mr-2 text-sm text-muted-foreground">
+                      {OPTION_LABELS[index]}
+                    </span>
                     {choice}
                   </div>
                 ))}
@@ -150,19 +210,22 @@ export default function MathQuestion({ content, answer, onAnswer, showResult, is
                   className="gap-1 text-muted-foreground min-h-[36px]"
                 >
                   <Lightbulb className="h-4 w-4" />
-                  {showSteps ? '풀이 숨기기' : '풀이 보기'}
+                  {showSteps ? "풀이 숨기기" : "풀이 보기"}
                 </Button>
                 <AnimatePresence>
                   {showSteps && (
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
+                      animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       className="overflow-hidden"
                     >
                       <div className="mt-2 rounded-xl bg-muted/50 p-4 space-y-2">
                         {steps.map((step: string, index: number) => (
-                          <div key={`${step}-${index}`} className="flex items-start gap-2 text-sm">
+                          <div
+                            key={`${step}-${index}`}
+                            className="flex items-start gap-2 text-sm"
+                          >
                             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FF6B35]/10 text-xs font-bold text-[#FF6B35]">
                               {index + 1}
                             </span>

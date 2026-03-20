@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Lightbulb } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, XCircle, Lightbulb } from "lucide-react";
 interface Props {
   content: any;
   answer: any;
@@ -13,9 +13,16 @@ interface Props {
   isCorrect: boolean | null;
 }
 
-export default function GeneralKnowledge({ content, answer, onAnswer, showResult, isCorrect }: Props) {
-  const correctAnswer = answer?.answer || answer?.correct || answer?.text || '';
+export default function GeneralKnowledge({
+  content,
+  answer,
+  onAnswer,
+  showResult,
+  isCorrect,
+}: Props) {
+  const correctAnswer = answer?.answer || answer?.correct || answer?.text || "";
   const [selected, setSelected] = useState<string | null>(null);
+  const variant: string = content?.variant || "fill";
   const choices: string[] = content?.choices || [];
 
   const handleSelect = (choice: string) => {
@@ -26,16 +33,20 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
 
   // Split text around ___ to highlight the blank
   const renderText = () => {
-    const parts = content.text.split('___');
+    const parts = content.text.split("___");
     if (parts.length < 2) return <span>{content.text}</span>;
 
     return (
       <span>
         {parts[0]}
         {showResult ? (
-          <span className={`inline-block min-w-[3ch] px-2 py-0.5 rounded font-bold ${
-            isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-          }`}>
+          <span
+            className={`inline-block min-w-[3ch] px-2 py-0.5 rounded font-bold ${
+              isCorrect
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-700"
+            }`}
+          >
             {correctAnswer}
           </span>
         ) : (
@@ -48,7 +59,7 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
     );
   };
 
-  const OPTION_LABELS = ['\u2460', '\u2461', '\u2462', '\u2463'];
+  const OPTION_LABELS = ["\u2460", "\u2461", "\u2462", "\u2463"];
 
   return (
     <div className="flex flex-col items-center gap-6">
@@ -68,12 +79,45 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
         className="w-full max-w-lg rounded-2xl bg-[#F9CA24]/5 border border-[#F9CA24]/20 p-6 text-center"
       >
         <p className="text-xl sm:text-2xl font-bold leading-relaxed">
-          {renderText()}
+          {variant === "tf" ? content.text : renderText()}
         </p>
+        {variant === "tf" && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            위 문장이 맞으면 O, 틀리면 X를 고르세요
+          </p>
+        )}
       </motion.div>
 
-      {/* 4-choice options */}
-      {!showResult && choices.length > 0 && (
+      {/* OX buttons for tf variant */}
+      {!showResult && variant === "tf" && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="flex gap-4 w-full max-w-sm justify-center"
+        >
+          {["O", "X"].map((ox) => (
+            <motion.div key={ox} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="outline"
+                onClick={() => handleSelect(ox)}
+                className={`w-28 h-20 text-4xl font-black rounded-2xl border-2 transition-all ${
+                  selected === ox
+                    ? ox === "O"
+                      ? "border-blue-500 bg-blue-50 text-blue-600 shadow-md"
+                      : "border-red-500 bg-red-50 text-red-600 shadow-md"
+                    : "border-border hover:border-[#F9CA24]/40"
+                }`}
+              >
+                {ox}
+              </Button>
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
+
+      {/* 4-choice options (fill variant) */}
+      {!showResult && variant !== "tf" && choices.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -87,11 +131,13 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
                 onClick={() => handleSelect(choice)}
                 className={`w-full h-auto min-h-[52px] py-3 px-4 text-base font-bold rounded-xl border-2 whitespace-normal text-left transition-all ${
                   selected === choice
-                    ? 'border-[#F9CA24] bg-[#F9CA24]/10 text-[#B8860B] shadow-md shadow-[#F9CA24]/10'
-                    : 'border-border hover:border-[#F9CA24]/40'
+                    ? "border-[#F9CA24] bg-[#F9CA24]/10 text-[#B8860B] shadow-md shadow-[#F9CA24]/10"
+                    : "border-border hover:border-[#F9CA24]/40"
                 }`}
               >
-                <span className="text-muted-foreground mr-2 flex-shrink-0">{OPTION_LABELS[i]}</span>
+                <span className="text-muted-foreground mr-2 flex-shrink-0">
+                  {OPTION_LABELS[i]}
+                </span>
                 {choice}
               </Button>
             </motion.div>
@@ -99,8 +145,8 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
         </motion.div>
       )}
 
-      {/* Fallback: text input if no choices */}
-      {!showResult && choices.length === 0 && (
+      {/* Text input (input variant or fallback when no choices) */}
+      {!showResult && variant !== "tf" && choices.length === 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -109,9 +155,12 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
         >
           <input
             type="text"
-            value={selected || ''}
+            value={selected || ""}
             onChange={(e) => setSelected(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && selected?.trim()) onAnswer(selected.trim()); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && selected?.trim())
+                onAnswer(selected.trim());
+            }}
             placeholder="답을 입력하세요"
             className="flex-1 h-14 min-h-[48px] text-center text-xl font-bold rounded-xl border-2 border-[#F9CA24]/30 focus:border-[#F9CA24] focus:ring-2 focus:ring-[#F9CA24]/20 outline-none px-4"
             autoFocus
@@ -138,11 +187,11 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              transition={{ type: "spring", stiffness: 300 }}
               className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
                 isCorrect
-                  ? 'bg-green-50 text-green-700 border border-green-200'
-                  : 'bg-red-50 text-red-700 border border-red-200'
+                  ? "bg-green-50 text-green-700 border border-green-200"
+                  : "bg-red-50 text-red-700 border border-red-200"
               }`}
             >
               {isCorrect ? (
@@ -166,13 +215,15 @@ export default function GeneralKnowledge({ content, answer, onAnswer, showResult
                     key={i}
                     className={`flex items-center gap-2 h-auto min-h-[48px] py-2 px-4 text-sm font-bold rounded-xl border-2 ${
                       choice === correctAnswer
-                        ? 'border-green-400 bg-green-50 text-green-700'
+                        ? "border-green-400 bg-green-50 text-green-700"
                         : selected === choice
-                          ? 'border-red-300 bg-red-50 text-red-500'
-                          : 'border-border text-muted-foreground'
+                          ? "border-red-300 bg-red-50 text-red-500"
+                          : "border-border text-muted-foreground"
                     }`}
                   >
-                    <span className="text-muted-foreground flex-shrink-0">{OPTION_LABELS[i]}</span>
+                    <span className="text-muted-foreground flex-shrink-0">
+                      {OPTION_LABELS[i]}
+                    </span>
                     {choice}
                   </div>
                 ))}

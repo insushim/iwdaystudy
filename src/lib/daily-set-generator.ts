@@ -1011,29 +1011,42 @@ function buildMathQuestion(
   title: string,
   entry: MathEntry,
   choices: string[],
+  variant: "choice" | "input" | "reverse" = "choice",
 ): Question {
+  const expr = entry.expression || "";
+  const firstOperand = expr.match(/^\s*(\d+)/)?.[1] || "";
+  const isReverse = variant === "reverse" && firstOperand;
+  const reverseExpression = isReverse ? expr.replace(/^\s*\d+/, "?") : expr;
+
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "math" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
+    question_type: (variant === "input"
+      ? "short_answer"
+      : "multiple_choice") as QuestionType,
     order_index: orderIndex,
     title,
     content: {
-      text: "다음을 계산하세요.",
-      expression: entry.expression || "",
+      text:
+        variant === "reverse"
+          ? "빈칸에 들어갈 수를 구하세요."
+          : "다음을 계산하세요.",
+      expression: isReverse ? reverseExpression : expr,
       unit: entry.unit,
-      choices,
+      choices: variant === "input" ? [] : choices,
+      variant,
+      ...(isReverse ? { result: entry.answer } : {}),
     },
     answer: {
-      correct: String(entry.answer),
-      text: String(entry.answer),
+      correct: isReverse ? firstOperand : String(entry.answer),
+      text: isReverse ? firstOperand : String(entry.answer),
       steps: entry.steps || [],
     },
     explanation: entry.steps
       ? entry.steps.join(" -> ")
-      : `정답: ${entry.answer}`,
+      : `정답: ${isReverse ? firstOperand : entry.answer}`,
     points: 10,
     hint: entry.unit.includes("곱셈")
       ? "곱셈구구를 떠올려 보세요!"
@@ -1056,8 +1069,111 @@ function buildSpellingQuestion(
   title: string,
   entry: SpellingEntry,
   choices: string[],
+  variant: "sentence" | "word" | "correct" = "sentence",
+  pool?: SpellingEntry[],
+  random?: () => number,
 ): Question {
   const correctSentence = entry.answer === 1 ? entry.q1 : entry.q2;
+  const wrongSentence = entry.answer === 1 ? entry.q2 : entry.q1;
+
+  if (variant === "word") {
+    // Find differing words between correct and wrong sentences
+    const correctWords = correctSentence.split(/\s+/);
+    const wrongWords = wrongSentence.split(/\s+/);
+    let diffIndex = 0;
+    for (let i = 0; i < wrongWords.length; i++) {
+      if (i >= correctWords.length || wrongWords[i] !== correctWords[i]) {
+        diffIndex = i;
+        break;
+      }
+    }
+    const wrongPart = wrongWords[diffIndex] || wrongWords[0];
+    const correctPart = correctWords[diffIndex] || correctWords[0];
+
+    // Build word-level choices: the wrong part + 3 other parts from the sentence
+    const otherParts = wrongWords
+      .filter((_, i) => i !== diffIndex && _.length > 1)
+      .slice(0, 3);
+    while (otherParts.length < 3) {
+      otherParts.push(correctPart);
+    }
+    const wordChoices = random
+      ? shuffleChoices([wrongPart, ...otherParts.slice(0, 3)], random)
+      : [wrongPart, ...otherParts.slice(0, 3)];
+
+    return {
+      id: `q-${setId}-${orderIndex}`,
+      daily_set_id: setId,
+      curriculum_standard_id: null,
+      subject: "spelling" as SubjectType,
+      question_type: "multiple_choice" as QuestionType,
+      order_index: orderIndex,
+      title,
+      content: {
+        variant: "word",
+        text: "다음 문장에서 맞춤법이 틀린 부분을 찾으세요.",
+        wrongSentence,
+        correctPart,
+        options: wordChoices,
+      },
+      answer: {
+        correct: wrongPart,
+        text: wrongPart,
+      },
+      explanation: entry.explanation,
+      points: 10,
+      hint: `"${correctPart}"이(가) 올바른 표현이에요.`,
+      metadata: null,
+      created_at: new Date().toISOString(),
+    };
+  }
+
+  if (variant === "correct") {
+    // Show wrong sentence, pick correct sentence as answer, distractors from other correct sentences
+    const rng = random || Math.random;
+    const otherCorrects = (pool || [])
+      .filter((item) => item !== entry)
+      .map((item) => (item.answer === 1 ? item.q1 : item.q2))
+      .filter((s) => s !== correctSentence);
+    const distractors = shuffleChoices([...new Set(otherCorrects)], rng).slice(
+      0,
+      3,
+    );
+    while (distractors.length < 3) {
+      distractors.push(wrongSentence);
+    }
+    const correctChoices = shuffleChoices(
+      [correctSentence, ...distractors],
+      rng,
+    );
+
+    return {
+      id: `q-${setId}-${orderIndex}`,
+      daily_set_id: setId,
+      curriculum_standard_id: null,
+      subject: "spelling" as SubjectType,
+      question_type: "multiple_choice" as QuestionType,
+      order_index: orderIndex,
+      title,
+      content: {
+        variant: "correct",
+        text: "다음 문장을 올바르게 고치면?",
+        wrongSentence,
+        options: correctChoices,
+      },
+      answer: {
+        correct: correctSentence,
+        text: correctSentence,
+      },
+      explanation: entry.explanation,
+      points: 10,
+      hint: "소리 내어 읽어보면 구별이 쉬워요!",
+      metadata: null,
+      created_at: new Date().toISOString(),
+    };
+  }
+
+  // Default: 'sentence' variant (existing behavior)
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
@@ -1067,6 +1183,7 @@ function buildSpellingQuestion(
     order_index: orderIndex,
     title,
     content: {
+      variant: "sentence",
       text: "다음 중 맞춤법이 올바른 문장을 고르세요.",
       options: choices,
     },
@@ -1089,22 +1206,33 @@ function buildVocabQuestion(
   title: string,
   entry: VocabEntry,
   choices: string[],
+  variant: string = "clue",
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "vocabulary" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
+    question_type:
+      variant === "input"
+        ? ("short_answer" as QuestionType)
+        : ("multiple_choice" as QuestionType),
     order_index: orderIndex,
     title,
     content: {
-      text: "다음 뜻풀이를 보고 알맞은 낱말을 고르세요.",
+      variant,
+      text:
+        variant === "reverse"
+          ? "낱말을 보고 알맞은 뜻을 고르세요."
+          : variant === "input"
+            ? "다음 뜻풀이를 보고 알맞은 낱말을 입력하세요."
+            : "다음 뜻풀이를 보고 알맞은 낱말을 고르세요.",
       clues: entry.meanings,
+      meanings: entry.meanings,
       choices,
     },
     answer: {
-      correct: entry.answer,
+      correct: variant === "reverse" ? entry.meanings[0] : entry.answer,
       text: entry.answer,
     },
     explanation: `정답은 "${entry.answer}"입니다. ${entry.meanings.join(", ")}`,
@@ -1122,24 +1250,57 @@ function buildKnowledgeQuestion(
   title: string,
   entry: KnowledgeEntry,
   choices: string[],
+  variant: string = "fill",
+  random?: () => number,
 ): Question {
+  const rng = random || Math.random;
+  if (variant === "tf") {
+    const isCorrectStatement = rng() > 0.5;
+    const filledText = entry.text.replace("___", entry.answer);
+    let displayText = filledText;
+    if (!isCorrectStatement) {
+      const wrongChoices = choices.filter((c) => c !== entry.answer);
+      const wrongAnswer =
+        wrongChoices.length > 0
+          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
+          : entry.answer;
+      displayText = entry.text.replace("___", wrongAnswer);
+    }
+    return {
+      id: `q-${setId}-${orderIndex}`,
+      daily_set_id: setId,
+      curriculum_standard_id: null,
+      subject: "general_knowledge" as SubjectType,
+      question_type: "true_false" as QuestionType,
+      order_index: orderIndex,
+      title,
+      content: {
+        variant: "tf",
+        text: displayText,
+        category: entry.category,
+        choices: [],
+      },
+      answer: { correct: isCorrectStatement ? "O" : "X", text: entry.answer },
+      explanation: filledText,
+      points: 10,
+      hint: `${entry.category} 분야의 문제예요.`,
+      metadata: { category: entry.category },
+      created_at: new Date().toISOString(),
+    };
+  }
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "general_knowledge" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
+    question_type:
+      variant === "input"
+        ? ("short_answer" as QuestionType)
+        : ("multiple_choice" as QuestionType),
     order_index: orderIndex,
     title,
-    content: {
-      text: entry.text,
-      category: entry.category,
-      choices,
-    },
-    answer: {
-      correct: entry.answer,
-      text: entry.answer,
-    },
+    content: { variant, text: entry.text, category: entry.category, choices },
+    answer: { correct: entry.answer, text: entry.answer },
     explanation: `${entry.text.replace("___", entry.answer)}`,
     points: 10,
     hint: `${entry.category} 분야의 문제예요.`,
@@ -1155,24 +1316,57 @@ function buildSafetyQuestion(
   title: string,
   entry: SafetyEntry,
   choices: string[],
+  variant: string = "fill",
+  random?: () => number,
 ): Question {
+  const rng = random || Math.random;
+  if (variant === "tf") {
+    const isCorrectStatement = rng() > 0.5;
+    const filledText = entry.text.replace("___", entry.answer);
+    let displayText = filledText;
+    if (!isCorrectStatement) {
+      const wrongChoices = choices.filter((c) => c !== entry.answer);
+      const wrongAnswer =
+        wrongChoices.length > 0
+          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
+          : entry.answer;
+      displayText = entry.text.replace("___", wrongAnswer);
+    }
+    return {
+      id: `q-${setId}-${orderIndex}`,
+      daily_set_id: setId,
+      curriculum_standard_id: null,
+      subject: "safety" as SubjectType,
+      question_type: "true_false" as QuestionType,
+      order_index: orderIndex,
+      title,
+      content: {
+        variant: "tf",
+        text: displayText,
+        category: entry.category,
+        choices: [],
+      },
+      answer: { correct: isCorrectStatement ? "O" : "X", text: entry.answer },
+      explanation: filledText,
+      points: 10,
+      hint: `${entry.category}에 관한 문제예요. 안전이 최우선!`,
+      metadata: { category: entry.category },
+      created_at: new Date().toISOString(),
+    };
+  }
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "safety" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
+    question_type:
+      variant === "input"
+        ? ("short_answer" as QuestionType)
+        : ("multiple_choice" as QuestionType),
     order_index: orderIndex,
     title,
-    content: {
-      text: entry.text,
-      category: entry.category,
-      choices,
-    },
-    answer: {
-      correct: entry.answer,
-      text: entry.answer,
-    },
+    content: { variant, text: entry.text, category: entry.category, choices },
+    answer: { correct: entry.answer, text: entry.answer },
     explanation: `${entry.text.replace("___", entry.answer)}`,
     points: 10,
     hint: `${entry.category}에 관한 문제예요. 안전이 최우선!`,
@@ -1347,19 +1541,30 @@ function buildEnglishQuestion(
   title: string,
   entry: EnglishEntry,
   choices: string[],
+  variant: string = "word",
 ): Question {
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject: "english" as SubjectType,
-    question_type: "multiple_choice" as QuestionType,
+    question_type:
+      variant === "input"
+        ? ("short_answer" as QuestionType)
+        : ("multiple_choice" as QuestionType),
     order_index: orderIndex,
     title,
     content: {
-      text: `다음 영어 문장을 읽고, 밑줄 친 단어의 뜻을 쓰세요.\n"${entry.sentence}"\n단어: ${entry.word} [${entry.pronunciation}]`,
+      variant,
+      text:
+        variant === "meaning"
+          ? `다음 뜻에 해당하는 영단어를 고르세요.`
+          : variant === "input"
+            ? `다음 문장의 빈칸에 알맞은 영단어를 입력하세요.\n"${entry.sentence}"`
+            : `다음 영어 문장을 읽고, 밑줄 친 단어의 뜻을 쓰세요.\n"${entry.sentence}"\n단어: ${entry.word} [${entry.pronunciation}]`,
       sentence: entry.sentence,
       word: entry.word,
+      translation: entry.translation,
       pronunciation: entry.pronunciation,
       practice: entry.practice,
       choices,
@@ -1382,16 +1587,56 @@ function buildSubjectQuestion(
   entry: KnowledgeEntry,
   hintPrefix: string,
   choices: string[],
+  variant: string = "fill",
+  random?: () => number,
 ): Question {
+  const rng = random || Math.random;
+  if (variant === "tf") {
+    const isCorrectStatement = rng() > 0.5;
+    const filledText = entry.text.replace("___", entry.answer);
+    let displayText = filledText;
+    if (!isCorrectStatement) {
+      const wrongChoices = choices.filter((c) => c !== entry.answer);
+      const wrongAnswer =
+        wrongChoices.length > 0
+          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
+          : entry.answer;
+      displayText = entry.text.replace("___", wrongAnswer);
+    }
+    return {
+      id: `q-${setId}-${orderIndex}`,
+      daily_set_id: setId,
+      curriculum_standard_id: null,
+      subject,
+      question_type: "true_false" as QuestionType,
+      order_index: orderIndex,
+      title,
+      content: {
+        variant: "tf",
+        text: displayText,
+        category: entry.category,
+        choices: [],
+      },
+      answer: { correct: isCorrectStatement ? "O" : "X", text: entry.answer },
+      explanation: filledText,
+      points: 10,
+      hint: `${hintPrefix} ${entry.category} 문제예요.`,
+      metadata: { category: entry.category },
+      created_at: new Date().toISOString(),
+    };
+  }
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
     curriculum_standard_id: null,
     subject,
-    question_type: "multiple_choice" as QuestionType,
+    question_type:
+      variant === "input"
+        ? ("short_answer" as QuestionType)
+        : ("multiple_choice" as QuestionType),
     order_index: orderIndex,
     title,
-    content: { text: entry.text, category: entry.category, choices },
+    content: { variant, text: entry.text, category: entry.category, choices },
     answer: { correct: entry.answer, text: entry.answer },
     explanation: entry.text.replace("___", entry.answer),
     points: 10,
@@ -1514,12 +1759,40 @@ export function generateDailySet(
         );
       } else if (subject === "math") {
         const entry = pickUnused(data.math, "math");
-        const choices = generateMathChoices(Number(entry.answer), random);
+        const mathVariants: Array<"choice" | "choice" | "input" | "reverse"> = [
+          "choice",
+          "choice",
+          "input",
+          "reverse",
+        ];
+        const mv = mathVariants[Math.floor(random() * mathVariants.length)];
+        // For reverse variant, choices are based on the first operand instead of the answer
+        const expr = entry.expression || "";
+        const firstOp = expr.match(/^\s*(\d+)/)?.[1] || "";
+        const choiceBase =
+          mv === "reverse" && firstOp ? Number(firstOp) : Number(entry.answer);
+        const choices =
+          mv === "input" ? [] : generateMathChoices(choiceBase, random);
         questions.push(
-          buildMathQuestion(setId, orderIndex, section.title, entry, choices),
+          buildMathQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+            mv,
+          ),
         );
       } else if (subject === "spelling") {
         const entry = pickUnused(data.spelling, "spelling");
+        const spellingVariants: Array<"sentence" | "word" | "correct"> = [
+          "sentence",
+          "sentence",
+          "word",
+          "correct",
+        ];
+        const variant =
+          spellingVariants[Math.floor(random() * spellingVariants.length)];
         const choices = generateSpellingChoices(entry, data.spelling, random);
         questions.push(
           buildSpellingQuestion(
@@ -1528,27 +1801,56 @@ export function generateDailySet(
             section.title,
             entry,
             choices,
+            variant,
+            data.spelling,
+            random,
           ),
         );
       } else if (subject === "vocabulary") {
         const entry = pickUnused(data.vocab, "vocab");
-        const choices = generateChoices(
-          entry.answer,
-          data.vocab,
-          (v) => v.answer,
-          random,
-        );
+        const vvariants = ["clue", "clue", "reverse", "input"];
+        const vv = vvariants[Math.floor(random() * vvariants.length)];
+        let choices: string[];
+        if (vv === "reverse") {
+          choices = generateChoices(
+            entry.meanings[0],
+            data.vocab,
+            (v) => v.meanings[0],
+            random,
+          );
+        } else if (vv === "input") {
+          choices = [];
+        } else {
+          choices = generateChoices(
+            entry.answer,
+            data.vocab,
+            (v) => v.answer,
+            random,
+          );
+        }
         questions.push(
-          buildVocabQuestion(setId, orderIndex, section.title, entry, choices),
+          buildVocabQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+            vv,
+          ),
         );
       } else if (subject === "general_knowledge") {
         const entry = pickUnused(data.knowledge, "knowledge");
-        const choices = generateChoices(
-          entry.answer,
-          data.knowledge,
-          (k) => k.answer,
-          random,
-        );
+        const kvariants = ["fill", "fill", "tf", "input"];
+        const kv = kvariants[Math.floor(random() * kvariants.length)];
+        const choices =
+          kv === "input"
+            ? []
+            : generateChoices(
+                entry.answer,
+                data.knowledge,
+                (k) => k.answer,
+                random,
+              );
         questions.push(
           buildKnowledgeQuestion(
             setId,
@@ -1556,18 +1858,33 @@ export function generateDailySet(
             section.title,
             entry,
             choices,
+            kv,
+            random,
           ),
         );
       } else if (subject === "safety") {
         const entry = pickUnused(data.safety, "safety");
-        const choices = generateChoices(
-          entry.answer,
-          data.safety,
-          (s) => s.answer,
-          random,
-        );
+        const svariants = ["fill", "fill", "tf", "input"];
+        const sv = svariants[Math.floor(random() * svariants.length)];
+        const choices =
+          sv === "input"
+            ? []
+            : generateChoices(
+                entry.answer,
+                data.safety,
+                (s) => s.answer,
+                random,
+              );
         questions.push(
-          buildSafetyQuestion(setId, orderIndex, section.title, entry, choices),
+          buildSafetyQuestion(
+            setId,
+            orderIndex,
+            section.title,
+            entry,
+            choices,
+            sv,
+            random,
+          ),
         );
       } else if (subject === "writing") {
         const prompt = pickUnused(data.writing, "writing");
@@ -1646,12 +1963,26 @@ export function generateDailySet(
         data.english.length > 0
       ) {
         const entry = pickUnused(data.english, "english");
-        const choices = generateChoices(
-          entry.word,
-          data.english,
-          (e) => e.word,
-          random,
-        );
+        const evariants = ["word", "word", "meaning", "input"];
+        const ev = evariants[Math.floor(random() * evariants.length)];
+        let choices: string[];
+        if (ev === "meaning") {
+          choices = generateChoices(
+            entry.word,
+            data.english,
+            (e) => e.word,
+            random,
+          );
+        } else if (ev === "input") {
+          choices = [];
+        } else {
+          choices = generateChoices(
+            entry.word,
+            data.english,
+            (e) => e.word,
+            random,
+          );
+        }
         questions.push(
           buildEnglishQuestion(
             setId,
@@ -1659,6 +1990,7 @@ export function generateDailySet(
             section.title,
             entry,
             choices,
+            ev,
           ),
         );
       } else if (
@@ -1668,12 +2000,12 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.korean, "korean");
         const pool = data.korean!;
-        const choices = generateChoices(
-          entry.answer,
-          pool,
-          (k) => k.answer,
-          random,
-        );
+        const skv = ["fill", "fill", "tf", "input"];
+        const skvar = skv[Math.floor(random() * skv.length)];
+        const choices =
+          skvar === "input"
+            ? []
+            : generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -1683,6 +2015,8 @@ export function generateDailySet(
             entry,
             "국어",
             choices,
+            skvar,
+            random,
           ),
         );
       } else if (
@@ -1692,12 +2026,12 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.creative, "creative");
         const pool = data.creative!;
-        const choices = generateChoices(
-          entry.answer,
-          pool,
-          (k) => k.answer,
-          random,
-        );
+        const skv = ["fill", "fill", "tf", "input"];
+        const skvar = skv[Math.floor(random() * skv.length)];
+        const choices =
+          skvar === "input"
+            ? []
+            : generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -1707,6 +2041,8 @@ export function generateDailySet(
             entry,
             "창의",
             choices,
+            skvar,
+            random,
           ),
         );
       } else if (
@@ -1716,12 +2052,12 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.science, "science");
         const pool = data.science!;
-        const choices = generateChoices(
-          entry.answer,
-          pool,
-          (k) => k.answer,
-          random,
-        );
+        const skv = ["fill", "fill", "tf", "input"];
+        const skvar = skv[Math.floor(random() * skv.length)];
+        const choices =
+          skvar === "input"
+            ? []
+            : generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -1731,6 +2067,8 @@ export function generateDailySet(
             entry,
             "과학",
             choices,
+            skvar,
+            random,
           ),
         );
       } else if (
@@ -1740,12 +2078,12 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.social, "social");
         const pool = data.social!;
-        const choices = generateChoices(
-          entry.answer,
-          pool,
-          (k) => k.answer,
-          random,
-        );
+        const skv = ["fill", "fill", "tf", "input"];
+        const skvar = skv[Math.floor(random() * skv.length)];
+        const choices =
+          skvar === "input"
+            ? []
+            : generateChoices(entry.answer, pool, (k) => k.answer, random);
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -1755,17 +2093,24 @@ export function generateDailySet(
             entry,
             "사회",
             choices,
+            skvar,
+            random,
           ),
         );
       } else {
         // Fallback: use knowledge data as generic question
         const entry = pickUnused(data.knowledge, "knowledge_fallback");
-        const choices = generateChoices(
-          entry.answer,
-          data.knowledge,
-          (k) => k.answer,
-          random,
-        );
+        const skv = ["fill", "fill", "tf", "input"];
+        const skvar = skv[Math.floor(random() * skv.length)];
+        const choices =
+          skvar === "input"
+            ? []
+            : generateChoices(
+                entry.answer,
+                data.knowledge,
+                (k) => k.answer,
+                random,
+              );
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -1775,6 +2120,8 @@ export function generateDailySet(
             entry,
             "",
             choices,
+            skvar,
+            random,
           ),
         );
       }

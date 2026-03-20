@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, HelpCircle } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, XCircle, HelpCircle } from "lucide-react";
 interface Props {
   content: any;
   answer: any;
@@ -12,12 +12,19 @@ interface Props {
   isCorrect: boolean | null;
 }
 
-export default function VocabQuestion({ content, answer, onAnswer, showResult, isCorrect }: Props) {
+export default function VocabQuestion({
+  content,
+  answer,
+  onAnswer,
+  showResult,
+  isCorrect,
+}: Props) {
   const [selected, setSelected] = useState<string | null>(null);
 
+  const variant: string = content?.variant || "clue";
   // Support both formats
   const meanings: string[] = content?.meanings || content?.clues || [];
-  const correctAnswer = answer?.answer || answer?.correct || answer?.text || '';
+  const correctAnswer = answer?.answer || answer?.correct || answer?.text || "";
   const choices: string[] = content?.choices || [];
 
   const handleSelect = (choice: string) => {
@@ -29,33 +36,53 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
   return (
     <div className="flex flex-col items-center gap-6">
       <p className="text-center text-lg font-medium text-muted-foreground">
-        힌트를 보고 알맞은 낱말을 고르세요!
+        {variant === "reverse"
+          ? "낱말을 보고 알맞은 뜻을 고르세요!"
+          : variant === "input"
+            ? "힌트를 보고 낱말을 직접 입력하세요!"
+            : "힌트를 보고 알맞은 낱말을 고르세요!"}
       </p>
 
-      {/* Meaning cards */}
-      <div className="flex flex-col gap-3 w-full max-w-md">
-        {meanings.map((meaning: string, i: number) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.15 }}
-            className="flex items-center gap-3 rounded-xl border-2 border-[#FF8BA7]/20 bg-[#FF8BA7]/5 px-5 py-4 min-h-[52px]"
-          >
-            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FF8BA7]/20 flex items-center justify-center">
-              <HelpCircle className="h-4 w-4 text-[#FF8BA7]" />
-            </div>
-            <p className="text-lg font-medium">{meaning}</p>
-          </motion.div>
-        ))}
-      </div>
+      {/* Reverse variant: show word prominently */}
+      {variant === "reverse" && (
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 200, damping: 15 }}
+          className="text-5xl font-black text-foreground"
+        >
+          {correctAnswer}
+        </motion.div>
+      )}
 
-      {/* Multiple choice options */}
+      {/* Meaning cards (for clue and input variants) */}
+      {variant !== "reverse" && (
+        <div className="flex flex-col gap-3 w-full max-w-md">
+          {meanings.map((meaning: string, i: number) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.15 }}
+              className="flex items-center gap-3 rounded-xl border-2 border-[#FF8BA7]/20 bg-[#FF8BA7]/5 px-5 py-4 min-h-[52px]"
+            >
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#FF8BA7]/20 flex items-center justify-center">
+                <HelpCircle className="h-4 w-4 text-[#FF8BA7]" />
+              </div>
+              <p className="text-lg font-medium">{meaning}</p>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {/* Multiple choice options (clue and reverse variants) */}
       {!showResult && choices.length > 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: meanings.length * 0.15 + 0.1 }}
+          transition={{
+            delay: variant === "reverse" ? 0.2 : meanings.length * 0.15 + 0.1,
+          }}
           className="grid grid-cols-2 gap-3 w-full max-w-md"
         >
           {choices.map((choice, i) => (
@@ -65,8 +92,8 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
                 onClick={() => handleSelect(choice)}
                 className={`w-full h-14 min-h-[48px] text-lg font-bold rounded-xl border-2 transition-all ${
                   selected === choice
-                    ? 'border-[#FF8BA7] bg-[#FF8BA7]/10 text-[#FF8BA7] shadow-md shadow-[#FF8BA7]/10'
-                    : 'border-border hover:border-[#FF8BA7]/40'
+                    ? "border-[#FF8BA7] bg-[#FF8BA7]/10 text-[#FF8BA7] shadow-md shadow-[#FF8BA7]/10"
+                    : "border-border hover:border-[#FF8BA7]/40"
                 }`}
               >
                 {choice}
@@ -76,7 +103,7 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
         </motion.div>
       )}
 
-      {/* Fallback: text input if no choices */}
+      {/* Text input (input variant or fallback when no choices) */}
       {!showResult && choices.length === 0 && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -86,9 +113,12 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
         >
           <input
             type="text"
-            value={selected || ''}
+            value={selected || ""}
             onChange={(e) => setSelected(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && selected?.trim()) onAnswer(selected.trim()); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && selected?.trim())
+                onAnswer(selected.trim());
+            }}
             placeholder="낱말을 입력하세요"
             className="flex-1 h-14 min-h-[48px] text-center text-xl font-bold rounded-xl border-2 border-[#FF8BA7]/30 focus:border-[#FF8BA7] focus:ring-2 focus:ring-[#FF8BA7]/20 outline-none px-4"
             autoFocus
@@ -115,7 +145,7 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
             <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+              transition={{ type: "spring", stiffness: 200, damping: 15 }}
               className="text-5xl font-black text-foreground"
             >
               {correctAnswer}
@@ -123,17 +153,17 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
 
             {/* Show meanings below answer */}
             <div className="text-center text-sm text-muted-foreground">
-              <span className="font-medium">뜻:</span> {meanings.join(', ')}
+              <span className="font-medium">뜻:</span> {meanings.join(", ")}
             </div>
 
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
+              transition={{ type: "spring", stiffness: 300 }}
               className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-bold ${
                 isCorrect
-                  ? 'bg-green-50 text-green-700 border border-green-200'
-                  : 'bg-red-50 text-red-700 border border-red-200'
+                  ? "bg-green-50 text-green-700 border border-green-200"
+                  : "bg-red-50 text-red-700 border border-red-200"
               }`}
             >
               {isCorrect ? (
@@ -157,10 +187,10 @@ export default function VocabQuestion({ content, answer, onAnswer, showResult, i
                     key={i}
                     className={`h-12 min-h-[44px] flex items-center justify-center text-base font-bold rounded-xl border-2 ${
                       choice === correctAnswer
-                        ? 'border-green-400 bg-green-50 text-green-700'
+                        ? "border-green-400 bg-green-50 text-green-700"
                         : selected === choice
-                          ? 'border-red-300 bg-red-50 text-red-500 line-through'
-                          : 'border-border text-muted-foreground'
+                          ? "border-red-300 bg-red-50 text-red-500 line-through"
+                          : "border-border text-muted-foreground"
                     }`}
                   >
                     {choice}
