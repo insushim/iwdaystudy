@@ -1430,7 +1430,7 @@ function deduplicateByWord(entries: WordDef[]): WordDef[] {
 // Main export
 // ============================================================
 
-export function generateVocabPool(grade: number, seed: number): VocabEntry[] {
+export function generateVocabPool(grade: number, seed: number, difficulty: 1 | 2 | 3 = 2): VocabEntry[] {
   const rng = seededRandom(seed);
 
   let baseWords: WordDef[];
@@ -1451,6 +1451,21 @@ export function generateVocabPool(grade: number, seed: number): VocabEntry[] {
 
   // Combine and deduplicate
   let allWords = deduplicateByWord([...baseWords, ...extraWords]);
+
+  // Apply difficulty filtering
+  if (difficulty !== 2 && allWords.length > 10) {
+    const cutoff40 = Math.ceil(allWords.length * 0.4);
+    if (difficulty === 1) {
+      // Easy: first 40% of word list (common words with simpler meanings)
+      allWords = allWords.slice(0, cutoff40);
+    } else {
+      // Hard: last 40% (abstract words) + filter for words with 2+ meanings
+      const hardSlice = allWords.slice(allWords.length - cutoff40);
+      const multiMeaning = allWords.filter((w) => w.meanings.length >= 2);
+      // Merge hard slice with multi-meaning words, deduplicate
+      allWords = deduplicateByWord([...hardSlice, ...multiMeaning]);
+    }
+  }
 
   // Shuffle with seed
   shuffleArray(allWords, rng);

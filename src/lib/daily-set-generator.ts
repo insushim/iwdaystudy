@@ -232,16 +232,15 @@ function takeExpandedPortion<T>(items: T[], ratio = 0.5): T[] {
 }
 
 // ── 적응형 난이도 (Adaptive Difficulty) ──────────────────────────
-function clampGrade(g: number): number {
-  return Math.max(1, Math.min(6, g));
-}
+// 같은 학년 + 성취기준 내에서 쉬움/보통/어려움 3단계
+// 학년을 바꾸지 않고 문제 난이도만 조정
 
-/** 과목별 정답률에 따라 난이도 오프셋 결정 */
-function getDifficultyOffset(accuracy: number | undefined): number {
-  if (accuracy === undefined) return 0; // 데이터 없으면 기본
-  if (accuracy >= 85) return 1;  // 잘 맞추면 한 단계 UP
-  if (accuracy <= 45) return -1; // 많이 틀리면 한 단계 DOWN
-  return 0;
+/** 과목별 정답률에 따라 난이도 결정 (1=쉬움, 2=보통, 3=어려움) */
+function getDifficultyLevel(accuracy: number | undefined): 1 | 2 | 3 {
+  if (accuracy === undefined) return 2; // 데이터 없으면 보통
+  if (accuracy >= 85) return 3;  // 잘 맞추면 어려운 문제
+  if (accuracy <= 45) return 1;  // 많이 틀리면 쉬운 문제
+  return 2;
 }
 
 interface GradeData {
@@ -362,66 +361,66 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   const expandedDayOfYear = dayOfYear + 10000;
   const expandedDayOfYearBonus = dayOfYear + 20000;
 
-  // 적응형 난이도: 과목별 정답률에 따라 학년 오프셋 조정
-  const adj = (subject: string, base: number) =>
-    clampGrade(base + getDifficultyOffset(subjectAccuracy?.[subject]?.accuracy));
+  // 적응형 난이도: 같은 학년·성취기준 내에서 난이도만 조정 (학년 변경 없음)
+  const diff = (subject: string) => getDifficultyLevel(subjectAccuracy?.[subject]?.accuracy);
+  const mathDiff = diff('math');
+  const spellingDiff = diff('spelling');
+  const vocabDiff = diff('vocabulary');
+  const knowledgeDiff = diff('general_knowledge');
+  const safetyDiff = diff('safety');
+  const hanjaDiff = diff('hanja');
+  const englishDiff = diff('english');
+  const scienceDiff = diff('science');
+  const socialDiff = diff('social');
 
-  // 선행학습법 + 적응형 난이도
-  // 주지과목: grade-1 기본 (선행학습법) + 정답률 반영
-  const coreMathGrade = Math.max(1, adj('math', grade - 1));
-  const coreEnglishGrade = Math.max(3, adj('english', grade - 1));
-  const coreScienceGrade = Math.max(5, adj('science', grade - 1));
-  const coreSocialGrade = Math.max(5, adj('social', grade - 1));
+  // 선행학습법: 주지과목은 현재 학년 - 1의 내용 사용 (학년 변경 없음)
+  const coreMathGrade = Math.max(1, grade - 1);
+  const coreEnglishGrade = Math.max(3, grade - 1);
+  const coreScienceGrade = Math.max(5, grade - 1);
+  const coreSocialGrade = Math.max(5, grade - 1);
 
-  // 비주지과목: 현재 학년 기준 + 정답률 반영
-  const spellingGrade = adj('spelling', grade);
-  const vocabGrade = adj('vocabulary', grade);
-  const knowledgeGrade = adj('general_knowledge', grade);
-  const safetyGrade = adj('safety', grade);
-  const hanjaGrade = adj('hanja', grade);
-
-  // ---- 주지과목 풀 생성 (전 학년 기준) ----
-  const generatedMath = generateMathPool(coreMathGrade, dayOfYear, semester);
-  const generatedMathExtra = generateMathPool(coreMathGrade, expandedDayOfYear, semester);
+  // ---- 주지과목 풀 생성 (전 학년 기준 + 난이도 적용) ----
+  const generatedMath = generateMathPool(coreMathGrade, dayOfYear, semester, mathDiff);
+  const generatedMathExtra = generateMathPool(coreMathGrade, expandedDayOfYear, semester, mathDiff);
   const generatedMathBonus = takeExpandedPortion(
-    generateMathPool(coreMathGrade, expandedDayOfYearBonus, semester),
+    generateMathPool(coreMathGrade, expandedDayOfYearBonus, semester, mathDiff),
   );
-  const generatedEnglish = generateEnglishPool(coreEnglishGrade, dayOfYear);
-  const generatedEnglishExtra = generateEnglishPool(coreEnglishGrade, expandedDayOfYear);
+  const generatedEnglish = generateEnglishPool(coreEnglishGrade, dayOfYear, englishDiff);
+  const generatedEnglishExtra = generateEnglishPool(coreEnglishGrade, expandedDayOfYear, englishDiff);
   const generatedEnglishBonus = takeExpandedPortion(
-    generateEnglishPool(coreEnglishGrade, expandedDayOfYearBonus),
+    generateEnglishPool(coreEnglishGrade, expandedDayOfYearBonus, englishDiff),
   );
-  const generatedScience = generateSciencePool(coreScienceGrade, dayOfYear);
-  const generatedScienceExtra = generateSciencePool(coreScienceGrade, expandedDayOfYear);
+  const generatedScience = generateSciencePool(coreScienceGrade, dayOfYear, scienceDiff);
+  const generatedScienceExtra = generateSciencePool(coreScienceGrade, expandedDayOfYear, scienceDiff);
   const generatedScienceBonus = takeExpandedPortion(
-    generateSciencePool(coreScienceGrade, expandedDayOfYearBonus),
+    generateSciencePool(coreScienceGrade, expandedDayOfYearBonus, scienceDiff),
   );
 
-  // ---- 비주지과목 풀 생성 (적응형 난이도 반영) ----
-  const generatedSpelling = generateSpellingPool(spellingGrade, dayOfYear);
-  const generatedSpellingExtra = generateSpellingPool(spellingGrade, expandedDayOfYear);
+  // ---- 비주지과목 풀 생성 (같은 학년 + 난이도 적용) ----
+  const generatedSpelling = generateSpellingPool(grade, dayOfYear, spellingDiff);
+  const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear, spellingDiff);
   const generatedSpellingBonus = takeExpandedPortion(
-    generateSpellingPool(spellingGrade, expandedDayOfYearBonus),
+    generateSpellingPool(grade, expandedDayOfYearBonus, spellingDiff),
   );
-  const generatedVocab = generateVocabPool(vocabGrade, dayOfYear);
-  const generatedVocabExtra = generateVocabPool(vocabGrade, expandedDayOfYear);
+  const generatedVocab = generateVocabPool(grade, dayOfYear, vocabDiff);
+  const generatedVocabExtra = generateVocabPool(grade, expandedDayOfYear, vocabDiff);
   const generatedVocabBonus = takeExpandedPortion(
-    generateVocabPool(vocabGrade, expandedDayOfYearBonus),
+    generateVocabPool(grade, expandedDayOfYearBonus, vocabDiff),
   );
-  const generatedKnowledge = generateKnowledgePool(knowledgeGrade, dayOfYear);
-  const generatedKnowledgeExtra = generateKnowledgePool(knowledgeGrade, expandedDayOfYear);
+  const generatedKnowledge = generateKnowledgePool(grade, dayOfYear, knowledgeDiff);
+  const generatedKnowledgeExtra = generateKnowledgePool(grade, expandedDayOfYear, knowledgeDiff);
   const generatedKnowledgeBonus = takeExpandedPortion(
-    generateKnowledgePool(knowledgeGrade, expandedDayOfYearBonus),
+    generateKnowledgePool(grade, expandedDayOfYearBonus, knowledgeDiff),
   );
-  const generatedSafety = generateSafetyPool(safetyGrade, dayOfYear);
-  const generatedSafetyExtra = generateSafetyPool(safetyGrade, expandedDayOfYear);
+  const generatedSafety = generateSafetyPool(grade, dayOfYear, safetyDiff);
+  const generatedSafetyExtra = generateSafetyPool(grade, expandedDayOfYear, safetyDiff);
   const generatedSafetyBonus = takeExpandedPortion(
-    generateSafetyPool(safetyGrade, expandedDayOfYearBonus),
+    generateSafetyPool(grade, expandedDayOfYearBonus, safetyDiff),
   );
-  const generatedHanja = generateHanjaPool(hanjaGrade, dayOfYear);
-  const generatedHanjaExtra = generateHanjaPool(hanjaGrade, expandedDayOfYear);
+  const generatedHanja = generateHanjaPool(grade, dayOfYear, hanjaDiff);
+  const generatedHanjaExtra = generateHanjaPool(grade, expandedDayOfYear, hanjaDiff);
   const generatedHanjaBonus = takeExpandedPortion(
-    generateHanjaPool(hanjaGrade, expandedDayOfYearBonus),
+    generateHanjaPool(grade, expandedDayOfYearBonus, hanjaDiff),
   );
   const generatedWriting = generateWritingPool(grade, dayOfYear);
   const generatedWritingExtra = generateWritingPool(grade, expandedDayOfYear);
@@ -433,10 +432,10 @@ function getGradeData(grade: number, semester: number, daySeed?: number, subject
   const generatedCreativeBonus = takeExpandedPortion(
     generateCreativePool(grade, expandedDayOfYearBonus),
   );
-  const generatedSocial = generateSocialPool(coreSocialGrade, dayOfYear);
-  const generatedSocialExtra = generateSocialPool(coreSocialGrade, expandedDayOfYear);
+  const generatedSocial = generateSocialPool(coreSocialGrade, dayOfYear, socialDiff);
+  const generatedSocialExtra = generateSocialPool(coreSocialGrade, expandedDayOfYear, socialDiff);
   const generatedSocialBonus = takeExpandedPortion(
-    generateSocialPool(coreSocialGrade, expandedDayOfYearBonus),
+    generateSocialPool(coreSocialGrade, expandedDayOfYearBonus, socialDiff),
   );
 
   // ---- 주지과목 단원 진도 필터링 (전 학년 기준) ----

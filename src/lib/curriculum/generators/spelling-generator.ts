@@ -1419,16 +1419,39 @@ export function generateSpellingProblems(
   grade: number,
   count: number,
   seed: number,
+  difficulty: 1 | 2 | 3 = 2,
 ): SpellingEntry[] {
   const rng = seededRandom(seed);
-  const eligible = SPELLING_PATTERNS.filter((p) => p.gradeMin <= grade);
-  const templates = SENTENCE_TEMPLATES.filter((t) => t.gradeMin <= grade);
+  let eligible = SPELLING_PATTERNS.filter((p) => p.gradeMin <= grade);
+
+  // Apply difficulty filtering on the eligible patterns
+  if (difficulty !== 2 && eligible.length > 5) {
+    const cutoff40 = Math.ceil(eligible.length * 0.4);
+    if (difficulty === 1) {
+      // Easy: first 40% (common/simple patterns)
+      eligible = eligible.slice(0, cutoff40);
+    } else {
+      // Hard: last 40% (tricky edge cases)
+      eligible = eligible.slice(eligible.length - cutoff40);
+    }
+  }
+
+  let templates = SENTENCE_TEMPLATES.filter((t) => t.gradeMin <= grade);
+
+  // Hard mode: use more complex sentence templates (higher gradeMin)
+  if (difficulty === 3 && templates.length > 5) {
+    const cutoff40 = Math.ceil(templates.length * 0.4);
+    templates = templates.slice(templates.length - cutoff40);
+  }
+
   const results: SpellingEntry[] = [];
 
   for (let i = 0; i < count; i++) {
     const pattern = pickOne(rng, eligible);
     const template = pickOne(rng, templates);
-    const answerIsFirst = rng() > 0.4; // 60% chance correct is first
+    // Hard: more balanced (50/50), Easy: answer is first more often (70%)
+    const answerThreshold = difficulty === 3 ? 0.5 : difficulty === 1 ? 0.3 : 0.4;
+    const answerIsFirst = rng() > answerThreshold;
 
     const q1 = template.template.replace(
       "{word}",
@@ -1453,10 +1476,12 @@ export function generateSpellingProblems(
 export function generateSpellingPool(
   grade: number,
   dayOfYear: number,
+  difficulty: 1 | 2 | 3 = 2,
 ): SpellingEntry[] {
   return generateSpellingProblems(
     grade,
     300,
     dayOfYear * 1000 + grade * 100 + 77,
+    difficulty,
   );
 }

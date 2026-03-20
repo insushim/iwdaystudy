@@ -597,9 +597,20 @@ function buildPool(
   grade: number,
   seed: number,
   targetSize: number,
+  difficulty: 1 | 2 | 3 = 2,
 ): KnowledgeEntry[] {
   const rng = seededRandom(seed);
-  const eligible = filterByGrade(items, grade);
+  let eligible = filterByGrade(items, grade);
+
+  // Filter by difficulty: slice the eligible entries array
+  if (difficulty === 1) {
+    // Easy: use first 40% of entries (basic/observable facts)
+    eligible = eligible.slice(0, Math.ceil(eligible.length * 0.4));
+  } else if (difficulty === 3) {
+    // Hard: use last 40% of entries (abstract/analytical facts)
+    eligible = eligible.slice(Math.floor(eligible.length * 0.6));
+  }
+  // difficulty === 2: no filtering (current behavior)
 
   // Weight: for grades 5-6, duplicate upper-grade items to bias toward them
   const weighted: (ScienceItem | SocialItem)[] = [];
@@ -1696,8 +1707,8 @@ function assignScienceUnit(entry: KnowledgeEntry): string | undefined {
   return undefined;
 }
 
-export function generateSciencePool(grade: number, seed: number): KnowledgeEntry[] {
-  const pool = buildPool([...SCIENCE_ITEMS, ...SCIENCE_EXTRA], grade, seed, 500);
+export function generateSciencePool(grade: number, seed: number, difficulty: 1 | 2 | 3 = 2): KnowledgeEntry[] {
+  const pool = buildPool([...SCIENCE_ITEMS, ...SCIENCE_EXTRA], grade, seed, 500, difficulty);
   // Assign curriculum units to items based on content
   return pool.map(entry => {
     const unit = assignScienceUnit(entry);
@@ -1726,8 +1737,8 @@ function assignSocialUnit(entry: KnowledgeEntry, grade: number): string | undefi
   return undefined; // 지역사회 등 나머지는 항상 표시
 }
 
-export function generateSocialPool(grade: number, seed: number): KnowledgeEntry[] {
-  const pool = buildPool([...SOCIAL_ITEMS, ...SOCIAL_EXTRA], grade, seed, 500);
+export function generateSocialPool(grade: number, seed: number, difficulty: 1 | 2 | 3 = 2): KnowledgeEntry[] {
+  const pool = buildPool([...SOCIAL_ITEMS, ...SOCIAL_EXTRA], grade, seed, 500, difficulty);
   return pool.map(entry => {
     const unit = assignSocialUnit(entry, grade);
     if (unit) return { ...entry, unit };

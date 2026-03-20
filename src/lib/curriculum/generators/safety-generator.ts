@@ -1506,9 +1506,42 @@ function getEligibleTemplates(grade: number): SafetyTemplate[] {
 export function generateSafetyPool(
   grade: number,
   seed: number,
+  difficulty: 1 | 2 | 3 = 2,
 ): SafetyEntry[] {
   const rng = seededRandom(seed);
-  const eligible = getEligibleTemplates(grade);
+  let eligible = getEligibleTemplates(grade);
+
+  // Apply difficulty filtering
+  if (difficulty !== 2 && eligible.length > 10) {
+    if (difficulty === 1) {
+      // Easy: prefer simpler safety rules (grade group '1-2' style)
+      const easyEntries = eligible.filter((t) => t.gradeGroup === "1-2");
+      if (easyEntries.length > 10) {
+        eligible = easyEntries;
+      } else {
+        // Fallback: first 40% of eligible pool
+        eligible = eligible.slice(0, Math.ceil(eligible.length * 0.4));
+      }
+    } else {
+      // Hard: prefer nuanced safety scenarios (highest grade group available)
+      const gradeGroup = getGradeGroup(grade);
+      let hardEntries: SafetyTemplate[];
+      if (gradeGroup === "5-6") {
+        hardEntries = eligible.filter((t) => t.gradeGroup === "5-6");
+      } else if (gradeGroup === "3-4") {
+        hardEntries = eligible.filter((t) => t.gradeGroup === "3-4");
+      } else {
+        // Grade 1-2: take last 40% (more complex within same group)
+        hardEntries = eligible.slice(Math.floor(eligible.length * 0.6));
+      }
+      if (hardEntries.length > 10) {
+        eligible = hardEntries;
+      } else {
+        // Fallback: last 40% of eligible pool
+        eligible = eligible.slice(Math.floor(eligible.length * 0.6));
+      }
+    }
+  }
 
   // Shuffle and select 500 items
   const shuffled = shuffle(rng, eligible);

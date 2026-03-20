@@ -1322,7 +1322,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 // ============================================================
 // Main export function
 // ============================================================
-export function generateKnowledgePool(grade: number, seed: number): KnowledgeEntry[] {
+export function generateKnowledgePool(grade: number, seed: number, difficulty: 1 | 2 | 3 = 2): KnowledgeEntry[] {
   const random = seededRandom(seed * 13 + grade * 47);
 
   // Select grade-appropriate templates
@@ -1335,6 +1335,45 @@ export function generateKnowledgePool(grade: number, seed: number): KnowledgeEnt
   } else {
     // Grade 5-6 includes some grade 3-4 entries for reinforcement
     basePool = [...GRADE_5_6, ...GRADE_3_4.filter((_, i) => i % 3 === 0)];
+  }
+
+  // Apply difficulty filtering
+  if (difficulty !== 2 && basePool.length > 10) {
+    const cutoff40 = Math.ceil(basePool.length * 0.4);
+    if (difficulty === 1) {
+      // Easy: prefer entries from lower grades (concrete facts)
+      // Sort by putting lower-grade entries first, then take first 40%
+      if (grade <= 2) {
+        basePool = basePool.slice(0, cutoff40);
+      } else if (grade <= 4) {
+        // Prefer GRADE_1_2 reinforcement entries + beginning of GRADE_3_4
+        const easyEntries = [
+          ...GRADE_1_2.filter((_, i) => i % 2 === 0),
+          ...GRADE_3_4.slice(0, Math.ceil(GRADE_3_4.length * 0.3)),
+        ];
+        basePool = easyEntries.length > 10 ? easyEntries : basePool.slice(0, cutoff40);
+      } else {
+        // Prefer GRADE_3_4 reinforcement entries + beginning of GRADE_5_6
+        const easyEntries = [
+          ...GRADE_3_4.filter((_, i) => i % 2 === 0),
+          ...GRADE_5_6.slice(0, Math.ceil(GRADE_5_6.length * 0.3)),
+        ];
+        basePool = easyEntries.length > 10 ? easyEntries : basePool.slice(0, cutoff40);
+      }
+    } else {
+      // Hard: prefer entries from higher grades (abstract/science facts)
+      if (grade <= 2) {
+        basePool = basePool.slice(basePool.length - cutoff40);
+      } else if (grade <= 4) {
+        // Prefer harder GRADE_3_4 entries (later portion = more abstract)
+        const hardEntries = GRADE_3_4.slice(Math.floor(GRADE_3_4.length * 0.6));
+        basePool = hardEntries.length > 10 ? hardEntries : basePool.slice(basePool.length - cutoff40);
+      } else {
+        // Prefer harder GRADE_5_6 entries (later portion = more abstract/science)
+        const hardEntries = GRADE_5_6.slice(Math.floor(GRADE_5_6.length * 0.6));
+        basePool = hardEntries.length > 10 ? hardEntries : basePool.slice(basePool.length - cutoff40);
+      }
+    }
   }
 
   // Shuffle the base pool

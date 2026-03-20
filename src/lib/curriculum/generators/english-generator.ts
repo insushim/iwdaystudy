@@ -2061,7 +2061,7 @@ function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
 // Main Export
 // ============================================================
 
-export function generateEnglishPool(grade: number, seed: number): EnglishEntry[] {
+export function generateEnglishPool(grade: number, seed: number, difficulty: 1 | 2 | 3 = 2): EnglishEntry[] {
   // Grades 1-2 don't have English curriculum
   if (grade <= 2) {
     return [];
@@ -2076,6 +2076,28 @@ export function generateEnglishPool(grade: number, seed: number): EnglishEntry[]
   } else {
     pool = generateGrade5_6Entries(rng);
   }
+
+  // Filter by difficulty
+  if (difficulty === 1) {
+    // Easy: short words (≤5 chars) and basic topics (greetings, colors, numbers)
+    const easyTopics = new Set(['인사와 소개', '숫자와 색깔', '가족과 신체', '동물과 자연', '학교생활', '파닉스', '모양과 도형', '놀이와 장난감', '날씨', '운동과 스포츠', '과일과 채소', '날씨와 계절']);
+    pool = pool.filter(entry => {
+      const wordLen = entry.word.split(/\s+/)[0].length; // first word length
+      const isShort = wordLen <= 5;
+      const isEasyTopic = entry.unit ? easyTopics.has(entry.unit) : false;
+      return isShort || isEasyTopic;
+    });
+  } else if (difficulty === 3) {
+    // Hard: longer words (>5 chars) and complex topics (science, environment, feelings)
+    const hardTopics = new Set(['과학과 기술', '환경과 지구', '감정과 상태', '과거경험', '비교와 묘사', '사회와 공동체', '미디어와 소통', '우주와 과학', '과학 탐구', '여행과 세계', '진로와 직업']);
+    pool = pool.filter(entry => {
+      const wordLen = entry.word.split(/\s+/)[0].length;
+      const isLong = wordLen > 5;
+      const isHardTopic = entry.unit ? hardTopics.has(entry.unit) : false;
+      return isLong || isHardTopic;
+    });
+  }
+  // difficulty === 2: no filtering (current behavior)
 
   // Shuffle the pool
   pool = shuffle(rng, pool);

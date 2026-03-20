@@ -982,7 +982,8 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
  */
 export function generateHanjaPool(
   grade: number,
-  seed: number
+  seed: number,
+  difficulty: 1 | 2 | 3 = 2
 ): HanjaEntry[] {
   // Grades 1-2 do not study Hanja
   if (grade <= 2) {
@@ -1000,6 +1001,16 @@ export function generateHanjaPool(
     // Grade 5-6: Intermediate Hanja (급수 6-5급) + some basic for review
     pool = [...GRADE_5_6_HANJA, ...EXTRA_56, ...GRADE_3_4_HANJA, ...EXTRA_34];
   }
+
+  // Filter by difficulty based on stroke count
+  if (difficulty === 1) {
+    // Easy: characters with ≤6 strokes (simpler characters)
+    pool = pool.filter(h => h.strokes <= 6);
+  } else if (difficulty === 3) {
+    // Hard: characters with >8 strokes (complex characters)
+    pool = pool.filter(h => h.strokes > 8);
+  }
+  // difficulty === 2: no filtering (current behavior)
 
   // Shuffle with seeded PRNG
   const shuffled = shuffle(pool, rng);
