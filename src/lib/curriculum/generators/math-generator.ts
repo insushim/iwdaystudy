@@ -37,7 +37,9 @@ function generateGrade1Math(rng: () => number): MathEntry {
     "subtraction",
     "subtraction",
     "counting",
+    "counting3",
     "comparison",
+    "comparison_symbol",
   ]);
 
   if (type === "addition") {
@@ -77,6 +79,34 @@ function generateGrade1Math(rng: () => number): MathEntry {
       unit: "뛰어 세기",
       numbers: [start, skip, count],
     };
+  } else if (type === "counting3") {
+    // 3씩 뛰어세기
+    const start = randInt(rng, 1, 30);
+    const count = randInt(rng, 3, 6);
+    const answer = start + 3 * count;
+    return {
+      type: "counting",
+      expression: `${start}부터 3씩 ${count}번 뛰어 세면?`,
+      answer,
+      steps: Array.from({ length: count + 1 }, (_, i) => `${start + 3 * i}`),
+      unit: "3씩 뛰어 세기",
+      numbers: [start, 3, count],
+    };
+  } else if (type === "comparison_symbol") {
+    // 수 비교 (>, <, =) with visual descriptions
+    const a = randInt(rng, 1, 50);
+    const b = randInt(rng, 1, 50);
+    const symbol = a > b ? ">" : a < b ? "<" : "=";
+    const answerNum = a > b ? 1 : a < b ? 2 : 0;
+    const items = pickOne(rng, ["사과", "구슬", "연필", "딸기", "공"]);
+    return {
+      type: "comparison",
+      expression: `${items}가 ${a}개, 귤이 ${b}개 있습니다. 더 많은 것은? (1: ${items}, 2: 귤, 0: 같음)`,
+      answer: answerNum,
+      steps: [`${a} ${symbol} ${b}`, answerNum === 1 ? `${items}가 더 많습니다` : answerNum === 2 ? `귤이 더 많습니다` : `같습니다`],
+      unit: "수 비교 (>, <, =)",
+      numbers: [a, b],
+    };
   } else {
     const a = randInt(rng, 1, 50);
     const b = randInt(rng, 1, 50);
@@ -103,6 +133,9 @@ function generateGrade2Math(rng: () => number): MathEntry {
     "multiplication_intro",
     "time",
     "length",
+    "length_compare",
+    "weight_compare",
+    "clock_read",
   ]);
 
   if (type === "addition2") {
@@ -165,6 +198,47 @@ function generateGrade2Math(rng: () => number): MathEntry {
       unit: "시각과 시간",
       numbers: [hour, min],
     };
+  } else if (type === "length_compare") {
+    // 길이 비교
+    const cm1 = randInt(rng, 10, 99);
+    const cm2 = randInt(rng, 10, 99);
+    const diff = Math.abs(cm1 - cm2);
+    return {
+      type: "subtraction",
+      expression: `연필 길이가 ${cm1}cm, 지우개 길이가 ${cm2}cm입니다. 몇 cm 차이?`,
+      answer: diff,
+      steps: [cm1 > cm2 ? `${cm1} - ${cm2} = ${diff}cm` : `${cm2} - ${cm1} = ${diff}cm`],
+      unit: "길이 비교",
+      numbers: [cm1, cm2],
+    };
+  } else if (type === "weight_compare") {
+    // 무게 비교
+    const kg1 = randInt(rng, 1, 20);
+    const kg2 = randInt(rng, 1, 20);
+    return {
+      type: "comparison",
+      expression: `수박 ${kg1}kg, 참외 ${kg2}kg 중 더 무거운 것의 무게는?`,
+      answer: Math.max(kg1, kg2),
+      steps: [`${kg1}과 ${kg2}를 비교합니다`, `${Math.max(kg1, kg2)}kg이 더 무겁습니다`],
+      unit: "무게 비교",
+      numbers: [kg1, kg2],
+    };
+  } else if (type === "clock_read") {
+    // 시계 읽기 문제
+    const hour = randInt(rng, 1, 12);
+    const min = pickOne(rng, [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]);
+    const addMin = pickOne(rng, [15, 20, 25, 30, 45, 60]);
+    const totalMin = hour * 60 + min + addMin;
+    const newHour = Math.floor(totalMin / 60) % 12 || 12;
+    const newMin = totalMin % 60;
+    return {
+      type: "time",
+      expression: `${hour}시 ${min === 0 ? "정각" : min + "분"}에서 ${addMin}분 후는 몇 시 몇 분?`,
+      answer: newHour * 100 + newMin,
+      steps: [`${hour}시 ${min}분 + ${addMin}분 = ${newHour}시 ${newMin}분`],
+      unit: "시계 읽기",
+      numbers: [hour, min],
+    };
   } else {
     const cm = randInt(rng, 5, 30);
     const cm2 = randInt(rng, 5, 30);
@@ -189,7 +263,9 @@ function generateGrade3Math(rng: () => number): MathEntry {
     "multiplication",
     "multiplication",
     "division_intro",
+    "division_remainder",
     "fraction_intro",
+    "fraction_compare",
   ]);
 
   if (type === "addition3") {
@@ -246,6 +322,41 @@ function generateGrade3Math(rng: () => number): MathEntry {
       quotient,
       remainder: 0,
     };
+  } else if (type === "division_remainder") {
+    // 나머지 있는 나눗셈
+    const divisor = randInt(rng, 2, 9);
+    const quotient = randInt(rng, 2, 9);
+    const remainder = randInt(rng, 1, divisor - 1);
+    const dividend = divisor * quotient + remainder;
+    return {
+      type: "division",
+      expression: `${dividend} ÷ ${divisor} = ? ... ?`,
+      answer: quotient,
+      steps: [
+        `${dividend} 안에 ${divisor}가 ${quotient}번 들어갑니다`,
+        `${dividend} ÷ ${divisor} = ${quotient} ... ${remainder}`,
+      ],
+      unit: "나머지가 있는 나눗셈",
+      dividend,
+      divisor,
+      quotient,
+      remainder,
+    };
+  } else if (type === "fraction_compare") {
+    // 분수 크기 비교
+    const denom = pickOne(rng, [3, 4, 5, 6, 8]);
+    const n1 = randInt(rng, 1, denom - 1);
+    let n2 = randInt(rng, 1, denom - 1);
+    if (n2 === n1) n2 = n1 > 1 ? n1 - 1 : n1 + 1;
+    const bigger = Math.max(n1, n2);
+    return {
+      type: "fraction",
+      expression: `${n1}/${denom}과 ${n2}/${denom} 중 더 큰 분수의 분자는?`,
+      answer: bigger,
+      steps: [`분모가 같으면 분자가 큰 것이 더 큽니다`, `${bigger}/${denom}이 더 큽니다`],
+      unit: "분수 크기 비교",
+      numbers: [n1, n2, denom],
+    };
   } else {
     // fraction intro
     const denom = pickOne(rng, [2, 3, 4, 5, 6, 8]);
@@ -271,7 +382,9 @@ function generateGrade4Math(rng: () => number): MathEntry {
     "large_addition",
     "large_subtraction",
     "angle",
+    "angle_calc",
     "fraction_add",
+    "graph_read",
   ]);
 
   if (type === "multiplication_2digit") {
@@ -341,6 +454,47 @@ function generateGrade4Math(rng: () => number): MathEntry {
       unit: "각도",
       numbers: [angle1],
     };
+  } else if (type === "angle_calc") {
+    // 각도 계산 (두 각의 합/차)
+    const a1 = randInt(rng, 20, 120);
+    const a2 = randInt(rng, 10, 60);
+    const isAdd = rng() > 0.5;
+    if (isAdd) {
+      return {
+        type: "angle",
+        expression: `${a1}°와 ${a2}°를 더하면 몇 도?`,
+        answer: a1 + a2,
+        steps: [`${a1}° + ${a2}° = ${a1 + a2}°`],
+        unit: "각도 계산",
+        numbers: [a1, a2],
+      };
+    } else {
+      const big = Math.max(a1, a2);
+      const small = Math.min(a1, a2);
+      return {
+        type: "angle",
+        expression: `${big}°에서 ${small}°를 빼면 몇 도?`,
+        answer: big - small,
+        steps: [`${big}° - ${small}° = ${big - small}°`],
+        unit: "각도 계산",
+        numbers: [big, small],
+      };
+    }
+  } else if (type === "graph_read") {
+    // 꺾은선 그래프 읽기
+    const months = ["1월", "2월", "3월", "4월", "5월"];
+    const values = Array.from({ length: 5 }, () => randInt(rng, 5, 30));
+    const maxVal = Math.max(...values);
+    const maxIdx = values.indexOf(maxVal);
+    const minVal = Math.min(...values);
+    return {
+      type: "comparison",
+      expression: `기온 그래프: ${months.map((m, i) => `${m}=${values[i]}°C`).join(", ")}. 가장 높은 달의 기온은?`,
+      answer: maxVal,
+      steps: [`${months[maxIdx]}의 기온이 ${maxVal}°C로 가장 높습니다`],
+      unit: "꺾은선 그래프 읽기",
+      numbers: values,
+    };
   } else {
     // fraction addition (same denominator)
     const denom = pickOne(rng, [3, 4, 5, 6, 8]);
@@ -367,8 +521,8 @@ function generateGrade4Math(rng: () => number): MathEntry {
 // 2학기: 분수의 곱셈, 소수의 곱셈, 소수의 덧셈, 넓이
 // ============================================================
 function generateGrade5Math(rng: () => number, semester = 1): MathEntry {
-  const sem1Types = ["mixed_ops", "factor", "lcm_gcd", "fraction_sub", "fraction_sub"];
-  const sem2Types = ["decimal_multiply", "decimal_add", "area", "fraction_multiply"];
+  const sem1Types = ["mixed_ops", "factor", "lcm_gcd", "fraction_sub", "fraction_sub", "simplify_fraction"];
+  const sem2Types = ["decimal_multiply", "decimal_add", "decimal_multiply2", "area", "fraction_multiply"];
   const type = pickOne(rng, semester === 1 ? sem1Types : sem2Types);
 
   if (type === "mixed_ops") {
@@ -470,6 +624,37 @@ function generateGrade5Math(rng: () => number, semester = 1): MathEntry {
       unit: "분수의 곱셈",
       numbers: [n1, d1, n2, d2],
     };
+  } else if (type === "simplify_fraction") {
+    // 약분 문제
+    const factor = pickOne(rng, [2, 3, 4, 5, 6]);
+    const n = randInt(rng, 1, 5);
+    const d = randInt(rng, n + 1, 8);
+    const numer = n * factor;
+    const denom = d * factor;
+    return {
+      type: "fraction",
+      expression: `${numer}/${denom}을 약분하면? (분자만 입력)`,
+      answer: n,
+      steps: [
+        `${numer}과 ${denom}의 공약수 ${factor}로 나눕니다`,
+        `${numer}/${denom} = ${n}/${d}`,
+      ],
+      unit: "약분",
+      numbers: [numer, denom],
+    };
+  } else if (type === "decimal_multiply2") {
+    // 소수의 곱셈 (소수 × 소수)
+    const a = randInt(rng, 1, 9) / 10;
+    const b = randInt(rng, 2, 9);
+    const answer = Math.round(a * b * 10) / 10;
+    return {
+      type: "decimal",
+      expression: `${a} × ${b} = ?`,
+      answer,
+      steps: [`소수점 위치에 주의합니다`, `${a} × ${b} = ${answer}`],
+      unit: "소수의 곱셈",
+      numbers: [a * 10, b],
+    };
   } else if (type === "area") {
     const w = randInt(rng, 3, 15);
     const h = randInt(rng, 3, 15);
@@ -512,7 +697,9 @@ function generateGrade6Math(rng: () => number): MathEntry {
     "ratio",
     "percentage",
     "circle_area",
+    "circle_circumference",
     "proportion",
+    "proportion_word",
     "probability",
     "volume",
   ]);
@@ -555,6 +742,36 @@ function generateGrade6Math(rng: () => number): MathEntry {
       ],
       unit: "원의 넓이",
       numbers: [r],
+    };
+  } else if (type === "circle_circumference") {
+    const r = randInt(rng, 2, 10);
+    const circumference = Math.round(2 * r * 3.14 * 100) / 100;
+    return {
+      type: "area",
+      expression: `반지름 ${r}cm인 원의 둘레는? (원주율 3.14)`,
+      answer: circumference,
+      steps: [
+        `원의 둘레 = 2 × 반지름 × 3.14`,
+        `2 × ${r} × 3.14 = ${circumference}cm`,
+      ],
+      unit: "원의 둘레",
+      numbers: [r],
+    };
+  } else if (type === "proportion_word") {
+    // 비례식 문장형
+    const a = randInt(rng, 2, 6);
+    const b = randInt(rng, 2, 6);
+    const multiplier = randInt(rng, 2, 5);
+    return {
+      type: "proportion",
+      expression: `사탕 ${a}개에 ${b * 10}원이면, 사탕 ${a * multiplier}개는 얼마?`,
+      answer: b * 10 * multiplier,
+      steps: [
+        `${a}개 : ${b * 10}원 = ${a * multiplier}개 : ?원`,
+        `? = ${b * 10} × ${multiplier} = ${b * 10 * multiplier}원`,
+      ],
+      unit: "비례식 활용",
+      numbers: [a, b * 10, multiplier],
     };
   } else if (type === "proportion") {
     const a = randInt(rng, 2, 8);
@@ -658,5 +875,5 @@ export function generateMathPool(
   dayOfYear: number,
   semester = 1,
 ): MathEntry[] {
-  return generateMathProblems(grade, 500, dayOfYear * 1000 + grade, semester);
+  return generateMathProblems(grade, 800, dayOfYear * 1000 + grade, semester);
 }

@@ -231,6 +231,19 @@ function takeExpandedPortion<T>(items: T[], ratio = 0.5): T[] {
   return items.slice(0, count);
 }
 
+// ── 적응형 난이도 (Adaptive Difficulty) ──────────────────────────
+function clampGrade(g: number): number {
+  return Math.max(1, Math.min(6, g));
+}
+
+/** 과목별 정답률에 따라 난이도 오프셋 결정 */
+function getDifficultyOffset(accuracy: number | undefined): number {
+  if (accuracy === undefined) return 0; // 데이터 없으면 기본
+  if (accuracy >= 85) return 1;  // 잘 맞추면 한 단계 UP
+  if (accuracy <= 45) return -1; // 많이 틀리면 한 단계 DOWN
+  return 0;
+}
+
 interface GradeData {
   spelling: SpellingEntry[];
   vocab: VocabEntry[];
@@ -344,19 +357,28 @@ function getStaticKoreanData(g: number): KnowledgeEntry[] {
 
 // Get curriculum data per grade (merges static + procedurally generated)
 // 선행학습법 준수: 주지과목(수학·국어·영어·과학)은 전 학년 내용을 제공합니다.
-function getGradeData(grade: number, semester: number, daySeed?: number): GradeData {
+function getGradeData(grade: number, semester: number, daySeed?: number, subjectAccuracy?: Record<string, { accuracy: number }>): GradeData {
   const dayOfYear = daySeed ?? getDayOfYear();
   const expandedDayOfYear = dayOfYear + 10000;
   const expandedDayOfYearBonus = dayOfYear + 20000;
 
-  // 선행학습법: 주지과목은 현재 학년 - 1의 내용 사용
-  // 수학·국어: 최소 1학년
-  // 영어: 최소 3학년 (3학년부터 영어 교육 시작)
-  // 과학·사회: 최소 5학년 (5학년부터 교육 시작)
-  const coreMathGrade = Math.max(1, grade - 1);
-  const coreEnglishGrade = Math.max(3, grade - 1);
-  const coreScienceGrade = Math.max(5, grade - 1);
-  const coreSocialGrade = Math.max(5, grade - 1);
+  // 적응형 난이도: 과목별 정답률에 따라 학년 오프셋 조정
+  const adj = (subject: string, base: number) =>
+    clampGrade(base + getDifficultyOffset(subjectAccuracy?.[subject]?.accuracy));
+
+  // 선행학습법 + 적응형 난이도
+  // 주지과목: grade-1 기본 (선행학습법) + 정답률 반영
+  const coreMathGrade = Math.max(1, adj('math', grade - 1));
+  const coreEnglishGrade = Math.max(3, adj('english', grade - 1));
+  const coreScienceGrade = Math.max(5, adj('science', grade - 1));
+  const coreSocialGrade = Math.max(5, adj('social', grade - 1));
+
+  // 비주지과목: 현재 학년 기준 + 정답률 반영
+  const spellingGrade = adj('spelling', grade);
+  const vocabGrade = adj('vocabulary', grade);
+  const knowledgeGrade = adj('general_knowledge', grade);
+  const safetyGrade = adj('safety', grade);
+  const hanjaGrade = adj('hanja', grade);
 
   // ---- 주지과목 풀 생성 (전 학년 기준) ----
   const generatedMath = generateMathPool(coreMathGrade, dayOfYear, semester);
@@ -375,31 +397,31 @@ function getGradeData(grade: number, semester: number, daySeed?: number): GradeD
     generateSciencePool(coreScienceGrade, expandedDayOfYearBonus),
   );
 
-  // ---- 비주지과목 풀 생성 (현재 학년 기준) ----
-  const generatedSpelling = generateSpellingPool(grade, dayOfYear);
-  const generatedSpellingExtra = generateSpellingPool(grade, expandedDayOfYear);
+  // ---- 비주지과목 풀 생성 (적응형 난이도 반영) ----
+  const generatedSpelling = generateSpellingPool(spellingGrade, dayOfYear);
+  const generatedSpellingExtra = generateSpellingPool(spellingGrade, expandedDayOfYear);
   const generatedSpellingBonus = takeExpandedPortion(
-    generateSpellingPool(grade, expandedDayOfYearBonus),
+    generateSpellingPool(spellingGrade, expandedDayOfYearBonus),
   );
-  const generatedVocab = generateVocabPool(grade, dayOfYear);
-  const generatedVocabExtra = generateVocabPool(grade, expandedDayOfYear);
+  const generatedVocab = generateVocabPool(vocabGrade, dayOfYear);
+  const generatedVocabExtra = generateVocabPool(vocabGrade, expandedDayOfYear);
   const generatedVocabBonus = takeExpandedPortion(
-    generateVocabPool(grade, expandedDayOfYearBonus),
+    generateVocabPool(vocabGrade, expandedDayOfYearBonus),
   );
-  const generatedKnowledge = generateKnowledgePool(grade, dayOfYear);
-  const generatedKnowledgeExtra = generateKnowledgePool(grade, expandedDayOfYear);
+  const generatedKnowledge = generateKnowledgePool(knowledgeGrade, dayOfYear);
+  const generatedKnowledgeExtra = generateKnowledgePool(knowledgeGrade, expandedDayOfYear);
   const generatedKnowledgeBonus = takeExpandedPortion(
-    generateKnowledgePool(grade, expandedDayOfYearBonus),
+    generateKnowledgePool(knowledgeGrade, expandedDayOfYearBonus),
   );
-  const generatedSafety = generateSafetyPool(grade, dayOfYear);
-  const generatedSafetyExtra = generateSafetyPool(grade, expandedDayOfYear);
+  const generatedSafety = generateSafetyPool(safetyGrade, dayOfYear);
+  const generatedSafetyExtra = generateSafetyPool(safetyGrade, expandedDayOfYear);
   const generatedSafetyBonus = takeExpandedPortion(
-    generateSafetyPool(grade, expandedDayOfYearBonus),
+    generateSafetyPool(safetyGrade, expandedDayOfYearBonus),
   );
-  const generatedHanja = generateHanjaPool(grade, dayOfYear);
-  const generatedHanjaExtra = generateHanjaPool(grade, expandedDayOfYear);
+  const generatedHanja = generateHanjaPool(hanjaGrade, dayOfYear);
+  const generatedHanjaExtra = generateHanjaPool(hanjaGrade, expandedDayOfYear);
   const generatedHanjaBonus = takeExpandedPortion(
-    generateHanjaPool(grade, expandedDayOfYearBonus),
+    generateHanjaPool(hanjaGrade, expandedDayOfYearBonus),
   );
   const generatedWriting = generateWritingPool(grade, dayOfYear);
   const generatedWritingExtra = generateWritingPool(grade, expandedDayOfYear);
@@ -926,6 +948,7 @@ export function generateDailySet(
   grade: number,
   semester: number,
   completedSetIds?: Set<string>,
+  subjectAccuracy?: Record<string, { accuracy: number }>,
 ): DailySetWithQuestions {
   const dayOfYear = getDayOfYear();
 
@@ -949,7 +972,7 @@ export function generateDailySet(
   const random = seededRandom(seed);
   const gradeGroup = getGradeGroup(grade);
   const composition = GRADE_SET_COMPOSITION[gradeGroup];
-  const data = getGradeData(grade, semester, finalSeed);
+  const data = getGradeData(grade, semester, finalSeed, subjectAccuracy);
 
   const setNumber = (finalSeed % 10000) + 1;
 
@@ -1115,9 +1138,10 @@ export function generateDailySetWithoutRepeats(
   completedSetIds?: Set<string>,
   usedQuestionSignatures?: Set<string>,
   maxAttempts = 200,
+  subjectAccuracy?: Record<string, { accuracy: number }>,
 ): DailySetWithQuestions {
   if (!usedQuestionSignatures || usedQuestionSignatures.size === 0) {
-    return generateDailySet(grade, semester, completedSetIds);
+    return generateDailySet(grade, semester, completedSetIds, subjectAccuracy);
   }
 
   const triedSetIds = new Set(completedSetIds ?? []);
@@ -1125,7 +1149,7 @@ export function generateDailySetWithoutRepeats(
   let bestRepeatCount = Number.POSITIVE_INFINITY;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
-    const candidate = generateDailySet(grade, semester, triedSetIds);
+    const candidate = generateDailySet(grade, semester, triedSetIds, subjectAccuracy);
     triedSetIds.add(candidate.set.id);
 
     const repeatCount = countRepeatedQuestions(
@@ -1143,5 +1167,5 @@ export function generateDailySetWithoutRepeats(
     }
   }
 
-  return bestCandidate ?? generateDailySet(grade, semester, completedSetIds);
+  return bestCandidate ?? generateDailySet(grade, semester, completedSetIds, subjectAccuracy);
 }

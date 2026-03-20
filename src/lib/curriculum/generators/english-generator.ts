@@ -915,6 +915,497 @@ const G56_TECHNOLOGY: W[] = [
   { w: 'software', p: '소프트웨어', k: '소프트웨어', pr: ['program', 'app'] },
 ];
 
+// ============================================================
+// NEW Grade 3-4 Word Banks (추가 확장)
+// ============================================================
+
+const G34_SHAPES: W[] = [
+  { w: 'circle', p: '서클', k: '원', pr: ['round', 'ring'] },
+  { w: 'square', p: '스퀘어', k: '정사각형', pr: ['box', 'four'] },
+  { w: 'triangle', p: '트라이앵글', k: '삼각형', pr: ['three', 'point'] },
+  { w: 'rectangle', p: '렉탱글', k: '직사각형', pr: ['box', 'long'] },
+  { w: 'star', p: '스타', k: '별 모양', pr: ['point', 'five'] },
+  { w: 'heart', p: '하트', k: '하트 모양', pr: ['love', 'red'] },
+  { w: 'diamond', p: '다이아몬드', k: '다이아몬드 모양', pr: ['gem', 'shape'] },
+  { w: 'oval', p: '오벌', k: '타원형', pr: ['egg', 'round'] },
+  { w: 'cube', p: '큐브', k: '정육면체', pr: ['box', 'dice'] },
+  { w: 'sphere', p: '스피어', k: '구', pr: ['ball', 'round'] },
+  { w: 'cone', p: '콘', k: '원뿔', pr: ['ice cream', 'point'] },
+  { w: 'cylinder', p: '실린더', k: '원기둥', pr: ['tube', 'can'] },
+  { w: 'arrow', p: '애로', k: '화살표', pr: ['point', 'direction'] },
+  { w: 'cross', p: '크로스', k: '십자 모양', pr: ['plus', 'cross'] },
+  { w: 'line', p: '라인', k: '선', pr: ['straight', 'draw'] },
+  { w: 'dot', p: '돗', k: '점', pr: ['spot', 'small'] },
+  { w: 'spiral', p: '스파이럴', k: '나선형', pr: ['twist', 'curl'] },
+  { w: 'hexagon', p: '헥사곤', k: '육각형', pr: ['six', 'bee'] },
+  { w: 'pentagon', p: '펜타곤', k: '오각형', pr: ['five', 'shape'] },
+  { w: 'crescent', p: '크레센트', k: '초승달 모양', pr: ['moon', 'curve'] },
+];
+
+const G34_TOYS: W[] = [
+  { w: 'toy', p: '토이', k: '장난감', pr: ['play', 'fun'] },
+  { w: 'doll', p: '돌', k: '인형', pr: ['girl', 'play'] },
+  { w: 'ball', p: '볼', k: '공', pr: ['throw', 'catch'] },
+  { w: 'block', p: '블록', k: '블록', pr: ['build', 'stack'] },
+  { w: 'puzzle', p: '퍼즐', k: '퍼즐', pr: ['piece', 'solve'] },
+  { w: 'kite', p: '카이트', k: '연', pr: ['fly', 'wind'] },
+  { w: 'robot', p: '로봇', k: '로봇', pr: ['machine', 'play'] },
+  { w: 'teddy bear', p: '테디 베어', k: '곰인형', pr: ['soft', 'hug'] },
+  { w: 'board game', p: '보드 게임', k: '보드게임', pr: ['dice', 'play'] },
+  { w: 'card game', p: '카드 게임', k: '카드게임', pr: ['play', 'fun'] },
+  { w: 'swing', p: '스윙', k: '그네', pr: ['playground', 'fly'] },
+  { w: 'slide', p: '슬라이드', k: '미끄럼틀', pr: ['down', 'playground'] },
+  { w: 'bicycle', p: '바이시클', k: '자전거', pr: ['ride', 'wheel'] },
+  { w: 'skateboard', p: '스케이트보드', k: '스케이트보드', pr: ['ride', 'wheel'] },
+  { w: 'jump rope', p: '점프 로프', k: '줄넘기', pr: ['jump', 'skip'] },
+  { w: 'balloon', p: '벌룬', k: '풍선', pr: ['air', 'pop'] },
+  { w: 'sticker', p: '스티커', k: '스티커', pr: ['stick', 'paper'] },
+  { w: 'top', p: '탑', k: '팽이', pr: ['spin', 'toy'] },
+  { w: 'yo-yo', p: '요요', k: '요요', pr: ['string', 'spin'] },
+  { w: 'marble', p: '마블', k: '구슬', pr: ['roll', 'glass'] },
+];
+
+const G34_MATERIALS: W[] = [
+  { w: 'wood', p: '우드', k: '나무', pr: ['tree', 'hard'] },
+  { w: 'metal', p: '메탈', k: '금속', pr: ['iron', 'hard'] },
+  { w: 'glass', p: '글래스', k: '유리', pr: ['window', 'clear'] },
+  { w: 'plastic', p: '플라스틱', k: '플라스틱', pr: ['bottle', 'light'] },
+  { w: 'paper', p: '페이퍼', k: '종이', pr: ['book', 'write'] },
+  { w: 'cloth', p: '클로스', k: '천', pr: ['fabric', 'soft'] },
+  { w: 'rubber', p: '러버', k: '고무', pr: ['eraser', 'bounce'] },
+  { w: 'stone', p: '스톤', k: '돌', pr: ['rock', 'hard'] },
+  { w: 'cotton', p: '코튼', k: '면', pr: ['soft', 'shirt'] },
+  { w: 'silk', p: '실크', k: '비단', pr: ['smooth', 'soft'] },
+  { w: 'leather', p: '레더', k: '가죽', pr: ['shoe', 'bag'] },
+  { w: 'wool', p: '울', k: '양모', pr: ['sheep', 'warm'] },
+  { w: 'brick', p: '브릭', k: '벽돌', pr: ['build', 'wall'] },
+  { w: 'clay', p: '클레이', k: '점토', pr: ['mold', 'art'] },
+  { w: 'sand', p: '샌드', k: '모래', pr: ['beach', 'castle'] },
+  { w: 'ice', p: '아이스', k: '얼음', pr: ['cold', 'water'] },
+  { w: 'wax', p: '왁스', k: '밀랍', pr: ['candle', 'smooth'] },
+  { w: 'foam', p: '폼', k: '거품', pr: ['soft', 'light'] },
+  { w: 'cardboard', p: '카드보드', k: '판지', pr: ['box', 'paper'] },
+  { w: 'rope', p: '로프', k: '밧줄', pr: ['tie', 'pull'] },
+];
+
+const G34_QUESTIONS: W[] = [
+  { w: 'what', p: '왓', k: '무엇', pr: ['which', 'that'] },
+  { w: 'where', p: '웨어', k: '어디', pr: ['here', 'there'] },
+  { w: 'when', p: '웬', k: '언제', pr: ['now', 'then'] },
+  { w: 'who', p: '후', k: '누구', pr: ['he', 'she'] },
+  { w: 'why', p: '와이', k: '왜', pr: ['because', 'reason'] },
+  { w: 'how', p: '하우', k: '어떻게', pr: ['way', 'method'] },
+  { w: 'which', p: '위치', k: '어느 것', pr: ['what', 'that'] },
+  { w: 'how many', p: '하우 매니', k: '몇 개', pr: ['count', 'number'] },
+  { w: 'how much', p: '하우 머치', k: '얼마', pr: ['price', 'cost'] },
+  { w: 'how old', p: '하우 올드', k: '몇 살', pr: ['age', 'year'] },
+  { w: 'how long', p: '하우 롱', k: '얼마나 긴', pr: ['time', 'length'] },
+  { w: 'how far', p: '하우 파', k: '얼마나 먼', pr: ['distance', 'near'] },
+  { w: 'how often', p: '하우 오픈', k: '얼마나 자주', pr: ['always', 'sometimes'] },
+  { w: 'whose', p: '후즈', k: '누구의', pr: ['mine', 'yours'] },
+  { w: 'yes', p: '예스', k: '네', pr: ['no', 'okay'] },
+  { w: 'no', p: '노', k: '아니요', pr: ['yes', 'not'] },
+  { w: 'maybe', p: '메이비', k: '아마도', pr: ['perhaps', 'possibly'] },
+  { w: 'of course', p: '오브 코스', k: '물론', pr: ['sure', 'yes'] },
+  { w: 'sure', p: '슈어', k: '확실히', pr: ['yes', 'okay'] },
+  { w: 'I see', p: '아이 시', k: '알겠어요', pr: ['understand', 'okay'] },
+];
+
+const G34_WEATHER_BASIC: W[] = [
+  { w: 'weather', p: '웨더', k: '날씨', pr: ['climate', 'sky'] },
+  { w: 'rain', p: '레인', k: '비', pr: ['umbrella', 'wet'] },
+  { w: 'snow', p: '스노', k: '눈', pr: ['cold', 'white'] },
+  { w: 'cloud', p: '클라우드', k: '구름', pr: ['sky', 'gray'] },
+  { w: 'wind', p: '윈드', k: '바람', pr: ['blow', 'breeze'] },
+  { w: 'thunder', p: '썬더', k: '천둥', pr: ['lightning', 'loud'] },
+  { w: 'lightning', p: '라이트닝', k: '번개', pr: ['thunder', 'flash'] },
+  { w: 'rainbow', p: '레인보', k: '무지개', pr: ['rain', 'color'] },
+  { w: 'storm', p: '스톰', k: '폭풍', pr: ['wind', 'rain'] },
+  { w: 'sunshine', p: '선샤인', k: '햇살', pr: ['sun', 'bright'] },
+  { w: 'umbrella', p: '엄브렐라', k: '우산', pr: ['rain', 'wet'] },
+  { w: 'thermometer', p: '써모미터', k: '온도계', pr: ['temperature', 'hot'] },
+  { w: 'frost', p: '프로스트', k: '서리', pr: ['cold', 'ice'] },
+  { w: 'hail', p: '헤일', k: '우박', pr: ['ice', 'storm'] },
+  { w: 'puddle', p: '퍼들', k: '물웅덩이', pr: ['rain', 'water'] },
+  { w: 'snowman', p: '스노맨', k: '눈사람', pr: ['snow', 'winter'] },
+  { w: 'fog', p: '포그', k: '안개', pr: ['misty', 'hazy'] },
+  { w: 'dew', p: '듀', k: '이슬', pr: ['morning', 'water'] },
+  { w: 'flood', p: '플러드', k: '홍수', pr: ['rain', 'water'] },
+  { w: 'drought', p: '드라우트', k: '가뭄', pr: ['dry', 'hot'] },
+];
+
+const G34_SPORTS: W[] = [
+  { w: 'soccer', p: '사커', k: '축구', pr: ['ball', 'kick'] },
+  { w: 'basketball', p: '바스켓볼', k: '농구', pr: ['shoot', 'court'] },
+  { w: 'baseball', p: '베이스볼', k: '야구', pr: ['bat', 'pitch'] },
+  { w: 'swimming', p: '스위밍', k: '수영', pr: ['pool', 'water'] },
+  { w: 'running', p: '러닝', k: '달리기', pr: ['fast', 'race'] },
+  { w: 'jumping', p: '점핑', k: '뛰기', pr: ['hop', 'high'] },
+  { w: 'tennis', p: '테니스', k: '테니스', pr: ['racket', 'ball'] },
+  { w: 'badminton', p: '배드민턴', k: '배드민턴', pr: ['shuttle', 'racket'] },
+  { w: 'volleyball', p: '발리볼', k: '배구', pr: ['net', 'team'] },
+  { w: 'golf', p: '골프', k: '골프', pr: ['club', 'ball'] },
+  { w: 'skating', p: '스케이팅', k: '스케이팅', pr: ['ice', 'rink'] },
+  { w: 'skiing', p: '스키잉', k: '스키', pr: ['snow', 'mountain'] },
+  { w: 'taekwondo', p: '태권도', k: '태권도', pr: ['kick', 'martial'] },
+  { w: 'gymnastics', p: '짐내스틱스', k: '체조', pr: ['flip', 'balance'] },
+  { w: 'track', p: '트랙', k: '트랙', pr: ['run', 'race'] },
+  { w: 'team', p: '팀', k: '팀', pr: ['group', 'together'] },
+  { w: 'score', p: '스코어', k: '점수', pr: ['point', 'win'] },
+  { w: 'coach', p: '코치', k: '코치', pr: ['teach', 'train'] },
+  { w: 'referee', p: '레퍼리', k: '심판', pr: ['judge', 'fair'] },
+  { w: 'medal', p: '메달', k: '메달', pr: ['gold', 'win'] },
+];
+
+const G34_EMOTIONS_BASIC: W[] = [
+  { w: 'happy', p: '해피', k: '행복한', pr: ['glad', 'joyful'] },
+  { w: 'sad', p: '새드', k: '슬픈', pr: ['unhappy', 'cry'] },
+  { w: 'angry', p: '앵그리', k: '화난', pr: ['mad', 'upset'] },
+  { w: 'scared', p: '스케어드', k: '무서운', pr: ['afraid', 'fear'] },
+  { w: 'surprised', p: '서프라이즈드', k: '놀란', pr: ['amazed', 'wow'] },
+  { w: 'tired', p: '타이어드', k: '피곤한', pr: ['sleepy', 'rest'] },
+  { w: 'excited', p: '익사이티드', k: '신나는', pr: ['thrilled', 'eager'] },
+  { w: 'bored', p: '보어드', k: '지루한', pr: ['dull', 'yawn'] },
+  { w: 'lonely', p: '론리', k: '외로운', pr: ['alone', 'sad'] },
+  { w: 'proud', p: '프라우드', k: '자랑스러운', pr: ['confident', 'great'] },
+  { w: 'shy', p: '샤이', k: '수줍은', pr: ['timid', 'quiet'] },
+  { w: 'nervous', p: '너버스', k: '긴장한', pr: ['anxious', 'worried'] },
+  { w: 'curious', p: '큐리어스', k: '궁금한', pr: ['wonder', 'ask'] },
+  { w: 'thankful', p: '땡크풀', k: '감사한', pr: ['grateful', 'happy'] },
+  { w: 'worried', p: '워리드', k: '걱정되는', pr: ['anxious', 'nervous'] },
+  { w: 'calm', p: '캄', k: '차분한', pr: ['quiet', 'peaceful'] },
+  { w: 'cheerful', p: '치어풀', k: '쾌활한', pr: ['happy', 'bright'] },
+  { w: 'funny', p: '퍼니', k: '웃긴', pr: ['hilarious', 'silly'] },
+  { w: 'brave', p: '브레이브', k: '용감한', pr: ['bold', 'fearless'] },
+  { w: 'grumpy', p: '그럼피', k: '심술궂은', pr: ['cranky', 'moody'] },
+];
+
+const G34_FRUITS_VEG: W[] = [
+  { w: 'watermelon', p: '워터멜론', k: '수박', pr: ['summer', 'red'] },
+  { w: 'cherry', p: '체리', k: '체리', pr: ['red', 'small'] },
+  { w: 'blueberry', p: '블루베리', k: '블루베리', pr: ['blue', 'small'] },
+  { w: 'kiwi', p: '키위', k: '키위', pr: ['green', 'fuzzy'] },
+  { w: 'coconut', p: '코코넛', k: '코코넛', pr: ['tropical', 'milk'] },
+  { w: 'avocado', p: '아보카도', k: '아보카도', pr: ['green', 'healthy'] },
+  { w: 'broccoli', p: '브로콜리', k: '브로콜리', pr: ['green', 'vegetable'] },
+  { w: 'cucumber', p: '큐컴버', k: '오이', pr: ['green', 'cool'] },
+  { w: 'lettuce', p: '레터스', k: '상추', pr: ['salad', 'green'] },
+  { w: 'spinach', p: '스피니치', k: '시금치', pr: ['green', 'healthy'] },
+  { w: 'pepper', p: '페퍼', k: '고추', pr: ['spicy', 'red'] },
+  { w: 'pumpkin', p: '펌킨', k: '호박', pr: ['orange', 'Halloween'] },
+  { w: 'garlic', p: '갈릭', k: '마늘', pr: ['smell', 'cook'] },
+  { w: 'ginger', p: '진저', k: '생강', pr: ['spicy', 'tea'] },
+  { w: 'cabbage', p: '캐비지', k: '양배추', pr: ['green', 'wrap'] },
+  { w: 'bean', p: '빈', k: '콩', pr: ['plant', 'grow'] },
+  { w: 'pea', p: '피', k: '완두콩', pr: ['green', 'small'] },
+  { w: 'eggplant', p: '에그플랜트', k: '가지', pr: ['purple', 'vegetable'] },
+  { w: 'plum', p: '플럼', k: '자두', pr: ['purple', 'sweet'] },
+  { w: 'fig', p: '피그', k: '무화과', pr: ['sweet', 'fruit'] },
+];
+
+const G34_MUSIC: W[] = [
+  { w: 'piano', p: '피아노', k: '피아노', pr: ['keyboard', 'play'] },
+  { w: 'guitar', p: '기타', k: '기타', pr: ['string', 'strum'] },
+  { w: 'drum', p: '드럼', k: '드럼', pr: ['beat', 'stick'] },
+  { w: 'violin', p: '바이올린', k: '바이올린', pr: ['bow', 'string'] },
+  { w: 'flute', p: '플루트', k: '플루트', pr: ['blow', 'wind'] },
+  { w: 'trumpet', p: '트럼펫', k: '트럼펫', pr: ['brass', 'blow'] },
+  { w: 'song', p: '송', k: '노래', pr: ['sing', 'melody'] },
+  { w: 'melody', p: '멜로디', k: '멜로디', pr: ['tune', 'song'] },
+  { w: 'rhythm', p: '리듬', k: '리듬', pr: ['beat', 'tempo'] },
+  { w: 'concert', p: '콘서트', k: '음악회', pr: ['show', 'stage'] },
+  { w: 'choir', p: '콰이어', k: '합창단', pr: ['sing', 'group'] },
+  { w: 'band', p: '밴드', k: '밴드', pr: ['group', 'music'] },
+  { w: 'note', p: '노트', k: '음표', pr: ['music', 'sound'] },
+  { w: 'tambourine', p: '탬버린', k: '탬버린', pr: ['shake', 'beat'] },
+  { w: 'recorder', p: '리코더', k: '리코더', pr: ['blow', 'play'] },
+  { w: 'xylophone', p: '자일로폰', k: '실로폰', pr: ['hit', 'key'] },
+  { w: 'harmonica', p: '하모니카', k: '하모니카', pr: ['blow', 'wind'] },
+  { w: 'ukulele', p: '우쿨렐레', k: '우쿨렐레', pr: ['string', 'small'] },
+  { w: 'microphone', p: '마이크로폰', k: '마이크', pr: ['sing', 'voice'] },
+  { w: 'speaker', p: '스피커', k: '스피커', pr: ['sound', 'loud'] },
+];
+
+const G34_SEASONS_BASIC: W[] = [
+  { w: 'spring', p: '스프링', k: '봄', pr: ['flower', 'warm'] },
+  { w: 'summer', p: '서머', k: '여름', pr: ['hot', 'swim'] },
+  { w: 'fall', p: '폴', k: '가을', pr: ['leaf', 'cool'] },
+  { w: 'winter', p: '윈터', k: '겨울', pr: ['cold', 'snow'] },
+  { w: 'warm', p: '웜', k: '따뜻한', pr: ['hot', 'spring'] },
+  { w: 'cool', p: '쿨', k: '시원한', pr: ['cold', 'autumn'] },
+  { w: 'hot', p: '핫', k: '뜨거운', pr: ['warm', 'summer'] },
+  { w: 'cold', p: '콜드', k: '추운', pr: ['cool', 'winter'] },
+  { w: 'rainy', p: '레이니', k: '비 오는', pr: ['wet', 'umbrella'] },
+  { w: 'snowy', p: '스노이', k: '눈 오는', pr: ['cold', 'white'] },
+  { w: 'sunny', p: '서니', k: '화창한', pr: ['bright', 'clear'] },
+  { w: 'windy', p: '윈디', k: '바람 부는', pr: ['breeze', 'blow'] },
+  { w: 'cloudy', p: '클라우디', k: '흐린', pr: ['gray', 'sky'] },
+  { w: 'foggy', p: '포기', k: '안개 낀', pr: ['misty', 'hazy'] },
+  { w: 'stormy', p: '스토미', k: '폭풍우의', pr: ['thunder', 'rain'] },
+  { w: 'dry', p: '드라이', k: '건조한', pr: ['wet', 'arid'] },
+  { w: 'humid', p: '휴미드', k: '습한', pr: ['sticky', 'moist'] },
+  { w: 'icy', p: '아이시', k: '얼음처럼 찬', pr: ['cold', 'slippery'] },
+  { w: 'breezy', p: '브리지', k: '산들바람 부는', pr: ['wind', 'gentle'] },
+  { w: 'clear', p: '클리어', k: '맑은', pr: ['sunny', 'bright'] },
+];
+
+const G34_CLASSROOM: W[] = [
+  { w: 'classroom', p: '클래스룸', k: '교실', pr: ['school', 'study'] },
+  { w: 'teacher', p: '티처', k: '선생님', pr: ['school', 'class'] },
+  { w: 'student', p: '스튜던트', k: '학생', pr: ['pupil', 'learn'] },
+  { w: 'whiteboard', p: '화이트보드', k: '화이트보드', pr: ['write', 'marker'] },
+  { w: 'projector', p: '프로젝터', k: '프로젝터', pr: ['screen', 'show'] },
+  { w: 'locker', p: '라커', k: '사물함', pr: ['lock', 'store'] },
+  { w: 'playground', p: '플레이그라운드', k: '운동장', pr: ['play', 'run'] },
+  { w: 'hallway', p: '홀웨이', k: '복도', pr: ['walk', 'corridor'] },
+  { w: 'gym', p: '짐', k: '체육관', pr: ['exercise', 'sport'] },
+  { w: 'library', p: '라이브러리', k: '도서관', pr: ['book', 'read'] },
+  { w: 'art room', p: '아트 룸', k: '미술실', pr: ['paint', 'draw'] },
+  { w: 'music room', p: '뮤직 룸', k: '음악실', pr: ['sing', 'play'] },
+  { w: 'computer room', p: '컴퓨터 룸', k: '컴퓨터실', pr: ['type', 'internet'] },
+  { w: 'science lab', p: '사이언스 랩', k: '과학실', pr: ['experiment', 'test'] },
+  { w: 'cafeteria', p: '카페테리아', k: '급식실', pr: ['lunch', 'eat'] },
+  { w: 'principal', p: '프린시펄', k: '교장선생님', pr: ['school', 'leader'] },
+  { w: 'bell', p: '벨', k: '종', pr: ['ring', 'class'] },
+  { w: 'report card', p: '리포트 카드', k: '성적표', pr: ['grade', 'score'] },
+  { w: 'field trip', p: '필드 트립', k: '현장학습', pr: ['bus', 'visit'] },
+  { w: 'recess', p: '리세스', k: '쉬는 시간', pr: ['break', 'play'] },
+];
+
+const G34_SHOPPING: W[] = [
+  { w: 'store', p: '스토어', k: '가게', pr: ['shop', 'buy'] },
+  { w: 'money', p: '머니', k: '돈', pr: ['coin', 'pay'] },
+  { w: 'price', p: '프라이스', k: '가격', pr: ['cost', 'money'] },
+  { w: 'cheap', p: '칩', k: '싼', pr: ['expensive', 'low'] },
+  { w: 'expensive', p: '익스펜시브', k: '비싼', pr: ['cheap', 'costly'] },
+  { w: 'buy', p: '바이', k: '사다', pr: ['sell', 'shop'] },
+  { w: 'sell', p: '셀', k: '팔다', pr: ['buy', 'trade'] },
+  { w: 'pay', p: '페이', k: '지불하다', pr: ['money', 'cash'] },
+  { w: 'coin', p: '코인', k: '동전', pr: ['money', 'change'] },
+  { w: 'wallet', p: '월릿', k: '지갑', pr: ['money', 'pocket'] },
+  { w: 'receipt', p: '리시트', k: '영수증', pr: ['pay', 'paper'] },
+  { w: 'cart', p: '카트', k: '카트', pr: ['shop', 'push'] },
+  { w: 'basket', p: '바스켓', k: '바구니', pr: ['carry', 'shop'] },
+  { w: 'cashier', p: '캐시어', k: '계산원', pr: ['pay', 'counter'] },
+  { w: 'change', p: '체인지', k: '거스름돈', pr: ['money', 'coin'] },
+  { w: 'gift', p: '기프트', k: '선물', pr: ['present', 'wrap'] },
+  { w: 'toy', p: '토이', k: '장난감', pr: ['play', 'fun'] },
+  { w: 'candy', p: '캔디', k: '사탕', pr: ['sweet', 'sugar'] },
+  { w: 'discount', p: '디스카운트', k: '할인', pr: ['sale', 'cheap'] },
+  { w: 'size', p: '사이즈', k: '크기', pr: ['big', 'small'] },
+];
+
+const G34_COOKING: W[] = [
+  { w: 'cook', p: '쿡', k: '요리하다', pr: ['bake', 'fry'] },
+  { w: 'bake', p: '베이크', k: '굽다', pr: ['oven', 'bread'] },
+  { w: 'fry', p: '프라이', k: '튀기다', pr: ['pan', 'oil'] },
+  { w: 'boil', p: '보일', k: '끓이다', pr: ['water', 'pot'] },
+  { w: 'mix', p: '믹스', k: '섞다', pr: ['stir', 'blend'] },
+  { w: 'stir', p: '스터', k: '젓다', pr: ['mix', 'spoon'] },
+  { w: 'chop', p: '촙', k: '자르다', pr: ['cut', 'knife'] },
+  { w: 'peel', p: '필', k: '껍질을 벗기다', pr: ['skin', 'fruit'] },
+  { w: 'recipe', p: '레시피', k: '요리법', pr: ['cook', 'food'] },
+  { w: 'ingredient', p: '인그리디언트', k: '재료', pr: ['food', 'recipe'] },
+  { w: 'pan', p: '팬', k: '프라이팬', pr: ['fry', 'cook'] },
+  { w: 'pot', p: '팟', k: '냄비', pr: ['boil', 'soup'] },
+  { w: 'oven', p: '오븐', k: '오븐', pr: ['bake', 'hot'] },
+  { w: 'bowl', p: '보울', k: '그릇', pr: ['plate', 'cup'] },
+  { w: 'apron', p: '에이프런', k: '앞치마', pr: ['cook', 'wear'] },
+  { w: 'taste', p: '테이스트', k: '맛보다', pr: ['flavor', 'try'] },
+  { w: 'delicious', p: '딜리셔스', k: '맛있는', pr: ['tasty', 'yummy'] },
+  { w: 'sweet', p: '스위트', k: '달콤한', pr: ['sugar', 'candy'] },
+  { w: 'sour', p: '사워', k: '신', pr: ['lemon', 'tart'] },
+  { w: 'salty', p: '솔티', k: '짠', pr: ['salt', 'sea'] },
+];
+
+const G34_HOLIDAYS: W[] = [
+  { w: 'holiday', p: '홀리데이', k: '공휴일', pr: ['vacation', 'rest'] },
+  { w: 'vacation', p: '베이케이션', k: '방학', pr: ['summer', 'trip'] },
+  { w: 'Christmas', p: '크리스마스', k: '크리스마스', pr: ['Santa', 'gift'] },
+  { w: 'Halloween', p: '핼러윈', k: '핼러윈', pr: ['costume', 'pumpkin'] },
+  { w: 'birthday', p: '벌스데이', k: '생일', pr: ['cake', 'party'] },
+  { w: 'New Year', p: '뉴 이어', k: '새해', pr: ['January', 'firework'] },
+  { w: 'Thanksgiving', p: '땡스기빙', k: '추수감사절', pr: ['turkey', 'grateful'] },
+  { w: 'Easter', p: '이스터', k: '부활절', pr: ['egg', 'spring'] },
+  { w: 'Valentine', p: '밸런타인', k: '밸런타인', pr: ['love', 'heart'] },
+  { w: 'party', p: '파티', k: '파티', pr: ['celebrate', 'fun'] },
+  { w: 'decoration', p: '데코레이션', k: '장식', pr: ['ornament', 'pretty'] },
+  { w: 'firework', p: '파이어워크', k: '불꽃놀이', pr: ['sky', 'bang'] },
+  { w: 'costume', p: '코스튬', k: '의상', pr: ['wear', 'dress'] },
+  { w: 'candle', p: '캔들', k: '촛불', pr: ['light', 'fire'] },
+  { w: 'pumpkin', p: '펌킨', k: '호박', pr: ['Halloween', 'orange'] },
+  { w: 'present', p: '프레전트', k: '선물', pr: ['gift', 'wrap'] },
+  { w: 'card', p: '카드', k: '카드', pr: ['letter', 'wish'] },
+  { w: 'balloon', p: '벌룬', k: '풍선', pr: ['party', 'pop'] },
+  { w: 'ribbon', p: '리본', k: '리본', pr: ['bow', 'wrap'] },
+  { w: 'invitation', p: '인비테이션', k: '초대장', pr: ['party', 'come'] },
+];
+
+// ============================================================
+// NEW Grade 5-6 Word Banks (추가 확장)
+// ============================================================
+
+const G56_ENVIRONMENT: W[] = [
+  { w: 'environment', p: '인바이런먼트', k: '환경', pr: ['nature', 'earth'] },
+  { w: 'pollution', p: '펄루션', k: '오염', pr: ['dirty', 'air'] },
+  { w: 'recycle', p: '리사이클', k: '재활용하다', pr: ['reuse', 'reduce'] },
+  { w: 'energy', p: '에너지', k: '에너지', pr: ['power', 'fuel'] },
+  { w: 'solar', p: '솔라', k: '태양의', pr: ['sun', 'power'] },
+  { w: 'climate', p: '클라이밋', k: '기후', pr: ['weather', 'change'] },
+  { w: 'global warming', p: '글로벌 워밍', k: '지구 온난화', pr: ['heat', 'earth'] },
+  { w: 'trash', p: '트래시', k: '쓰레기', pr: ['garbage', 'waste'] },
+  { w: 'plastic', p: '플라스틱', k: '플라스틱', pr: ['bottle', 'bag'] },
+  { w: 'protect', p: '프로텍트', k: '보호하다', pr: ['save', 'guard'] },
+  { w: 'endangered', p: '인데인저드', k: '멸종 위기의', pr: ['animal', 'rare'] },
+  { w: 'forest', p: '포레스트', k: '숲', pr: ['tree', 'nature'] },
+  { w: 'ecosystem', p: '이코시스템', k: '생태계', pr: ['nature', 'balance'] },
+  { w: 'conservation', p: '컨서베이션', k: '보전', pr: ['protect', 'save'] },
+  { w: 'renewable', p: '리뉴어블', k: '재생 가능한', pr: ['energy', 'solar'] },
+  { w: 'waste', p: '웨이스트', k: '낭비', pr: ['trash', 'reduce'] },
+  { w: 'oxygen', p: '옥시젠', k: '산소', pr: ['air', 'breathe'] },
+  { w: 'carbon', p: '카본', k: '탄소', pr: ['dioxide', 'emission'] },
+  { w: 'habitat', p: '해비탯', k: '서식지', pr: ['home', 'animal'] },
+  { w: 'planet', p: '플래닛', k: '행성', pr: ['earth', 'solar'] },
+];
+
+const G56_TRAVEL: W[] = [
+  { w: 'passport', p: '패스포트', k: '여권', pr: ['travel', 'visa'] },
+  { w: 'suitcase', p: '수트케이스', k: '여행가방', pr: ['pack', 'luggage'] },
+  { w: 'ticket', p: '티켓', k: '표', pr: ['train', 'airplane'] },
+  { w: 'map', p: '맵', k: '지도', pr: ['direction', 'navigate'] },
+  { w: 'tourist', p: '투어리스트', k: '관광객', pr: ['visit', 'travel'] },
+  { w: 'souvenir', p: '수버니어', k: '기념품', pr: ['gift', 'memory'] },
+  { w: 'hotel', p: '호텔', k: '호텔', pr: ['stay', 'room'] },
+  { w: 'reservation', p: '레저베이션', k: '예약', pr: ['book', 'plan'] },
+  { w: 'departure', p: '디파처', k: '출발', pr: ['leave', 'start'] },
+  { w: 'arrival', p: '어라이벌', k: '도착', pr: ['come', 'reach'] },
+  { w: 'luggage', p: '러기지', k: '짐', pr: ['bag', 'pack'] },
+  { w: 'guide', p: '가이드', k: '안내인', pr: ['tour', 'help'] },
+  { w: 'journey', p: '저니', k: '여행', pr: ['trip', 'travel'] },
+  { w: 'adventure', p: '어드벤처', k: '모험', pr: ['explore', 'discover'] },
+  { w: 'explore', p: '익스플로어', k: '탐험하다', pr: ['discover', 'find'] },
+  { w: 'landmark', p: '랜드마크', k: '명소', pr: ['famous', 'place'] },
+  { w: 'flight', p: '플라이트', k: '비행', pr: ['airplane', 'sky'] },
+  { w: 'boarding pass', p: '보딩 패스', k: '탑승권', pr: ['airplane', 'gate'] },
+  { w: 'customs', p: '커스텀즈', k: '세관', pr: ['check', 'border'] },
+  { w: 'exchange', p: '익스체인지', k: '환전', pr: ['money', 'change'] },
+];
+
+const G56_SCIENCE: W[] = [
+  { w: 'experiment', p: '익스페리먼트', k: '실험', pr: ['test', 'lab'] },
+  { w: 'gravity', p: '그래비티', k: '중력', pr: ['fall', 'earth'] },
+  { w: 'magnet', p: '매그닛', k: '자석', pr: ['attract', 'iron'] },
+  { w: 'planet', p: '플래닛', k: '행성', pr: ['earth', 'solar'] },
+  { w: 'telescope', p: '텔레스코프', k: '망원경', pr: ['star', 'look'] },
+  { w: 'microscope', p: '마이크로스코프', k: '현미경', pr: ['tiny', 'look'] },
+  { w: 'molecule', p: '몰레큘', k: '분자', pr: ['atom', 'small'] },
+  { w: 'fossil', p: '파슬', k: '화석', pr: ['dinosaur', 'old'] },
+  { w: 'volcano', p: '볼케이노', k: '화산', pr: ['lava', 'erupt'] },
+  { w: 'earthquake', p: '얼쓰퀘이크', k: '지진', pr: ['shake', 'ground'] },
+  { w: 'temperature', p: '템퍼러처', k: '온도', pr: ['hot', 'cold'] },
+  { w: 'electricity', p: '일렉트리서티', k: '전기', pr: ['power', 'light'] },
+  { w: 'circuit', p: '서킷', k: '회로', pr: ['wire', 'electricity'] },
+  { w: 'oxygen', p: '옥시젠', k: '산소', pr: ['air', 'breathe'] },
+  { w: 'cell', p: '셀', k: '세포', pr: ['body', 'tiny'] },
+  { w: 'solar system', p: '솔라 시스템', k: '태양계', pr: ['sun', 'planet'] },
+  { w: 'dinosaur', p: '다이너소어', k: '공룡', pr: ['fossil', 'extinct'] },
+  { w: 'laboratory', p: '래보러토리', k: '실험실', pr: ['science', 'test'] },
+  { w: 'hypothesis', p: '하이파서시스', k: '가설', pr: ['guess', 'test'] },
+  { w: 'data', p: '데이터', k: '자료', pr: ['number', 'collect'] },
+];
+
+const G56_COMMUNITY: W[] = [
+  { w: 'community', p: '커뮤니티', k: '공동체', pr: ['town', 'people'] },
+  { w: 'volunteer', p: '볼런티어', k: '자원봉사자', pr: ['help', 'free'] },
+  { w: 'neighbor', p: '네이버', k: '이웃', pr: ['next door', 'friend'] },
+  { w: 'mayor', p: '메이어', k: '시장', pr: ['city', 'leader'] },
+  { w: 'election', p: '일렉션', k: '선거', pr: ['vote', 'choose'] },
+  { w: 'citizen', p: '시티즌', k: '시민', pr: ['city', 'people'] },
+  { w: 'law', p: '로', k: '법', pr: ['rule', 'court'] },
+  { w: 'court', p: '코트', k: '법원', pr: ['judge', 'law'] },
+  { w: 'government', p: '거번먼트', k: '정부', pr: ['country', 'leader'] },
+  { w: 'president', p: '프레지던트', k: '대통령', pr: ['leader', 'country'] },
+  { w: 'flag', p: '플래그', k: '국기', pr: ['country', 'symbol'] },
+  { w: 'culture', p: '컬처', k: '문화', pr: ['tradition', 'art'] },
+  { w: 'tradition', p: '트래디션', k: '전통', pr: ['culture', 'custom'] },
+  { w: 'ceremony', p: '세러모니', k: '의식', pr: ['event', 'formal'] },
+  { w: 'festival', p: '페스티벌', k: '축제', pr: ['party', 'celebrate'] },
+  { w: 'charity', p: '채리티', k: '자선', pr: ['help', 'donate'] },
+  { w: 'donation', p: '도네이션', k: '기부', pr: ['give', 'help'] },
+  { w: 'society', p: '소사이어티', k: '사회', pr: ['community', 'people'] },
+  { w: 'independence', p: '인디펜던스', k: '독립', pr: ['free', 'country'] },
+  { w: 'peace', p: '피스', k: '평화', pr: ['calm', 'harmony'] },
+];
+
+const G56_MEDIA: W[] = [
+  { w: 'news', p: '뉴스', k: '뉴스', pr: ['report', 'media'] },
+  { w: 'newspaper', p: '뉴스페이퍼', k: '신문', pr: ['read', 'article'] },
+  { w: 'magazine', p: '매거진', k: '잡지', pr: ['read', 'photo'] },
+  { w: 'article', p: '아티클', k: '기사', pr: ['news', 'read'] },
+  { w: 'blog', p: '블로그', k: '블로그', pr: ['write', 'online'] },
+  { w: 'video', p: '비디오', k: '영상', pr: ['watch', 'record'] },
+  { w: 'channel', p: '채널', k: '채널', pr: ['TV', 'watch'] },
+  { w: 'podcast', p: '팟캐스트', k: '팟캐스트', pr: ['listen', 'audio'] },
+  { w: 'broadcast', p: '브로드캐스트', k: '방송', pr: ['TV', 'radio'] },
+  { w: 'advertisement', p: '애드버타이즈먼트', k: '광고', pr: ['TV', 'poster'] },
+  { w: 'interview', p: '인터뷰', k: '인터뷰', pr: ['question', 'answer'] },
+  { w: 'reporter', p: '리포터', k: '기자', pr: ['news', 'write'] },
+  { w: 'headline', p: '헤드라인', k: '헤드라인', pr: ['news', 'title'] },
+  { w: 'social media', p: '소셜 미디어', k: '소셜 미디어', pr: ['online', 'share'] },
+  { w: 'streaming', p: '스트리밍', k: '스트리밍', pr: ['video', 'online'] },
+  { w: 'subscribe', p: '서브스크라이브', k: '구독하다', pr: ['follow', 'channel'] },
+  { w: 'content', p: '콘텐트', k: '콘텐츠', pr: ['video', 'article'] },
+  { w: 'editor', p: '에디터', k: '편집자', pr: ['write', 'change'] },
+  { w: 'publish', p: '퍼블리시', k: '출판하다', pr: ['book', 'print'] },
+  { w: 'communication', p: '커뮤니케이션', k: '의사소통', pr: ['talk', 'share'] },
+];
+
+const G56_SPACE: W[] = [
+  { w: 'space', p: '스페이스', k: '우주', pr: ['star', 'planet'] },
+  { w: 'astronaut', p: '애스트로넛', k: '우주비행사', pr: ['space', 'rocket'] },
+  { w: 'rocket', p: '로켓', k: '로켓', pr: ['launch', 'space'] },
+  { w: 'satellite', p: '새틀라이트', k: '위성', pr: ['orbit', 'space'] },
+  { w: 'moon', p: '문', k: '달', pr: ['night', 'full'] },
+  { w: 'sun', p: '선', k: '태양', pr: ['star', 'hot'] },
+  { w: 'star', p: '스타', k: '별', pr: ['night', 'bright'] },
+  { w: 'galaxy', p: '갤럭시', k: '은하', pr: ['star', 'milky way'] },
+  { w: 'orbit', p: '오빗', k: '궤도', pr: ['circle', 'planet'] },
+  { w: 'comet', p: '코멧', k: '혜성', pr: ['tail', 'ice'] },
+  { w: 'asteroid', p: '애스터로이드', k: '소행성', pr: ['rock', 'space'] },
+  { w: 'constellation', p: '컨스텔레이션', k: '별자리', pr: ['star', 'pattern'] },
+  { w: 'telescope', p: '텔레스코프', k: '망원경', pr: ['look', 'star'] },
+  { w: 'Mars', p: '마스', k: '화성', pr: ['red', 'planet'] },
+  { w: 'Jupiter', p: '주피터', k: '목성', pr: ['big', 'planet'] },
+  { w: 'Saturn', p: '새턴', k: '토성', pr: ['ring', 'planet'] },
+  { w: 'Venus', p: '비너스', k: '금성', pr: ['bright', 'planet'] },
+  { w: 'Mercury', p: '머큐리', k: '수성', pr: ['small', 'planet'] },
+  { w: 'Neptune', p: '넵튠', k: '해왕성', pr: ['blue', 'planet'] },
+  { w: 'universe', p: '유니버스', k: '우주', pr: ['space', 'infinite'] },
+];
+
+const G56_FEELINGS_ADV: W[] = [
+  { w: 'confident', p: '컨피던트', k: '자신감 있는', pr: ['sure', 'bold'] },
+  { w: 'anxious', p: '앵셔스', k: '불안한', pr: ['worried', 'nervous'] },
+  { w: 'exhausted', p: '이그저스티드', k: '지친', pr: ['tired', 'worn out'] },
+  { w: 'inspired', p: '인스파이어드', k: '영감을 받은', pr: ['motivated', 'creative'] },
+  { w: 'thrilled', p: '쓰릴드', k: '아주 신나는', pr: ['excited', 'happy'] },
+  { w: 'furious', p: '퓨리어스', k: '몹시 화난', pr: ['angry', 'mad'] },
+  { w: 'guilty', p: '길티', k: '죄책감 드는', pr: ['sorry', 'ashamed'] },
+  { w: 'delighted', p: '딜라이티드', k: '기뻐하는', pr: ['happy', 'pleased'] },
+  { w: 'miserable', p: '미저러블', k: '비참한', pr: ['sad', 'unhappy'] },
+  { w: 'grateful', p: '그레이트풀', k: '감사하는', pr: ['thankful', 'blessed'] },
+  { w: 'jealous', p: '젤러스', k: '질투하는', pr: ['envious', 'green'] },
+  { w: 'suspicious', p: '서스피셔스', k: '의심하는', pr: ['doubt', 'wonder'] },
+  { w: 'ashamed', p: '어셰임드', k: '부끄러운', pr: ['shy', 'embarrassed'] },
+  { w: 'optimistic', p: '옵티미스틱', k: '낙관적인', pr: ['positive', 'hopeful'] },
+  { w: 'pessimistic', p: '페시미스틱', k: '비관적인', pr: ['negative', 'gloomy'] },
+  { w: 'sympathetic', p: '심퍼세틱', k: '동정적인', pr: ['kind', 'caring'] },
+  { w: 'enthusiastic', p: '인수지애스틱', k: '열정적인', pr: ['eager', 'excited'] },
+  { w: 'content', p: '컨텐트', k: '만족하는', pr: ['satisfied', 'happy'] },
+  { w: 'nostalgic', p: '노스탤직', k: '향수에 젖은', pr: ['memory', 'past'] },
+  { w: 'overwhelmed', p: '오버웰름드', k: '압도된', pr: ['stressed', 'too much'] },
+];
+
 const G56_HEALTH: W[] = [
   { w: 'healthy', p: '헬시', k: '건강한', pr: ['strong', 'fit'] },
   { w: 'sick', p: '식', k: '아픈', pr: ['ill', 'unwell'] },
@@ -1360,6 +1851,97 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
     });
   }
 
+  // Shapes → "모양과 도형"
+  const shapeTmpls: Tmpl[] = [
+    { s: w => `This is a ${w}.`, t: k => `이것은 ${k}이에요.` },
+    { s: w => `I see a ${w}.`, t: k => `나는 ${k}을(를) 봐요.` },
+    { s: w => `Draw a ${w}.`, t: k => `${k}을(를) 그려요.` },
+    { s: w => `The ${w} is big.`, t: k => `${k}이(가) 커요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_SHAPES, shapeTmpls, 2, '모양과 도형'));
+
+  // Toys → "놀이와 장난감"
+  const toyTmpls: Tmpl[] = [
+    { s: w => `I play with the ${w}.`, t: k => `나는 ${k}으로 놀아요.` },
+    { s: w => `This is my ${w}.`, t: k => `이것은 내 ${k}이에요.` },
+    { s: w => `I like the ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
+    { s: w => `Can I have the ${w}?`, t: k => `${k}을(를) 가져도 될까요?` },
+  ];
+  entries.push(...generateFromBank(rng, G34_TOYS, toyTmpls, 2, '놀이와 장난감'));
+
+  // Materials → "재료와 물질"
+  entries.push(...generateFromBank(rng, G34_MATERIALS, BASIC_TEMPLATES, 2, '재료와 물질'));
+
+  // Questions → "질문과 대답"
+  for (const q of G34_QUESTIONS) {
+    entries.push({
+      sentence: `${q.w.charAt(0).toUpperCase() + q.w.slice(1)}.`,
+      translation: `${q.k}.`,
+      word: q.w, pronunciation: q.p, practice: q.pr,
+      unit: '질문과 대답',
+    });
+  }
+
+  // Weather (basic) → "날씨"
+  entries.push(...generateFromBank(rng, G34_WEATHER_BASIC, BASIC_TEMPLATES, 2, '날씨'));
+
+  // Sports → "운동과 스포츠"
+  const sportTmpls: Tmpl[] = [
+    { s: w => `I like ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
+    { s: w => `Let's play ${w}!`, t: k => `같이 ${k} 하자!` },
+    { s: w => `${w} is fun.`, t: k => `${k}은(는) 재미있어요.` },
+    { s: w => `I am good at ${w}.`, t: k => `나는 ${k}을(를) 잘해요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_SPORTS, sportTmpls, 2, '운동과 스포츠'));
+
+  // Emotions (basic) → "감정표현"
+  entries.push(...generateFromBank(rng, G34_EMOTIONS_BASIC, EMOTION_TEMPLATES, 2, '감정표현'));
+
+  // Fruits & Vegetables → "과일과 채소"
+  entries.push(...generateFromBank(rng, G34_FRUITS_VEG, BASIC_TEMPLATES, 2, '과일과 채소'));
+
+  // Music → "음악과 악기"
+  const musicTmpls: Tmpl[] = [
+    { s: w => `I play the ${w}.`, t: k => `나는 ${k}을(를) 연주해요.` },
+    { s: w => `I like the ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
+    { s: w => `The ${w} sounds beautiful.`, t: k => `${k} 소리가 아름다워요.` },
+    { s: w => `Can you play the ${w}?`, t: k => `${k}을(를) 연주할 수 있어요?` },
+  ];
+  entries.push(...generateFromBank(rng, G34_MUSIC, musicTmpls, 2, '음악과 악기'));
+
+  // Seasons (basic) → "날씨와 계절"
+  entries.push(...generateFromBank(rng, G34_SEASONS_BASIC, BASIC_TEMPLATES, 2, '날씨와 계절'));
+
+  // Classroom → "학교생활"
+  entries.push(...generateFromBank(rng, G34_CLASSROOM, BASIC_TEMPLATES, 2, '학교생활'));
+
+  // Shopping → "쇼핑과 돈"
+  const shoppingTmpls: Tmpl[] = [
+    { s: w => `I need ${w}.`, t: k => `나는 ${k}이(가) 필요해요.` },
+    { s: w => `How much is the ${w}?`, t: k => `${k}은(는) 얼마예요?` },
+    { s: w => `I want to ${w}.`, t: k => `나는 ${k}고 싶어요.` },
+    { s: w => `The ${w} is here.`, t: k => `${k}이(가) 여기 있어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_SHOPPING, shoppingTmpls, 2, '쇼핑과 돈'));
+
+  // Cooking → "요리와 맛"
+  const cookingTmpls: Tmpl[] = [
+    { s: w => `I like to ${w}.`, t: k => `나는 ${k} 것을 좋아해요.` },
+    { s: w => `Let's ${w}!`, t: k => `같이 ${k}!` },
+    { s: w => `This is ${w}.`, t: k => `이것은 ${k}이에요.` },
+    { s: w => `I can ${w}.`, t: k => `나는 ${k} 수 있어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G34_COOKING, cookingTmpls, 2, '요리와 맛'));
+
+  // Holidays → "축제와 행사"
+  const holidayTmpls: Tmpl[] = [
+    { s: w => `I love ${w}.`, t: k => `나는 ${k}을(를) 좋아해요.` },
+    { s: w => `${w} is fun!`, t: k => `${k}은(는) 재미있어요!` },
+    { s: w => `We celebrate ${w}.`, t: k => `우리는 ${k}을(를) 축하해요.` },
+    { s: w => `Do you like ${w}?`, t: k => `${k}을(를) 좋아해요?` },
+  ];
+  entries.push(...generateFromBank(rng, G34_HOLIDAYS, holidayTmpls, 2, '축제와 행사'));
+
   return entries;
 }
 
@@ -1416,6 +1998,51 @@ function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
   entries.push(...generateFromBank(rng, G56_TECHNOLOGY, BASIC_TEMPLATES, 2, '과학과 기술'));
   // Health → "건강과 운동"
   entries.push(...generateFromBank(rng, G56_HEALTH, BASIC_TEMPLATES, 2, '건강과 운동'));
+
+  // Environment → "환경과 지구"
+  const envTmpls: Tmpl[] = [
+    { s: w => `We should care about ${w}.`, t: k => `우리는 ${k}을(를) 관심가져야 해요.` },
+    { s: w => `${w} is important.`, t: k => `${k}은(는) 중요해요.` },
+    { s: w => `Let's protect the ${w}.`, t: k => `${k}을(를) 보호하자.` },
+    { s: w => `I learned about ${w}.`, t: k => `나는 ${k}에 대해 배웠어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G56_ENVIRONMENT, envTmpls, 2, '환경과 지구'));
+
+  // Travel → "여행과 세계"
+  const travelTmpls: Tmpl[] = [
+    { s: w => `I need a ${w}.`, t: k => `나는 ${k}이(가) 필요해요.` },
+    { s: w => `Where is the ${w}?`, t: k => `${k}이(가) 어디에 있어요?` },
+    { s: w => `I have a ${w}.`, t: k => `나는 ${k}이(가) 있어요.` },
+    { s: w => `The ${w} is ready.`, t: k => `${k}이(가) 준비되었어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G56_TRAVEL, travelTmpls, 2, '여행과 세계'));
+
+  // Science → "과학 탐구"
+  const sciTmpls: Tmpl[] = [
+    { s: w => `We studied ${w} in class.`, t: k => `우리는 수업에서 ${k}을(를) 배웠어요.` },
+    { s: w => `${w} is interesting.`, t: k => `${k}은(는) 흥미로워요.` },
+    { s: w => `I learned about ${w}.`, t: k => `나는 ${k}에 대해 배웠어요.` },
+    { s: w => `The ${w} was amazing.`, t: k => `${k}은(는) 놀라웠어요.` },
+  ];
+  entries.push(...generateFromBank(rng, G56_SCIENCE, sciTmpls, 2, '과학 탐구'));
+
+  // Community → "사회와 공동체"
+  const commTmpls: Tmpl[] = [
+    { s: w => `${w} is important for everyone.`, t: k => `${k}은(는) 모두에게 중요해요.` },
+    { s: w => `I respect the ${w}.`, t: k => `나는 ${k}을(를) 존중해요.` },
+    { s: w => `We need ${w}.`, t: k => `우리는 ${k}이(가) 필요해요.` },
+    { s: w => `The ${w} is great.`, t: k => `${k}은(는) 훌륭해요.` },
+  ];
+  entries.push(...generateFromBank(rng, G56_COMMUNITY, commTmpls, 2, '사회와 공동체'));
+
+  // Media → "미디어와 소통"
+  entries.push(...generateFromBank(rng, G56_MEDIA, BASIC_TEMPLATES, 2, '미디어와 소통'));
+
+  // Space → "우주와 과학"
+  entries.push(...generateFromBank(rng, G56_SPACE, BASIC_TEMPLATES, 2, '우주와 과학'));
+
+  // Advanced Feelings → "감정과 상태"
+  entries.push(...generateFromBank(rng, G56_FEELINGS_ADV, EMOTION_TEMPLATES, 2, '감정과 상태'));
 
   // Fixed sentence collections (general, no unit for fixed sentences)
   entries.push(...FIXED_BECAUSE);

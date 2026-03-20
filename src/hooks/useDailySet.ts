@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import type { DailySetWithQuestions } from '@/types/learning';
 import { generateDailySetWithoutRepeats } from '@/lib/daily-set-generator';
-import { getLearningRecords, getSeenQuestionSignatures, storeDailySet, getStoredDailySet } from '@/lib/local-storage';
+import { getLearningRecords, getSeenQuestionSignatures, storeDailySet, getStoredDailySet, getSubjectStats } from '@/lib/local-storage';
 
 const TODAY_SET_PREFIX = 'araharu_today_set_';
 
@@ -55,11 +55,16 @@ export function useDailySet() {
       );
       const usedQuestionSignatures = getSeenQuestionSignatures(user.id);
 
+      // 적응형 난이도: 과목별 정답률 기반으로 난이도 조정
+      const subjectAccuracy = getSubjectStats(user.id);
+
       const setData = generateDailySetWithoutRepeats(
         user.grade,
         user.semester,
         completedSetIds,
         usedQuestionSignatures,
+        200,
+        subjectAccuracy,
       );
       storeDailySet(setData.set, setData.questions);
 
