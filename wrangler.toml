@@ -5,18 +5,14 @@ pages_build_output_dir = "out"
 [vars]
 APP_ENV = "production"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "araharu-db"
-database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
+# D1 disabled (database deleted - using localStorage only)
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "araharu-db"
+# database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
 
 [env.production]
 name = "araharu"
-
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "araharu-db"
-database_id = "acca6d0c-c6d6-4762-ab7d-2777f2fd3783"
 
 # Secrets are set via `wrangler secret put`:
 # wrangler secret put ANTHROPIC_API_KEY
