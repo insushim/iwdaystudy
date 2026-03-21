@@ -21,7 +21,7 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "korean", title: "독해 퀴즈", count: 1 },
       { subject: "general_knowledge", title: "상식 퀴즈", count: 1 },
     ],
-    totalQuestions: 10,
+    totalQuestions: 9,
   },
   "3-4": {
     sections: [
@@ -38,7 +38,7 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "general_knowledge", title: "상식 퀴즈", count: 1 },
       { subject: "safety", title: "안전 퀴즈", count: 1 },
     ],
-    totalQuestions: 13,
+    totalQuestions: 12,
   },
   "5-6": {
     sections: [
@@ -56,7 +56,7 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "korean", title: "독해 퀴즈", count: 1 },
       { subject: "safety", title: "안전/건강 퀴즈", count: 1 },
     ],
-    totalQuestions: 15,
+    totalQuestions: 13,
   },
 } as const;
 

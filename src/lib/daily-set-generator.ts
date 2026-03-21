@@ -1808,6 +1808,9 @@ export function generateDailySet(
   const usedIndices: Record<string, Set<number>> = {};
 
   function pickUnused<T>(arr: T[], key: string): T {
+    if (!arr || arr.length === 0) {
+      throw new Error(`No data available for ${key}`);
+    }
     if (!usedIndices[key]) usedIndices[key] = new Set();
     const used = usedIndices[key];
     const available = arr
@@ -2072,10 +2075,16 @@ export function generateDailySet(
         // 독해(reading) variant: 지문 읽고 4지선다
         const hasKorean = data.korean && data.korean.length > 0;
         const hasReading = data.koreanReading && data.koreanReading.length > 0;
+
+        if (!hasKorean && !hasReading) {
+          throw new Error(`No korean data available for grade ${grade}`);
+        }
+
         const skv = hasKorean
           ? ["fill", "fill", "tf", "input", "reading", "reading"]
           : ["reading"];
         const skvar = skv[Math.floor(random() * skv.length)];
+
         if (skvar === "reading" && hasReading) {
           const readingEntry = pickUnused(data.koreanReading!, "koreanReading");
           questions.push(
@@ -2121,6 +2130,11 @@ export function generateDailySet(
               readingEntry,
               random,
             ),
+          );
+        } else {
+          // 이 분기는 위의 early return으로 인해 도달할 수 없지만 안전장치로 유지
+          throw new Error(
+            `Unable to generate korean question for grade ${grade}`,
           );
         }
       } else if (
