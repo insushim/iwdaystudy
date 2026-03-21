@@ -56,9 +56,11 @@ export default function MathQuestion({
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <span className="inline-flex items-center gap-1 rounded-full bg-[#FF6B35]/10 px-3 py-1 text-xs font-semibold text-[#FF6B35]">
-        {content.unit}
-      </span>
+      {content?.unit && (
+        <span className="inline-flex items-center gap-1 rounded-full bg-[#FF6B35]/10 px-3 py-1 text-xs font-semibold text-[#FF6B35]">
+          {content.unit}
+        </span>
+      )}
 
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}

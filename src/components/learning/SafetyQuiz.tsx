@@ -33,6 +33,7 @@ export default function SafetyQuiz({
 
   // Split text around ___ to highlight the blank
   const renderText = () => {
+    if (!content?.text) return <span>문제를 불러올 수 없습니다.</span>;
     const parts = content.text.split("___");
     if (parts.length < 2) return <span>{content.text}</span>;
 
@@ -69,7 +70,7 @@ export default function SafetyQuiz({
         className="rounded-full border-[#E74C3C]/40 bg-[#E74C3C]/10 text-[#E74C3C] px-3 py-1 text-sm font-semibold"
       >
         <ShieldAlert className="h-3.5 w-3.5 mr-1" />
-        {content.category}
+        {content?.category || "안전"}
       </Badge>
 
       {/* Question text */}
@@ -79,7 +80,9 @@ export default function SafetyQuiz({
         className="w-full max-w-lg rounded-2xl bg-[#E74C3C]/5 border border-[#E74C3C]/15 p-6 text-center"
       >
         <p className="text-xl sm:text-2xl font-bold leading-relaxed">
-          {variant === "tf" ? content.text : renderText()}
+          {variant === "tf"
+            ? content?.text || "문제를 불러올 수 없습니다."
+            : renderText()}
         </p>
         {variant === "tf" && (
           <p className="mt-2 text-sm text-muted-foreground">

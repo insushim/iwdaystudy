@@ -1,6 +1,11 @@
 // Cloudflare Pages Function: POST /api/auth/login
 
-import { verifyPassword, isLegacyHash, hashPassword, createToken } from "../../lib/crypto";
+import {
+  verifyPassword,
+  isLegacyHash,
+  hashPassword,
+  createToken,
+} from "../../lib/crypto";
 
 interface Env {
   DB: D1Database;
@@ -22,7 +27,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     // Normalize student login ID: "ara21" → "ara21@class.local"
-    const normalizedEmail = email.includes("@") ? email : `${email}@class.local`;
+    const normalizedEmail = email.includes("@")
+      ? email
+      : `${email}@class.local`;
 
     const user = await context.env.DB.prepare(
       "SELECT * FROM profiles WHERE email = ?",
@@ -38,7 +45,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     // Verify password (supports both new SHA-256 and legacy simpleHash)
-    const isValid = await verifyPassword(password, user.password_hash as string);
+    const isValid = await verifyPassword(
+      password,
+      user.password_hash as string,
+    );
     if (!isValid) {
       return jsonResponse(
         { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
@@ -59,7 +69,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     // Block unapproved teachers
     if (user.role === "teacher" && user.approval_status === "pending") {
       return jsonResponse(
-        { message: "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다." },
+        {
+          message:
+            "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다.",
+        },
         403,
       );
     }
@@ -84,7 +97,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return jsonResponse({ user: safeUser, token });
   } catch (err: any) {
     return jsonResponse(
-      { message: "로그인 처리 중 오류가 발생했습니다." },
+      {
+        message: "로그인 처리 중 오류가 발생했습니다.",
+        _debug: err?.message || String(err),
+      },
       500,
     );
   }

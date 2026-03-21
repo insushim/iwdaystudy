@@ -47,8 +47,19 @@ export default function WritingPrompt({
   const meetsMinimum = charCount >= minChars;
   const canRetry = retryCount < MAX_RETRIES;
 
+  // 한글 비율 체크 (의미 있는 글인지 판별)
+  const getKoreanRatio = (t: string) => {
+    const chars = t.replace(/\s/g, "");
+    if (chars.length === 0) return 0;
+    const korean = chars.replace(/[^\uAC00-\uD7A3]/g, "");
+    return korean.length / chars.length;
+  };
+  const koreanRatio = getKoreanRatio(text);
+  const isGibberish = text.trim().length > 0 && koreanRatio < 0.3;
+
   const handleSubmit = () => {
     if (!text.trim()) return;
+    if (isGibberish) return; // 한글이 30% 미만이면 제출 차단
     const rawResult = evaluateWriting(text.trim(), minChars);
     const currentLen = text.trim().length;
     // 다시 쓰기 시: 글이 줄지 않았고 raw 점수가 이전보다 낮으면 이전 점수 유지
@@ -94,10 +105,18 @@ export default function WritingPrompt({
   };
 
   const handleForceSubmit = () => {
-    // 점수 낮아도 강제 제출
+    // 점수 낮아도 강제 제출 (gibberish 재검증)
+    const currentText = text.trim();
+    if (!currentText) return;
+    const ratio = getKoreanRatio(currentText);
+    if (ratio < 0.3) {
+      // previewMode에서 텍스트가 변조된 경우 차단
+      setPreviewMode(false);
+      return;
+    }
     setSubmitted(true);
     setPreviewMode(false);
-    onAnswer(text.trim());
+    onAnswer(currentText);
   };
 
   const isShowingResult = (showResult || submitted) && !previewMode;
@@ -177,12 +196,14 @@ export default function WritingPrompt({
             </div>
             <Button
               onClick={handleSubmit}
-              disabled={!meetsMinimum}
+              disabled={!meetsMinimum || isGibberish}
               className="rounded-xl font-bold bg-[#2ECC71] hover:bg-[#2ECC71]/90"
             >
-              {meetsMinimum
-                ? "제출하기"
-                : `${minChars - charCount}자 더 써주세요`}
+              {isGibberish
+                ? "한글로 써주세요!"
+                : meetsMinimum
+                  ? "제출하기"
+                  : `${minChars - charCount}자 더 써주세요`}
             </Button>
           </div>
         </motion.div>

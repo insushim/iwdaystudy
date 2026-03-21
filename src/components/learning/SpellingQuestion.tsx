@@ -68,6 +68,11 @@ export default function SpellingQuestion({
         </div>
       )}
 
+      {options.length === 0 && !showResult && (
+        <div className="text-center text-muted-foreground text-sm py-4">
+          선택지를 불러올 수 없습니다.
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
         {options.map((option, index) => (
           <motion.button

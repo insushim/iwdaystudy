@@ -287,8 +287,9 @@ function filterMathByProgress(
   if (available.size === 0) return items; // no sequence defined for this grade/semester
 
   // Return only items matching unlocked units. Items without a unit field pass through.
-  // If nothing matches, return [] — the generated math pool handles coverage.
-  return items.filter((m) => !m.unit || available.has(m.unit));
+  // If nothing matches after filtering, return all items to avoid empty data errors.
+  const filtered = items.filter((m) => !m.unit || available.has(m.unit));
+  return filtered.length > 0 ? filtered : items;
 }
 
 /**

@@ -29,7 +29,10 @@ function gcdCalc(a: number, b: number): number {
 // ============================================================
 // Grade 1: 0~100, basic addition/subtraction, shapes
 // ============================================================
-function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathEntry {
+function generateGrade1Math(
+  rng: () => number,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
   const type = pickOne(rng, [
     "addition",
     "addition",
@@ -58,8 +61,11 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         type: "addition",
         expression: `${items}가 ${a}개 있었는데 ${bClamped}개를 더 받았습니다. 모두 몇 개?`,
         answer: a + bClamped,
-        steps: [`${a}와 ${bClamped}를 더합니다`, `${a} + ${bClamped} = ${a + bClamped}`],
-        unit: "한 자리 덧셈 (문장형)",
+        steps: [
+          `${a}와 ${bClamped}를 더합니다`,
+          `${a} + ${bClamped} = ${a + bClamped}`,
+        ],
+        unit: "한 자리 덧셈",
         numbers: [a, bClamped],
         hasCarry: a + bClamped >= 10,
       };
@@ -68,7 +74,10 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       type: "addition",
       expression: `${a} + ${bClamped} = ?`,
       answer: a + bClamped,
-      steps: [`${a}와 ${bClamped}를 더합니다`, `${a} + ${bClamped} = ${a + bClamped}`],
+      steps: [
+        `${a}와 ${bClamped}를 더합니다`,
+        `${a} + ${bClamped} = ${a + bClamped}`,
+      ],
       unit: "한 자리 덧셈",
       numbers: [a, bClamped],
       hasCarry: a + bClamped >= 10,
@@ -84,9 +93,9 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `${items}가 ${a}개 있었는데 ${b}개를 먹었습니다. 남은 것은?`,
         answer: a - b,
         steps: [`${a}에서 ${b}를 뺍니다`, `${a} - ${b} = ${a - b}`],
-        unit: "한 자리 뺄셈 (문장형)",
+        unit: "한 자리 뺄셈",
         numbers: [a, b],
-        hasBorrow: a >= 10 && (a % 10) < (b % 10),
+        hasBorrow: a >= 10 && a % 10 < b % 10,
       };
     }
     return {
@@ -100,8 +109,14 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     };
   } else if (type === "counting") {
     const start = randInt(rng, 1, countMax);
-    const skip = difficulty === 1 ? pickOne(rng, [2, 5]) : pickOne(rng, [2, 5, 10]);
-    const count = difficulty === 1 ? randInt(rng, 2, 3) : difficulty === 3 ? randInt(rng, 4, 7) : randInt(rng, 3, 5);
+    const skip =
+      difficulty === 1 ? pickOne(rng, [2, 5]) : pickOne(rng, [2, 5, 10]);
+    const count =
+      difficulty === 1
+        ? randInt(rng, 2, 3)
+        : difficulty === 3
+          ? randInt(rng, 4, 7)
+          : randInt(rng, 3, 5);
     const answer = start + skip * count;
     return {
       type: "counting",
@@ -113,15 +128,24 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     };
   } else if (type === "counting3") {
     // 3씩 뛰어세기
-    const start = randInt(rng, 1, difficulty === 1 ? 10 : difficulty === 3 ? 50 : 30);
-    const count = difficulty === 1 ? randInt(rng, 2, 3) : difficulty === 3 ? randInt(rng, 5, 8) : randInt(rng, 3, 6);
+    const start = randInt(
+      rng,
+      1,
+      difficulty === 1 ? 10 : difficulty === 3 ? 50 : 30,
+    );
+    const count =
+      difficulty === 1
+        ? randInt(rng, 2, 3)
+        : difficulty === 3
+          ? randInt(rng, 5, 8)
+          : randInt(rng, 3, 6);
     const answer = start + 3 * count;
     return {
       type: "counting",
       expression: `${start}부터 3씩 ${count}번 뛰어 세면?`,
       answer,
       steps: Array.from({ length: count + 1 }, (_, i) => `${start + 3 * i}`),
-      unit: "3씩 뛰어 세기",
+      unit: "뛰어 세기",
       numbers: [start, 3, count],
     };
   } else if (type === "comparison_symbol") {
@@ -135,8 +159,15 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       type: "comparison",
       expression: `${items}가 ${a}개, 귤이 ${b}개 있습니다. 더 많은 것은? (1: ${items}, 2: 귤, 0: 같음)`,
       answer: answerNum,
-      steps: [`${a} ${symbol} ${b}`, answerNum === 1 ? `${items}가 더 많습니다` : answerNum === 2 ? `귤이 더 많습니다` : `같습니다`],
-      unit: "수 비교 (>, <, =)",
+      steps: [
+        `${a} ${symbol} ${b}`,
+        answerNum === 1
+          ? `${items}가 더 많습니다`
+          : answerNum === 2
+            ? `귤이 더 많습니다`
+            : `같습니다`,
+      ],
+      unit: "수의 크기 비교",
       numbers: [a, b],
     };
   } else {
@@ -156,7 +187,10 @@ function generateGrade1Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
 // ============================================================
 // Grade 2: 두 자리 +/-, 구구단 시작, 시간, 길이
 // ============================================================
-function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathEntry {
+function generateGrade2Math(
+  rng: () => number,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
   const type = pickOne(rng, [
     "addition2",
     "addition2",
@@ -181,18 +215,19 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     const bMax = Math.max(1, (difficulty === 3 ? 999 : addMax) - a);
     const b = randInt(rng, 1, bMax);
     const hasCarry = (a % 10) + (b % 10) >= 10;
-    const unitLabel = difficulty === 3 ? "세 자리 덧셈" : "두 자리 덧셈";
+    const unitLabel = difficulty === 3 ? "두 자리 덧셈" : "두 자리 덧셈";
     if (difficulty === 3) {
-      const context = pickOne(rng, ["문구점에서 연필", "과일가게에서 사과", "도서관에서 책"]);
+      const context = pickOne(rng, [
+        "문구점에서 연필",
+        "과일가게에서 사과",
+        "도서관에서 책",
+      ]);
       return {
         type: "addition",
         expression: `${context} ${a}개와 ${b}개를 합하면 모두 몇 개?`,
         answer: a + b,
-        steps: [
-          `일의 자리부터 차례로 더합니다`,
-          `${a} + ${b} = ${a + b}`,
-        ],
-        unit: unitLabel + " (문장형)",
+        steps: [`일의 자리부터 차례로 더합니다`, `${a} + ${b} = ${a + b}`],
+        unit: "두 자리 덧셈",
         numbers: [a, b],
         hasCarry,
       };
@@ -211,17 +246,25 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       hasCarry,
     };
   } else if (type === "subtraction2") {
-    const a = randInt(rng, difficulty === 1 ? 15 : difficulty === 3 ? 200 : 20, subMax);
+    const a = randInt(
+      rng,
+      difficulty === 1 ? 15 : difficulty === 3 ? 200 : 20,
+      subMax,
+    );
     const b = randInt(rng, 1, a);
     const hasBorrow = a % 10 < b % 10;
     if (difficulty === 3) {
-      const context = pickOne(rng, ["학교에 학생이", "바구니에 귤이", "연못에 물고기가"]);
+      const context = pickOne(rng, [
+        "학교에 학생이",
+        "바구니에 귤이",
+        "연못에 물고기가",
+      ]);
       return {
         type: "subtraction",
         expression: `${context} ${a}개 있었는데 ${b}개가 없어졌습니다. 남은 것은?`,
         answer: a - b,
         steps: [`${a}에서 ${b}를 뺍니다`, `${a} - ${b} = ${a - b}`],
-        unit: "세 자리 뺄셈 (문장형)",
+        unit: "두 자리 뺄셈",
         numbers: [a, b],
         hasBorrow,
       };
@@ -251,8 +294,14 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     };
   } else if (type === "time") {
     const hour = randInt(rng, 1, 12);
-    const min = difficulty === 1 ? pickOne(rng, [0, 30]) : pickOne(rng, [0, 15, 30, 45]);
-    const addMin = difficulty === 1 ? 30 : difficulty === 3 ? pickOne(rng, [30, 45, 60, 90]) : 30;
+    const min =
+      difficulty === 1 ? pickOne(rng, [0, 30]) : pickOne(rng, [0, 15, 30, 45]);
+    const addMin =
+      difficulty === 1
+        ? 30
+        : difficulty === 3
+          ? pickOne(rng, [30, 45, 60, 90])
+          : 30;
     if (difficulty === 3) {
       const totalMin = hour * 60 + min + addMin;
       const newHour = Math.floor(totalMin / 60) % 12 || 12;
@@ -262,7 +311,7 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `${hour}시 ${min === 0 ? "정각" : min + "분"}에서 ${addMin}분 후는 몇 시 몇 분?`,
         answer: newHour * 100 + newMin,
         steps: [`${hour}시 ${min}분 + ${addMin}분 = ${newHour}시 ${newMin}분`],
-        unit: "시각과 시간 (심화)",
+        unit: "시각과 시간",
         numbers: [hour, min],
       };
     }
@@ -288,8 +337,12 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       type: "subtraction",
       expression: `연필 길이가 ${cm1}cm, 지우개 길이가 ${cm2}cm입니다. 몇 cm 차이?`,
       answer: diff,
-      steps: [cm1 > cm2 ? `${cm1} - ${cm2} = ${diff}cm` : `${cm2} - ${cm1} = ${diff}cm`],
-      unit: "길이 비교",
+      steps: [
+        cm1 > cm2
+          ? `${cm1} - ${cm2} = ${diff}cm`
+          : `${cm2} - ${cm1} = ${diff}cm`,
+      ],
+      unit: "길이 재기",
       numbers: [cm1, cm2],
     };
   } else if (type === "weight_compare") {
@@ -300,20 +353,25 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       type: "comparison",
       expression: `수박 ${kg1}kg, 참외 ${kg2}kg 중 더 무거운 것의 무게는?`,
       answer: Math.max(kg1, kg2),
-      steps: [`${kg1}과 ${kg2}를 비교합니다`, `${Math.max(kg1, kg2)}kg이 더 무겁습니다`],
-      unit: "무게 비교",
+      steps: [
+        `${kg1}과 ${kg2}를 비교합니다`,
+        `${Math.max(kg1, kg2)}kg이 더 무겁습니다`,
+      ],
+      unit: "길이 재기",
       numbers: [kg1, kg2],
     };
   } else if (type === "clock_read") {
     const hour = randInt(rng, 1, 12);
-    const min = difficulty === 1
-      ? pickOne(rng, [0, 15, 30, 45])
-      : pickOne(rng, [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]);
-    const addMin = difficulty === 1
-      ? pickOne(rng, [15, 30])
-      : difficulty === 3
-        ? pickOne(rng, [25, 35, 45, 55, 75, 90])
-        : pickOne(rng, [15, 20, 25, 30, 45, 60]);
+    const min =
+      difficulty === 1
+        ? pickOne(rng, [0, 15, 30, 45])
+        : pickOne(rng, [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]);
+    const addMin =
+      difficulty === 1
+        ? pickOne(rng, [15, 30])
+        : difficulty === 3
+          ? pickOne(rng, [25, 35, 45, 55, 75, 90])
+          : pickOne(rng, [15, 20, 25, 30, 45, 60]);
     const totalMin = hour * 60 + min + addMin;
     const newHour = Math.floor(totalMin / 60) % 12 || 12;
     const newMin = totalMin % 60;
@@ -322,7 +380,7 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       expression: `${hour}시 ${min === 0 ? "정각" : min + "분"}에서 ${addMin}분 후는 몇 시 몇 분?`,
       answer: newHour * 100 + newMin,
       steps: [`${hour}시 ${min}분 + ${addMin}분 = ${newHour}시 ${newMin}분`],
-      unit: "시계 읽기",
+      unit: "시각과 시간",
       numbers: [hour, min],
     };
   } else {
@@ -343,7 +401,10 @@ function generateGrade2Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
 // ============================================================
 // Grade 3: 세 자리 +/-, 곱셈, 나눗셈 시작, 분수 기초
 // ============================================================
-function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathEntry {
+function generateGrade3Math(
+  rng: () => number,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
   const type = pickOne(rng, [
     "addition3",
     "subtraction3",
@@ -372,7 +433,7 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       expression: `${a} + ${b} = ?`,
       answer: sum,
       steps: [`일의 자리부터 차례로 더합니다`, `${a} + ${b} = ${sum}`],
-      unit: difficulty === 3 ? "네 자리 덧셈" : "세 자리 덧셈",
+      unit: "세 자리 덧셈",
       numbers: [a, b],
       hasCarry: true,
     };
@@ -386,7 +447,7 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       expression: `${a} - ${b} = ?`,
       answer: a - b,
       steps: [`${a}에서 ${b}를 뺍니다`, `${a} - ${b} = ${a - b}`],
-      unit: difficulty === 3 ? "네 자리 뺄셈" : "세 자리 뺄셈",
+      unit: "세 자리 뺄셈",
       numbers: [a, b],
       hasBorrow: true,
     };
@@ -399,7 +460,7 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `한 상자에 ${a}개씩 ${b}상자가 있습니다. 전체 개수는?`,
         answer: a * b,
         steps: [`${a} × ${b} = ${a * b}`],
-        unit: "곱셈 (문장형)",
+        unit: "곱셈구구",
         numbers: [a, b],
       };
     }
@@ -424,7 +485,7 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `${dividend} 안에 ${divisor}가 몇 번 들어가는지 생각합니다`,
           `${dividend} ÷ ${divisor} = ${quotient}`,
         ],
-        unit: "나눗셈 (문장형)",
+        unit: "나눗셈",
         dividend,
         divisor,
         quotient,
@@ -447,29 +508,34 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     };
   } else if (type === "division_remainder") {
     const divisor = randInt(rng, 2, difficulty === 1 ? 5 : 9);
-    const quotient = randInt(rng, 2, difficulty === 1 ? 5 : difficulty === 3 ? 12 : 9);
+    const quotient = randInt(
+      rng,
+      2,
+      difficulty === 1 ? 5 : difficulty === 3 ? 12 : 9,
+    );
     const remainder = randInt(rng, 1, divisor - 1);
     const dividend = divisor * quotient + remainder;
     return {
       type: "division",
-      expression: `${dividend} ÷ ${divisor} = ? ... ?`,
+      expression: `${dividend} ÷ ${divisor}의 몫은?`,
       answer: quotient,
       steps: [
         `${dividend} 안에 ${divisor}가 ${quotient}번 들어갑니다`,
         `${dividend} ÷ ${divisor} = ${quotient} ... ${remainder}`,
       ],
-      unit: "나머지가 있는 나눗셈",
+      unit: "나눗셈",
       dividend,
       divisor,
       quotient,
       remainder,
     };
   } else if (type === "fraction_compare") {
-    const denom = difficulty === 1
-      ? pickOne(rng, [2, 3, 4])
-      : difficulty === 3
-        ? pickOne(rng, [4, 5, 6, 8, 10, 12])
-        : pickOne(rng, [3, 4, 5, 6, 8]);
+    const denom =
+      difficulty === 1
+        ? pickOne(rng, [2, 3, 4])
+        : difficulty === 3
+          ? pickOne(rng, [4, 5, 6, 8, 10, 12])
+          : pickOne(rng, [3, 4, 5, 6, 8]);
     const n1 = randInt(rng, 1, denom - 1);
     let n2 = randInt(rng, 1, denom - 1);
     if (n2 === n1) n2 = n1 > 1 ? n1 - 1 : n1 + 1;
@@ -478,17 +544,21 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       type: "fraction",
       expression: `${n1}/${denom}과 ${n2}/${denom} 중 더 큰 분수의 분자는?`,
       answer: bigger,
-      steps: [`분모가 같으면 분자가 큰 것이 더 큽니다`, `${bigger}/${denom}이 더 큽니다`],
-      unit: "분수 크기 비교",
+      steps: [
+        `분모가 같으면 분자가 큰 것이 더 큽니다`,
+        `${bigger}/${denom}이 더 큽니다`,
+      ],
+      unit: "분수의 기초",
       numbers: [n1, n2, denom],
     };
   } else {
     // fraction intro
-    const denom = difficulty === 1
-      ? pickOne(rng, [2, 3, 4])
-      : difficulty === 3
-        ? pickOne(rng, [3, 4, 5, 6, 8, 10, 12])
-        : pickOne(rng, [2, 3, 4, 5, 6, 8]);
+    const denom =
+      difficulty === 1
+        ? pickOne(rng, [2, 3, 4])
+        : difficulty === 3
+          ? pickOne(rng, [3, 4, 5, 6, 8, 10, 12])
+          : pickOne(rng, [2, 3, 4, 5, 6, 8]);
     const numer = randInt(rng, 1, denom - 1);
     return {
       type: "fraction",
@@ -504,7 +574,10 @@ function generateGrade3Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
 // ============================================================
 // Grade 4: 큰 수, 곱셈/나눗셈 확장, 각도, 분수 덧뺄셈
 // ============================================================
-function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathEntry {
+function generateGrade4Math(
+  rng: () => number,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
   const type = pickOne(rng, [
     "multiplication_2digit",
     "division_remainder",
@@ -531,7 +604,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `${a} × ${b}를 세로셈으로 계산합니다`,
           `${a} × ${b} = ${a * b}`,
         ],
-        unit: "두 자리 곱셈 (문장형)",
+        unit: "두 자리 × 한 자리 곱셈",
         numbers: [a, b],
       };
     }
@@ -556,7 +629,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     const dividend = divisor * quotient + remainder;
     return {
       type: "division",
-      expression: `${dividend} ÷ ${divisor} = ? ... ?`,
+      expression: `${dividend} ÷ ${divisor}의 몫은?`,
       answer: quotient,
       steps: [`${dividend} ÷ ${divisor} = ${quotient} ... ${remainder}`],
       unit: "나머지가 있는 나눗셈",
@@ -575,7 +648,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       expression: `${a.toLocaleString()} + ${b.toLocaleString()} = ?`,
       answer: a + b,
       steps: [`${a} + ${b} = ${a + b}`],
-      unit: difficulty === 1 ? "세 자리 덧셈" : difficulty === 3 ? "다섯 자리 덧셈" : "네 자리 덧셈",
+      unit: "네 자리 덧셈",
       numbers: [a, b],
       hasCarry: true,
     };
@@ -583,13 +656,17 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     const aMin = difficulty === 1 ? 500 : difficulty === 3 ? 10000 : 5000;
     const aMax = difficulty === 1 ? 999 : difficulty === 3 ? 99999 : 9999;
     const a = randInt(rng, aMin, aMax);
-    const b = randInt(rng, difficulty === 1 ? 100 : difficulty === 3 ? 1000 : 1000, a);
+    const b = randInt(
+      rng,
+      difficulty === 1 ? 100 : difficulty === 3 ? 1000 : 1000,
+      a,
+    );
     return {
       type: "subtraction",
       expression: `${a.toLocaleString()} - ${b.toLocaleString()} = ?`,
       answer: a - b,
       steps: [`${a} - ${b} = ${a - b}`],
-      unit: difficulty === 1 ? "세 자리 뺄셈" : difficulty === 3 ? "다섯 자리 뺄셈" : "네 자리 뺄셈",
+      unit: "네 자리 뺄셈",
       numbers: [a, b],
       hasBorrow: true,
     };
@@ -616,20 +693,27 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         type: "angle",
         expression: `사각형의 세 각이 ${a1}°, ${a2}°, ${a3}°일 때 나머지 한 각은?`,
         answer: a4,
-        steps: [`사각형 네 각의 합은 360°`, `360° - ${a1}° - ${a2}° - ${a3}° = ${a4}°`],
-        unit: "각도 (사각형)",
+        steps: [
+          `사각형 네 각의 합은 360°`,
+          `360° - ${a1}° - ${a2}° - ${a3}° = ${a4}°`,
+        ],
+        unit: "각도",
         numbers: [a1, a2, a3],
       };
     }
-    const angle1 = randInt(rng, 10, 170);
-    const angle2 = 180 - angle1;
+    const angle1 = randInt(rng, 20, 100);
+    const angle2 = randInt(rng, 20, Math.max(21, 180 - angle1 - 10));
+    const angle3 = 180 - angle1 - angle2;
     return {
       type: "angle",
-      expression: `삼각형 두 각이 ${angle1}°와 ${angle2 > angle1 ? randInt(rng, 10, 180 - angle1 - 10) : 90 - angle1 > 0 ? 90 - angle1 : 30}°일 때 나머지 한 각은?`,
-      answer: 180 - angle1 - (angle2 > angle1 ? angle2 : 30),
-      steps: [`삼각형 세 각의 합은 180°`],
+      expression: `삼각형 두 각이 ${angle1}°와 ${angle2}°일 때 나머지 한 각은?`,
+      answer: angle3,
+      steps: [
+        `삼각형 세 각의 합은 180°`,
+        `180° - ${angle1}° - ${angle2}° = ${angle3}°`,
+      ],
       unit: "각도",
-      numbers: [angle1],
+      numbers: [angle1, angle2],
     };
   } else if (type === "angle_calc") {
     const a1Max = difficulty === 1 ? 60 : difficulty === 3 ? 150 : 120;
@@ -645,7 +729,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `두 각 ${a1}°와 ${a2}°의 합을 180°에서 빼면 몇 도?`,
         answer: 180 - sum,
         steps: [`${a1}° + ${a2}° = ${sum}°`, `180° - ${sum}° = ${180 - sum}°`],
-        unit: "각도 복합 계산",
+        unit: "각도",
         numbers: [a1, a2],
       };
     }
@@ -655,7 +739,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `${a1}°와 ${a2}°를 더하면 몇 도?`,
         answer: a1 + a2,
         steps: [`${a1}° + ${a2}° = ${a1 + a2}°`],
-        unit: "각도 계산",
+        unit: "각도",
         numbers: [a1, a2],
       };
     } else {
@@ -666,15 +750,20 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `${big}°에서 ${small}°를 빼면 몇 도?`,
         answer: big - small,
         steps: [`${big}° - ${small}° = ${big - small}°`],
-        unit: "각도 계산",
+        unit: "각도",
         numbers: [big, small],
       };
     }
   } else if (type === "graph_read") {
     const monthCount = difficulty === 1 ? 3 : difficulty === 3 ? 7 : 5;
-    const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월"].slice(0, monthCount);
+    const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월"].slice(
+      0,
+      monthCount,
+    );
     const valMax = difficulty === 1 ? 15 : difficulty === 3 ? 50 : 30;
-    const values = Array.from({ length: monthCount }, () => randInt(rng, 5, valMax));
+    const values = Array.from({ length: monthCount }, () =>
+      randInt(rng, 5, valMax),
+    );
     const maxVal = Math.max(...values);
     const maxIdx = values.indexOf(maxVal);
     const minVal = Math.min(...values);
@@ -683,8 +772,11 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         type: "comparison",
         expression: `기온 그래프: ${months.map((m, i) => `${m}=${values[i]}°C`).join(", ")}. 가장 높은 달과 낮은 달의 기온 차이는?`,
         answer: maxVal - minVal,
-        steps: [`최고: ${months[maxIdx]} ${maxVal}°C, 최저: ${minVal}°C`, `차이: ${maxVal} - ${minVal} = ${maxVal - minVal}°C`],
-        unit: "꺾은선 그래프 분석",
+        steps: [
+          `최고: ${months[maxIdx]} ${maxVal}°C, 최저: ${minVal}°C`,
+          `차이: ${maxVal} - ${minVal} = ${maxVal - minVal}°C`,
+        ],
+        unit: "네 자리 덧셈",
         numbers: values,
       };
     }
@@ -693,16 +785,17 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       expression: `기온 그래프: ${months.map((m, i) => `${m}=${values[i]}°C`).join(", ")}. 가장 높은 달의 기온은?`,
       answer: maxVal,
       steps: [`${months[maxIdx]}의 기온이 ${maxVal}°C로 가장 높습니다`],
-      unit: "꺾은선 그래프 읽기",
+      unit: "네 자리 덧셈",
       numbers: values,
     };
   } else {
     // fraction addition (same denominator)
-    const denom = difficulty === 1
-      ? pickOne(rng, [2, 3, 4])
-      : difficulty === 3
-        ? pickOne(rng, [4, 5, 6, 8, 10, 12])
-        : pickOne(rng, [3, 4, 5, 6, 8]);
+    const denom =
+      difficulty === 1
+        ? pickOne(rng, [2, 3, 4])
+        : difficulty === 3
+          ? pickOne(rng, [4, 5, 6, 8, 10, 12])
+          : pickOne(rng, [3, 4, 5, 6, 8]);
     const a = randInt(rng, 1, denom - 2);
     const b = randInt(rng, 1, denom - a);
     if (difficulty === 3) {
@@ -718,7 +811,7 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `${a} + ${b} - ${c} = ${result}`,
           `답: ${result}/${denom}`,
         ],
-        unit: "동분모 분수 혼합 계산",
+        unit: "동분모 분수 덧셈",
         numbers: [a, b, c, denom],
       };
     }
@@ -742,9 +835,26 @@ function generateGrade4Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
 // 1학기: 혼합계산, 약수와 배수, 최대공약수/최소공배수, 분수의 덧셈/뺄셈
 // 2학기: 분수의 곱셈, 소수의 곱셈, 소수의 덧셈, 넓이
 // ============================================================
-function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 | 3 = 2): MathEntry {
-  const sem1Types = ["mixed_ops", "factor", "lcm_gcd", "fraction_sub", "fraction_sub", "simplify_fraction"];
-  const sem2Types = ["decimal_multiply", "decimal_add", "decimal_multiply2", "area", "fraction_multiply"];
+function generateGrade5Math(
+  rng: () => number,
+  semester = 1,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
+  const sem1Types = [
+    "mixed_ops",
+    "factor",
+    "lcm_gcd",
+    "fraction_sub",
+    "fraction_sub",
+    "simplify_fraction",
+  ];
+  const sem2Types = [
+    "decimal_multiply",
+    "decimal_add",
+    "decimal_multiply2",
+    "area",
+    "fraction_multiply",
+  ];
   const type = pickOne(rng, semester === 1 ? sem1Types : sem2Types);
 
   // Difficulty-based: denominators for fractions
@@ -756,8 +866,11 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
     const cMax = difficulty === 1 ? 5 : difficulty === 3 ? 20 : 10;
     const a = randInt(rng, 2, aMax);
     const b = randInt(rng, 2, bMax);
-    const c = randInt(rng, 1, cMax);
     const ops = pickOne(rng, ["+", "-"]);
+    const c =
+      ops === "-"
+        ? randInt(rng, 1, Math.min(cMax, a * b - 1))
+        : randInt(rng, 1, cMax);
     const answer = ops === "+" ? a * b + c : a * b - c;
     if (difficulty === 3) {
       // Multi-step: add parentheses
@@ -772,7 +885,7 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
           `곱셈: ${a + c} × ${b} = ${(a + c) * b}`,
           `뺄셈: ${(a + c) * b} - ${d} = ${answer3}`,
         ],
-        unit: "혼합 계산 (심화)",
+        unit: "혼합 계산",
         numbers: [a, b, c, d],
       };
     }
@@ -798,7 +911,7 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
         expression: `${a} + ${b} = ?`,
         answer,
         steps: [`소수점을 맞추어 더합니다`, `${a} + ${b} = ${answer}`],
-        unit: "소수의 덧셈 (심화)",
+        unit: "소수의 덧셈",
         numbers: [Math.round(a * 100), Math.round(b * 100)],
       };
     }
@@ -828,8 +941,11 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
         type: "decimal",
         expression: `${a2} × ${b2} = ?`,
         answer: ans2,
-        steps: [`소수 × 소수: 소수점 자리수를 더합니다`, `${a2} × ${b2} = ${ans2}`],
-        unit: "소수의 곱셈 (심화)",
+        steps: [
+          `소수 × 소수: 소수점 자리수를 더합니다`,
+          `${a2} × ${b2} = ${ans2}`,
+        ],
+        unit: "소수의 곱셈",
         numbers: [Math.round(a2 * 10), Math.round(b2 * 10)],
       };
     }
@@ -845,7 +961,10 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
     const easyNums = [6, 8, 10, 12, 15];
     const normalNums = [12, 18, 24, 30, 36, 42, 48, 56, 60, 72];
     const hardNums = [36, 48, 60, 72, 84, 90, 96, 100, 120];
-    const n = pickOne(rng, difficulty === 1 ? easyNums : difficulty === 3 ? hardNums : normalNums);
+    const n = pickOne(
+      rng,
+      difficulty === 1 ? easyNums : difficulty === 3 ? hardNums : normalNums,
+    );
     const factors: number[] = [];
     for (let i = 1; i <= n; i++) {
       if (n % i === 0) factors.push(i);
@@ -859,10 +978,39 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
       numbers: [n],
     };
   } else if (type === "fraction_sub") {
-    const easyDenoms: [number, number][] = [[2,4],[2,6],[3,6]];
-    const normalDenoms: [number, number][] = [[2,3],[2,4],[2,5],[3,4],[3,6],[4,6],[2,6],[3,5]];
-    const hardDenoms: [number, number][] = [[3,5],[4,5],[3,7],[5,6],[4,7],[5,8],[3,8],[6,7]];
-    const [d1, d2] = pickOne(rng, difficulty === 1 ? easyDenoms : difficulty === 3 ? hardDenoms : normalDenoms);
+    const easyDenoms: [number, number][] = [
+      [2, 4],
+      [2, 6],
+      [3, 6],
+    ];
+    const normalDenoms: [number, number][] = [
+      [2, 3],
+      [2, 4],
+      [2, 5],
+      [3, 4],
+      [3, 6],
+      [4, 6],
+      [2, 6],
+      [3, 5],
+    ];
+    const hardDenoms: [number, number][] = [
+      [3, 5],
+      [4, 5],
+      [3, 7],
+      [5, 6],
+      [4, 7],
+      [5, 8],
+      [3, 8],
+      [6, 7],
+    ];
+    const [d1, d2] = pickOne(
+      rng,
+      difficulty === 1
+        ? easyDenoms
+        : difficulty === 3
+          ? hardDenoms
+          : normalDenoms,
+    );
     const lcm = (d1 * d2) / gcdCalc(d1, d2);
     const n1 = randInt(rng, 1, d1 - 1);
     const n2 = randInt(rng, 1, d2 - 1);
@@ -885,7 +1033,7 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
           `${n1c}/${lcm} ${op} ${n2c}/${lcm} = ${resultNum}/${lcm}`,
           `${resultNum}/${lcm} - ${n3c}/${lcm} = ${finalResult}/${lcm}`,
         ],
-        unit: "분수의 혼합 계산",
+        unit: "분수의 덧셈",
         numbers: [n1, d1, n2, d2, n3],
       };
     }
@@ -923,13 +1071,18 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
       numbers: [n1, d1, n2, d2],
     };
   } else if (type === "simplify_fraction") {
-    const factor = difficulty === 1
-      ? pickOne(rng, [2, 3])
-      : difficulty === 3
-        ? pickOne(rng, [3, 4, 5, 6, 7, 8])
-        : pickOne(rng, [2, 3, 4, 5, 6]);
+    const factor =
+      difficulty === 1
+        ? pickOne(rng, [2, 3])
+        : difficulty === 3
+          ? pickOne(rng, [3, 4, 5, 6, 7, 8])
+          : pickOne(rng, [2, 3, 4, 5, 6]);
     const n = randInt(rng, 1, difficulty === 1 ? 3 : 5);
-    const d = randInt(rng, n + 1, difficulty === 1 ? 5 : difficulty === 3 ? 12 : 8);
+    const d = randInt(
+      rng,
+      n + 1,
+      difficulty === 1 ? 5 : difficulty === 3 ? 12 : 8,
+    );
     const numer = n * factor;
     const denom = d * factor;
     return {
@@ -940,7 +1093,7 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
         `${numer}과 ${denom}의 공약수 ${factor}로 나눕니다`,
         `${numer}/${denom} = ${n}/${d}`,
       ],
-      unit: "약분",
+      unit: "약수와 배수",
       numbers: [numer, denom],
     };
   } else if (type === "decimal_multiply2") {
@@ -968,8 +1121,12 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
         type: "area",
         expression: `큰 직사각형 가로 ${w}cm, 세로 ${h}cm에서 가로 ${w2}cm, 세로 ${h2}cm를 잘라냈을 때 넓이는?`,
         answer: area,
-        steps: [`전체 넓이: ${w} × ${h} = ${w * h}cm²`, `잘라낸 넓이: ${w2} × ${h2} = ${w2 * h2}cm²`, `${w * h} - ${w2 * h2} = ${area}cm²`],
-        unit: "넓이 (복합 도형)",
+        steps: [
+          `전체 넓이: ${w} × ${h} = ${w * h}cm²`,
+          `잘라낸 넓이: ${w2} × ${h2} = ${w2 * h2}cm²`,
+          `${w * h} - ${w2 * h2} = ${area}cm²`,
+        ],
+        unit: "넓이",
         numbers: [w, h, w2, h2],
       };
     }
@@ -986,9 +1143,13 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
     const easyNums = [4, 6, 8, 10, 12];
     const normalNums = [4, 6, 8, 9, 10, 12, 15, 18, 20];
     const hardNums = [12, 15, 18, 20, 24, 28, 30, 36, 42, 48];
-    const pool = difficulty === 1 ? easyNums : difficulty === 3 ? hardNums : normalNums;
+    const pool =
+      difficulty === 1 ? easyNums : difficulty === 3 ? hardNums : normalNums;
     const a = pickOne(rng, pool);
-    const b = pickOne(rng, pool.filter((x) => x !== a));
+    const b = pickOne(
+      rng,
+      pool.filter((x) => x !== a),
+    );
     const gcd = (x: number, y: number): number => (y === 0 ? x : gcd(y, x % y));
     const g = gcd(a, b);
     if (difficulty === 3) {
@@ -998,10 +1159,7 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
         type: "gcd",
         expression: `${a}과 ${b}의 최소공배수는?`,
         answer: l,
-        steps: [
-          `최대공약수: ${g}`,
-          `최소공배수: ${a} × ${b} ÷ ${g} = ${l}`,
-        ],
+        steps: [`최대공약수: ${g}`, `최소공배수: ${a} × ${b} ÷ ${g} = ${l}`],
         unit: "최소공배수",
         numbers: [a, b],
       };
@@ -1023,7 +1181,10 @@ function generateGrade5Math(rng: () => number, semester = 1, difficulty: 1 | 2 |
 // ============================================================
 // Grade 6: 비와 비율, 원의 넓이, 비례식, 경우의 수
 // ============================================================
-function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathEntry {
+function generateGrade6Math(
+  rng: () => number,
+  difficulty: 1 | 2 | 3 = 2,
+): MathEntry {
   const type = pickOne(rng, [
     "ratio",
     "percentage",
@@ -1049,8 +1210,11 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         type: "ratio",
         expression: `${a} : ${b} : ${c}를 가장 간단한 자연수의 비로 나타내면? (첫째 수 입력)`,
         answer: a / g3,
-        steps: [`최대공약수 ${g3}로 나눕니다`, `${a / g3} : ${b / g3} : ${c / g3}`],
-        unit: "비와 비율 (심화)",
+        steps: [
+          `최대공약수 ${g3}로 나눕니다`,
+          `${a / g3} : ${b / g3} : ${c / g3}`,
+        ],
+        unit: "비와 비율",
         numbers: [a, b, c],
       };
     }
@@ -1066,7 +1230,14 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
     const easyTotals = [10, 20, 50, 100];
     const normalTotals = [20, 25, 40, 50, 100, 200];
     const hardTotals = [30, 60, 75, 80, 120, 150, 250, 300];
-    const total = pickOne(rng, difficulty === 1 ? easyTotals : difficulty === 3 ? hardTotals : normalTotals);
+    const total = pickOne(
+      rng,
+      difficulty === 1
+        ? easyTotals
+        : difficulty === 3
+          ? hardTotals
+          : normalTotals,
+    );
     const part = randInt(rng, 1, total);
     const pct = Math.round((part / total) * 100);
     if (difficulty === 3) {
@@ -1079,7 +1250,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         expression: `${total2}원의 ${pctKnown}%는 얼마?`,
         answer,
         steps: [`${total2} × ${pctKnown}/100 = ${answer}원`],
-        unit: "백분율 활용 (심화)",
+        unit: "백분율",
         numbers: [total2, pctKnown],
       };
     }
@@ -1110,7 +1281,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `안쪽 원: ${r2}² × 3.14 = ${innerArea}cm²`,
           `고리 넓이: ${outerArea} - ${innerArea} = ${ringArea}cm²`,
         ],
-        unit: "원의 넓이 (심화)",
+        unit: "원의 넓이",
         numbers: [r, r2],
       };
     }
@@ -1137,7 +1308,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         `원의 둘레 = 2 × 반지름 × 3.14`,
         `2 × ${r} × 3.14 = ${circumference}cm`,
       ],
-      unit: "원의 둘레",
+      unit: "원의 넓이",
       numbers: [r],
     };
   } else if (type === "proportion_word") {
@@ -1152,7 +1323,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
       const totalItems = a * multiplier;
       const discount = pickOne(rng, [10, 15, 20, 25]);
       const totalPrice = pricePerItem * multiplier;
-      const discounted = Math.round(totalPrice * (100 - discount) / 100);
+      const discounted = Math.round((totalPrice * (100 - discount)) / 100);
       return {
         type: "proportion",
         expression: `사탕 ${a}개에 ${pricePerItem}원입니다. ${totalItems}개를 사고 ${discount}% 할인 받으면 얼마?`,
@@ -1161,7 +1332,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `${totalItems}개 가격: ${pricePerItem} × ${multiplier} = ${totalPrice}원`,
           `${discount}% 할인: ${totalPrice} × ${100 - discount}/100 = ${discounted}원`,
         ],
-        unit: "비례식 활용 (심화)",
+        unit: "비례식",
         numbers: [a, pricePerItem, multiplier, discount],
       };
     }
@@ -1173,7 +1344,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
         `${a}개 : ${b * 10}원 = ${a * multiplier}개 : ?원`,
         `? = ${b * 10} × ${multiplier} = ${b * 10 * multiplier}원`,
       ],
-      unit: "비례식 활용",
+      unit: "비례식",
       numbers: [a, b * 10, multiplier],
     };
   } else if (type === "proportion") {
@@ -1240,7 +1411,7 @@ function generateGrade6Math(rng: () => number, difficulty: 1 | 2 | 3 = 2): MathE
           `높이 = 부피 ÷ (가로 × 세로)`,
           `${volume} ÷ (${w} × ${h}) = ${volume} ÷ ${w * h} = ${d}cm`,
         ],
-        unit: "직육면체의 높이 구하기",
+        unit: "직육면체의 부피",
         numbers: [w, h, d],
       };
     }
@@ -1273,13 +1444,20 @@ export function generateMathProblems(
 
   const gen = (r: () => number): MathEntry => {
     switch (grade) {
-      case 1: return generateGrade1Math(r, difficulty);
-      case 2: return generateGrade2Math(r, difficulty);
-      case 3: return generateGrade3Math(r, difficulty);
-      case 4: return generateGrade4Math(r, difficulty);
-      case 5: return generateGrade5Math(r, semester, difficulty);
-      case 6: return generateGrade6Math(r, difficulty);
-      default: return generateGrade1Math(r, difficulty);
+      case 1:
+        return generateGrade1Math(r, difficulty);
+      case 2:
+        return generateGrade2Math(r, difficulty);
+      case 3:
+        return generateGrade3Math(r, difficulty);
+      case 4:
+        return generateGrade4Math(r, difficulty);
+      case 5:
+        return generateGrade5Math(r, semester, difficulty);
+      case 6:
+        return generateGrade6Math(r, difficulty);
+      default:
+        return generateGrade1Math(r, difficulty);
     }
   };
 
@@ -1300,5 +1478,11 @@ export function generateMathPool(
   semester = 1,
   difficulty: 1 | 2 | 3 = 2,
 ): MathEntry[] {
-  return generateMathProblems(grade, 800, dayOfYear * 1000 + grade, semester, difficulty);
+  return generateMathProblems(
+    grade,
+    800,
+    dayOfYear * 1000 + grade,
+    semester,
+    difficulty,
+  );
 }

@@ -660,7 +660,8 @@ export const grade4SpellingData: SpellingEntry[] = [
     q1: "다르다 - 나와 너는 다르다.",
     q2: "틀리다 - 나와 너는 틀리다.",
     answer: 1,
-    explanation: "'다르다'는 차이가 있다는 뜻, '틀리다'는 잘못되었다는 뜻입니다.",
+    explanation:
+      "'다르다'는 차이가 있다는 뜻, '틀리다'는 잘못되었다는 뜻입니다.",
   },
   {
     q1: "잠그다 - 문을 잠갔다.",
@@ -894,7 +895,8 @@ export const grade4SpellingData: SpellingEntry[] = [
     q1: "들르다 - 서점에 들렀다.",
     q2: "들리다 - 서점에 들렸다.",
     answer: 1,
-    explanation: "'들르다'(방문하다)가 맞습니다. '들리다'는 소리가 들리는 것입니다.",
+    explanation:
+      "'들르다'(방문하다)가 맞습니다. '들리다'는 소리가 들리는 것입니다.",
   },
   {
     q1: "이따금 비가 온다.",
@@ -1297,7 +1299,7 @@ export const grade4MathData: MathEntry[] = [
       "6+1=7, 5+2=7, 4+5=9, 3+4=7, 2+3=5",
       "답: 57977",
     ],
-    unit: "큰 수 덧셈",
+    unit: "네 자리 덧셈",
   },
   {
     type: "calculation",
@@ -1496,7 +1498,7 @@ export const grade4MathData: MathEntry[] = [
       "5+3+1=9, 4+2=6",
       "답: 69134",
     ],
-    unit: "큰 수 덧셈",
+    unit: "네 자리 덧셈",
   },
   {
     type: "calculation",
@@ -1511,7 +1513,7 @@ export const grade4MathData: MathEntry[] = [
       "8-3=5",
       "답: 55476",
     ],
-    unit: "큰 수 뺄셈",
+    unit: "네 자리 뺄셈",
   },
   {
     type: "calculation",
@@ -1522,7 +1524,7 @@ export const grade4MathData: MathEntry[] = [
       "10-5=5, 9-4=5, 9-3=6, 9-2=7, 4-1=3",
       "답: 37655",
     ],
-    unit: "큰 수 뺄셈",
+    unit: "네 자리 뺄셈",
   },
   {
     type: "calculation",
@@ -1536,7 +1538,7 @@ export const grade4MathData: MathEntry[] = [
       "3+4+1=8",
       "답: 82110",
     ],
-    unit: "큰 수 덧셈",
+    unit: "네 자리 덧셈",
   },
   // 세 자리 × 두 자리 곱셈 추가
   {
@@ -2062,7 +2064,7 @@ export const grade4MathData: MathEntry[] = [
       "10-6=4, 9-5=4, 9-4=5, 9-3=6",
       "답: 6544",
     ],
-    unit: "큰 수 뺄셈",
+    unit: "네 자리 뺄셈",
   },
   {
     type: "calculation",
@@ -2074,14 +2076,14 @@ export const grade4MathData: MathEntry[] = [
       "7+1+1=9",
       "답: 90500",
     ],
-    unit: "큰 수 덧셈",
+    unit: "네 자리 덧셈",
   },
   {
     type: "calculation",
     expression: "99999 - 11111",
     answer: 88888,
     steps: ["9-1=8 (각 자리)", "답: 88888"],
-    unit: "큰 수 뺄셈",
+    unit: "네 자리 뺄셈",
   },
   {
     type: "calculation",

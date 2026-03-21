@@ -33,6 +33,7 @@ export default function GeneralKnowledge({
 
   // Split text around ___ to highlight the blank
   const renderText = () => {
+    if (!content?.text) return <span>문제를 불러올 수 없습니다.</span>;
     const parts = content.text.split("___");
     if (parts.length < 2) return <span>{content.text}</span>;
 
@@ -69,7 +70,7 @@ export default function GeneralKnowledge({
         className="rounded-full border-[#F9CA24]/40 bg-[#F9CA24]/10 text-[#B8860B] px-3 py-1 text-sm font-semibold"
       >
         <Lightbulb className="h-3.5 w-3.5 mr-1" />
-        {content.category}
+        {content?.category || "상식"}
       </Badge>
 
       {/* Reading passage for reading variant */}
@@ -96,9 +97,9 @@ export default function GeneralKnowledge({
       >
         <p className="text-xl sm:text-2xl font-bold leading-relaxed">
           {variant === "tf"
-            ? content.text
+            ? content?.text || "문제를 불러올 수 없습니다."
             : variant === "reading"
-              ? content.text
+              ? content?.text || "문제를 불러올 수 없습니다."
               : renderText()}
         </p>
         {variant === "tf" && (

@@ -22,6 +22,7 @@ interface SpellingPattern {
   wrong: string;
   explanation: string;
   gradeMin: number;
+  sentence?: string; // 전용 문장 템플릿 (있으면 범용 템플릿 대신 사용, {word} 플레이스홀더)
 }
 
 const SPELLING_PATTERNS: SpellingPattern[] = [
@@ -72,7 +73,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "번쩍",
-    wrong: "번쩍",
+    wrong: "번적",
     explanation: "'번쩍'이 올바른 의태어입니다.",
     gradeMin: 1,
   },
@@ -107,6 +108,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
     wrong: "익다",
     explanation: "'읽다'가 올바른 표기입니다.",
     gradeMin: 1,
+    sentence: "책을 {word}.",
   },
   {
     correct: "없다",
@@ -280,15 +282,17 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "연세",
-    wrong: "나이(높임)",
+    wrong: "나이",
     explanation: "어른의 나이는 '연세'라 합니다.",
     gradeMin: 4,
+    sentence: "할아버지의 {word}가 어떻게 되세요?",
   },
   {
     correct: "말씀",
-    wrong: "말(높임)",
+    wrong: "말",
     explanation: "어른의 말은 '말씀'이라 합니다.",
     gradeMin: 4,
+    sentence: "선생님의 {word}을 잘 들어라.",
   },
 
   // Grade 5-6: 어려운 맞춤법
@@ -336,15 +340,17 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "낫다",
-    wrong: "낳다/났다",
+    wrong: "낳다",
     explanation: "'낫다'(better)와 '낳다'(bear)를 구별합니다.",
     gradeMin: 5,
+    sentence: "이것이 저것보다 {word}.",
   },
   {
     correct: "맞히다",
-    wrong: "맞추다(정답)",
+    wrong: "맞추다",
     explanation: "정답을 '맞히다', 서로 대조하는 것은 '맞추다'입니다.",
     gradeMin: 5,
+    sentence: "정답을 {word}.",
   },
   {
     correct: "부딪히다",
@@ -465,10 +471,11 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
     gradeMin: 2,
   },
   {
-    correct: "만큼",
-    wrong: "만큼(붙여쓰기 오류)",
-    explanation: "조사 '만큼'은 붙여, 의존명사 '만큼'은 띄어 씁니다.",
+    correct: "나만큼",
+    wrong: "나 만큼",
+    explanation: "조사 '만큼'은 앞말에 붙여 씁니다.",
     gradeMin: 2,
+    sentence: "{word} 잘하는 사람이 없다.",
   },
 
   // ──── 추가: Grade 3-4 사이시옷·된소리 ────
@@ -542,9 +549,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "시키다",
-    wrong: "식히다(주문)",
+    wrong: "식히다",
     explanation: "주문하다의 뜻일 때 '시키다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "음식을 {word}.",
   },
 
   // ──── 추가: Grade 4-5 높임·겸양 ────
@@ -556,27 +564,31 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "진지",
-    wrong: "밥(높임)",
+    wrong: "밥",
     explanation: "어른의 식사는 '진지'라 합니다.",
     gradeMin: 4,
+    sentence: "할머니, {word} 드세요.",
   },
   {
     correct: "댁",
-    wrong: "집(높임)",
+    wrong: "집",
     explanation: "어른의 집은 '댁'이라 합니다.",
     gradeMin: 4,
+    sentence: "선생님 {word}에 방문했다.",
   },
   {
     correct: "성함",
-    wrong: "이름(높임)",
+    wrong: "이름",
     explanation: "어른의 이름은 '성함'이라 합니다.",
     gradeMin: 4,
+    sentence: "할아버지의 {word}이 무엇인가요?",
   },
   {
     correct: "생신",
-    wrong: "생일(높임)",
+    wrong: "생일",
     explanation: "어른의 생일은 '생신'이라 합니다.",
     gradeMin: 4,
+    sentence: "할머니 {word}을 축하드립니다.",
   },
 
   // ──── 추가: Grade 5-6 어려운 맞춤법 ────
@@ -618,9 +630,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "째",
-    wrong: "채(순서)",
+    wrong: "채",
     explanation: "순서를 나타낼 때 '째'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "세 번{word} 도전이다.",
   },
   {
     correct: "이따가",
@@ -674,9 +687,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "낮",
-    wrong: "낫(시간)",
+    wrong: "낫",
     explanation: "시간을 뜻할 때 '낮'이 올바른 표기입니다.",
     gradeMin: 1,
+    sentence: "{word}에 해가 밝다.",
   },
   {
     correct: "솥",
@@ -716,9 +730,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "삶",
-    wrong: "삼(생활)",
+    wrong: "삼",
     explanation: "생활을 뜻할 때 '삶'이 올바른 표기입니다.",
     gradeMin: 1,
+    sentence: "행복한 {word}을 살다.",
   },
   {
     correct: "넋",
@@ -742,9 +757,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "빠르다",
-    wrong: "바르다(속도)",
+    wrong: "바르다",
     explanation: "속도가 빠를 때 '빠르다'가 올바릅니다.",
     gradeMin: 1,
+    sentence: "토끼는 달리기가 {word}.",
   },
   {
     correct: "쓰다",
@@ -790,9 +806,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "쏘다",
-    wrong: "소다(동작)",
+    wrong: "소다",
     explanation: "동작을 뜻할 때 '쏘다'가 올바릅니다.",
     gradeMin: 1,
+    sentence: "활을 {word}.",
   },
 
   // ──── 추가 확장: Grade 1-2 기초 맞춤법 ────
@@ -916,9 +933,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   // ──── 추가 확장: Grade 3-4 사잇시옷 ────
   {
     correct: "봇물",
-    wrong: "보물(봇물)",
+    wrong: "보물",
     explanation: "'봇물'(둑이 터져 흐르는 물)이 올바른 표기입니다.",
     gradeMin: 3,
+    sentence: "{word}이 터지듯 쏟아졌다.",
   },
   {
     correct: "뱃길",
@@ -940,9 +958,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "냇가",
-    wrong: "내가(시냇가)",
+    wrong: "내가",
     explanation: "시냇가를 뜻할 때 '냇가'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "{word}에서 물고기를 잡았다.",
   },
   {
     correct: "숫자",
@@ -952,9 +971,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "횟수",
-    wrong: "회수(횟수)",
+    wrong: "회수",
     explanation: "번 수를 뜻할 때 '횟수'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "{word}를 세어 보자.",
   },
   {
     correct: "셋집",
@@ -970,89 +990,103 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "핏기",
-    wrong: "피기(핏기)",
+    wrong: "피기",
     explanation: "얼굴에 피가 도는 것은 '핏기'입니다.",
     gradeMin: 3,
+    sentence: "얼굴에 {word}가 돌았다.",
   },
 
   // ──── 추가 확장: Grade 3-4 혼동 표현 ────
   {
-    correct: "부치다(편지)",
-    wrong: "붙이다(편지)",
+    correct: "부치다",
+    wrong: "붙이다",
     explanation: "편지를 보낼 때 '부치다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "편지를 {word}.",
   },
   {
-    correct: "붙이다(풀로)",
-    wrong: "부치다(풀로)",
+    correct: "붙이다",
+    wrong: "부치다",
     explanation: "풀로 붙일 때 '붙이다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "풀로 종이를 {word}.",
   },
   {
-    correct: "맞추다(비교)",
-    wrong: "맞히다(비교)",
+    correct: "맞추다",
+    wrong: "맞히다",
     explanation: "서로 비교할 때 '맞추다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "답을 서로 {word}.",
   },
   {
-    correct: "바치다(나라에)",
-    wrong: "받치다(나라에)",
+    correct: "바치다",
+    wrong: "받치다",
     explanation: "나라에 헌신할 때 '바치다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "나라에 목숨을 {word}.",
   },
   {
-    correct: "받치다(받침)",
-    wrong: "바치다(받침)",
+    correct: "받치다",
+    wrong: "바치다",
     explanation: "아래에서 받쳐 줄 때 '받치다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "손으로 턱을 {word}.",
   },
   {
-    correct: "늘이다(길이)",
-    wrong: "늘리다(길이)",
+    correct: "늘이다",
+    wrong: "늘리다",
     explanation: "길이를 길게 할 때 '늘이다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "고무줄을 {word}.",
   },
   {
-    correct: "늘리다(양)",
-    wrong: "늘이다(양)",
+    correct: "늘리다",
+    wrong: "늘이다",
     explanation: "양이나 수를 많게 할 때 '늘리다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "인원을 {word}.",
   },
   {
     correct: "채",
-    wrong: "체(그대로)",
+    wrong: "체",
     explanation: "상태 그대로를 뜻할 때 '채'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "신발을 신은 {word}로 들어왔다.",
   },
   {
     correct: "체",
-    wrong: "채(척하다)",
+    wrong: "채",
     explanation: "아는 척할 때 '체'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "아는 {word}를 하다.",
   },
   {
-    correct: "켜다(불을)",
-    wrong: "키다(불을)",
+    correct: "켜다",
+    wrong: "키다",
     explanation: "불을 켤 때 '켜다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "불을 {word}.",
   },
   {
-    correct: "끄다(불을)",
-    wrong: "끄다",
+    correct: "끄다",
+    wrong: "꺼다",
     explanation: "'끄다'가 올바른 표기입니다.",
     gradeMin: 3,
+    sentence: "불을 {word}.",
   },
   {
     correct: "잃다",
-    wrong: "잊다(물건)",
+    wrong: "잊다",
     explanation: "물건을 잃어버릴 때 '잃다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "물건을 {word}.",
   },
   {
     correct: "잊다",
-    wrong: "잃다(기억)",
+    wrong: "잃다",
     explanation: "기억을 잊을 때 '잊다'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "약속을 {word}.",
   },
 
   // ──── 추가 확장: Grade 3-4 부사형 ────
@@ -1070,9 +1104,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "반드시",
-    wrong: "반듯이(꼭)",
+    wrong: "반듯이",
     explanation: "'꼭'의 뜻일 때 '반드시'가 올바릅니다.",
     gradeMin: 3,
+    sentence: "약속은 {word} 지켜야 한다.",
   },
   {
     correct: "깨끗이",
@@ -1120,39 +1155,45 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "모시다",
-    wrong: "데리다(어른)",
+    wrong: "데리다",
     explanation: "어른을 동반할 때 '모시다'가 올바릅니다.",
     gradeMin: 4,
+    sentence: "할머니를 {word}.",
   },
   {
     correct: "데리다",
-    wrong: "모시다(아이)",
+    wrong: "모시다",
     explanation: "아이를 동반할 때 '데리다'가 올바릅니다.",
     gradeMin: 4,
+    sentence: "동생을 {word}.",
   },
   {
     correct: "여쭈다",
-    wrong: "물어보다(어른)",
+    wrong: "물어보다",
     explanation: "어른에게 물을 때 '여쭈다'가 올바른 높임말입니다.",
     gradeMin: 4,
+    sentence: "선생님께 {word}.",
   },
   {
     correct: "드리다",
-    wrong: "주다(어른)",
+    wrong: "주다",
     explanation: "어른에게 줄 때 '드리다'가 올바른 높임말입니다.",
     gradeMin: 4,
+    sentence: "할아버지께 {word}.",
   },
   {
     correct: "말씀드리다",
-    wrong: "말하다(어른에게)",
+    wrong: "말하다",
     explanation: "어른에게 말할 때 '말씀드리다'가 올바릅니다.",
     gradeMin: 4,
+    sentence: "부모님께 {word}.",
   },
   {
     correct: "뵙다",
-    wrong: "보다(어른)",
+    wrong: "보다",
     explanation: "어른을 만날 때 '뵙다'가 올바른 높임말입니다.",
     gradeMin: 4,
+    sentence: "선생님을 {word}.",
   },
   {
     correct: "편찮으시다",
@@ -1161,10 +1202,11 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
     gradeMin: 4,
   },
   {
-    correct: "치사",
-    wrong: "치아(높임)",
-    explanation: "어른의 이를 높여 '치아'라 하지 않고 '이'라 합니다.",
+    correct: "치아",
+    wrong: "이",
+    explanation: "이를 전문적으로 이를 때 '치아'라 합니다.",
     gradeMin: 4,
+    sentence: "{word} 건강을 지키자.",
   },
 
   // ──── 추가 확장: Grade 5-6 되/돼 구별 ────
@@ -1182,9 +1224,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "돼지",
-    wrong: "되지(동물)",
+    wrong: "되지",
     explanation: "동물을 뜻할 때 '돼지'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "{word}가 꿀꿀 울었다.",
   },
   {
     correct: "되돌아가다",
@@ -1272,27 +1315,31 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "바라다",
-    wrong: "바래다(소원)",
+    wrong: "바래다",
     explanation: "소원을 빌 때 '바라다'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "행복을 {word}.",
   },
   {
-    correct: "바래다(색이)",
-    wrong: "바라다(색이)",
+    correct: "바래다",
+    wrong: "바라다",
     explanation: "색이 변할 때 '바래다'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "옷 색이 {word}.",
   },
   {
-    correct: "낫다(더)",
-    wrong: "났다(더)",
+    correct: "낫다",
+    wrong: "났다",
     explanation: "'더 낫다'가 올바른 표기입니다.",
     gradeMin: 5,
+    sentence: "이것이 더 {word}.",
   },
   {
-    correct: "낳다(아이를)",
-    wrong: "낫다(아이를)",
+    correct: "낳다",
+    wrong: "낫다",
     explanation: "아이를 낳을 때 '낳다'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "아이를 {word}.",
   },
   {
     correct: "째째하다",
@@ -1344,9 +1391,10 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "특히",
-    wrong: "특이(부사)",
+    wrong: "특이",
     explanation: "부사로 쓸 때 '특히'가 올바릅니다.",
     gradeMin: 5,
+    sentence: "{word} 수학을 잘한다.",
   },
   {
     correct: "족히",
@@ -1450,14 +1498,17 @@ export function generateSpellingProblems(
     const pattern = pickOne(rng, eligible);
     const template = pickOne(rng, templates);
     // Hard: more balanced (50/50), Easy: answer is first more often (70%)
-    const answerThreshold = difficulty === 3 ? 0.5 : difficulty === 1 ? 0.3 : 0.4;
+    const answerThreshold =
+      difficulty === 3 ? 0.5 : difficulty === 1 ? 0.3 : 0.4;
     const answerIsFirst = rng() > answerThreshold;
 
-    const q1 = template.template.replace(
+    // 패턴에 전용 문장이 있으면 우선 사용 (문맥 호환성 보장)
+    const sentenceTemplate = pattern.sentence || template.template;
+    const q1 = sentenceTemplate.replace(
       "{word}",
       answerIsFirst ? pattern.correct : pattern.wrong,
     );
-    const q2 = template.template.replace(
+    const q2 = sentenceTemplate.replace(
       "{word}",
       answerIsFirst ? pattern.wrong : pattern.correct,
     );
