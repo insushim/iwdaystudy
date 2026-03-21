@@ -1,21 +1,27 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Flame, Star, Trophy, BookOpen, TrendingUp, Clock } from 'lucide-react';
-import { useAuthStore } from '@/stores/authStore';
-import { useDailySet } from '@/hooks/useDailySet';
-import { getStreakCount, getTotalPoints, getCompletedDates, getRecordForSet, getEarnedBadges } from '@/lib/local-storage';
-import DailySetCard from '@/components/learning/DailySetCard';
-import Mascot from '@/components/learning/Mascot';
-import XPLevelDisplay from '@/components/learning/XPLevelDisplay';
-import StreakDisplay from '@/components/learning/StreakDisplay';
-import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Flame, Star, Trophy, BookOpen, TrendingUp, Clock } from "lucide-react";
+import { useAuthStore } from "@/stores/authStore";
+import { useDailySet } from "@/hooks/useDailySet";
+import {
+  getStreakCount,
+  getTotalPoints,
+  getCompletedDates,
+  getRecordForSet,
+  getEarnedBadges,
+} from "@/lib/local-storage";
+import DailySetCard from "@/components/learning/DailySetCard";
+import Mascot from "@/components/learning/Mascot";
+import XPLevelDisplay from "@/components/learning/XPLevelDisplay";
+import StreakDisplay from "@/components/learning/StreakDisplay";
+import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 export default function StudentDashboard() {
   const { user } = useAuthStore();
-  const { dailySet, isLoading } = useDailySet();
+  const { dailySet, isLoading, error } = useDailySet();
   const [streak, setStreak] = useState(0);
   const [points, setPoints] = useState(0);
   const [badgeCount, setBadgeCount] = useState(0);
@@ -51,15 +57,15 @@ export default function StudentDashboard() {
   }
 
   const hour = new Date().getHours();
-  const greeting = hour < 12
-    ? '좋은 아침이에요'
-    : hour < 18
-    ? '열심히 공부하고 있네요'
-    : '오늘 하루도 수고했어요';
+  const greeting =
+    hour < 12
+      ? "좋은 아침이에요"
+      : hour < 18
+        ? "열심히 공부하고 있네요"
+        : "오늘 하루도 수고했어요";
 
   return (
     <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-[1fr,320px] xl:grid-cols-[1fr,360px] lg:gap-8 lg:items-start">
-
       {/* Left column */}
       <div className="space-y-6">
         {/* Welcome section */}
@@ -70,18 +76,23 @@ export default function StudentDashboard() {
         >
           <div className="flex-1">
             <h1 className="text-2xl font-bold">
-              {greeting},{' '}
-              <span className="text-primary">{user?.name || '학생'}</span>님!
+              {greeting},{" "}
+              <span className="text-primary">{user?.name || "학생"}</span>님!
             </h1>
             <p className="text-muted-foreground mt-1">
-              {user?.grade ? `${user.grade}학년 ${user.semester || 1}학기` : ''} | 오늘도 알찬 하루를 시작해볼까요?
+              {user?.grade ? `${user.grade}학년 ${user.semester || 1}학기` : ""}{" "}
+              | 오늘도 알찬 하루를 시작해볼까요?
             </p>
           </div>
-          <Mascot state={todayCompleted ? 'happy' : 'default'} size={60} />
+          <Mascot state={todayCompleted ? "happy" : "default"} size={60} />
         </motion.div>
 
         {/* Today's learning */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+        >
           <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
             오늘의 학습
@@ -94,6 +105,13 @@ export default function StudentDashboard() {
               score={todayScore}
               streak={streak}
             />
+          ) : error ? (
+            <Card className="py-8 border-red-200">
+              <CardContent className="text-center text-red-600">
+                <p className="font-bold">학습 세트 오류</p>
+                <p className="text-sm mt-1">{error}</p>
+              </CardContent>
+            </Card>
           ) : (
             <Card className="py-8">
               <CardContent className="text-center text-muted-foreground">
@@ -105,12 +123,18 @@ export default function StudentDashboard() {
 
         {/* Completion message */}
         {todayCompleted && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25 }}
+          >
             <Card className="border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800">
               <CardContent className="py-4">
                 <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
                   <TrendingUp className="w-5 h-5" />
-                  <span className="font-medium">오늘 학습을 완료했어요! 대단해요!</span>
+                  <span className="font-medium">
+                    오늘 학습을 완료했어요! 대단해요!
+                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -126,7 +150,9 @@ export default function StudentDashboard() {
         >
           <XPLevelDisplay
             totalPoints={points}
-            todayPoints={todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0}
+            todayPoints={
+              todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0
+            }
           />
         </motion.div>
       </div>
@@ -135,7 +161,11 @@ export default function StudentDashboard() {
       <div className="space-y-4">
         {/* Stats cards */}
         <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
             <Card className="text-center py-4 px-3 lg:text-left lg:py-3">
               <CardContent className="p-0 lg:flex lg:items-center lg:gap-3 lg:px-2">
                 <motion.div
@@ -145,29 +175,43 @@ export default function StudentDashboard() {
                   <Flame className="w-6 h-6 mx-auto mb-1 lg:mx-0 lg:mb-0 lg:flex-shrink-0 text-orange-500" />
                 </motion.div>
                 <div>
-                  <div className="text-2xl font-black text-orange-500 lg:text-xl">{streak}</div>
+                  <div className="text-2xl font-black text-orange-500 lg:text-xl">
+                    {streak}
+                  </div>
                   <div className="text-xs text-muted-foreground">연속 학습</div>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             <Card className="text-center py-4 px-3 lg:text-left lg:py-3">
               <CardContent className="p-0 lg:flex lg:items-center lg:gap-3 lg:px-2">
                 <Star className="w-6 h-6 mx-auto mb-1 lg:mx-0 lg:mb-0 lg:flex-shrink-0 text-yellow-500" />
                 <div>
-                  <div className="text-2xl font-black text-yellow-500 lg:text-xl">{points.toLocaleString()}</div>
+                  <div className="text-2xl font-black text-yellow-500 lg:text-xl">
+                    {points.toLocaleString()}
+                  </div>
                   <div className="text-xs text-muted-foreground">총 포인트</div>
                 </div>
               </CardContent>
             </Card>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             <Card className="text-center py-4 px-3 lg:text-left lg:py-3">
               <CardContent className="p-0 lg:flex lg:items-center lg:gap-3 lg:px-2">
                 <Trophy className="w-6 h-6 mx-auto mb-1 lg:mx-0 lg:mb-0 lg:flex-shrink-0 text-purple-500" />
                 <div>
-                  <div className="text-2xl font-black text-purple-500 lg:text-xl">{badgeCount}</div>
+                  <div className="text-2xl font-black text-purple-500 lg:text-xl">
+                    {badgeCount}
+                  </div>
                   <div className="text-xs text-muted-foreground">획득 뱃지</div>
                 </div>
               </CardContent>
@@ -184,7 +228,9 @@ export default function StudentDashboard() {
         >
           <XPLevelDisplay
             totalPoints={points}
-            todayPoints={todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0}
+            todayPoints={
+              todayCompleted && todayScore ? Math.round(todayScore * 0.5) : 0
+            }
           />
         </motion.div>
 
@@ -208,7 +254,9 @@ export default function StudentDashboard() {
         >
           <Card>
             <CardContent className="py-4">
-              <h3 className="text-sm font-bold text-muted-foreground mb-3">학습 요약</h3>
+              <h3 className="text-sm font-bold text-muted-foreground mb-3">
+                학습 요약
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
@@ -233,7 +281,6 @@ export default function StudentDashboard() {
           </Card>
         </motion.div>
       </div>
-
     </div>
   );
 }
