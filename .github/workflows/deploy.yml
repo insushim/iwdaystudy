@@ -75,7 +75,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy out --project-name=araharu --commit-message="deploy $(date +%Y%m%d-%H%M%S)"
+          command: pages deploy out --project-name=araharu-ecp --commit-message="deploy $(date +%Y%m%d-%H%M%S)"
 
   # === 3. Build APK ===
   build-apk:
