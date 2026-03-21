@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 // Learning data persistence with localStorage
 // Provides the same data patterns as the D1 database API, but backed by localStorage.
 // Used in static export mode and for offline functionality.
 
-import { generateId } from './utils';
-import { getQuestionSignature } from './daily-set-generator';
+import { generateId } from "./utils";
+import { getQuestionSignature } from "./daily-set-generator";
 import type {
   LearningRecord,
   QuestionResponse,
@@ -13,20 +13,20 @@ import type {
   Question,
   Badge,
   StudentBadge,
-} from '@/types/database';
+} from "@/types/database";
 
 // ---------- Storage Keys ----------
 
-const RECORDS_KEY = 'araharu_learning_records';
-const RESPONSES_KEY = 'araharu_question_responses';
-const DAILY_SETS_KEY = 'araharu_daily_sets';
-const QUESTIONS_KEY = 'araharu_questions';
-const BADGES_KEY = 'araharu_student_badges';
+const RECORDS_KEY = "araharu_learning_records";
+const RESPONSES_KEY = "araharu_question_responses";
+const DAILY_SETS_KEY = "araharu_daily_sets";
+const QUESTIONS_KEY = "araharu_questions";
+const BADGES_KEY = "araharu_student_badges";
 
 // ---------- Generic Helpers ----------
 
 function getList<T>(key: string): T[] {
-  if (typeof window === 'undefined') return [];
+  if (typeof window === "undefined") return [];
   try {
     const data = localStorage.getItem(key);
     return data ? JSON.parse(data) : [];
@@ -46,7 +46,7 @@ function saveList<T>(key: string, items: T[]): void {
  * If a record with the same id exists, it will be replaced.
  */
 export function saveLearningRecord(record: LearningRecord): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   const records = getList<LearningRecord>(RECORDS_KEY);
   const idx = records.findIndex((r) => r.id === record.id);
 
@@ -64,17 +64,22 @@ export function saveLearningRecord(record: LearningRecord): void {
  */
 export function getLearningRecords(studentId: string): LearningRecord[] {
   return getList<LearningRecord>(RECORDS_KEY).filter(
-    (r) => r.student_id === studentId
+    (r) => r.student_id === studentId,
   );
 }
 
 /**
  * Get a specific learning record by student + daily set.
  */
-export function getRecordForSet(studentId: string, setId: string): LearningRecord | null {
-  return getList<LearningRecord>(RECORDS_KEY).find(
-    (r) => r.student_id === studentId && r.daily_set_id === setId
-  ) ?? null;
+export function getRecordForSet(
+  studentId: string,
+  setId: string,
+): LearningRecord | null {
+  return (
+    getList<LearningRecord>(RECORDS_KEY).find(
+      (r) => r.student_id === studentId && r.daily_set_id === setId,
+    ) ?? null
+  );
 }
 
 /**
@@ -83,11 +88,11 @@ export function getRecordForSet(studentId: string, setId: string): LearningRecor
 export function getRecordsByDateRange(
   studentId: string,
   from: string,
-  to: string
+  to: string,
 ): LearningRecord[] {
   return getList<LearningRecord>(RECORDS_KEY).filter((r) => {
     if (r.student_id !== studentId) return false;
-    const recordDate = (r.completed_at || r.created_at).split('T')[0];
+    const recordDate = (r.completed_at || r.created_at).split("T")[0];
     return recordDate >= from && recordDate <= to;
   });
 }
@@ -98,7 +103,7 @@ export function getRecordsByDateRange(
 export function createLearningRecord(
   studentId: string,
   dailySetId: string,
-  classId?: string | null
+  classId?: string | null,
 ): LearningRecord {
   const now = new Date().toISOString();
   const record: LearningRecord = {
@@ -134,7 +139,7 @@ export function completeLearningRecord(
     emotionBefore?: unknown;
     emotionAfter?: unknown;
     readiness?: unknown;
-  }
+  },
 ): LearningRecord | null {
   const records = getList<LearningRecord>(RECORDS_KEY);
   const idx = records.findIndex((r) => r.id === recordId);
@@ -164,7 +169,7 @@ export function getCompletedDates(studentId: string): string[] {
     .filter((r) => r.is_completed)
     .map((r) => {
       const d = new Date(r.completed_at || r.created_at);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
     });
 }
 
@@ -175,7 +180,7 @@ export function getCompletedDates(studentId: string): string[] {
  * Replaces any existing responses for the same learning record.
  */
 export function saveQuestionResponses(responses: QuestionResponse[]): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   const existing = getList<QuestionResponse>(RESPONSES_KEY);
 
   // Remove old responses for the same learning record(s)
@@ -190,18 +195,20 @@ export function saveQuestionResponses(responses: QuestionResponse[]): void {
  */
 export function getResponsesForRecord(recordId: string): QuestionResponse[] {
   return getList<QuestionResponse>(RESPONSES_KEY).filter(
-    (r) => r.learning_record_id === recordId
+    (r) => r.learning_record_id === recordId,
   );
 }
 
 /**
  * Get all question responses for a student across all records.
  */
-export function getAllResponsesForStudent(studentId: string): QuestionResponse[] {
+export function getAllResponsesForStudent(
+  studentId: string,
+): QuestionResponse[] {
   const records = getLearningRecords(studentId);
   const recordIds = new Set(records.map((r) => r.id));
-  return getList<QuestionResponse>(RESPONSES_KEY).filter(
-    (r) => recordIds.has(r.learning_record_id)
+  return getList<QuestionResponse>(RESPONSES_KEY).filter((r) =>
+    recordIds.has(r.learning_record_id),
   );
 }
 
@@ -235,17 +242,21 @@ export function getSeenQuestionSignatures(studentId: string): Set<string> {
 export function getStreakCount(studentId: string): number {
   const records = getLearningRecords(studentId)
     .filter((r) => r.is_completed && r.completed_at)
-    .sort((a, b) => new Date(b.completed_at!).getTime() - new Date(a.completed_at!).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.completed_at!).getTime() -
+        new Date(a.completed_at!).getTime(),
+    );
 
   if (records.length === 0) return 0;
 
   // Get unique dates in descending order
   const uniqueDates = Array.from(
-    new Set(records.map((r) => r.completed_at!.split('T')[0]))
+    new Set(records.map((r) => r.completed_at!.split("T")[0])),
   ).sort((a, b) => (b > a ? 1 : -1));
 
-  const today = new Date().toISOString().split('T')[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
+  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
 
   // The most recent activity must be today or yesterday
   if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) {
@@ -281,12 +292,15 @@ export function getTotalPoints(studentId: string): number {
 /**
  * Update streak and points in the stored user profile.
  */
-export function updateStreakAndPoints(studentId: string): { streak: number; totalPoints: number } {
+export function updateStreakAndPoints(studentId: string): {
+  streak: number;
+  totalPoints: number;
+} {
   const streak = getStreakCount(studentId);
   const totalPoints = getTotalPoints(studentId);
 
   // Update the profile in localStorage
-  const USERS_KEY = 'araharu_users';
+  const USERS_KEY = "araharu_users";
   try {
     const usersData = localStorage.getItem(USERS_KEY);
     if (usersData) {
@@ -313,22 +327,32 @@ export function updateStreakAndPoints(studentId: string): { streak: number; tota
  * Returns { [subject]: { correct, total, accuracy, avgTime } }
  */
 export function getSubjectStats(
-  studentId: string
-): Record<string, { correct: number; total: number; accuracy: number; avgTime: number }> {
+  studentId: string,
+): Record<
+  string,
+  { correct: number; total: number; accuracy: number; avgTime: number }
+> {
   const allResponses = getAllResponsesForStudent(studentId);
 
   // We need question data to know subjects
   const questions = getList<Question>(QUESTIONS_KEY);
   const questionMap = new Map(questions.map((q) => [q.id, q]));
 
-  const stats: Record<string, { correct: number; total: number; totalTime: number }> = {};
+  const stats: Record<
+    string,
+    { correct: number; total: number; totalTime: number }
+  > = {};
 
   for (const resp of allResponses) {
     const question = questionMap.get(resp.question_id);
     if (!question) continue;
 
     const subj = question.subject;
-    if ((subj as string) === 'emotion_check' || (subj as string) === 'readiness_check') continue;
+    if (
+      (subj as string) === "emotion_check" ||
+      (subj as string) === "readiness_check"
+    )
+      continue;
 
     if (!stats[subj]) {
       stats[subj] = { correct: 0, total: 0, totalTime: 0 };
@@ -342,12 +366,16 @@ export function getSubjectStats(
     }
   }
 
-  const result: Record<string, { correct: number; total: number; accuracy: number; avgTime: number }> = {};
+  const result: Record<
+    string,
+    { correct: number; total: number; accuracy: number; avgTime: number }
+  > = {};
   for (const [subject, data] of Object.entries(stats)) {
     result[subject] = {
       correct: data.correct,
       total: data.total,
-      accuracy: data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
+      accuracy:
+        data.total > 0 ? Math.round((data.correct / data.total) * 100) : 0,
       avgTime: data.total > 0 ? Math.round(data.totalTime / data.total) : 0,
     };
   }
@@ -359,21 +387,156 @@ export function getSubjectStats(
 
 // Default badges matching the DB seed data
 const DEFAULT_BADGES: Badge[] = [
-  { id: 'b001', name: '첫 발걸음', description: '첫 학습을 완료했어요!', icon: '🌱', condition_type: 'first_complete', condition_value: 1, rarity: 'common', created_at: '' },
-  { id: 'b002', name: '삼일 새싹', description: '3일 연속 학습!', icon: '🌿', condition_type: 'streak_3', condition_value: 3, rarity: 'common', created_at: '' },
-  { id: 'b003', name: '일주일 나무', description: '7일 연속 학습!', icon: '🌳', condition_type: 'streak_7', condition_value: 7, rarity: 'rare', created_at: '' },
-  { id: 'b004', name: '한 달 숲', description: '30일 연속 학습!', icon: '🏔️', condition_type: 'streak_30', condition_value: 30, rarity: 'epic', created_at: '' },
-  { id: 'b005', name: '백일장', description: '100일 연속 학습!', icon: '👑', condition_type: 'streak_100', condition_value: 100, rarity: 'legendary', created_at: '' },
-  { id: 'b006', name: '완벽한 하루', description: '일일 학습 만점!', icon: '⭐', condition_type: 'perfect_score', condition_value: 1, rarity: 'rare', created_at: '' },
-  { id: 'b007', name: '수학 도사', description: '수학 10회 연속 정답!', icon: '🔢', condition_type: 'math_streak_10', condition_value: 10, rarity: 'rare', created_at: '' },
-  { id: 'b008', name: '맞춤법 왕', description: '맞춤법 20회 연속 정답!', icon: '📝', condition_type: 'spelling_streak_20', condition_value: 20, rarity: 'epic', created_at: '' },
-  { id: 'b009', name: '한자 박사', description: '한자 50개 마스터!', icon: '📜', condition_type: 'hanja_50', condition_value: 50, rarity: 'epic', created_at: '' },
-  { id: 'b010', name: '영어 달인', description: '영어 30회 연속 정답!', icon: '🌏', condition_type: 'english_streak_30', condition_value: 30, rarity: 'epic', created_at: '' },
-  { id: 'b011', name: '천 점 돌파', description: '누적 1,000점 달성!', icon: '🎯', condition_type: 'points_1000', condition_value: 1000, rarity: 'common', created_at: '' },
-  { id: 'b012', name: '만 점 고수', description: '누적 10,000점 달성!', icon: '🏆', condition_type: 'points_10000', condition_value: 10000, rarity: 'rare', created_at: '' },
-  { id: 'b013', name: '새벽 학습자', description: '오전 7시 이전 학습 완료!', icon: '🌅', condition_type: 'early_bird', condition_value: 1, rarity: 'rare', created_at: '' },
-  { id: 'b014', name: '주말 전사', description: '주말에도 학습 완료!', icon: '💪', condition_type: 'weekend_learner', condition_value: 1, rarity: 'common', created_at: '' },
-  { id: 'b015', name: '전 과목 마스터', description: '모든 과목 정답률 90% 이상!', icon: '🎓', condition_type: 'all_subject_90', condition_value: 90, rarity: 'legendary', created_at: '' },
+  {
+    id: "b001",
+    name: "첫 발걸음",
+    description: "첫 학습을 완료했어요!",
+    icon: "🌱",
+    condition_type: "first_complete",
+    condition_value: 1,
+    rarity: "common",
+    created_at: "",
+  },
+  {
+    id: "b002",
+    name: "삼일 새싹",
+    description: "3일 연속 학습!",
+    icon: "🌿",
+    condition_type: "streak_3",
+    condition_value: 3,
+    rarity: "common",
+    created_at: "",
+  },
+  {
+    id: "b003",
+    name: "일주일 나무",
+    description: "7일 연속 학습!",
+    icon: "🌳",
+    condition_type: "streak_7",
+    condition_value: 7,
+    rarity: "rare",
+    created_at: "",
+  },
+  {
+    id: "b004",
+    name: "한 달 숲",
+    description: "30일 연속 학습!",
+    icon: "🏔️",
+    condition_type: "streak_30",
+    condition_value: 30,
+    rarity: "epic",
+    created_at: "",
+  },
+  {
+    id: "b005",
+    name: "백일장",
+    description: "100일 연속 학습!",
+    icon: "👑",
+    condition_type: "streak_100",
+    condition_value: 100,
+    rarity: "legendary",
+    created_at: "",
+  },
+  {
+    id: "b006",
+    name: "완벽한 하루",
+    description: "일일 학습 만점!",
+    icon: "⭐",
+    condition_type: "perfect_score",
+    condition_value: 1,
+    rarity: "rare",
+    created_at: "",
+  },
+  {
+    id: "b007",
+    name: "수학 도사",
+    description: "수학 10회 연속 정답!",
+    icon: "🔢",
+    condition_type: "math_streak_10",
+    condition_value: 10,
+    rarity: "rare",
+    created_at: "",
+  },
+  {
+    id: "b008",
+    name: "맞춤법 왕",
+    description: "맞춤법 20회 연속 정답!",
+    icon: "📝",
+    condition_type: "spelling_streak_20",
+    condition_value: 20,
+    rarity: "epic",
+    created_at: "",
+  },
+  {
+    id: "b009",
+    name: "한자 박사",
+    description: "한자 50개 마스터!",
+    icon: "📜",
+    condition_type: "hanja_50",
+    condition_value: 50,
+    rarity: "epic",
+    created_at: "",
+  },
+  {
+    id: "b010",
+    name: "영어 달인",
+    description: "영어 30회 연속 정답!",
+    icon: "🌏",
+    condition_type: "english_streak_30",
+    condition_value: 30,
+    rarity: "epic",
+    created_at: "",
+  },
+  {
+    id: "b011",
+    name: "천 점 돌파",
+    description: "누적 1,000점 달성!",
+    icon: "🎯",
+    condition_type: "points_1000",
+    condition_value: 1000,
+    rarity: "common",
+    created_at: "",
+  },
+  {
+    id: "b012",
+    name: "만 점 고수",
+    description: "누적 10,000점 달성!",
+    icon: "🏆",
+    condition_type: "points_10000",
+    condition_value: 10000,
+    rarity: "rare",
+    created_at: "",
+  },
+  {
+    id: "b013",
+    name: "새벽 학습자",
+    description: "오전 7시 이전 학습 완료!",
+    icon: "🌅",
+    condition_type: "early_bird",
+    condition_value: 1,
+    rarity: "rare",
+    created_at: "",
+  },
+  {
+    id: "b014",
+    name: "주말 전사",
+    description: "주말에도 학습 완료!",
+    icon: "💪",
+    condition_type: "weekend_learner",
+    condition_value: 1,
+    rarity: "common",
+    created_at: "",
+  },
+  {
+    id: "b015",
+    name: "전 과목 마스터",
+    description: "모든 과목 정답률 90% 이상!",
+    icon: "🎓",
+    condition_type: "all_subject_90",
+    condition_value: 90,
+    rarity: "legendary",
+    created_at: "",
+  },
 ];
 
 /**
@@ -386,9 +549,11 @@ export function getAllBadges(): Badge[] {
 /**
  * Get all badges the student has earned.
  */
-export function getEarnedBadges(studentId: string): (Badge & { earned_at: string })[] {
+export function getEarnedBadges(
+  studentId: string,
+): (Badge & { earned_at: string })[] {
   const studentBadges = getList<StudentBadge>(BADGES_KEY).filter(
-    (sb) => sb.student_id === studentId
+    (sb) => sb.student_id === studentId,
   );
 
   return studentBadges.map((sb) => {
@@ -397,13 +562,13 @@ export function getEarnedBadges(studentId: string): (Badge & { earned_at: string
       ? { ...badge, earned_at: sb.earned_at }
       : {
           id: sb.badge_id,
-          name: '알 수 없는 뱃지',
-          description: '',
-          icon: '?',
-          condition_type: '',
+          name: "알 수 없는 뱃지",
+          description: "",
+          icon: "?",
+          condition_type: "",
           condition_value: null,
-          rarity: 'common' as const,
-          created_at: '',
+          rarity: "common" as const,
+          created_at: "",
           earned_at: sb.earned_at,
         };
   });
@@ -424,7 +589,7 @@ export function getEarnedBadgeIds(studentId: string): string[] {
 export function awardBadge(studentId: string, badgeId: string): void {
   const existing = getList<StudentBadge>(BADGES_KEY);
   const alreadyHas = existing.some(
-    (sb) => sb.student_id === studentId && sb.badge_id === badgeId
+    (sb) => sb.student_id === studentId && sb.badge_id === badgeId,
   );
   if (alreadyHas) return;
 
@@ -446,13 +611,15 @@ export function checkAndAwardBadges(
   sessionData?: {
     totalScore: number;
     maxScore: number;
-  }
+  },
 ): Badge[] {
   const earnedIds = new Set(getEarnedBadgeIds(studentId));
 
   const streak = getStreakCount(studentId);
   const totalPoints = getTotalPoints(studentId);
-  const completedRecords = getLearningRecords(studentId).filter((r) => r.is_completed);
+  const completedRecords = getLearningRecords(studentId).filter(
+    (r) => r.is_completed,
+  );
   const subjectStats = getSubjectStats(studentId);
 
   const now = new Date();
@@ -467,61 +634,67 @@ export function checkAndAwardBadges(
     let isEarned = false;
 
     switch (badge.condition_type) {
-      case 'first_complete':
+      case "first_complete":
         isEarned = completedRecords.length >= 1;
         break;
-      case 'streak_3':
+      case "streak_3":
         isEarned = streak >= 3;
         break;
-      case 'streak_7':
+      case "streak_7":
         isEarned = streak >= 7;
         break;
-      case 'streak_30':
+      case "streak_30":
         isEarned = streak >= 30;
         break;
-      case 'streak_100':
+      case "streak_100":
         isEarned = streak >= 100;
         break;
-      case 'perfect_score':
+      case "perfect_score":
         isEarned = sessionData
-          ? sessionData.totalScore >= sessionData.maxScore && sessionData.maxScore > 0
-          : completedRecords.some((r) => r.total_score >= r.max_score && r.max_score > 0);
+          ? sessionData.totalScore >= sessionData.maxScore &&
+            sessionData.maxScore > 0
+          : completedRecords.some(
+              (r) => r.total_score >= r.max_score && r.max_score > 0,
+            );
         break;
-      case 'points_1000':
+      case "points_1000":
         isEarned = totalPoints >= 1000;
         break;
-      case 'points_10000':
+      case "points_10000":
         isEarned = totalPoints >= 10000;
         break;
-      case 'early_bird':
+      case "early_bird":
         isEarned = currentHour < 7;
         break;
-      case 'weekend_learner':
+      case "weekend_learner":
         isEarned = dayOfWeek === 0 || dayOfWeek === 6;
         break;
-      case 'math_streak_10': {
-        const math = subjectStats['math'];
+      case "math_streak_10": {
+        const math = subjectStats["math"];
         isEarned = !!math && math.correct >= 10;
         break;
       }
-      case 'spelling_streak_20': {
-        const spelling = subjectStats['spelling'];
+      case "spelling_streak_20": {
+        const spelling = subjectStats["spelling"];
         isEarned = !!spelling && spelling.correct >= 20;
         break;
       }
-      case 'hanja_50': {
-        const hanja = subjectStats['hanja'];
+      case "hanja_50": {
+        const hanja = subjectStats["hanja"];
         isEarned = !!hanja && hanja.correct >= 50;
         break;
       }
-      case 'english_streak_30': {
-        const english = subjectStats['english'];
+      case "english_streak_30": {
+        const english = subjectStats["english"];
         isEarned = !!english && english.correct >= 30;
         break;
       }
-      case 'all_subject_90': {
-        const subjects = Object.values(subjectStats).filter((s) => s.total >= 3);
-        isEarned = subjects.length >= 5 && subjects.every((s) => s.accuracy >= 90);
+      case "all_subject_90": {
+        const subjects = Object.values(subjectStats).filter(
+          (s) => s.total >= 3,
+        );
+        isEarned =
+          subjects.length >= 5 && subjects.every((s) => s.accuracy >= 90);
         break;
       }
     }
@@ -553,7 +726,7 @@ export function storeDailySet(set: DailySet, questions: Question[]): void {
   // Store questions (merge with existing, replace if same ID)
   const existingQuestions = getList<Question>(QUESTIONS_KEY);
   const keptQuestions = existingQuestions.filter(
-    (q) => q.daily_set_id !== set.id
+    (q) => q.daily_set_id !== set.id,
   );
   saveList(QUESTIONS_KEY, [...keptQuestions, ...questions]);
 }
@@ -561,7 +734,9 @@ export function storeDailySet(set: DailySet, questions: Question[]): void {
 /**
  * Get a stored daily set by ID.
  */
-export function getStoredDailySet(setId: string): { set: DailySet; questions: Question[] } | null {
+export function getStoredDailySet(
+  setId: string,
+): { set: DailySet; questions: Question[] } | null {
   const sets = getList<DailySet>(DAILY_SETS_KEY);
   const set = sets.find((s) => s.id === setId);
   if (!set) return null;
@@ -579,10 +754,10 @@ export function getStoredDailySet(setId: string): { set: DailySet; questions: Qu
 export function findDailySet(
   grade: number,
   semester: number,
-  setNumber?: number
+  setNumber?: number,
 ): { set: DailySet; questions: Question[] } | null {
   const sets = getList<DailySet>(DAILY_SETS_KEY).filter(
-    (s) => s.grade === grade && s.semester === semester && s.is_published
+    (s) => s.grade === grade && s.semester === semester && s.is_published,
   );
 
   if (sets.length === 0) return null;
@@ -606,7 +781,7 @@ export function findDailySet(
 export function getLocalReport(
   studentId: string,
   from: string,
-  to: string
+  to: string,
 ): {
   overview: {
     totalSessions: number;
@@ -618,10 +793,25 @@ export function getLocalReport(
     streak: number;
     totalPoints: number;
   };
-  subjectStats: Record<string, { correct: number; total: number; accuracy: number; avgTime: number }>;
-  dailyActivity: Array<{ date: string; sessions: number; score: number; maxScore: number; accuracy: number }>;
+  subjectStats: Record<
+    string,
+    { correct: number; total: number; accuracy: number; avgTime: number }
+  >;
+  dailyActivity: Array<{
+    date: string;
+    sessions: number;
+    score: number;
+    maxScore: number;
+    accuracy: number;
+  }>;
   badges: (Badge & { earned_at: string })[];
-  weakSubjects: Array<{ subject: string; correct: number; total: number; accuracy: number; avgTime: number }>;
+  weakSubjects: Array<{
+    subject: string;
+    correct: number;
+    total: number;
+    accuracy: number;
+    avgTime: number;
+  }>;
 } {
   const records = getRecordsByDateRange(studentId, from, to);
   const completed = records.filter((r) => r.is_completed);
@@ -629,13 +819,21 @@ export function getLocalReport(
   const totalScore = completed.reduce((s, r) => s + r.total_score, 0);
   const totalMaxScore = completed.reduce((s, r) => s + r.max_score, 0);
   const totalTime = completed.reduce((s, r) => s + r.time_spent_seconds, 0);
-  const avgPercent = totalMaxScore > 0 ? Math.round((totalScore / totalMaxScore) * 100) : 0;
+  const avgPercent =
+    totalMaxScore > 0 ? Math.round((totalScore / totalMaxScore) * 100) : 0;
 
   // Daily activity
-  const dailyMap = new Map<string, { sessions: number; score: number; maxScore: number }>();
+  const dailyMap = new Map<
+    string,
+    { sessions: number; score: number; maxScore: number }
+  >();
   for (const r of completed) {
-    const day = (r.completed_at || r.created_at).split('T')[0];
-    const existing = dailyMap.get(day) || { sessions: 0, score: 0, maxScore: 0 };
+    const day = (r.completed_at || r.created_at).split("T")[0];
+    const existing = dailyMap.get(day) || {
+      sessions: 0,
+      score: 0,
+      maxScore: 0,
+    };
     existing.sessions++;
     existing.score += r.total_score;
     existing.maxScore += r.max_score;
@@ -648,7 +846,8 @@ export function getLocalReport(
       sessions: data.sessions,
       score: data.score,
       maxScore: data.maxScore,
-      accuracy: data.maxScore > 0 ? Math.round((data.score / data.maxScore) * 100) : 0,
+      accuracy:
+        data.maxScore > 0 ? Math.round((data.score / data.maxScore) * 100) : 0,
     }))
     .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -679,13 +878,82 @@ export function getLocalReport(
   };
 }
 
+// ---------- Parent Time Management Settings ----------
+
+const PARENT_SETTINGS_KEY = "araharu_parent_settings";
+const CHILD_TIME_TODAY_KEY = "araharu_child_time_today";
+
+export interface ParentTimeSettings {
+  daily_time_limit_minutes: number; // 0 = unlimited, default 0
+  warning_before_minutes: number; // warn N minutes before limit, default 5
+  allowed_start_hour: number; // earliest hour to start (0-23), default 6
+  allowed_end_hour: number; // latest hour to end (0-23), default 22
+}
+
+export function getParentTimeSettings(parentId: string): ParentTimeSettings {
+  const key = `${PARENT_SETTINGS_KEY}_${parentId}`;
+  if (typeof window === "undefined")
+    return {
+      daily_time_limit_minutes: 0,
+      warning_before_minutes: 5,
+      allowed_start_hour: 6,
+      allowed_end_hour: 22,
+    };
+  const raw = localStorage.getItem(key);
+  if (raw) {
+    try {
+      return JSON.parse(raw);
+    } catch {
+      /* fall through */
+    }
+  }
+  return {
+    daily_time_limit_minutes: 0,
+    warning_before_minutes: 5,
+    allowed_start_hour: 6,
+    allowed_end_hour: 22,
+  };
+}
+
+export function saveParentTimeSettings(
+  parentId: string,
+  settings: ParentTimeSettings,
+): void {
+  const key = `${PARENT_SETTINGS_KEY}_${parentId}`;
+  localStorage.setItem(key, JSON.stringify(settings));
+}
+
+export function getChildTimeToday(childId: string): number {
+  if (typeof window === "undefined") return 0;
+  const key = `${CHILD_TIME_TODAY_KEY}_${childId}`;
+  const raw = localStorage.getItem(key);
+  if (!raw) return 0;
+  try {
+    const data = JSON.parse(raw);
+    const today = new Date().toISOString().slice(0, 10);
+    return data.date === today ? data.minutes : 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function addChildTimeToday(childId: string, minutes: number): void {
+  const key = `${CHILD_TIME_TODAY_KEY}_${childId}`;
+  const today = new Date().toISOString().slice(0, 10);
+  const current = getChildTimeToday(childId);
+  localStorage.setItem(
+    key,
+    JSON.stringify({ date: today, minutes: current + minutes }),
+  );
+}
+
 // ---------- Data Reset (Dev/Debug) ----------
 
 /**
  * Clear all local learning data. Use for debugging only.
  */
 export function clearAllLocalData(): void {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   localStorage.removeItem(RECORDS_KEY);
   localStorage.removeItem(RESPONSES_KEY);
   localStorage.removeItem(DAILY_SETS_KEY);

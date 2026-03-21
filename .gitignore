@@ -60,3 +60,4 @@ public/_icon-generator.html
 
 # Environment
 .env*.local
+gen_reading_data.js

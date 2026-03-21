@@ -10,6 +10,7 @@ import {
   Send,
   ArrowLeft,
   RotateCcw,
+  Clock,
 } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
 import { useLearningStore } from "@/stores/learningStore";
@@ -20,6 +21,10 @@ import {
   saveQuestionResponses,
   checkAndAwardBadges,
   getRecordForSet,
+  getParentTimeSettings,
+  getChildTimeToday,
+  addChildTimeToday,
+  type ParentTimeSettings,
 } from "@/lib/local-storage";
 import { generateId } from "@/lib/utils";
 import { evaluateWriting } from "@/lib/writing-evaluator";
@@ -112,6 +117,72 @@ export default function LearningSessionClient() {
   >("default");
   const [mascotMessage, setMascotMessage] = useState("");
   const [alreadyDoneToday, setAlreadyDoneToday] = useState(false);
+
+  // Time management state
+  const [timeSettings, setTimeSettings] = useState<ParentTimeSettings | null>(
+    null,
+  );
+  const [outsideAllowedHours, setOutsideAllowedHours] = useState(false);
+  const [dailyLimitReached, setDailyLimitReached] = useState(false);
+  const [timeWarning, setTimeWarning] = useState(false);
+  const [timeRemainingMin, setTimeRemainingMin] = useState<number | null>(null);
+
+  // Load parent time settings
+  useEffect(() => {
+    if (user?.parent_id) {
+      const settings = getParentTimeSettings(user.parent_id);
+      // Only apply if parent has actually configured limits (non-default)
+      if (
+        settings.daily_time_limit_minutes > 0 ||
+        settings.allowed_start_hour !== 6 ||
+        settings.allowed_end_hour !== 22
+      ) {
+        setTimeSettings(settings);
+      }
+    }
+  }, [user]);
+
+  // Check time constraints
+  useEffect(() => {
+    if (!timeSettings || !user) return;
+
+    const checkTime = () => {
+      const now = new Date();
+      const hour = now.getHours();
+
+      // Check allowed hours
+      if (
+        hour < timeSettings.allowed_start_hour ||
+        hour >= timeSettings.allowed_end_hour
+      ) {
+        setOutsideAllowedHours(true);
+      } else {
+        setOutsideAllowedHours(false);
+      }
+
+      // Check daily limit
+      if (timeSettings.daily_time_limit_minutes > 0) {
+        const usedMinutes = getChildTimeToday(user.id);
+        const remaining = timeSettings.daily_time_limit_minutes - usedMinutes;
+        setTimeRemainingMin(Math.max(0, Math.round(remaining)));
+
+        if (remaining <= 0) {
+          setDailyLimitReached(true);
+          setTimeWarning(false);
+        } else if (remaining <= timeSettings.warning_before_minutes) {
+          setTimeWarning(true);
+          setDailyLimitReached(false);
+        } else {
+          setTimeWarning(false);
+          setDailyLimitReached(false);
+        }
+      }
+    };
+
+    checkTime();
+    const interval = setInterval(checkTime, 30000); // check every 30s
+    return () => clearInterval(interval);
+  }, [timeSettings, user]);
 
   // Review phase local state
   const [reviewAnswered, setReviewAnswered] = useState(false);
@@ -339,6 +410,11 @@ export default function LearningSessionClient() {
     saveQuestionResponses(responses);
     checkAndAwardBadges(user.id);
 
+    // Track time spent for parental controls
+    if (timeSettings && timeSettings.daily_time_limit_minutes > 0) {
+      addChildTimeToday(user.id, Math.ceil(timeSpent / 60));
+    }
+
     // Collect wrong answer indices (graded questions only)
     const wrongIndices = questions
       .map((q, i) => ({ q, i, qs: states[i] }))
@@ -406,6 +482,54 @@ export default function LearningSessionClient() {
           <h2 className="text-2xl font-bold mt-4 mb-2">오늘 학습 완료!</h2>
           <p className="text-muted-foreground mb-6">
             내일 새로운 학습이 기다리고 있어요.
+          </p>
+          <Button
+            onClick={() => router.push("/student/")}
+            className="rounded-xl px-8"
+          >
+            홈으로
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Time-based blocking screens
+  if (outsideAllowedHours && timeSettings) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+          <Mascot state="default" message="아직은 쉬는 시간이에요" size={100} />
+          <h2 className="text-2xl font-bold mt-4 mb-2">
+            지금은 학습 시간이 아니에요
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            학습 가능 시간:{" "}
+            {String(timeSettings.allowed_start_hour).padStart(2, "0")}:00 ~{" "}
+            {String(timeSettings.allowed_end_hour).padStart(2, "0")}:00
+          </p>
+          <Button
+            onClick={() => router.push("/student/")}
+            className="rounded-xl px-8"
+          >
+            홈으로
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (dailyLimitReached && timeSettings) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center max-w-sm">
+          <Mascot state="happy" message="오늘도 열심히 했어요!" size={100} />
+          <h2 className="text-2xl font-bold mt-4 mb-2">
+            오늘의 학습 시간을 다 사용했어요
+          </h2>
+          <p className="text-muted-foreground mb-6">
+            오늘 {timeSettings.daily_time_limit_minutes}분 학습을 완료했어요.
+            내일 다시 만나요!
           </p>
           <Button
             onClick={() => router.push("/student/")}
@@ -670,8 +794,25 @@ export default function LearningSessionClient() {
               <ArrowLeft className="h-4 w-4" />
               나가기
             </Button>
-            <Timer onTick={() => {}} paused={isPaused} />
+            <div className="flex items-center gap-2">
+              {timeRemainingMin !== null &&
+                timeSettings &&
+                timeSettings.daily_time_limit_minutes > 0 && (
+                  <span className="text-xs font-medium text-muted-foreground px-2 py-1 rounded-full bg-muted">
+                    {timeRemainingMin}분 남음
+                  </span>
+                )}
+              <Timer onTick={() => {}} paused={isPaused} />
+            </div>
           </div>
+          {timeWarning && (
+            <div className="mb-2 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 flex items-center gap-2">
+              <Clock className="h-4 w-4 text-amber-500 flex-shrink-0" />
+              <span className="text-amber-700 text-sm font-medium">
+                학습 시간이 곧 끝나요! {timeRemainingMin}분 남았어요.
+              </span>
+            </div>
+          )}
           <ProgressBar
             questions={questions}
             currentIndex={currentIndex}

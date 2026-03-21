@@ -15,6 +15,7 @@ import {
   School,
   ClipboardList,
   BookOpen,
+  Settings,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -38,13 +39,18 @@ const MOBILE_NAV: Record<UserRole, MobileNavItem[]> = {
     { href: "/teacher", label: "\uD648", icon: LayoutDashboard },
     { href: "/teacher/classes", label: "\uD559\uAE09", icon: School },
     { href: "/teacher/students", label: "\uD559\uC0DD", icon: Users },
-    { href: "/teacher/assignments", label: "\uACFC\uC81C", icon: ClipboardList },
+    {
+      href: "/teacher/assignments",
+      label: "\uACFC\uC81C",
+      icon: ClipboardList,
+    },
     { href: "/teacher/reports", label: "\uB9AC\uD3EC\uD2B8", icon: FileText },
   ],
   parent: [
     { href: "/parent", label: "\uD648", icon: LayoutDashboard },
     { href: "/parent/children", label: "\uC790\uB140", icon: Heart },
     { href: "/parent/reports", label: "\uB9AC\uD3EC\uD2B8", icon: FileText },
+    { href: "/parent/settings", label: "\uC124\uC815", icon: Settings },
   ],
 };
 
@@ -75,25 +81,30 @@ export function MobileNav({ role }: MobileNavProps) {
                 "relative flex flex-col items-center justify-center gap-0.5 px-2 py-1 rounded-lg transition-colors min-w-[56px] min-h-[44px]",
                 isActive
                   ? "text-primary"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               <div className="relative">
                 <motion.div
                   animate={isActive ? { scale: 1.1 } : { scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
                   <item.icon className="h-5 w-5" />
                 </motion.div>
               </div>
-              <span className={cn("text-[10px] font-medium", isActive && "font-bold")}>
+              <span
+                className={cn(
+                  "text-[10px] font-medium",
+                  isActive && "font-bold",
+                )}
+              >
                 {item.label}
               </span>
               {isActive && (
                 <motion.span
                   layoutId="mobile-nav-indicator"
                   className="absolute -bottom-0.5 h-1 w-8 rounded-full bg-primary"
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
             </Link>

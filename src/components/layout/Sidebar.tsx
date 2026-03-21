@@ -56,6 +56,7 @@ const NAV_ITEMS: Record<UserRole, NavItem[]> = {
     { href: "/parent", label: "대시보드", icon: LayoutDashboard },
     { href: "/parent/children", label: "자녀 관리", icon: Heart },
     { href: "/parent/reports", label: "리포트", icon: FileText },
+    { href: "/parent/settings", label: "시간 관리", icon: Settings },
   ],
 };
 

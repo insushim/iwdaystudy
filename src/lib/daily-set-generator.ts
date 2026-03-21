@@ -2077,8 +2077,7 @@ export function generateDailySet(
           : ["reading"];
         const skvar = skv[Math.floor(random() * skv.length)];
         if (skvar === "reading" && hasReading) {
-          const rIdx = Math.floor(random() * data.koreanReading!.length);
-          const readingEntry = data.koreanReading![rIdx];
+          const readingEntry = pickUnused(data.koreanReading!, "koreanReading");
           questions.push(
             buildReadingQuestion(
               setId,
@@ -2112,8 +2111,7 @@ export function generateDailySet(
             ),
           );
         } else if (hasReading) {
-          const rIdx = Math.floor(random() * data.koreanReading!.length);
-          const readingEntry = data.koreanReading![rIdx];
+          const readingEntry = pickUnused(data.koreanReading!, "koreanReading");
           questions.push(
             buildReadingQuestion(
               setId,
