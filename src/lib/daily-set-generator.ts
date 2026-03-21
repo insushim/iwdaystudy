@@ -15,11 +15,20 @@ import type {
   SpellingEntry,
   VocabEntry,
   KnowledgeEntry,
+  ReadingEntry,
   SafetyEntry,
   MathEntry,
   HanjaEntry,
   EnglishEntry,
 } from "@/types/curriculum";
+import {
+  grade1ReadingData,
+  grade2ReadingData,
+  grade3ReadingData,
+  grade4ReadingData,
+  grade5ReadingData,
+  grade6ReadingData,
+} from "@/lib/curriculum/korean-reading-data";
 import { generateMathPool } from "@/lib/curriculum/generators/math-generator";
 import {
   getAvailableMathUnits,
@@ -256,6 +265,7 @@ interface GradeData {
   safety: SafetyEntry[];
   writing: string[];
   korean?: KnowledgeEntry[];
+  koreanReading?: ReadingEntry[];
   creative?: KnowledgeEntry[];
   hanja?: HanjaEntry[];
   english?: EnglishEntry[];
@@ -391,6 +401,25 @@ function getStaticKoreanData(g: number): KnowledgeEntry[] {
       return grade1KoreanData ?? [];
     case 2:
       return grade2KoreanData ?? [];
+    default:
+      return [];
+  }
+}
+
+function getStaticKoreanReadingData(g: number): ReadingEntry[] {
+  switch (g) {
+    case 1:
+      return grade1ReadingData ?? [];
+    case 2:
+      return grade2ReadingData ?? [];
+    case 3:
+      return grade3ReadingData ?? [];
+    case 4:
+      return grade4ReadingData ?? [];
+    case 5:
+      return grade5ReadingData ?? [];
+    case 6:
+      return grade6ReadingData ?? [];
     default:
       return [];
   }
@@ -576,6 +605,7 @@ function getGradeData(
   const staticScienceData = getStaticScienceData(coreScienceGrade);
   const staticSocialData = getStaticSocialData(coreSocialGrade);
   const staticKoreanData = getStaticKoreanData(coreMathGrade);
+  const staticKoreanReadingData = getStaticKoreanReadingData(coreMathGrade);
 
   switch (grade) {
     case 1:
@@ -620,6 +650,7 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade1CreativeData || []),
           ...generatedCreative,
@@ -669,6 +700,7 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade2CreativeData || []),
           ...generatedCreative,
@@ -721,6 +753,8 @@ function getGradeData(
           ...generatedHanjaBonus,
         ],
         english: [...staticEnglishData, ...filtEnglish],
+        korean: [...staticKoreanData],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade3CreativeData || []),
           ...generatedCreative,
@@ -771,6 +805,8 @@ function getGradeData(
           ...generatedHanjaBonus,
         ],
         english: [...staticEnglishData, ...filtEnglish],
+        korean: [...staticKoreanData],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade4CreativeData || []),
           ...generatedCreative,
@@ -821,6 +857,8 @@ function getGradeData(
           ...generatedHanjaBonus,
         ],
         english: [...staticEnglishData, ...filtEnglish],
+        korean: [...staticKoreanData],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade5CreativeData || []),
           ...generatedCreative,
@@ -880,6 +918,8 @@ function getGradeData(
           ...generatedHanjaBonus,
         ],
         english: [...staticEnglishData, ...filtEnglish],
+        korean: [...staticKoreanData],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade6CreativeData || []),
           ...generatedCreative,
@@ -938,6 +978,7 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
+        koreanReading: [...staticKoreanReadingData],
         creative: [
           ...(grade1CreativeData || []),
           ...generatedCreative,
@@ -1578,6 +1619,40 @@ function buildEnglishQuestion(
   };
 }
 
+function buildReadingQuestion(
+  setId: string,
+  orderIndex: number,
+  title: string,
+  subject: SubjectType,
+  entry: ReadingEntry,
+  random?: () => number,
+): Question {
+  const rng = random || Math.random;
+  const shuffled = [...entry.choices].sort(() => rng() - 0.5);
+  return {
+    id: `q-${setId}-${orderIndex}`,
+    daily_set_id: setId,
+    curriculum_standard_id: null,
+    subject,
+    question_type: "multiple_choice" as QuestionType,
+    order_index: orderIndex,
+    title,
+    content: {
+      variant: "reading",
+      passage: entry.passage,
+      text: entry.question,
+      category: entry.category,
+      choices: shuffled,
+    },
+    answer: { correct: entry.correct, text: entry.correct },
+    explanation: `지문: ${entry.passage.substring(0, 50)}...`,
+    points: 10,
+    hint: `지문을 다시 한번 읽어보세요!`,
+    metadata: { category: entry.category },
+    created_at: new Date().toISOString(),
+  };
+}
+
 // Generic builder for subject-specific KnowledgeEntry data (korean, creative, science, social)
 function buildSubjectQuestion(
   setId: string,
@@ -1993,32 +2068,63 @@ export function generateDailySet(
             ev,
           ),
         );
-      } else if (
-        subject === "korean" &&
-        data.korean &&
-        data.korean.length > 0
-      ) {
-        const entry = pickUnused(data.korean, "korean");
-        const pool = data.korean!;
-        const skv = ["fill", "fill", "tf", "input"];
+      } else if (subject === "korean") {
+        // 독해(reading) variant: 지문 읽고 4지선다
+        const hasKorean = data.korean && data.korean.length > 0;
+        const hasReading = data.koreanReading && data.koreanReading.length > 0;
+        const skv = hasKorean
+          ? ["fill", "fill", "tf", "input", "reading", "reading"]
+          : ["reading"];
         const skvar = skv[Math.floor(random() * skv.length)];
-        const choices =
-          skvar === "input"
-            ? []
-            : generateChoices(entry.answer, pool, (k) => k.answer, random);
-        questions.push(
-          buildSubjectQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            "korean" as SubjectType,
-            entry,
-            "국어",
-            choices,
-            skvar,
-            random,
-          ),
-        );
+        if (skvar === "reading" && hasReading) {
+          const rIdx = Math.floor(random() * data.koreanReading!.length);
+          const readingEntry = data.koreanReading![rIdx];
+          questions.push(
+            buildReadingQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              "korean" as SubjectType,
+              readingEntry,
+              random,
+            ),
+          );
+        } else if (hasKorean) {
+          const entry = pickUnused(data.korean!, "korean");
+          const pool = data.korean!;
+          const fallbackVar = ["fill", "fill", "tf", "input"];
+          const fv = fallbackVar[Math.floor(random() * fallbackVar.length)];
+          const choices =
+            fv === "input"
+              ? []
+              : generateChoices(entry.answer, pool, (k) => k.answer, random);
+          questions.push(
+            buildSubjectQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              "korean" as SubjectType,
+              entry,
+              "국어",
+              choices,
+              fv,
+              random,
+            ),
+          );
+        } else if (hasReading) {
+          const rIdx = Math.floor(random() * data.koreanReading!.length);
+          const readingEntry = data.koreanReading![rIdx];
+          questions.push(
+            buildReadingQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              "korean" as SubjectType,
+              readingEntry,
+              random,
+            ),
+          );
+        }
       } else if (
         subject === "creative" &&
         data.creative &&

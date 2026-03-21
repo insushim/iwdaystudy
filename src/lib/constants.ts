@@ -18,7 +18,7 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "spelling", title: "오늘의 맞춤법", count: 1 },
       { subject: "vocabulary", title: "오늘의 한글놀이", count: 1 },
       { subject: "creative", title: "창의 퀴즈", count: 1 },
-      { subject: "korean", title: "마음 읽기", count: 1 },
+      { subject: "korean", title: "독해 퀴즈", count: 1 },
       { subject: "general_knowledge", title: "상식 퀴즈", count: 1 },
     ],
     totalQuestions: 10,
@@ -34,10 +34,11 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "hanja", title: "오늘의 한자", count: 1 },
       { subject: "english", title: "오늘의 English", count: 1 },
       { subject: "creative", title: "창의 퀴즈", count: 1 },
+      { subject: "korean", title: "독해 퀴즈", count: 1 },
       { subject: "general_knowledge", title: "상식 퀴즈", count: 1 },
       { subject: "safety", title: "안전 퀴즈", count: 1 },
     ],
-    totalQuestions: 12,
+    totalQuestions: 13,
   },
   "5-6": {
     sections: [
@@ -52,9 +53,10 @@ export const GRADE_SET_COMPOSITION = {
       { subject: "science", title: "오늘의 과학", count: 1 },
       { subject: "social", title: "오늘의 사회", count: 1 },
       { subject: "creative", title: "창의 퀴즈", count: 1 },
+      { subject: "korean", title: "독해 퀴즈", count: 1 },
       { subject: "safety", title: "안전/건강 퀴즈", count: 1 },
     ],
-    totalQuestions: 14,
+    totalQuestions: 15,
   },
 } as const;
 

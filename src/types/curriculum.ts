@@ -42,6 +42,14 @@ export interface KnowledgeEntry {
   unit?: string;
 }
 
+export interface ReadingEntry {
+  passage: string;
+  question: string;
+  choices: string[];
+  correct: string;
+  category: string;
+}
+
 export interface SafetyEntry {
   text: string;
   answer: string;

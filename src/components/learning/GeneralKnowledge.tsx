@@ -72,6 +72,22 @@ export default function GeneralKnowledge({
         {content.category}
       </Badge>
 
+      {/* Reading passage for reading variant */}
+      {variant === "reading" && content.passage && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-lg rounded-2xl bg-indigo-50 border border-indigo-200 p-5"
+        >
+          <p className="text-sm font-semibold text-indigo-600 mb-2 flex items-center gap-1">
+            📖 지문
+          </p>
+          <p className="text-base leading-relaxed text-gray-800 whitespace-pre-line">
+            {content.passage}
+          </p>
+        </motion.div>
+      )}
+
       {/* Question text */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -79,7 +95,11 @@ export default function GeneralKnowledge({
         className="w-full max-w-lg rounded-2xl bg-[#F9CA24]/5 border border-[#F9CA24]/20 p-6 text-center"
       >
         <p className="text-xl sm:text-2xl font-bold leading-relaxed">
-          {variant === "tf" ? content.text : renderText()}
+          {variant === "tf"
+            ? content.text
+            : variant === "reading"
+              ? content.text
+              : renderText()}
         </p>
         {variant === "tf" && (
           <p className="mt-2 text-sm text-muted-foreground">
