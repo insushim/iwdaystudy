@@ -1116,6 +1116,217 @@ const G56_TECHNOLOGY: W[] = [
 ];
 
 // ============================================================
+// Grade 3-4 Additional Expansion Word Banks (2차 확장)
+// ============================================================
+
+const G34_INSECTS: W[] = [
+  { w: "ant", p: "앤트", k: "개미", pr: ["small", "colony"] },
+  { w: "bee", p: "비", k: "벌", pr: ["honey", "sting"] },
+  { w: "butterfly", p: "버터플라이", k: "나비", pr: ["wing", "flower"] },
+  { w: "ladybug", p: "레이디벅", k: "무당벌레", pr: ["red", "spot"] },
+  { w: "dragonfly", p: "드래곤플라이", k: "잠자리", pr: ["wing", "pond"] },
+  { w: "grasshopper", p: "그래스하퍼", k: "메뚜기", pr: ["jump", "green"] },
+  { w: "beetle", p: "비틀", k: "딱정벌레", pr: ["hard", "shell"] },
+  { w: "caterpillar", p: "캐터필러", k: "애벌레", pr: ["leaf", "crawl"] },
+  { w: "cricket", p: "크리켓", k: "귀뚜라미", pr: ["chirp", "night"] },
+  { w: "firefly", p: "파이어플라이", k: "반딧불이", pr: ["light", "night"] },
+  { w: "moth", p: "모스", k: "나방", pr: ["light", "night"] },
+  { w: "worm", p: "웜", k: "지렁이", pr: ["soil", "dig"] },
+  { w: "mosquito", p: "모스키토", k: "모기", pr: ["bite", "buzz"] },
+  { w: "fly", p: "플라이", k: "파리", pr: ["buzz", "wing"] },
+  { w: "snail", p: "스네일", k: "달팽이", pr: ["shell", "slow"] },
+  { w: "spider", p: "스파이더", k: "거미", pr: ["web", "eight"] },
+  { w: "centipede", p: "센티피드", k: "지네", pr: ["legs", "many"] },
+  { w: "cockroach", p: "카크로치", k: "바퀴벌레", pr: ["dark", "fast"] },
+  { w: "cicada", p: "시케이다", k: "매미", pr: ["summer", "loud"] },
+  { w: "mantis", p: "맨티스", k: "사마귀", pr: ["green", "pray"] },
+];
+
+const G34_OCCUPATIONS_BASIC: W[] = [
+  { w: "doctor", p: "닥터", k: "의사", pr: ["hospital", "help"] },
+  { w: "teacher", p: "티처", k: "선생님", pr: ["school", "teach"] },
+  { w: "farmer", p: "파머", k: "농부", pr: ["farm", "grow"] },
+  { w: "driver", p: "드라이버", k: "운전사", pr: ["bus", "car"] },
+  { w: "cook", p: "쿡", k: "요리사", pr: ["food", "kitchen"] },
+  { w: "singer", p: "싱어", k: "가수", pr: ["song", "stage"] },
+  { w: "dancer", p: "댄서", k: "무용가", pr: ["dance", "stage"] },
+  { w: "painter", p: "페인터", k: "화가", pr: ["art", "brush"] },
+  { w: "builder", p: "빌더", k: "건축가", pr: ["house", "build"] },
+  { w: "pilot", p: "파일럿", k: "조종사", pr: ["airplane", "fly"] },
+  { w: "police", p: "폴리스", k: "경찰", pr: ["safety", "help"] },
+  { w: "nurse", p: "너스", k: "간호사", pr: ["hospital", "care"] },
+  { w: "dentist", p: "덴티스트", k: "치과의사", pr: ["tooth", "clean"] },
+  { w: "vet", p: "벳", k: "수의사", pr: ["animal", "help"] },
+  { w: "baker", p: "베이커", k: "제빵사", pr: ["bread", "oven"] },
+  { w: "waiter", p: "웨이터", k: "웨이터", pr: ["food", "serve"] },
+  { w: "postman", p: "포스트맨", k: "우체부", pr: ["letter", "deliver"] },
+  { w: "firefighter", p: "파이어파이터", k: "소방관", pr: ["fire", "rescue"] },
+  { w: "astronaut", p: "애스트로넛", k: "우주비행사", pr: ["space", "rocket"] },
+  { w: "scientist", p: "사이언티스트", k: "과학자", pr: ["lab", "discover"] },
+];
+
+const G34_FURNITURE: W[] = [
+  { w: "sofa", p: "소파", k: "소파", pr: ["sit", "living room"] },
+  { w: "table", p: "테이블", k: "탁자", pr: ["eat", "put"] },
+  { w: "chair", p: "체어", k: "의자", pr: ["sit", "desk"] },
+  { w: "bed", p: "베드", k: "침대", pr: ["sleep", "pillow"] },
+  { w: "shelf", p: "쉘프", k: "선반", pr: ["book", "store"] },
+  { w: "drawer", p: "드로어", k: "서랍", pr: ["put", "store"] },
+  { w: "wardrobe", p: "워드로브", k: "옷장", pr: ["clothes", "hang"] },
+  { w: "cabinet", p: "캐비닛", k: "캐비닛", pr: ["store", "kitchen"] },
+  { w: "bookcase", p: "북케이스", k: "책장", pr: ["book", "shelf"] },
+  { w: "stool", p: "스툴", k: "의자", pr: ["sit", "short"] },
+  { w: "rug", p: "러그", k: "깔개", pr: ["floor", "soft"] },
+  { w: "curtain", p: "커튼", k: "커튼", pr: ["window", "cover"] },
+  { w: "carpet", p: "카펫", k: "카펫", pr: ["floor", "soft"] },
+  { w: "fan", p: "팬", k: "선풍기", pr: ["cool", "air"] },
+  { w: "clock", p: "클락", k: "시계", pr: ["time", "wall"] },
+  { w: "vase", p: "베이스", k: "꽃병", pr: ["flower", "water"] },
+  { w: "basket", p: "바스켓", k: "바구니", pr: ["carry", "hold"] },
+  { w: "hanger", p: "행어", k: "옷걸이", pr: ["clothes", "hang"] },
+  { w: "mirror", p: "미러", k: "거울", pr: ["face", "look"] },
+  { w: "frame", p: "프레임", k: "액자", pr: ["picture", "wall"] },
+];
+
+const G34_FEELINGS_EXTRA: W[] = [
+  { w: "sleepy", p: "슬리피", k: "졸린", pr: ["tired", "bed"] },
+  { w: "thirsty", p: "써스티", k: "목마른", pr: ["water", "drink"] },
+  { w: "hungry", p: "헝그리", k: "배고픈", pr: ["food", "eat"] },
+  { w: "full", p: "풀", k: "배부른", pr: ["eat", "enough"] },
+  { w: "sick", p: "식", k: "아픈", pr: ["cold", "doctor"] },
+  { w: "well", p: "웰", k: "건강한", pr: ["healthy", "good"] },
+  { w: "excited", p: "익사이티드", k: "들뜬", pr: ["happy", "thrilled"] },
+  { w: "lucky", p: "럭키", k: "운이 좋은", pr: ["fortune", "happy"] },
+  { w: "afraid", p: "어프레이드", k: "두려운", pr: ["scared", "fear"] },
+  { w: "sorry", p: "쏘리", k: "미안한", pr: ["sad", "regret"] },
+  { w: "comfortable", p: "컴포터블", k: "편안한", pr: ["cozy", "warm"] },
+  { w: "confused", p: "컨퓨즈드", k: "혼란스러운", pr: ["lost", "wonder"] },
+  { w: "pleased", p: "플리즈드", k: "기쁜", pr: ["happy", "glad"] },
+  { w: "upset", p: "업셋", k: "속상한", pr: ["sad", "unhappy"] },
+  { w: "amazed", p: "어메이즈드", k: "놀란", pr: ["surprised", "wow"] },
+  { w: "relaxed", p: "릴랙스드", k: "편안한", pr: ["calm", "rest"] },
+  { w: "energetic", p: "에너제틱", k: "활기찬", pr: ["active", "lively"] },
+  { w: "gentle", p: "젠틀", k: "다정한", pr: ["kind", "soft"] },
+  { w: "lazy", p: "레이지", k: "게으른", pr: ["slow", "rest"] },
+  { w: "patient", p: "페이션트", k: "참을성 있는", pr: ["wait", "calm"] },
+];
+
+const G34_PLACES_BASIC: W[] = [
+  { w: "school", p: "스쿨", k: "학교", pr: ["study", "teacher"] },
+  { w: "home", p: "홈", k: "집", pr: ["family", "room"] },
+  { w: "park", p: "파크", k: "공원", pr: ["play", "tree"] },
+  { w: "hospital", p: "호스피탈", k: "병원", pr: ["doctor", "sick"] },
+  { w: "library", p: "라이브러리", k: "도서관", pr: ["book", "read"] },
+  { w: "zoo", p: "주", k: "동물원", pr: ["animal", "visit"] },
+  { w: "market", p: "마켓", k: "시장", pr: ["buy", "food"] },
+  { w: "church", p: "처치", k: "교회", pr: ["pray", "Sunday"] },
+  { w: "restaurant", p: "레스토랑", k: "식당", pr: ["food", "eat"] },
+  { w: "bank", p: "뱅크", k: "은행", pr: ["money", "save"] },
+  { w: "playground", p: "플레이그라운드", k: "놀이터", pr: ["play", "swing"] },
+  { w: "beach", p: "비치", k: "해변", pr: ["sand", "swim"] },
+  { w: "cinema", p: "시네마", k: "영화관", pr: ["movie", "watch"] },
+  { w: "bakery", p: "베이커리", k: "빵집", pr: ["bread", "cake"] },
+  { w: "farm", p: "팜", k: "농장", pr: ["animal", "grow"] },
+  { w: "museum", p: "뮤지엄", k: "박물관", pr: ["art", "history"] },
+  { w: "station", p: "스테이션", k: "역", pr: ["train", "bus"] },
+  { w: "airport", p: "에어포트", k: "공항", pr: ["airplane", "travel"] },
+  { w: "gym", p: "짐", k: "체육관", pr: ["exercise", "sport"] },
+  { w: "garden", p: "가든", k: "정원", pr: ["flower", "plant"] },
+];
+
+const G34_VERBS_EXTRA: W[] = [
+  { w: "wake", p: "웨이크", k: "일어나다", pr: ["sleep", "morning"] },
+  { w: "brush", p: "브러시", k: "닦다", pr: ["teeth", "hair"] },
+  { w: "wear", p: "웨어", k: "입다", pr: ["clothes", "put on"] },
+  { w: "carry", p: "캐리", k: "나르다", pr: ["hold", "bring"] },
+  { w: "drop", p: "드롭", k: "떨어뜨리다", pr: ["fall", "oops"] },
+  { w: "pick", p: "픽", k: "고르다", pr: ["choose", "select"] },
+  { w: "wait", p: "웨이트", k: "기다리다", pr: ["stop", "patience"] },
+  { w: "learn", p: "런", k: "배우다", pr: ["study", "know"] },
+  { w: "teach", p: "티치", k: "가르치다", pr: ["school", "learn"] },
+  { w: "share", p: "쉐어", k: "나누다", pr: ["give", "together"] },
+  { w: "count", p: "카운트", k: "세다", pr: ["number", "math"] },
+  { w: "build", p: "빌드", k: "짓다", pr: ["make", "create"] },
+  { w: "break", p: "브레이크", k: "깨다", pr: ["fix", "crack"] },
+  { w: "fix", p: "픽스", k: "고치다", pr: ["repair", "mend"] },
+  { w: "hide", p: "하이드", k: "숨다", pr: ["seek", "find"] },
+  { w: "find", p: "파인드", k: "찾다", pr: ["look", "search"] },
+  { w: "guess", p: "게스", k: "추측하다", pr: ["think", "try"] },
+  { w: "dream", p: "드림", k: "꿈꾸다", pr: ["sleep", "wish"] },
+  { w: "grow", p: "그로", k: "자라다", pr: ["big", "plant"] },
+  { w: "clean", p: "클린", k: "청소하다", pr: ["tidy", "wash"] },
+];
+
+const G34_OPPOSITES: W[] = [
+  { w: "big", p: "빅", k: "큰", pr: ["small", "large"] },
+  { w: "small", p: "스몰", k: "작은", pr: ["big", "tiny"] },
+  { w: "hot", p: "핫", k: "뜨거운", pr: ["cold", "warm"] },
+  { w: "cold", p: "콜드", k: "차가운", pr: ["hot", "cool"] },
+  { w: "fast", p: "패스트", k: "빠른", pr: ["slow", "quick"] },
+  { w: "slow", p: "슬로", k: "느린", pr: ["fast", "steady"] },
+  { w: "tall", p: "톨", k: "키 큰", pr: ["short", "high"] },
+  { w: "short", p: "숏", k: "키 작은", pr: ["tall", "low"] },
+  { w: "heavy", p: "헤비", k: "무거운", pr: ["light", "weight"] },
+  { w: "light", p: "라이트", k: "가벼운", pr: ["heavy", "feather"] },
+  { w: "old", p: "올드", k: "오래된", pr: ["new", "young"] },
+  { w: "new", p: "뉴", k: "새로운", pr: ["old", "fresh"] },
+  { w: "open", p: "오픈", k: "열린", pr: ["close", "door"] },
+  { w: "close", p: "클로즈", k: "닫힌", pr: ["open", "shut"] },
+  { w: "up", p: "업", k: "위로", pr: ["down", "high"] },
+  { w: "down", p: "다운", k: "아래로", pr: ["up", "low"] },
+  { w: "happy", p: "해피", k: "행복한", pr: ["sad", "glad"] },
+  { w: "sad", p: "새드", k: "슬픈", pr: ["happy", "cry"] },
+  { w: "wet", p: "웻", k: "젖은", pr: ["dry", "water"] },
+  { w: "dry", p: "드라이", k: "마른", pr: ["wet", "sun"] },
+];
+
+const G34_TIME_BASIC: W[] = [
+  { w: "morning", p: "모닝", k: "아침", pr: ["afternoon", "sunrise"] },
+  { w: "afternoon", p: "애프터눈", k: "오후", pr: ["morning", "lunch"] },
+  { w: "evening", p: "이브닝", k: "저녁", pr: ["night", "dinner"] },
+  { w: "night", p: "나잇", k: "밤", pr: ["day", "sleep"] },
+  { w: "today", p: "투데이", k: "오늘", pr: ["yesterday", "tomorrow"] },
+  { w: "yesterday", p: "예스터데이", k: "어제", pr: ["today", "past"] },
+  { w: "tomorrow", p: "투머로우", k: "내일", pr: ["today", "future"] },
+  { w: "always", p: "올웨이즈", k: "항상", pr: ["never", "every"] },
+  { w: "never", p: "네버", k: "절대 안", pr: ["always", "not"] },
+  { w: "sometimes", p: "섬타임즈", k: "가끔", pr: ["always", "often"] },
+  { w: "now", p: "나우", k: "지금", pr: ["later", "here"] },
+  { w: "soon", p: "순", k: "곧", pr: ["later", "quick"] },
+  { w: "early", p: "얼리", k: "일찍", pr: ["late", "morning"] },
+  { w: "late", p: "레이트", k: "늦은", pr: ["early", "hurry"] },
+  { w: "already", p: "올레디", k: "이미", pr: ["yet", "done"] },
+  { w: "still", p: "스틸", k: "아직", pr: ["already", "yet"] },
+  { w: "often", p: "오픈", k: "자주", pr: ["rarely", "many"] },
+  { w: "once", p: "원스", k: "한 번", pr: ["twice", "one"] },
+  { w: "twice", p: "트와이스", k: "두 번", pr: ["once", "two"] },
+  { w: "before", p: "비포", k: "전에", pr: ["after", "first"] },
+];
+
+const G34_CONTAINERS: W[] = [
+  { w: "box", p: "박스", k: "상자", pr: ["square", "pack"] },
+  { w: "bag", p: "백", k: "가방", pr: ["carry", "hold"] },
+  { w: "bottle", p: "보틀", k: "병", pr: ["water", "drink"] },
+  { w: "cup", p: "컵", k: "컵", pr: ["drink", "hold"] },
+  { w: "jar", p: "자", k: "단지", pr: ["jam", "store"] },
+  { w: "bowl", p: "보울", k: "그릇", pr: ["soup", "eat"] },
+  { w: "plate", p: "플레이트", k: "접시", pr: ["food", "eat"] },
+  { w: "can", p: "캔", k: "캔", pr: ["metal", "drink"] },
+  { w: "bucket", p: "버킷", k: "양동이", pr: ["water", "carry"] },
+  { w: "pot", p: "팟", k: "냄비", pr: ["cook", "soup"] },
+  { w: "tray", p: "트레이", k: "쟁반", pr: ["carry", "food"] },
+  { w: "basket", p: "바스켓", k: "바구니", pr: ["fruit", "carry"] },
+  { w: "envelope", p: "엔벨로프", k: "봉투", pr: ["letter", "send"] },
+  { w: "wallet", p: "월릿", k: "지갑", pr: ["money", "pocket"] },
+  { w: "backpack", p: "백팩", k: "배낭", pr: ["school", "carry"] },
+  { w: "lunch box", p: "런치 박스", k: "도시락", pr: ["food", "school"] },
+  { w: "pencil case", p: "펜슬 케이스", k: "필통", pr: ["pencil", "school"] },
+  { w: "trash can", p: "트래시 캔", k: "쓰레기통", pr: ["throw", "clean"] },
+  { w: "water bottle", p: "워터 보틀", k: "물병", pr: ["drink", "carry"] },
+  { w: "tissue box", p: "티슈 박스", k: "휴지통", pr: ["tissue", "paper"] },
+];
+
+// ============================================================
 // NEW Grade 3-4 Word Banks (추가 확장)
 // ============================================================
 
@@ -1722,6 +1933,1800 @@ const G56_HEALTH: W[] = [
   { w: "diet", p: "다이어트", k: "식단", pr: ["food", "health"] },
   { w: "stretch", p: "스트레치", k: "스트레칭", pr: ["exercise", "body"] },
   { w: "vaccine", p: "백신", k: "백신", pr: ["shot", "protect"] },
+];
+
+// ============================================================
+// NEW Grade 5-6 Expansion Word Banks (2차 확장)
+// ============================================================
+
+const G56_COOKING_ADV: W[] = [
+  { w: "recipe", p: "레시피", k: "요리법", pr: ["cook", "food"] },
+  { w: "ingredient", p: "인그리디언트", k: "재료", pr: ["food", "recipe"] },
+  { w: "grill", p: "그릴", k: "굽다", pr: ["barbecue", "fire"] },
+  { w: "roast", p: "로스트", k: "구워내다", pr: ["oven", "meat"] },
+  { w: "steam", p: "스팀", k: "찌다", pr: ["water", "hot"] },
+  { w: "slice", p: "슬라이스", k: "썰다", pr: ["cut", "thin"] },
+  { w: "melt", p: "멜트", k: "녹이다", pr: ["heat", "butter"] },
+  { w: "freeze", p: "프리즈", k: "얼리다", pr: ["cold", "ice"] },
+  { w: "season", p: "시즌", k: "양념하다", pr: ["salt", "pepper"] },
+  { w: "blend", p: "블렌드", k: "섞다", pr: ["mix", "smooth"] },
+  {
+    w: "marinate",
+    p: "매리네이트",
+    k: "양념에 재우다",
+    pr: ["sauce", "flavor"],
+  },
+  { w: "measure", p: "메져", k: "재다", pr: ["cup", "spoon"] },
+  { w: "serve", p: "서브", k: "차려내다", pr: ["plate", "food"] },
+  { w: "simmer", p: "시머", k: "끓이다", pr: ["low", "heat"] },
+  { w: "whisk", p: "위스크", k: "거품기로 젓다", pr: ["egg", "mix"] },
+  { w: "sprinkle", p: "스프링클", k: "뿌리다", pr: ["salt", "sugar"] },
+  { w: "appetizer", p: "애피타이저", k: "전채", pr: ["first", "meal"] },
+  { w: "dessert", p: "디저트", k: "후식", pr: ["sweet", "cake"] },
+  { w: "menu", p: "메뉴", k: "메뉴", pr: ["food", "choose"] },
+  { w: "cuisine", p: "큐이진", k: "요리", pr: ["food", "style"] },
+];
+
+const G56_LITERATURE: W[] = [
+  { w: "novel", p: "노블", k: "소설", pr: ["book", "story"] },
+  { w: "poem", p: "포엠", k: "시", pr: ["rhyme", "verse"] },
+  { w: "fairy tale", p: "페어리 테일", k: "동화", pr: ["princess", "magic"] },
+  { w: "character", p: "캐릭터", k: "등장인물", pr: ["hero", "villain"] },
+  { w: "author", p: "오써", k: "작가", pr: ["write", "book"] },
+  { w: "chapter", p: "챕터", k: "장", pr: ["book", "section"] },
+  { w: "plot", p: "플롯", k: "줄거리", pr: ["story", "plan"] },
+  { w: "setting", p: "세팅", k: "배경", pr: ["place", "time"] },
+  { w: "dialogue", p: "다이얼로그", k: "대화", pr: ["talk", "quote"] },
+  { w: "genre", p: "장르", k: "장르", pr: ["type", "style"] },
+  { w: "fiction", p: "픽션", k: "허구", pr: ["story", "imagine"] },
+  { w: "nonfiction", p: "논픽션", k: "논픽션", pr: ["fact", "real"] },
+  { w: "biography", p: "바이오그래피", k: "전기", pr: ["life", "person"] },
+  { w: "myth", p: "미쓰", k: "신화", pr: ["legend", "ancient"] },
+  { w: "fable", p: "페이블", k: "우화", pr: ["animal", "lesson"] },
+  { w: "hero", p: "히어로", k: "영웅", pr: ["brave", "save"] },
+  { w: "villain", p: "빌런", k: "악당", pr: ["bad", "enemy"] },
+  { w: "moral", p: "모럴", k: "교훈", pr: ["lesson", "right"] },
+  {
+    w: "illustrator",
+    p: "일러스트레이터",
+    k: "삽화가",
+    pr: ["draw", "picture"],
+  },
+  { w: "library", p: "라이브러리", k: "도서관", pr: ["book", "read"] },
+];
+
+const G56_GEOGRAPHY: W[] = [
+  { w: "continent", p: "컨티넌트", k: "대륙", pr: ["Asia", "world"] },
+  { w: "country", p: "컨트리", k: "나라", pr: ["nation", "flag"] },
+  { w: "capital", p: "캐피탈", k: "수도", pr: ["city", "main"] },
+  { w: "population", p: "파퓰레이션", k: "인구", pr: ["people", "number"] },
+  { w: "border", p: "보더", k: "국경", pr: ["line", "country"] },
+  { w: "ocean", p: "오션", k: "대양", pr: ["Pacific", "Atlantic"] },
+  { w: "island", p: "아일랜드", k: "섬", pr: ["water", "beach"] },
+  { w: "peninsula", p: "페닌슐라", k: "반도", pr: ["Korea", "land"] },
+  { w: "equator", p: "이퀘이터", k: "적도", pr: ["hot", "middle"] },
+  { w: "hemisphere", p: "헤미스피어", k: "반구", pr: ["north", "south"] },
+  { w: "latitude", p: "래티튜드", k: "위도", pr: ["north", "south"] },
+  { w: "longitude", p: "론지튜드", k: "경도", pr: ["east", "west"] },
+  { w: "compass", p: "컴퍼스", k: "나침반", pr: ["north", "direction"] },
+  { w: "globe", p: "글로브", k: "지구본", pr: ["world", "round"] },
+  { w: "valley", p: "밸리", k: "계곡", pr: ["mountain", "river"] },
+  { w: "plateau", p: "플레토", k: "고원", pr: ["flat", "high"] },
+  { w: "canyon", p: "캐니언", k: "협곡", pr: ["deep", "river"] },
+  { w: "glacier", p: "글레이셔", k: "빙하", pr: ["ice", "cold"] },
+  { w: "tundra", p: "턴드라", k: "툰드라", pr: ["cold", "flat"] },
+  { w: "tropics", p: "트로픽스", k: "열대", pr: ["hot", "jungle"] },
+];
+
+const G56_MATH_TERMS: W[] = [
+  { w: "addition", p: "어디션", k: "덧셈", pr: ["plus", "sum"] },
+  { w: "subtraction", p: "서브트랙션", k: "뺄셈", pr: ["minus", "difference"] },
+  {
+    w: "multiplication",
+    p: "멀티플리케이션",
+    k: "곱셈",
+    pr: ["times", "product"],
+  },
+  { w: "division", p: "디비전", k: "나눗셈", pr: ["divide", "quotient"] },
+  { w: "fraction", p: "프랙션", k: "분수", pr: ["half", "part"] },
+  { w: "decimal", p: "데시멀", k: "소수", pr: ["point", "number"] },
+  { w: "percent", p: "퍼센트", k: "퍼센트", pr: ["hundred", "ratio"] },
+  { w: "equation", p: "이퀘이션", k: "등식", pr: ["equal", "solve"] },
+  { w: "angle", p: "앵글", k: "각도", pr: ["degree", "corner"] },
+  { w: "area", p: "에어리어", k: "넓이", pr: ["square", "space"] },
+  { w: "perimeter", p: "퍼리미터", k: "둘레", pr: ["around", "length"] },
+  { w: "volume", p: "볼륨", k: "부피", pr: ["cube", "space"] },
+  { w: "graph", p: "그래프", k: "그래프", pr: ["chart", "data"] },
+  { w: "average", p: "애버리지", k: "평균", pr: ["mean", "middle"] },
+  { w: "estimate", p: "에스티메이트", k: "어림하다", pr: ["guess", "close"] },
+  { w: "measure", p: "메져", k: "측정하다", pr: ["ruler", "scale"] },
+  { w: "pattern", p: "패턴", k: "패턴", pr: ["repeat", "design"] },
+  { w: "symmetry", p: "시메트리", k: "대칭", pr: ["mirror", "equal"] },
+  { w: "parallel", p: "패럴렐", k: "평행", pr: ["line", "never meet"] },
+  { w: "diameter", p: "다이애미터", k: "지름", pr: ["circle", "across"] },
+];
+
+const G56_PERSONALITY: W[] = [
+  { w: "honest", p: "아너스트", k: "정직한", pr: ["truthful", "sincere"] },
+  { w: "generous", p: "제너러스", k: "너그러운", pr: ["giving", "kind"] },
+  { w: "stubborn", p: "스터번", k: "고집 센", pr: ["firm", "refuse"] },
+  {
+    w: "creative",
+    p: "크리에이티브",
+    k: "창의적인",
+    pr: ["imagine", "invent"],
+  },
+  {
+    w: "responsible",
+    p: "리스판서블",
+    k: "책임감 있는",
+    pr: ["duty", "trust"],
+  },
+  { w: "polite", p: "폴라이트", k: "예의 바른", pr: ["manner", "respect"] },
+  { w: "curious", p: "큐리어스", k: "호기심 많은", pr: ["wonder", "ask"] },
+  { w: "patient", p: "페이션트", k: "참을성 있는", pr: ["wait", "calm"] },
+  { w: "ambitious", p: "앰비셔스", k: "야망 있는", pr: ["goal", "dream"] },
+  { w: "humble", p: "험블", k: "겸손한", pr: ["modest", "simple"] },
+  { w: "loyal", p: "로열", k: "충성스러운", pr: ["faithful", "true"] },
+  { w: "independent", p: "인디펜던트", k: "독립적인", pr: ["alone", "self"] },
+  {
+    w: "diligent",
+    p: "딜리전트",
+    k: "부지런한",
+    pr: ["hardworking", "effort"],
+  },
+  {
+    w: "cooperative",
+    p: "코오퍼레이티브",
+    k: "협력적인",
+    pr: ["team", "together"],
+  },
+  { w: "respectful", p: "리스펙트풀", k: "공손한", pr: ["polite", "manner"] },
+  { w: "thoughtful", p: "쏘트풀", k: "사려깊은", pr: ["caring", "kind"] },
+  {
+    w: "adventurous",
+    p: "어드벤처러스",
+    k: "모험적인",
+    pr: ["brave", "explore"],
+  },
+  { w: "cheerful", p: "치어풀", k: "활발한", pr: ["happy", "bright"] },
+  {
+    w: "reliable",
+    p: "릴라이어블",
+    k: "믿을 수 있는",
+    pr: ["trust", "depend"],
+  },
+  { w: "flexible", p: "플렉서블", k: "유연한", pr: ["adapt", "change"] },
+];
+
+const G56_DAILY_CONVERSATION: W[] = [
+  {
+    w: "excuse me",
+    p: "익스큐즈 미",
+    k: "실례합니다",
+    pr: ["pardon", "sorry"],
+  },
+  {
+    w: "may I help you",
+    p: "메이 아이 헬프 유",
+    k: "도와드릴까요",
+    pr: ["help", "please"],
+  },
+  {
+    w: "never mind",
+    p: "네버 마인드",
+    k: "신경 쓰지 마세요",
+    pr: ["okay", "fine"],
+  },
+  {
+    w: "what happened",
+    p: "왓 해픈드",
+    k: "무슨 일이에요",
+    pr: ["tell", "problem"],
+  },
+  { w: "I agree", p: "아이 어그리", k: "동의해요", pr: ["yes", "same"] },
+  {
+    w: "I disagree",
+    p: "아이 디스어그리",
+    k: "동의하지 않아요",
+    pr: ["no", "different"],
+  },
+  {
+    w: "that is right",
+    p: "댓 이즈 라이트",
+    k: "맞아요",
+    pr: ["correct", "yes"],
+  },
+  {
+    w: "I am not sure",
+    p: "아이 엠 낫 슈어",
+    k: "잘 모르겠어요",
+    pr: ["maybe", "think"],
+  },
+  {
+    w: "it depends",
+    p: "잇 디펜즈",
+    k: "상황에 따라 달라요",
+    pr: ["maybe", "situation"],
+  },
+  {
+    w: "let me think",
+    p: "렛 미 싱크",
+    k: "생각해 볼게요",
+    pr: ["wait", "moment"],
+  },
+  { w: "sounds good", p: "사운즈 굿", k: "좋아요", pr: ["great", "okay"] },
+  {
+    w: "good idea",
+    p: "굿 아이디어",
+    k: "좋은 생각이에요",
+    pr: ["great", "plan"],
+  },
+  { w: "no problem", p: "노 프라블럼", k: "괜찮아요", pr: ["okay", "fine"] },
+  {
+    w: "take your time",
+    p: "테이크 유어 타임",
+    k: "천천히 해요",
+    pr: ["slow", "relax"],
+  },
+  { w: "go ahead", p: "고 어헤드", k: "먼저 하세요", pr: ["first", "okay"] },
+  { w: "be careful", p: "비 케어풀", k: "조심하세요", pr: ["watch", "safe"] },
+  {
+    w: "I got it",
+    p: "아이 갓 잇",
+    k: "이해했어요",
+    pr: ["understand", "know"],
+  },
+  {
+    w: "what do you mean",
+    p: "왓 두 유 민",
+    k: "무슨 뜻이에요",
+    pr: ["explain", "how"],
+  },
+  { w: "by the way", p: "바이 더 웨이", k: "그런데", pr: ["also", "another"] },
+  {
+    w: "in my opinion",
+    p: "인 마이 오피니언",
+    k: "내 생각에는",
+    pr: ["think", "believe"],
+  },
+];
+
+const G56_CONNECTORS: W[] = [
+  { w: "because", p: "비코즈", k: "왜냐하면", pr: ["reason", "so"] },
+  { w: "however", p: "하우에버", k: "그러나", pr: ["but", "yet"] },
+  { w: "therefore", p: "데어포", k: "그러므로", pr: ["so", "thus"] },
+  { w: "although", p: "올도", k: "비록 ~이지만", pr: ["but", "even"] },
+  { w: "meanwhile", p: "민와일", k: "그동안", pr: ["during", "while"] },
+  { w: "furthermore", p: "퍼더모어", k: "게다가", pr: ["also", "moreover"] },
+  { w: "instead", p: "인스테드", k: "대신에", pr: ["rather", "replace"] },
+  { w: "finally", p: "파이널리", k: "마침내", pr: ["at last", "end"] },
+  { w: "suddenly", p: "서든리", k: "갑자기", pr: ["quick", "surprise"] },
+  {
+    w: "unfortunately",
+    p: "언포튜너틀리",
+    k: "불행히도",
+    pr: ["sadly", "bad"],
+  },
+  { w: "especially", p: "이스페셜리", k: "특히", pr: ["mainly", "most"] },
+  { w: "actually", p: "액추얼리", k: "사실은", pr: ["really", "truth"] },
+  { w: "probably", p: "프라버블리", k: "아마도", pr: ["maybe", "likely"] },
+  { w: "definitely", p: "데피닛리", k: "확실히", pr: ["sure", "certainly"] },
+  { w: "obviously", p: "오비어슬리", k: "분명히", pr: ["clearly", "plain"] },
+  { w: "recently", p: "리센틀리", k: "최근에", pr: ["lately", "new"] },
+  { w: "immediately", p: "이미디어틀리", k: "즉시", pr: ["now", "right away"] },
+  { w: "gradually", p: "그래주얼리", k: "점차", pr: ["slowly", "step"] },
+  { w: "exactly", p: "이그잭틀리", k: "정확히", pr: ["precisely", "right"] },
+  { w: "apparently", p: "어패런틀리", k: "보기에는", pr: ["seems", "looks"] },
+];
+
+const G56_BODY_SYSTEMS: W[] = [
+  { w: "brain", p: "브레인", k: "뇌", pr: ["think", "head"] },
+  { w: "heart", p: "하트", k: "심장", pr: ["beat", "blood"] },
+  { w: "lung", p: "렁", k: "폐", pr: ["breathe", "air"] },
+  { w: "bone", p: "본", k: "뼈", pr: ["skeleton", "hard"] },
+  { w: "muscle", p: "머슬", k: "근육", pr: ["strong", "body"] },
+  { w: "blood", p: "블러드", k: "혈액", pr: ["red", "vein"] },
+  { w: "nerve", p: "너브", k: "신경", pr: ["sense", "feel"] },
+  { w: "spine", p: "스파인", k: "척추", pr: ["back", "bone"] },
+  { w: "rib", p: "립", k: "갈비뼈", pr: ["chest", "bone"] },
+  { w: "joint", p: "조인트", k: "관절", pr: ["bend", "move"] },
+  { w: "liver", p: "리버", k: "간", pr: ["organ", "body"] },
+  { w: "kidney", p: "키드니", k: "콩팥", pr: ["organ", "filter"] },
+  { w: "stomach", p: "스터먹", k: "위", pr: ["digest", "food"] },
+  { w: "intestine", p: "인테스틴", k: "장", pr: ["digest", "long"] },
+  { w: "skin", p: "스킨", k: "피부", pr: ["touch", "cover"] },
+  { w: "vein", p: "베인", k: "혈관", pr: ["blood", "flow"] },
+  { w: "organ", p: "오건", k: "장기", pr: ["body", "inside"] },
+  { w: "tissue", p: "티슈", k: "조직", pr: ["cell", "body"] },
+  { w: "skeleton", p: "스켈레톤", k: "골격", pr: ["bone", "frame"] },
+  { w: "pulse", p: "펄스", k: "맥박", pr: ["heart", "beat"] },
+];
+
+// ============================================================
+// Dialogue Data for 대화완성 question type
+// ============================================================
+
+interface Dialogue {
+  speaker1: string;
+  speaker2: string;
+  missingPart: string;
+  translation1: string;
+  translation2: string;
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const DIALOGUES: Dialogue[] = [
+  // Grade 3-4 Dialogues
+  {
+    speaker1: "Hi! How are you?",
+    speaker2: "I am fine, thank you.",
+    missingPart: "fine",
+    translation1: "안녕! 어떻게 지내?",
+    translation2: "잘 지내, 고마워.",
+    grade: "3-4",
+    unit: "인사와 소개",
+  },
+  {
+    speaker1: "What is your name?",
+    speaker2: "My name is Tom.",
+    missingPart: "name",
+    translation1: "이름이 뭐예요?",
+    translation2: "내 이름은 톰이에요.",
+    grade: "3-4",
+    unit: "인사와 소개",
+  },
+  {
+    speaker1: "Do you like apples?",
+    speaker2: "Yes, I do.",
+    missingPart: "apples",
+    translation1: "사과 좋아해?",
+    translation2: "응, 좋아해.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    speaker1: "What color is it?",
+    speaker2: "It is red.",
+    missingPart: "red",
+    translation1: "무슨 색이에요?",
+    translation2: "빨간색이에요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    speaker1: "Where is the book?",
+    speaker2: "It is on the desk.",
+    missingPart: "desk",
+    translation1: "책이 어디에 있어?",
+    translation2: "책상 위에 있어.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    speaker1: "How old are you?",
+    speaker2: "I am ten years old.",
+    missingPart: "ten",
+    translation1: "몇 살이에요?",
+    translation2: "열 살이에요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    speaker1: "Can you swim?",
+    speaker2: "Yes, I can.",
+    missingPart: "swim",
+    translation1: "수영할 수 있어?",
+    translation2: "응, 할 수 있어.",
+    grade: "3-4",
+    unit: "일상표현",
+  },
+  {
+    speaker1: "What day is it today?",
+    speaker2: "It is Monday.",
+    missingPart: "Monday",
+    translation1: "오늘 무슨 요일이에요?",
+    translation2: "월요일이에요.",
+    grade: "3-4",
+  },
+  {
+    speaker1: "Do you have a pet?",
+    speaker2: "Yes, I have a dog.",
+    missingPart: "dog",
+    translation1: "반려동물 있어?",
+    translation2: "응, 개가 있어.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    speaker1: "What is this?",
+    speaker2: "This is a pencil.",
+    missingPart: "pencil",
+    translation1: "이게 뭐예요?",
+    translation2: "연필이에요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    speaker1: "How is the weather?",
+    speaker2: "It is sunny.",
+    missingPart: "sunny",
+    translation1: "날씨가 어때?",
+    translation2: "화창해.",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    speaker1: "What do you want?",
+    speaker2: "I want some water.",
+    missingPart: "water",
+    translation1: "뭘 원해?",
+    translation2: "물을 좀 마시고 싶어.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    speaker1: "Who is she?",
+    speaker2: "She is my sister.",
+    missingPart: "sister",
+    translation1: "그녀는 누구예요?",
+    translation2: "내 여동생이에요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    speaker1: "Let's play together!",
+    speaker2: "Sure! That sounds fun.",
+    missingPart: "fun",
+    translation1: "같이 놀자!",
+    translation2: "좋아! 재미있겠다.",
+    grade: "3-4",
+    unit: "놀이와 장난감",
+  },
+  {
+    speaker1: "Are you hungry?",
+    speaker2: "Yes, I want some rice.",
+    missingPart: "hungry",
+    translation1: "배고파?",
+    translation2: "응, 밥 먹고 싶어.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  // Grade 5-6 Dialogues
+  {
+    speaker1: "What is your favorite subject?",
+    speaker2: "I like science the most.",
+    missingPart: "science",
+    translation1: "가장 좋아하는 과목이 뭐야?",
+    translation2: "과학을 가장 좋아해.",
+    grade: "5-6",
+    unit: "학교와 직업",
+  },
+  {
+    speaker1: "Where did you go yesterday?",
+    speaker2: "I went to the museum.",
+    missingPart: "museum",
+    translation1: "어제 어디 갔어?",
+    translation2: "박물관에 갔어.",
+    grade: "5-6",
+    unit: "위치와 장소",
+  },
+  {
+    speaker1: "What do you want to be?",
+    speaker2: "I want to be a doctor.",
+    missingPart: "doctor",
+    translation1: "뭐가 되고 싶어?",
+    translation2: "의사가 되고 싶어.",
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
+  {
+    speaker1: "How was your vacation?",
+    speaker2: "It was wonderful.",
+    missingPart: "wonderful",
+    translation1: "방학은 어땠어?",
+    translation2: "아주 좋았어.",
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    speaker1: "Can you help me?",
+    speaker2: "Of course! What do you need?",
+    missingPart: "help",
+    translation1: "도와줄 수 있어?",
+    translation2: "물론! 뭐가 필요해?",
+    grade: "5-6",
+  },
+  {
+    speaker1: "Why are you sad?",
+    speaker2: "Because I lost my wallet.",
+    missingPart: "lost",
+    translation1: "왜 슬퍼?",
+    translation2: "지갑을 잃어버렸거든.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    speaker1: "What time does the movie start?",
+    speaker2: "It starts at three.",
+    missingPart: "three",
+    translation1: "영화 몇 시에 시작해?",
+    translation2: "세 시에 시작해.",
+    grade: "5-6",
+    unit: "시간과 날짜",
+  },
+  {
+    speaker1: "Have you ever been to Japan?",
+    speaker2: "No, but I want to go.",
+    missingPart: "Japan",
+    translation1: "일본에 가 본 적 있어?",
+    translation2: "아니, 하지만 가고 싶어.",
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    speaker1: "What should we do?",
+    speaker2: "We should recycle more.",
+    missingPart: "recycle",
+    translation1: "우리 뭘 해야 할까?",
+    translation2: "재활용을 더 해야 해.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    speaker1: "How do you feel today?",
+    speaker2: "I feel nervous about the test.",
+    missingPart: "nervous",
+    translation1: "오늘 기분이 어때?",
+    translation2: "시험 때문에 긴장돼.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    speaker1: "What is your hobby?",
+    speaker2: "I enjoy reading books.",
+    missingPart: "reading",
+    translation1: "취미가 뭐야?",
+    translation2: "책 읽는 걸 좋아해.",
+    grade: "5-6",
+    unit: "일상과 취미",
+  },
+  {
+    speaker1: "Did you finish your homework?",
+    speaker2: "Not yet. I will do it tonight.",
+    missingPart: "tonight",
+    translation1: "숙제 끝냈어?",
+    translation2: "아직. 오늘 밤에 할 거야.",
+    grade: "5-6",
+  },
+  {
+    speaker1: "Which season do you like?",
+    speaker2: "I like spring because of the flowers.",
+    missingPart: "spring",
+    translation1: "어떤 계절을 좋아해?",
+    translation2: "꽃 때문에 봄을 좋아해.",
+    grade: "5-6",
+    unit: "날씨와 계절",
+  },
+  {
+    speaker1: "What did you learn in class?",
+    speaker2: "We learned about the solar system.",
+    missingPart: "solar system",
+    translation1: "수업에서 뭘 배웠어?",
+    translation2: "태양계에 대해 배웠어.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    speaker1: "How often do you exercise?",
+    speaker2: "I exercise three times a week.",
+    missingPart: "exercise",
+    translation1: "얼마나 자주 운동해?",
+    translation2: "일주일에 세 번 운동해.",
+    grade: "5-6",
+    unit: "건강과 운동",
+  },
+];
+
+// ============================================================
+// Word Ordering Data for 순서배열 question type
+// ============================================================
+
+interface WordOrder {
+  words: string[];
+  correct: string;
+  translation: string;
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const WORD_ORDERS: WordOrder[] = [
+  // Grade 3-4
+  {
+    words: ["I", "like", "apples"],
+    correct: "I like apples.",
+    translation: "나는 사과를 좋아해요.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    words: ["This", "is", "a", "cat"],
+    correct: "This is a cat.",
+    translation: "이것은 고양이예요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    words: ["She", "is", "my", "sister"],
+    correct: "She is my sister.",
+    translation: "그녀는 내 여동생이에요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    words: ["I", "can", "swim"],
+    correct: "I can swim.",
+    translation: "나는 수영할 수 있어요.",
+    grade: "3-4",
+    unit: "일상표현",
+  },
+  {
+    words: ["The", "dog", "is", "big"],
+    correct: "The dog is big.",
+    translation: "그 개는 커요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    words: ["I", "have", "two", "books"],
+    correct: "I have two books.",
+    translation: "나는 책이 두 권 있어요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    words: ["Open", "the", "door", "please"],
+    correct: "Open the door, please.",
+    translation: "문을 열어 주세요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    words: ["Do", "you", "like", "music"],
+    correct: "Do you like music?",
+    translation: "음악 좋아해요?",
+    grade: "3-4",
+    unit: "음악과 악기",
+  },
+  {
+    words: ["My", "father", "is", "tall"],
+    correct: "My father is tall.",
+    translation: "우리 아빠는 키가 커요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    words: ["Let's", "play", "soccer"],
+    correct: "Let's play soccer.",
+    translation: "축구하자.",
+    grade: "3-4",
+    unit: "운동과 스포츠",
+  },
+  {
+    words: ["I", "go", "to", "school"],
+    correct: "I go to school.",
+    translation: "나는 학교에 가요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    words: ["It", "is", "rainy", "today"],
+    correct: "It is rainy today.",
+    translation: "오늘은 비가 와요.",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    words: ["She", "likes", "ice", "cream"],
+    correct: "She likes ice cream.",
+    translation: "그녀는 아이스크림을 좋아해요.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    words: ["Where", "is", "my", "bag"],
+    correct: "Where is my bag?",
+    translation: "내 가방이 어디에 있어요?",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    words: ["I", "want", "a", "cookie"],
+    correct: "I want a cookie.",
+    translation: "쿠키를 먹고 싶어요.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    words: ["He", "is", "my", "friend"],
+    correct: "He is my friend.",
+    translation: "그는 내 친구예요.",
+    grade: "3-4",
+    unit: "인사와 소개",
+  },
+  {
+    words: ["I", "see", "a", "bird"],
+    correct: "I see a bird.",
+    translation: "새가 보여요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    words: ["We", "eat", "lunch", "together"],
+    correct: "We eat lunch together.",
+    translation: "우리는 함께 점심을 먹어요.",
+    grade: "3-4",
+    unit: "일과표현",
+  },
+  {
+    words: ["The", "sky", "is", "blue"],
+    correct: "The sky is blue.",
+    translation: "하늘이 파래요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    words: ["I", "read", "a", "book"],
+    correct: "I read a book.",
+    translation: "나는 책을 읽어요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  // Grade 5-6
+  {
+    words: ["I", "went", "to", "the", "library"],
+    correct: "I went to the library.",
+    translation: "나는 도서관에 갔어요.",
+    grade: "5-6",
+    unit: "위치와 장소",
+  },
+  {
+    words: ["She", "is", "taller", "than", "me"],
+    correct: "She is taller than me.",
+    translation: "그녀는 나보다 키가 커요.",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    words: ["We", "should", "protect", "the", "environment"],
+    correct: "We should protect the environment.",
+    translation: "우리는 환경을 보호해야 해요.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    words: ["I", "want", "to", "be", "a", "doctor"],
+    correct: "I want to be a doctor.",
+    translation: "나는 의사가 되고 싶어요.",
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
+  {
+    words: ["If", "it", "rains", "I", "will", "stay"],
+    correct: "If it rains, I will stay.",
+    translation: "비가 오면 나는 있을 거예요.",
+    grade: "5-6",
+  },
+  {
+    words: ["The", "movie", "was", "very", "interesting"],
+    correct: "The movie was very interesting.",
+    translation: "그 영화는 매우 재미있었어요.",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    words: ["I", "have", "been", "to", "Japan"],
+    correct: "I have been to Japan.",
+    translation: "나는 일본에 가 본 적 있어요.",
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    words: ["He", "studied", "hard", "for", "the", "test"],
+    correct: "He studied hard for the test.",
+    translation: "그는 시험을 위해 열심히 공부했어요.",
+    grade: "5-6",
+    unit: "학교와 직업",
+  },
+  {
+    words: ["My", "hobby", "is", "playing", "basketball"],
+    correct: "My hobby is playing basketball.",
+    translation: "내 취미는 농구예요.",
+    grade: "5-6",
+    unit: "일상과 취미",
+  },
+  {
+    words: ["We", "learned", "about", "the", "solar", "system"],
+    correct: "We learned about the solar system.",
+    translation: "우리는 태양계에 대해 배웠어요.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    words: ["She", "always", "helps", "her", "friends"],
+    correct: "She always helps her friends.",
+    translation: "그녀는 항상 친구들을 도와요.",
+    grade: "5-6",
+  },
+  {
+    words: ["I", "think", "reading", "is", "important"],
+    correct: "I think reading is important.",
+    translation: "나는 독서가 중요하다고 생각해요.",
+    grade: "5-6",
+  },
+  {
+    words: ["The", "weather", "will", "be", "sunny", "tomorrow"],
+    correct: "The weather will be sunny tomorrow.",
+    translation: "내일 날씨가 화창할 거예요.",
+    grade: "5-6",
+    unit: "날씨와 자연",
+  },
+  {
+    words: ["Can", "you", "speak", "English", "well"],
+    correct: "Can you speak English well?",
+    translation: "영어를 잘 할 수 있어요?",
+    grade: "5-6",
+  },
+  {
+    words: ["I", "feel", "happy", "when", "I", "sing"],
+    correct: "I feel happy when I sing.",
+    translation: "노래할 때 행복해요.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    words: ["They", "visited", "the", "museum", "yesterday"],
+    correct: "They visited the museum yesterday.",
+    translation: "그들은 어제 박물관을 방문했어요.",
+    grade: "5-6",
+    unit: "위치와 장소",
+  },
+  {
+    words: ["You", "should", "eat", "more", "vegetables"],
+    correct: "You should eat more vegetables.",
+    translation: "채소를 더 먹어야 해요.",
+    grade: "5-6",
+    unit: "건강과 운동",
+  },
+  {
+    words: ["The", "earth", "goes", "around", "the", "sun"],
+    correct: "The earth goes around the sun.",
+    translation: "지구는 태양 주위를 돌아요.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    words: ["I", "was", "surprised", "by", "the", "news"],
+    correct: "I was surprised by the news.",
+    translation: "그 소식에 놀랐어요.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    words: ["We", "need", "to", "save", "water"],
+    correct: "We need to save water.",
+    translation: "우리는 물을 절약해야 해요.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+];
+
+// ============================================================
+// Sentence Completion Data for 문장완성 question type
+// ============================================================
+
+interface SentenceCompletion {
+  sentence: string;
+  blank: string;
+  choices: string[];
+  translation: string;
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const SENTENCE_COMPLETIONS: SentenceCompletion[] = [
+  // Grade 3-4
+  {
+    sentence: "I ___ to school every day.",
+    blank: "go",
+    choices: ["go", "eat", "sleep", "fly"],
+    translation: "나는 매일 학교에 가요.",
+    grade: "3-4",
+    unit: "일과표현",
+  },
+  {
+    sentence: "My mother is very ___.",
+    blank: "kind",
+    choices: ["kind", "cloud", "pencil", "apple"],
+    translation: "우리 엄마는 매우 친절해요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    sentence: "The sun is ___ and bright.",
+    blank: "yellow",
+    choices: ["yellow", "blue", "cold", "slow"],
+    translation: "태양은 노랗고 밝아요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    sentence: "I ___ my teeth every morning.",
+    blank: "brush",
+    choices: ["brush", "draw", "cook", "throw"],
+    translation: "나는 매일 아침 양치해요.",
+    grade: "3-4",
+    unit: "일과표현",
+  },
+  {
+    sentence: "The cat is ___ the table.",
+    blank: "under",
+    choices: ["under", "swim", "happy", "three"],
+    translation: "고양이가 탁자 아래에 있어요.",
+    grade: "3-4",
+    unit: "위치와 장소",
+  },
+  {
+    sentence: "I like to ___ pictures.",
+    blank: "draw",
+    choices: ["draw", "eat", "run", "sleep"],
+    translation: "나는 그림 그리기를 좋아해요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    sentence: "She is wearing a red ___.",
+    blank: "dress",
+    choices: ["dress", "cloud", "tree", "fish"],
+    translation: "그녀는 빨간 드레스를 입고 있어요.",
+    grade: "3-4",
+  },
+  {
+    sentence: "We play ___ after school.",
+    blank: "soccer",
+    choices: ["soccer", "pencil", "milk", "door"],
+    translation: "우리는 방과 후에 축구를 해요.",
+    grade: "3-4",
+    unit: "운동과 스포츠",
+  },
+  {
+    sentence: "There are many ___ in the sky.",
+    blank: "stars",
+    choices: ["stars", "fish", "desks", "shoes"],
+    translation: "하늘에 별이 많아요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    sentence: "Please ___ the window.",
+    blank: "open",
+    choices: ["open", "eat", "sing", "fly"],
+    translation: "창문을 열어 주세요.",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    sentence: "I eat ___ for breakfast.",
+    blank: "bread",
+    choices: ["bread", "desk", "star", "road"],
+    translation: "나는 아침에 빵을 먹어요.",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    sentence: "The flower is very ___.",
+    blank: "pretty",
+    choices: ["pretty", "angry", "heavy", "fast"],
+    translation: "그 꽃은 매우 예뻐요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    sentence: "He can ___ very fast.",
+    blank: "run",
+    choices: ["run", "read", "sleep", "cook"],
+    translation: "그는 매우 빨리 달릴 수 있어요.",
+    grade: "3-4",
+    unit: "일상표현",
+  },
+  {
+    sentence: "I need an ___ for the rain.",
+    blank: "umbrella",
+    choices: ["umbrella", "apple", "eraser", "ant"],
+    translation: "비에 우산이 필요해요.",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    sentence: "The baby is ___.",
+    blank: "sleeping",
+    choices: ["sleeping", "swimming", "cooking", "flying"],
+    translation: "아기가 자고 있어요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  // Grade 5-6
+  {
+    sentence: "I ___ to the library yesterday.",
+    blank: "went",
+    choices: ["went", "go", "eat", "fly"],
+    translation: "나는 어제 도서관에 갔어요.",
+    grade: "5-6",
+    unit: "과거경험",
+  },
+  {
+    sentence: "She is ___ than her brother.",
+    blank: "taller",
+    choices: ["taller", "tallest", "tall", "short"],
+    translation: "그녀는 오빠보다 키가 커요.",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    sentence: "We should ___ the environment.",
+    blank: "protect",
+    choices: ["protect", "destroy", "forget", "ignore"],
+    translation: "우리는 환경을 보호해야 해요.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    sentence: "The ___ rises in the east.",
+    blank: "sun",
+    choices: ["sun", "moon", "rain", "wind"],
+    translation: "태양은 동쪽에서 떠요.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    sentence: "If you study hard, you will ___.",
+    blank: "succeed",
+    choices: ["succeed", "fail", "sleep", "cry"],
+    translation: "열심히 공부하면 성공할 거예요.",
+    grade: "5-6",
+  },
+  {
+    sentence: "He was very ___ about the result.",
+    blank: "disappointed",
+    choices: ["disappointed", "happy", "hungry", "tall"],
+    translation: "그는 결과에 매우 실망했어요.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    sentence: "The ___ orbits the Earth.",
+    blank: "moon",
+    choices: ["moon", "fish", "book", "chair"],
+    translation: "달은 지구를 돌아요.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    sentence: "I ___ a letter to my pen pal.",
+    blank: "wrote",
+    choices: ["wrote", "write", "eaten", "swim"],
+    translation: "나는 펜팔에게 편지를 썼어요.",
+    grade: "5-6",
+    unit: "과거경험",
+  },
+  {
+    sentence: "The movie was ___ than I expected.",
+    blank: "better",
+    choices: ["better", "good", "best", "worse"],
+    translation: "영화가 기대보다 더 좋았어요.",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    sentence: "We ___ recycle plastic bottles.",
+    blank: "should",
+    choices: ["should", "will", "can", "may"],
+    translation: "우리는 플라스틱 병을 재활용해야 해요.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    sentence: "The ___ was very exciting.",
+    blank: "adventure",
+    choices: ["adventure", "homework", "pillow", "pencil"],
+    translation: "그 모험은 매우 신났어요.",
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    sentence: "She ___ English and Korean.",
+    blank: "speaks",
+    choices: ["speaks", "eats", "draws", "throws"],
+    translation: "그녀는 영어와 한국어를 해요.",
+    grade: "5-6",
+  },
+  {
+    sentence: "I am ___ in science.",
+    blank: "interested",
+    choices: ["interested", "tired", "angry", "hungry"],
+    translation: "나는 과학에 관심이 있어요.",
+    grade: "5-6",
+    unit: "과학 탐구",
+  },
+  {
+    sentence: "The ___ change every season.",
+    blank: "leaves",
+    choices: ["leaves", "books", "chairs", "phones"],
+    translation: "나뭇잎은 계절마다 바뀌어요.",
+    grade: "5-6",
+    unit: "날씨와 계절",
+  },
+  {
+    sentence: "He ___ his best friend at the park.",
+    blank: "met",
+    choices: ["met", "meet", "ate", "slept"],
+    translation: "그는 공원에서 절친을 만났어요.",
+    grade: "5-6",
+    unit: "과거경험",
+  },
+];
+
+// ============================================================
+// Translation/Writing Data for 영작문 question type
+// ============================================================
+
+interface TranslationEntry {
+  korean: string;
+  english: string;
+  keyWord: string;
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const TRANSLATIONS: TranslationEntry[] = [
+  // Grade 3-4
+  {
+    korean: "나는 사과를 좋아해요.",
+    english: "I like apples.",
+    keyWord: "like",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    korean: "이것은 내 가방이에요.",
+    english: "This is my bag.",
+    keyWord: "bag",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    korean: "고양이가 귀여워요.",
+    english: "The cat is cute.",
+    keyWord: "cute",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    korean: "오늘 날씨가 좋아요.",
+    english: "The weather is nice today.",
+    keyWord: "weather",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    korean: "나는 매일 학교에 가요.",
+    english: "I go to school every day.",
+    keyWord: "school",
+    grade: "3-4",
+    unit: "일과표현",
+  },
+  {
+    korean: "우리 엄마는 요리를 잘해요.",
+    english: "My mother cooks well.",
+    keyWord: "mother",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    korean: "그 꽃은 빨간색이에요.",
+    english: "The flower is red.",
+    keyWord: "red",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    korean: "나는 축구를 좋아해요.",
+    english: "I like soccer.",
+    keyWord: "soccer",
+    grade: "3-4",
+    unit: "운동과 스포츠",
+  },
+  {
+    korean: "책상 위에 연필이 있어요.",
+    english: "There is a pencil on the desk.",
+    keyWord: "pencil",
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    korean: "나는 피아노를 연주해요.",
+    english: "I play the piano.",
+    keyWord: "piano",
+    grade: "3-4",
+    unit: "음악과 악기",
+  },
+  {
+    korean: "물을 마시고 싶어요.",
+    english: "I want to drink water.",
+    keyWord: "water",
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    korean: "그는 키가 커요.",
+    english: "He is tall.",
+    keyWord: "tall",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    korean: "비가 오고 있어요.",
+    english: "It is raining.",
+    keyWord: "raining",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    korean: "나는 개가 있어요.",
+    english: "I have a dog.",
+    keyWord: "dog",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    korean: "같이 놀자!",
+    english: "Let's play together!",
+    keyWord: "play",
+    grade: "3-4",
+    unit: "놀이와 장난감",
+  },
+  // Grade 5-6
+  {
+    korean: "나는 어제 도서관에 갔어요.",
+    english: "I went to the library yesterday.",
+    keyWord: "went",
+    grade: "5-6",
+    unit: "과거경험",
+  },
+  {
+    korean: "그녀는 나보다 빨라요.",
+    english: "She is faster than me.",
+    keyWord: "faster",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    korean: "환경을 보호해야 해요.",
+    english: "We should protect the environment.",
+    keyWord: "protect",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    korean: "나는 의사가 되고 싶어요.",
+    english: "I want to be a doctor.",
+    keyWord: "doctor",
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
+  {
+    korean: "비가 오면 집에 있을 거예요.",
+    english: "If it rains, I will stay home.",
+    keyWord: "rains",
+    grade: "5-6",
+  },
+  {
+    korean: "내 취미는 독서예요.",
+    english: "My hobby is reading.",
+    keyWord: "reading",
+    grade: "5-6",
+    unit: "일상과 취미",
+  },
+  {
+    korean: "그 영화는 재미있었어요.",
+    english: "The movie was interesting.",
+    keyWord: "interesting",
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    korean: "우리는 물을 절약해야 해요.",
+    english: "We should save water.",
+    keyWord: "save",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    korean: "지구는 태양 주위를 돌아요.",
+    english: "The earth goes around the sun.",
+    keyWord: "earth",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    korean: "나는 매일 운동해요.",
+    english: "I exercise every day.",
+    keyWord: "exercise",
+    grade: "5-6",
+    unit: "건강과 운동",
+  },
+  {
+    korean: "그는 열심히 공부했어요.",
+    english: "He studied hard.",
+    keyWord: "studied",
+    grade: "5-6",
+    unit: "과거경험",
+  },
+  {
+    korean: "날씨가 점점 더워지고 있어요.",
+    english: "The weather is getting hotter.",
+    keyWord: "hotter",
+    grade: "5-6",
+    unit: "날씨와 자연",
+  },
+  {
+    korean: "친절은 세상을 바꿔요.",
+    english: "Kindness changes the world.",
+    keyWord: "kindness",
+    grade: "5-6",
+  },
+  {
+    korean: "나는 과학이 재미있다고 생각해요.",
+    english: "I think science is fun.",
+    keyWord: "science",
+    grade: "5-6",
+    unit: "과학 탐구",
+  },
+  {
+    korean: "우리는 서로 도와야 해요.",
+    english: "We should help each other.",
+    keyWord: "help",
+    grade: "5-6",
+  },
+];
+
+// ============================================================
+// Listening Comprehension Data for 듣기이해 question type
+// ============================================================
+
+interface ListeningEntry {
+  sentence: string;
+  question: string;
+  answer: string;
+  choices: string[];
+  translation: string;
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const LISTENING_ENTRIES: ListeningEntry[] = [
+  // Grade 3-4
+  {
+    sentence: "I have a red ball.",
+    question: "What color is the ball?",
+    answer: "red",
+    choices: ["red", "blue", "green", "yellow"],
+    translation: "나는 빨간 공이 있어요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    sentence: "My mother is cooking dinner.",
+    question: "What is my mother doing?",
+    answer: "cooking",
+    choices: ["cooking", "reading", "sleeping", "singing"],
+    translation: "엄마가 저녁을 요리하고 있어요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    sentence: "There are five apples on the table.",
+    question: "How many apples are there?",
+    answer: "five",
+    choices: ["three", "four", "five", "six"],
+    translation: "탁자 위에 사과가 다섯 개 있어요.",
+    grade: "3-4",
+    unit: "숫자와 색깔",
+  },
+  {
+    sentence: "The bird is in the tree.",
+    question: "Where is the bird?",
+    answer: "in the tree",
+    choices: ["in the tree", "under the table", "on the desk", "in the box"],
+    translation: "새가 나무에 있어요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    sentence: "I wake up at seven every morning.",
+    question: "What time do I wake up?",
+    answer: "seven",
+    choices: ["six", "seven", "eight", "nine"],
+    translation: "나는 매일 아침 7시에 일어나요.",
+    grade: "3-4",
+    unit: "일과표현",
+  },
+  {
+    sentence: "Tom likes to play soccer.",
+    question: "What does Tom like to play?",
+    answer: "soccer",
+    choices: ["soccer", "tennis", "baseball", "chess"],
+    translation: "톰은 축구를 좋아해요.",
+    grade: "3-4",
+    unit: "운동과 스포츠",
+  },
+  {
+    sentence: "It is snowy today.",
+    question: "How is the weather?",
+    answer: "snowy",
+    choices: ["sunny", "rainy", "snowy", "cloudy"],
+    translation: "오늘은 눈이 와요.",
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    sentence: "She is my grandmother.",
+    question: "Who is she?",
+    answer: "grandmother",
+    choices: ["mother", "sister", "grandmother", "teacher"],
+    translation: "그녀는 내 할머니예요.",
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    sentence: "I go to school by bus.",
+    question: "How do I go to school?",
+    answer: "by bus",
+    choices: ["by bus", "by car", "on foot", "by train"],
+    translation: "나는 버스로 학교에 가요.",
+    grade: "3-4",
+    unit: "교통과 이동",
+  },
+  {
+    sentence: "The elephant is very big.",
+    question: "What is big?",
+    answer: "the elephant",
+    choices: ["the cat", "the dog", "the elephant", "the ant"],
+    translation: "코끼리는 매우 커요.",
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  // Grade 5-6
+  {
+    sentence: "I went to the museum last weekend.",
+    question: "Where did I go last weekend?",
+    answer: "the museum",
+    choices: ["the park", "the museum", "the library", "the cinema"],
+    translation: "나는 지난 주말에 박물관에 갔어요.",
+    grade: "5-6",
+    unit: "위치와 장소",
+  },
+  {
+    sentence: "She wants to be a scientist.",
+    question: "What does she want to be?",
+    answer: "a scientist",
+    choices: ["a teacher", "a doctor", "a scientist", "a singer"],
+    translation: "그녀는 과학자가 되고 싶어요.",
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
+  {
+    sentence: "We should recycle to protect the earth.",
+    question: "Why should we recycle?",
+    answer: "to protect the earth",
+    choices: [
+      "to save money",
+      "to protect the earth",
+      "to be famous",
+      "to have fun",
+    ],
+    translation: "지구를 보호하기 위해 재활용해야 해요.",
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    sentence: "The temperature dropped below zero yesterday.",
+    question: "What happened yesterday?",
+    answer: "The temperature dropped below zero.",
+    choices: [
+      "It was very hot.",
+      "The temperature dropped below zero.",
+      "It rained a lot.",
+      "It was sunny.",
+    ],
+    translation: "어제 기온이 영하로 내려갔어요.",
+    grade: "5-6",
+    unit: "날씨와 자연",
+  },
+  {
+    sentence: "He practiced piano for two hours.",
+    question: "How long did he practice piano?",
+    answer: "two hours",
+    choices: ["one hour", "two hours", "three hours", "four hours"],
+    translation: "그는 두 시간 동안 피아노를 연습했어요.",
+    grade: "5-6",
+    unit: "일상과 취미",
+  },
+  {
+    sentence: "Mars is called the Red Planet.",
+    question: "What is Mars called?",
+    answer: "the Red Planet",
+    choices: [
+      "the Blue Planet",
+      "the Red Planet",
+      "the Green Planet",
+      "the White Planet",
+    ],
+    translation: "화성은 붉은 행성이라 불려요.",
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    sentence: "I feel nervous before the test.",
+    question: "How do I feel before the test?",
+    answer: "nervous",
+    choices: ["happy", "sad", "nervous", "excited"],
+    translation: "시험 전에 긴장돼요.",
+    grade: "5-6",
+    unit: "감정과 상태",
+  },
+  {
+    sentence: "She bought a souvenir for her friend.",
+    question: "What did she buy?",
+    answer: "a souvenir",
+    choices: ["a book", "a souvenir", "a ticket", "a pencil"],
+    translation: "그녀는 친구에게 기념품을 샀어요.",
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    sentence: "We need to drink eight glasses of water a day.",
+    question: "How many glasses of water should we drink?",
+    answer: "eight",
+    choices: ["four", "six", "eight", "ten"],
+    translation: "하루에 물 여덟 잔을 마셔야 해요.",
+    grade: "5-6",
+    unit: "건강과 운동",
+  },
+  {
+    sentence: "The community held a festival last month.",
+    question: "What did the community hold?",
+    answer: "a festival",
+    choices: ["a meeting", "a festival", "a contest", "a parade"],
+    translation: "지역사회에서 지난달에 축제를 열었어요.",
+    grade: "5-6",
+    unit: "사회와 공동체",
+  },
+];
+
+// ============================================================
+// Picture Description Data for 그림보고영어 question type
+// ============================================================
+
+interface PictureDesc {
+  scene: string;
+  sceneKr: string;
+  question: string;
+  answer: string;
+  choices: string[];
+  grade: "3-4" | "5-6";
+  unit?: string;
+}
+
+const PICTURE_DESCRIPTIONS: PictureDesc[] = [
+  // Grade 3-4
+  {
+    scene: "A boy is eating an apple under a tree.",
+    sceneKr: "소년이 나무 아래에서 사과를 먹고 있어요.",
+    question: "What is the boy doing?",
+    answer: "eating an apple",
+    choices: ["eating an apple", "reading a book", "sleeping", "running"],
+    grade: "3-4",
+    unit: "음식과 맛",
+  },
+  {
+    scene: "A girl is playing with a dog in the park.",
+    sceneKr: "소녀가 공원에서 개와 놀고 있어요.",
+    question: "Where is the girl?",
+    answer: "in the park",
+    choices: ["at school", "in the park", "at home", "in the library"],
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    scene: "It is raining and the boy has an umbrella.",
+    sceneKr: "비가 오고 소년이 우산을 쓰고 있어요.",
+    question: "What does the boy have?",
+    answer: "an umbrella",
+    choices: ["a hat", "an umbrella", "a bag", "a ball"],
+    grade: "3-4",
+    unit: "날씨",
+  },
+  {
+    scene: "A family is eating dinner at a table.",
+    sceneKr: "가족이 식탁에서 저녁을 먹고 있어요.",
+    question: "What is the family doing?",
+    answer: "eating dinner",
+    choices: ["eating dinner", "watching TV", "playing games", "reading books"],
+    grade: "3-4",
+    unit: "가족과 신체",
+  },
+  {
+    scene: "Three cats are sleeping on the sofa.",
+    sceneKr: "고양이 세 마리가 소파 위에서 자고 있어요.",
+    question: "How many cats are there?",
+    answer: "three",
+    choices: ["two", "three", "four", "five"],
+    grade: "3-4",
+    unit: "동물과 자연",
+  },
+  {
+    scene: "A teacher is writing on the blackboard.",
+    sceneKr: "선생님이 칠판에 쓰고 있어요.",
+    question: "What is the teacher writing on?",
+    answer: "the blackboard",
+    choices: ["the desk", "the blackboard", "a book", "a paper"],
+    grade: "3-4",
+    unit: "학교생활",
+  },
+  {
+    scene: "Two children are riding bicycles.",
+    sceneKr: "두 아이가 자전거를 타고 있어요.",
+    question: "What are the children riding?",
+    answer: "bicycles",
+    choices: ["cars", "buses", "bicycles", "horses"],
+    grade: "3-4",
+    unit: "교통과 이동",
+  },
+  {
+    scene: "A snowman is in front of a house.",
+    sceneKr: "눈사람이 집 앞에 있어요.",
+    question: "What season is it?",
+    answer: "winter",
+    choices: ["spring", "summer", "fall", "winter"],
+    grade: "3-4",
+    unit: "날씨와 계절",
+  },
+  {
+    scene: "A boy is kicking a soccer ball.",
+    sceneKr: "소년이 축구공을 차고 있어요.",
+    question: "What sport is the boy playing?",
+    answer: "soccer",
+    choices: ["basketball", "baseball", "soccer", "tennis"],
+    grade: "3-4",
+    unit: "운동과 스포츠",
+  },
+  {
+    scene: "A woman is cooking soup in the kitchen.",
+    sceneKr: "여자가 부엌에서 수프를 만들고 있어요.",
+    question: "Where is the woman?",
+    answer: "in the kitchen",
+    choices: [
+      "in the bedroom",
+      "in the kitchen",
+      "in the garden",
+      "in the bathroom",
+    ],
+    grade: "3-4",
+    unit: "요리와 맛",
+  },
+  // Grade 5-6
+  {
+    scene: "Students are doing a science experiment in the lab.",
+    sceneKr: "학생들이 실험실에서 과학 실험을 하고 있어요.",
+    question: "What are the students doing?",
+    answer: "a science experiment",
+    choices: [
+      "a math test",
+      "a science experiment",
+      "an art project",
+      "a music concert",
+    ],
+    grade: "5-6",
+    unit: "과학 탐구",
+  },
+  {
+    scene: "A family is at the airport with suitcases.",
+    sceneKr: "가족이 여행가방을 들고 공항에 있어요.",
+    question: "Where is the family?",
+    answer: "at the airport",
+    choices: ["at the park", "at school", "at the airport", "at the hospital"],
+    grade: "5-6",
+    unit: "여행과 세계",
+  },
+  {
+    scene: "People are recycling bottles and cans.",
+    sceneKr: "사람들이 병과 캔을 재활용하고 있어요.",
+    question: "What are people doing?",
+    answer: "recycling",
+    choices: ["cooking", "recycling", "playing", "studying"],
+    grade: "5-6",
+    unit: "환경과 지구",
+  },
+  {
+    scene: "A doctor is examining a patient at the hospital.",
+    sceneKr: "의사가 병원에서 환자를 진찰하고 있어요.",
+    question: "Who is the doctor examining?",
+    answer: "a patient",
+    choices: ["a teacher", "a patient", "a student", "a chef"],
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
+  {
+    scene: "The night sky is full of stars and a big moon.",
+    sceneKr: "밤하늘에 별과 큰 달이 가득해요.",
+    question: "What is in the sky?",
+    answer: "stars and a moon",
+    choices: [
+      "clouds and rain",
+      "stars and a moon",
+      "birds and planes",
+      "snow and wind",
+    ],
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    scene: "Children are volunteering at a community garden.",
+    sceneKr: "아이들이 지역 정원에서 봉사활동을 하고 있어요.",
+    question: "What are the children doing?",
+    answer: "volunteering",
+    choices: ["studying", "volunteering", "sleeping", "eating"],
+    grade: "5-6",
+    unit: "사회와 공동체",
+  },
+  {
+    scene: "A girl is reading a book at the library.",
+    sceneKr: "소녀가 도서관에서 책을 읽고 있어요.",
+    question: "Where is the girl reading?",
+    answer: "at the library",
+    choices: ["at school", "at home", "at the library", "at the park"],
+    grade: "5-6",
+    unit: "일상과 취미",
+  },
+  {
+    scene: "Two students are comparing their heights.",
+    sceneKr: "두 학생이 키를 비교하고 있어요.",
+    question: "What are the students comparing?",
+    answer: "their heights",
+    choices: ["their ages", "their heights", "their bags", "their shoes"],
+    grade: "5-6",
+    unit: "비교와 묘사",
+  },
+  {
+    scene: "An astronaut is floating in space.",
+    sceneKr: "우주비행사가 우주에서 떠 있어요.",
+    question: "Where is the astronaut?",
+    answer: "in space",
+    choices: ["in the sky", "in the ocean", "in space", "in the forest"],
+    grade: "5-6",
+    unit: "우주와 과학",
+  },
+  {
+    scene: "A chef is making a delicious meal in a restaurant.",
+    sceneKr: "셰프가 식당에서 맛있는 음식을 만들고 있어요.",
+    question: "What is the chef doing?",
+    answer: "making a meal",
+    choices: ["washing dishes", "making a meal", "cleaning", "reading"],
+    grade: "5-6",
+    unit: "진로와 직업",
+  },
 ];
 
 // ============================================================
@@ -3351,6 +5356,171 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
     ...generateFromBank(rng, G34_HOLIDAYS, holidayTmpls, 2, "축제와 행사"),
   );
 
+  // Insects → "곤충과 벌레"
+  const insectTmpls: Tmpl[] = [
+    { s: (w) => `I see a ${w}.`, t: (k) => `나는 ${k}을(를) 봐요.` },
+    { s: (w) => `The ${w} is small.`, t: (k) => `${k}은(는) 작아요.` },
+    { s: (w) => `Look at the ${w}!`, t: (k) => `${k}을(를) 봐요!` },
+    {
+      s: (w) => `There is a ${w} here.`,
+      t: (k) => `여기에 ${k}이(가) 있어요.`,
+    },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G34_INSECTS, insectTmpls, 2, "곤충과 벌레"),
+  );
+
+  // Occupations (basic) → "직업"
+  const occupationTmpls: Tmpl[] = [
+    {
+      s: (w) => `I want to be a ${w}.`,
+      t: (k) => `나는 ${k}이(가) 되고 싶어요.`,
+    },
+    { s: (w) => `My dad is a ${w}.`, t: (k) => `우리 아빠는 ${k}이에요.` },
+    {
+      s: (w) => `The ${w} helps people.`,
+      t: (k) => `${k}은(는) 사람들을 도와요.`,
+    },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G34_OCCUPATIONS_BASIC, occupationTmpls, 2, "직업"),
+  );
+
+  // Furniture → "가구와 집"
+  entries.push(
+    ...generateFromBank(rng, G34_FURNITURE, BASIC_TEMPLATES, 2, "가구와 집"),
+  );
+
+  // Extra feelings → "감정표현"
+  entries.push(
+    ...generateFromBank(
+      rng,
+      G34_FEELINGS_EXTRA,
+      EMOTION_TEMPLATES,
+      2,
+      "감정표현",
+    ),
+  );
+
+  // Places (basic) → "위치와 장소"
+  entries.push(
+    ...generateFromBank(
+      rng,
+      G34_PLACES_BASIC,
+      BASIC_TEMPLATES,
+      2,
+      "위치와 장소",
+    ),
+  );
+
+  // Extra verbs → "동작과 행동"
+  entries.push(
+    ...generateFromBank(
+      rng,
+      G34_VERBS_EXTRA,
+      ACTION_TEMPLATES,
+      2,
+      "동작과 행동",
+    ),
+  );
+
+  // Opposites → "반대말"
+  const oppositeTmpls: Tmpl[] = [
+    { s: (w) => `It is ${w}.`, t: (k) => `${k}이에요.` },
+    { s: (w) => `This is very ${w}.`, t: (k) => `이것은 매우 ${k}.` },
+    { s: (w) => `The ball is ${w}.`, t: (k) => `공은 ${k}.` },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G34_OPPOSITES, oppositeTmpls, 2, "반대말"),
+  );
+
+  // Time (basic) → "시간표현"
+  const timeBasicTmpls: Tmpl[] = [
+    { s: (w) => `I study in the ${w}.`, t: (k) => `나는 ${k}에 공부해요.` },
+    { s: (w) => `It is ${w}.`, t: (k) => `${k}이에요.` },
+    { s: (w) => `I will come ${w}.`, t: (k) => `${k} 올게요.` },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G34_TIME_BASIC, timeBasicTmpls, 2, "시간표현"),
+  );
+
+  // Containers → "물건과 용기"
+  entries.push(
+    ...generateFromBank(rng, G34_CONTAINERS, BASIC_TEMPLATES, 2, "물건과 용기"),
+  );
+
+  // Dialogue entries for Grade 3-4
+  for (const d of DIALOGUES.filter((dl) => dl.grade === "3-4")) {
+    entries.push({
+      sentence: `${d.speaker1} / ${d.speaker2}`,
+      translation: `${d.translation1} / ${d.translation2}`,
+      word: d.missingPart,
+      pronunciation: "",
+      practice: [],
+      unit: d.unit || "대화표현",
+    });
+  }
+
+  // Word ordering entries for Grade 3-4
+  for (const wo of WORD_ORDERS.filter((w) => w.grade === "3-4")) {
+    entries.push({
+      sentence: wo.correct,
+      translation: wo.translation,
+      word: wo.words[0],
+      pronunciation: "",
+      practice: wo.words.slice(1),
+      unit: wo.unit || "문장만들기",
+    });
+  }
+
+  // Sentence completion entries for Grade 3-4
+  for (const sc of SENTENCE_COMPLETIONS.filter((s) => s.grade === "3-4")) {
+    entries.push({
+      sentence: sc.sentence.replace("___", sc.blank),
+      translation: sc.translation,
+      word: sc.blank,
+      pronunciation: "",
+      practice: sc.choices.filter((c) => c !== sc.blank),
+      unit: sc.unit || "문장완성",
+    });
+  }
+
+  // Translation entries for Grade 3-4
+  for (const tr of TRANSLATIONS.filter((t) => t.grade === "3-4")) {
+    entries.push({
+      sentence: tr.english,
+      translation: tr.korean,
+      word: tr.keyWord,
+      pronunciation: "",
+      practice: [],
+      unit: tr.unit || "영작문",
+    });
+  }
+
+  // Listening entries for Grade 3-4
+  for (const le of LISTENING_ENTRIES.filter((l) => l.grade === "3-4")) {
+    entries.push({
+      sentence: le.sentence,
+      translation: le.translation,
+      word: le.answer,
+      pronunciation: "",
+      practice: le.choices.filter((c) => c !== le.answer),
+      unit: le.unit || "듣기이해",
+    });
+  }
+
+  // Picture description entries for Grade 3-4
+  for (const pd of PICTURE_DESCRIPTIONS.filter((p) => p.grade === "3-4")) {
+    entries.push({
+      sentence: pd.scene,
+      translation: pd.sceneKr,
+      word: pd.answer,
+      pronunciation: "",
+      practice: pd.choices.filter((c) => c !== pd.answer),
+      unit: pd.unit || "그림보고영어",
+    });
+  }
+
   return entries;
 }
 
@@ -3541,6 +5711,189 @@ function generateGrade5_6Entries(rng: () => number): EnglishEntry[] {
     ),
   );
 
+  // Cooking (advanced) → "요리와 음식"
+  const cookAdvTmpls: Tmpl[] = [
+    { s: (w) => `I learned to ${w}.`, t: (k) => `나는 ${k} 것을 배웠어요.` },
+    {
+      s: (w) => `We need to ${w} the vegetables.`,
+      t: (k) => `채소를 ${k}야 해요.`,
+    },
+    {
+      s: (w) => `The chef will ${w} the sauce.`,
+      t: (k) => `셰프가 소스를 ${k} 거예요.`,
+    },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G56_COOKING_ADV, cookAdvTmpls, 2, "요리와 음식"),
+  );
+
+  // Literature → "문학과 독서"
+  const litTmpls: Tmpl[] = [
+    {
+      s: (w) => `I read a great ${w}.`,
+      t: (k) => `훌륭한 ${k}을(를) 읽었어요.`,
+    },
+    {
+      s: (w) => `The ${w} was interesting.`,
+      t: (k) => `${k}이(가) 재미있었어요.`,
+    },
+    { s: (w) => `I like this ${w}.`, t: (k) => `나는 이 ${k}을(를) 좋아해요.` },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G56_LITERATURE, litTmpls, 2, "문학과 독서"),
+  );
+
+  // Geography → "지리와 세계"
+  const geoTmpls: Tmpl[] = [
+    {
+      s: (w) => `I learned about the ${w}.`,
+      t: (k) => `${k}에 대해 배웠어요.`,
+    },
+    { s: (w) => `The ${w} is very large.`, t: (k) => `${k}은(는) 매우 커요.` },
+    {
+      s: (w) => `Can you find the ${w} on the map?`,
+      t: (k) => `지도에서 ${k}을(를) 찾을 수 있어요?`,
+    },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G56_GEOGRAPHY, geoTmpls, 2, "지리와 세계"),
+  );
+
+  // Math terms → "수학 용어"
+  const mathTermTmpls: Tmpl[] = [
+    {
+      s: (w) => `We studied ${w} today.`,
+      t: (k) => `오늘 ${k}을(를) 공부했어요.`,
+    },
+    {
+      s: (w) => `${w} is important in math.`,
+      t: (k) => `${k}은(는) 수학에서 중요해요.`,
+    },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G56_MATH_TERMS, mathTermTmpls, 2, "수학 용어"),
+  );
+
+  // Personality → "성격과 태도"
+  const persTempls: Tmpl[] = [
+    { s: (w) => `She is very ${w}.`, t: (k) => `그녀는 매우 ${k}.` },
+    {
+      s: (w) => `I want to be ${w}.`,
+      t: (k) => `나는 ${k} 사람이 되고 싶어요.`,
+    },
+    { s: (w) => `He is a ${w} person.`, t: (k) => `그는 ${k} 사람이에요.` },
+  ];
+  entries.push(
+    ...generateFromBank(rng, G56_PERSONALITY, persTempls, 2, "성격과 태도"),
+  );
+
+  // Daily conversation expressions → "일상 대화"
+  for (const conv of G56_DAILY_CONVERSATION) {
+    entries.push({
+      sentence: `${conv.w.charAt(0).toUpperCase() + conv.w.slice(1)}.`,
+      translation: `${conv.k}.`,
+      word: conv.w,
+      pronunciation: conv.p,
+      practice: conv.pr,
+      unit: "일상 대화",
+    });
+  }
+
+  // Connectors → "접속사와 부사"
+  for (const conn of G56_CONNECTORS) {
+    entries.push({
+      sentence: `${conn.w.charAt(0).toUpperCase() + conn.w.slice(1)}.`,
+      translation: `${conn.k}.`,
+      word: conn.w,
+      pronunciation: conn.p,
+      practice: conn.pr,
+      unit: "접속사와 부사",
+    });
+  }
+
+  // Body systems → "인체와 건강"
+  entries.push(
+    ...generateFromBank(
+      rng,
+      G56_BODY_SYSTEMS,
+      BASIC_TEMPLATES,
+      2,
+      "인체와 건강",
+    ),
+  );
+
+  // Dialogue entries for Grade 5-6
+  for (const d of DIALOGUES.filter((dl) => dl.grade === "5-6")) {
+    entries.push({
+      sentence: `${d.speaker1} / ${d.speaker2}`,
+      translation: `${d.translation1} / ${d.translation2}`,
+      word: d.missingPart,
+      pronunciation: "",
+      practice: [],
+      unit: d.unit || "대화표현",
+    });
+  }
+
+  // Word ordering entries for Grade 5-6
+  for (const wo of WORD_ORDERS.filter((w) => w.grade === "5-6")) {
+    entries.push({
+      sentence: wo.correct,
+      translation: wo.translation,
+      word: wo.words[0],
+      pronunciation: "",
+      practice: wo.words.slice(1),
+      unit: wo.unit || "문장만들기",
+    });
+  }
+
+  // Sentence completion entries for Grade 5-6
+  for (const sc of SENTENCE_COMPLETIONS.filter((s) => s.grade === "5-6")) {
+    entries.push({
+      sentence: sc.sentence.replace("___", sc.blank),
+      translation: sc.translation,
+      word: sc.blank,
+      pronunciation: "",
+      practice: sc.choices.filter((c) => c !== sc.blank),
+      unit: sc.unit || "문장완성",
+    });
+  }
+
+  // Translation entries for Grade 5-6
+  for (const tr of TRANSLATIONS.filter((t) => t.grade === "5-6")) {
+    entries.push({
+      sentence: tr.english,
+      translation: tr.korean,
+      word: tr.keyWord,
+      pronunciation: "",
+      practice: [],
+      unit: tr.unit || "영작문",
+    });
+  }
+
+  // Listening entries for Grade 5-6
+  for (const le of LISTENING_ENTRIES.filter((l) => l.grade === "5-6")) {
+    entries.push({
+      sentence: le.sentence,
+      translation: le.translation,
+      word: le.answer,
+      pronunciation: "",
+      practice: le.choices.filter((c) => c !== le.answer),
+      unit: le.unit || "듣기이해",
+    });
+  }
+
+  // Picture description entries for Grade 5-6
+  for (const pd of PICTURE_DESCRIPTIONS.filter((p) => p.grade === "5-6")) {
+    entries.push({
+      sentence: pd.scene,
+      translation: pd.sceneKr,
+      word: pd.answer,
+      pronunciation: "",
+      practice: pd.choices.filter((c) => c !== pd.answer),
+      unit: pd.unit || "그림보고영어",
+    });
+  }
+
   // Fixed sentence collections (general, no unit for fixed sentences)
   entries.push(...FIXED_BECAUSE);
   entries.push(...FIXED_IF);
@@ -3594,6 +5947,15 @@ export function generateEnglishPool(
       "운동과 스포츠",
       "과일과 채소",
       "날씨와 계절",
+      "곤충과 벌레",
+      "직업",
+      "가구와 집",
+      "위치와 장소",
+      "반대말",
+      "시간표현",
+      "물건과 용기",
+      "대화표현",
+      "문장만들기",
     ]);
     pool = pool.filter((entry) => {
       const wordLen = entry.word.split(/\s+/)[0].length; // first word length
@@ -3615,6 +5977,16 @@ export function generateEnglishPool(
       "과학 탐구",
       "여행과 세계",
       "진로와 직업",
+      "요리와 음식",
+      "문학과 독서",
+      "지리와 세계",
+      "수학 용어",
+      "성격과 태도",
+      "접속사와 부사",
+      "인체와 건강",
+      "영작문",
+      "듣기이해",
+      "그림보고영어",
     ]);
     pool = pool.filter((entry) => {
       const wordLen = entry.word.split(/\s+/)[0].length;

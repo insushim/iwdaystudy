@@ -1056,6 +1056,151 @@ const GRADE_1_2_WORDS: WordDef[] = [
     word: "호두",
     meanings: ["딱딱한 껍데기 속의 열매", "뇌 모양을 닮은 견과류"],
   },
+
+  // ──── 2차 추가: 동물 심화 (15) ────
+  {
+    word: "수달",
+    meanings: ["물속에서 사는 귀여운 동물", "물고기를 잡아먹는 포유류"],
+  },
+  { word: "두더지", meanings: ["땅속에서 사는 동물", "눈이 아주 작은 동물"] },
+  {
+    word: "고슴도치",
+    meanings: ["등에 가시가 있는 동물", "위험하면 몸을 둥글게 마는 동물"],
+  },
+  { word: "까마귀", meanings: ["까악까악 우는 검은 새", "까만 깃털의 새"] },
+  { word: "비둘기", meanings: ["구구 우는 새", "공원에서 자주 보는 새"] },
+  {
+    word: "잠자리",
+    meanings: ["날개가 투명한 곤충", "여름에 날아다니는 곤충"],
+  },
+  {
+    word: "매미",
+    meanings: ["여름에 맴맴 우는 곤충", "나무에 붙어 우는 벌레"],
+  },
+  {
+    word: "딱따구리",
+    meanings: ["나무를 쪼는 새", "부리로 나무를 두드리는 새"],
+  },
+  { word: "부엉이", meanings: ["밤에 활동하는 새", "큰 눈을 가진 야행성 새"] },
+  { word: "사슴", meanings: ["뿔이 있는 숲속 동물", "풀을 먹는 온순한 동물"] },
+  { word: "여우", meanings: ["꼬리가 풍성한 동물", "영리하기로 유명한 동물"] },
+  {
+    word: "늑대",
+    meanings: ["개와 비슷하게 생긴 야생 동물", "무리 지어 사는 동물"],
+  },
+  {
+    word: "햄스터",
+    meanings: ["뺨에 먹이를 담는 작은 동물", "집에서 키우는 작은 쥐"],
+  },
+  { word: "거미", meanings: ["거미줄을 치는 동물", "다리가 여덟 개인 동물"] },
+  {
+    word: "달팽이",
+    meanings: ["집을 등에 지고 다니는 동물", "느리게 기어 다니는 동물"],
+  },
+
+  // ──── 2차 추가: 가정/생활 (15) ────
+  {
+    word: "냉장고",
+    meanings: ["음식을 차갑게 보관하는 기계", "식품을 신선하게 유지하는 가전"],
+  },
+  { word: "세탁기", meanings: ["옷을 빨아 주는 기계", "빨래를 돌리는 가전"] },
+  {
+    word: "전자레인지",
+    meanings: ["음식을 데우는 기계", "빠르게 음식을 따뜻하게 하는 것"],
+  },
+  {
+    word: "에어컨",
+    meanings: ["시원한 바람을 내는 기계", "더울 때 켜는 냉방 장치"],
+  },
+  {
+    word: "선풍기",
+    meanings: ["바람을 일으키는 가전", "날개가 돌아가는 기계"],
+  },
+  {
+    word: "다리미",
+    meanings: ["옷의 주름을 펴는 도구", "열로 옷을 반듯하게 하는 것"],
+  },
+  {
+    word: "청소기",
+    meanings: ["먼지를 빨아들이는 기계", "바닥을 깨끗하게 하는 가전"],
+  },
+  {
+    word: "베개",
+    meanings: ["머리를 올려놓고 자는 것", "잘 때 쓰는 푹신한 것"],
+  },
+  {
+    word: "이불",
+    meanings: ["덮고 자는 천", "몸을 따뜻하게 하는 잠자리 용품"],
+  },
+  { word: "커튼", meanings: ["창문에 거는 천", "햇빛을 막아 주는 것"] },
+  { word: "거실", meanings: ["가족이 모이는 넓은 방", "집에서 쉬는 큰 방"] },
+  { word: "부엌", meanings: ["음식을 만드는 곳", "요리하는 방"] },
+  {
+    word: "화장실",
+    meanings: ["몸을 씻고 용변을 보는 곳", "세면대가 있는 방"],
+  },
+  { word: "현관", meanings: ["집의 출입구", "신발을 벗는 곳"] },
+  { word: "계단", meanings: ["위아래층을 잇는 디딤판", "한 칸씩 올라가는 것"] },
+
+  // ──── 2차 추가: 학습/학교 (10) ────
+  {
+    word: "알림장",
+    meanings: ["학교 소식을 적는 공책", "부모님께 전할 내용을 적는 것"],
+  },
+  { word: "반장", meanings: ["반을 대표하는 학생", "반에서 뽑은 리더"] },
+  { word: "짝꿍", meanings: ["옆자리에 앉는 친구", "같은 책상을 쓰는 친구"] },
+  { word: "체육", meanings: ["몸을 움직이는 수업", "운동하는 과목"] },
+  {
+    word: "미술",
+    meanings: ["그림을 그리는 수업", "만들기와 그리기를 하는 과목"],
+  },
+  {
+    word: "음악",
+    meanings: ["노래와 악기를 배우는 수업", "소리로 아름다움을 표현하는 과목"],
+  },
+  {
+    word: "사물함",
+    meanings: ["물건을 넣어 두는 작은 칸", "교실에 있는 보관함"],
+  },
+  {
+    word: "창문",
+    meanings: ["빛이 들어오는 유리 틀", "교실 벽에 있는 유리 칸"],
+  },
+  {
+    word: "분필",
+    meanings: ["칠판에 글씨를 쓰는 하얀 막대", "가루가 나는 필기구"],
+  },
+  {
+    word: "출석",
+    meanings: ["학교에 왔다고 확인하는 것", "이름을 불러 있는지 확인하는 것"],
+  },
+
+  // ──── 2차 추가: 감정/형용사 (10) ────
+  { word: "따뜻하다", meanings: ["온도가 적당히 높은 것", "마음이 포근한 것"] },
+  { word: "시원하다", meanings: ["적당히 차가운 것", "답답한 게 풀리는 느낌"] },
+  {
+    word: "배부르다",
+    meanings: ["배가 충분히 찬 것", "많이 먹어 더 못 먹는 것"],
+  },
+  { word: "졸리다", meanings: ["잠이 오는 것", "눈이 감기려는 것"] },
+  { word: "피곤하다", meanings: ["힘이 빠진 것", "쉬고 싶은 상태"] },
+  {
+    word: "재미있다",
+    meanings: ["즐겁고 흥미로운 것", "하고 싶은 마음이 드는 것"],
+  },
+  {
+    word: "지루하다",
+    meanings: ["재미가 없어 답답한 것", "하기 싫을 만큼 따분한 것"],
+  },
+  {
+    word: "신기하다",
+    meanings: ["처음 보아 놀라운 것", "신비하고 흥미로운 것"],
+  },
+  {
+    word: "부러워하다",
+    meanings: ["남이 가진 것을 갖고 싶은 것", "남을 부럽게 여기는 것"],
+  },
+  { word: "속상하다", meanings: ["마음이 안 좋은 것", "기분이 상한 것"] },
 ];
 
 // ============================================================
@@ -3579,6 +3724,1358 @@ const GRADE_5_6_WORDS: WordDef[] = [
     word: "원그래프",
     meanings: ["원을 나누어 비율을 보여주는 그래프", "파이 모양의 통계 그림"],
   },
+
+  // ──── 추가 확장 2차: 사자성어 (25) ────
+  {
+    word: "허심탄회",
+    meanings: ["마음을 터놓고 솔직하게 말하는 것", "숨김없이 이야기하는 태도"],
+  },
+  {
+    word: "삼인성호",
+    meanings: [
+      "세 사람이 말하면 없는 호랑이도 만든다",
+      "거짓도 여럿이 말하면 참이 된다",
+    ],
+  },
+  {
+    word: "화룡점정",
+    meanings: ["용을 그리고 눈동자를 찍는 것", "마무리를 잘해 완성하는 것"],
+  },
+  {
+    word: "일사천리",
+    meanings: ["일이 거침없이 빠르게 진행되는 것", "순조롭게 쭉 나가는 것"],
+  },
+  {
+    word: "갈수록태산",
+    meanings: ["갈수록 어려움이 커지는 것", "점점 힘든 상황이 되는 것"],
+  },
+  {
+    word: "백절불굴",
+    meanings: [
+      "백 번 꺾여도 굴하지 않는 것",
+      "어떤 어려움에도 포기하지 않는 것",
+    ],
+  },
+  {
+    word: "유유상종",
+    meanings: ["같은 무리끼리 어울리는 것", "비슷한 사람끼리 모이는 것"],
+  },
+  {
+    word: "동상이몽",
+    meanings: [
+      "같은 자리에서 다른 꿈을 꾸는 것",
+      "겉으로는 같지만 속마음이 다른 것",
+    ],
+  },
+  {
+    word: "설상가상",
+    meanings: [
+      "눈 위에 서리가 더해지는 것",
+      "안 좋은 일에 또 안 좋은 일이 겹치는 것",
+    ],
+  },
+  {
+    word: "일망타진",
+    meanings: ["그물을 한 번 쳐서 다 잡는 것", "한꺼번에 모두 처리하는 것"],
+  },
+  {
+    word: "자초지종",
+    meanings: ["처음부터 끝까지의 과정", "일의 시작과 끝을 모두 아는 것"],
+  },
+  {
+    word: "일장춘몽",
+    meanings: ["한바탕의 봄꿈", "덧없이 사라지는 한때의 영화"],
+  },
+  {
+    word: "감언이설",
+    meanings: ["듣기 좋게 꾸민 달콤한 말", "남을 속이기 위한 달콤한 말"],
+  },
+  {
+    word: "안하무인",
+    meanings: ["눈 아래 사람이 없다는 뜻", "남을 업신여기는 거만한 태도"],
+  },
+  {
+    word: "일편단심",
+    meanings: ["한 조각 붉은 마음", "변하지 않는 한결같은 마음"],
+  },
+  {
+    word: "파죽지세",
+    meanings: ["대나무를 쪼개는 듯한 기세", "거침없이 나아가는 강한 힘"],
+  },
+  {
+    word: "진퇴양난",
+    meanings: [
+      "나아가지도 물러서지도 못하는 상황",
+      "이러지도 저러지도 못하는 것",
+    ],
+  },
+  {
+    word: "비일비재",
+    meanings: ["한두 번이 아닌 것", "매우 흔한 것"],
+  },
+  {
+    word: "대동소이",
+    meanings: ["크게 같고 작게 다른 것", "거의 비슷한 것"],
+  },
+  {
+    word: "이구동성",
+    meanings: ["입은 다르지만 같은 소리", "여러 사람이 한목소리로 말하는 것"],
+  },
+  {
+    word: "사반공배",
+    meanings: [
+      "노력의 반으로 두 배의 효과를 얻는 것",
+      "적은 노력으로 큰 결과를 내는 것",
+    ],
+  },
+  {
+    word: "칠전팔기",
+    meanings: [
+      "일곱 번 넘어져도 여덟 번 일어나는 것",
+      "실패해도 포기하지 않는 것",
+    ],
+  },
+  {
+    word: "유구무언",
+    meanings: ["입이 있어도 할 말이 없는 것", "변명할 수 없는 상황"],
+  },
+  {
+    word: "천우신조",
+    meanings: ["하늘이 돕고 신이 도와주는 것", "뜻밖에 행운이 따르는 것"],
+  },
+  {
+    word: "부화뇌동",
+    meanings: [
+      "자기 생각 없이 남을 따르는 것",
+      "주관 없이 남의 의견에 동조하는 것",
+    ],
+  },
+
+  // ──── 추가 확장 2차: 과학/환경 (20) ────
+  {
+    word: "핵융합",
+    meanings: ["가벼운 원자핵이 합쳐지는 반응", "태양의 에너지원"],
+  },
+  {
+    word: "핵분열",
+    meanings: ["무거운 원자핵이 쪼개지는 반응", "원자력 발전의 원리"],
+  },
+  {
+    word: "방사능",
+    meanings: ["방사선을 내뿜는 성질", "원자핵이 붕괴할 때 나오는 에너지"],
+  },
+  {
+    word: "초전도체",
+    meanings: [
+      "전기 저항이 완전히 없는 물질",
+      "극저온에서 전류가 손실 없이 흐르는 것",
+    ],
+  },
+  {
+    word: "양자역학",
+    meanings: [
+      "아주 작은 세계의 물리 법칙",
+      "원자보다 작은 입자를 다루는 학문",
+    ],
+  },
+  {
+    word: "상대성이론",
+    meanings: [
+      "시간과 공간이 상대적이라는 이론",
+      "아인슈타인이 만든 물리 이론",
+    ],
+  },
+  {
+    word: "유전공학",
+    meanings: ["유전자를 인위적으로 바꾸는 기술", "DNA를 조작하는 과학"],
+  },
+  {
+    word: "항생제",
+    meanings: ["세균을 죽이는 약", "감염을 치료하는 약물"],
+  },
+  {
+    word: "미세플라스틱",
+    meanings: [
+      "아주 작게 부서진 플라스틱 조각",
+      "환경을 오염시키는 미세한 플라스틱",
+    ],
+  },
+  {
+    word: "탄소중립",
+    meanings: [
+      "배출한 탄소만큼 흡수해 제로로 만드는 것",
+      "온실가스 순배출량을 0으로 하는 것",
+    ],
+  },
+  {
+    word: "수력발전",
+    meanings: [
+      "물의 힘으로 전기를 만드는 것",
+      "댐에서 물을 흘려 전기를 생산하는 방식",
+    ],
+  },
+  {
+    word: "풍력발전",
+    meanings: ["바람의 힘으로 전기를 만드는 것", "풍차를 이용한 발전 방식"],
+  },
+  {
+    word: "지열에너지",
+    meanings: ["땅속의 열을 이용한 에너지", "지구 내부 열로 전기를 만드는 것"],
+  },
+  {
+    word: "조력발전",
+    meanings: [
+      "밀물과 썰물의 차이를 이용한 발전",
+      "바닷물의 움직임으로 전기를 만드는 것",
+    ],
+  },
+  {
+    word: "플라즈마",
+    meanings: [
+      "매우 높은 온도에서 생기는 물질 상태",
+      "고체 액체 기체 다음의 네 번째 상태",
+    ],
+  },
+  {
+    word: "전자현미경",
+    meanings: [
+      "전자를 이용해 관찰하는 현미경",
+      "원자까지 볼 수 있는 초정밀 현미경",
+    ],
+  },
+  {
+    word: "바이오연료",
+    meanings: ["생물 자원에서 만든 연료", "옥수수나 사탕수수로 만든 에너지"],
+  },
+  {
+    word: "해수담수화",
+    meanings: [
+      "바닷물에서 소금을 빼고 민물로 바꾸는 것",
+      "식수 부족 해결 기술",
+    ],
+  },
+  {
+    word: "인공위성",
+    meanings: [
+      "지구 궤도를 도는 인공 물체",
+      "통신이나 관측을 위해 쏘아 올린 장치",
+    ],
+  },
+  {
+    word: "우주정거장",
+    meanings: ["우주 공간에 있는 연구 시설", "우주인이 생활하며 실험하는 곳"],
+  },
+
+  // ──── 추가 확장 2차: 철학/사상/사회 (15) ────
+  {
+    word: "민본주의",
+    meanings: [
+      "백성이 나라의 근본이라는 사상",
+      "국민을 가장 중시하는 정치 사상",
+    ],
+  },
+  {
+    word: "세속화",
+    meanings: ["종교적 영향이 줄어드는 현상", "사회가 비종교적으로 변하는 것"],
+  },
+  {
+    word: "세대갈등",
+    meanings: [
+      "세대 간의 의견 차이로 생기는 갈등",
+      "젊은이와 어른의 생각 차이",
+    ],
+  },
+  {
+    word: "젠트리피케이션",
+    meanings: [
+      "낙후된 지역이 개발되며 원주민이 밀려나는 현상",
+      "도시 재생의 부작용",
+    ],
+  },
+  {
+    word: "포퓰리즘",
+    meanings: [
+      "대중의 인기에 영합하는 정치",
+      "달콤한 공약으로 표를 얻으려는 것",
+    ],
+  },
+  {
+    word: "선의",
+    meanings: ["좋은 의도", "남을 위하는 착한 마음"],
+  },
+  {
+    word: "악의",
+    meanings: ["나쁜 의도", "남을 해치려는 마음"],
+  },
+  {
+    word: "이타심",
+    meanings: [
+      "남을 위해 자기를 희생하는 마음",
+      "타인의 이익을 먼저 생각하는 것",
+    ],
+  },
+  {
+    word: "이기심",
+    meanings: ["자기 이익만 생각하는 마음", "남보다 자신을 앞세우는 것"],
+  },
+  {
+    word: "종교다원주의",
+    meanings: [
+      "여러 종교가 공존할 수 있다는 관점",
+      "다양한 종교를 인정하는 태도",
+    ],
+  },
+  {
+    word: "사회계약설",
+    meanings: [
+      "국가가 국민과의 약속으로 존재한다는 이론",
+      "국민이 동의해 정부를 세운다는 사상",
+    ],
+  },
+  {
+    word: "공리주의",
+    meanings: [
+      "가장 많은 사람의 행복을 추구하는 사상",
+      "최대 다수의 최대 행복을 목표로 하는 것",
+    ],
+  },
+  {
+    word: "실존주의",
+    meanings: [
+      "존재의 의미를 스스로 만들어 가는 사상",
+      "개인의 자유와 책임을 강조하는 철학",
+    ],
+  },
+  {
+    word: "사회정의",
+    meanings: [
+      "사회 안에서 공정하고 올바른 상태",
+      "불평등과 차별을 바로잡는 것",
+    ],
+  },
+  {
+    word: "시민불복종",
+    meanings: [
+      "부당한 법에 비폭력으로 저항하는 것",
+      "양심에 따라 법을 거부하는 행위",
+    ],
+  },
+
+  // ──── 추가 확장 2차: 국어/문학 (15) ────
+  {
+    word: "상징",
+    meanings: [
+      "구체적 사물로 추상적 의미를 나타내는 것",
+      "비둘기가 평화를 뜻하는 것",
+    ],
+  },
+  {
+    word: "알레고리",
+    meanings: ["이야기 전체가 다른 뜻을 담고 있는 것", "우화적으로 숨긴 의미"],
+  },
+  {
+    word: "아이러니",
+    meanings: ["기대와 결과가 반대인 것", "말의 겉뜻과 속뜻이 다른 것"],
+  },
+  {
+    word: "메타포",
+    meanings: ["은유", "직접 비교하지 않고 빗대어 말하는 것"],
+  },
+  {
+    word: "패러독스",
+    meanings: ["겉으로는 모순이나 진리를 담은 것", "역설"],
+  },
+  {
+    word: "내레이션",
+    meanings: ["이야기를 서술하는 것", "화자가 사건을 설명하는 것"],
+  },
+  {
+    word: "클라이맥스",
+    meanings: ["이야기에서 가장 긴장되는 부분", "절정"],
+  },
+  {
+    word: "에필로그",
+    meanings: ["이야기의 마무리 부분", "본편 뒤에 덧붙이는 글"],
+  },
+  {
+    word: "프롤로그",
+    meanings: ["이야기의 서두 부분", "본편 앞에 붙이는 글"],
+  },
+  {
+    word: "심리묘사",
+    meanings: [
+      "등장인물의 마음을 글로 표현하는 것",
+      "내면의 감정을 드러내는 서술",
+    ],
+  },
+  {
+    word: "배경묘사",
+    meanings: [
+      "이야기가 펼쳐지는 장소와 분위기를 그리는 것",
+      "시간과 공간을 글로 표현하는 것",
+    ],
+  },
+  {
+    word: "기승전결",
+    meanings: ["글의 전개 방식", "시작 발전 전환 마무리의 구성"],
+  },
+  {
+    word: "운율",
+    meanings: ["시에서 느껴지는 음악적 리듬", "소리의 규칙적인 반복"],
+  },
+  {
+    word: "행간",
+    meanings: ["글줄과 글줄 사이", "글에 숨겨진 의미"],
+  },
+  {
+    word: "주석",
+    meanings: ["글에 대한 보충 설명", "어려운 말을 풀어서 적은 것"],
+  },
+];
+
+// ============================================================
+// Synonym pairs (유의어) by grade level
+// ============================================================
+
+interface SynonymPair {
+  word1: string;
+  word2: string;
+  meaning: string;
+}
+
+const SYNONYMS_1_2: SynonymPair[] = [
+  { word1: "엄마", word2: "어머니", meaning: "나를 낳아 주신 분" },
+  { word1: "아빠", word2: "아버지", meaning: "나의 남자 부모님" },
+  { word1: "예쁘다", word2: "아름답다", meaning: "보기에 좋고 곱다" },
+  { word1: "크다", word2: "거대하다", meaning: "많이 큰 것" },
+  { word1: "빠르다", word2: "재빠르다", meaning: "속도가 빠른 것" },
+  { word1: "기쁘다", word2: "즐겁다", meaning: "마음이 좋은 것" },
+  { word1: "슬프다", word2: "서럽다", meaning: "마음이 아픈 것" },
+  { word1: "무섭다", word2: "두렵다", meaning: "겁이 나는 것" },
+  { word1: "친구", word2: "벗", meaning: "가깝게 지내는 사람" },
+  { word1: "집", word2: "댁", meaning: "사람이 사는 곳" },
+  { word1: "이야기", word2: "말씀", meaning: "말로 전하는 내용" },
+  { word1: "잠", word2: "수면", meaning: "눈 감고 쉬는 것" },
+  { word1: "밥", word2: "식사", meaning: "끼니에 먹는 음식" },
+  { word1: "얼굴", word2: "낯", meaning: "눈 코 입이 있는 곳" },
+  { word1: "소리", word2: "소음", meaning: "귀로 듣는 것" },
+  { word1: "힘", word2: "기운", meaning: "무엇을 하는 능력" },
+  { word1: "기다리다", word2: "대기하다", meaning: "올 때까지 참는 것" },
+  { word1: "도와주다", word2: "돕다", meaning: "힘을 보태는 것" },
+  { word1: "만들다", word2: "제작하다", meaning: "새로 만드는 것" },
+  { word1: "달리다", word2: "뛰다", meaning: "빠르게 움직이는 것" },
+];
+
+const SYNONYMS_3_4: SynonymPair[] = [
+  { word1: "환경", word2: "자연", meaning: "우리 주위의 상태" },
+  { word1: "실험", word2: "시험", meaning: "직접 해 보는 것" },
+  { word1: "관찰", word2: "살피다", meaning: "자세히 보는 것" },
+  { word1: "발표", word2: "발언", meaning: "의견을 알리는 것" },
+  { word1: "전통", word2: "관습", meaning: "오래된 풍습" },
+  { word1: "절약", word2: "아끼다", meaning: "아껴 쓰는 것" },
+  { word1: "인내", word2: "참을성", meaning: "참고 견디는 것" },
+  { word1: "성실", word2: "근면", meaning: "꾸준히 열심히 하는 것" },
+  { word1: "정직", word2: "솔직", meaning: "거짓 없는 것" },
+  { word1: "협동", word2: "협력", meaning: "힘을 합치는 것" },
+  { word1: "의견", word2: "견해", meaning: "어떤 일에 대한 생각" },
+  { word1: "선택", word2: "고르다", meaning: "여러 개 중 하나를 정하는 것" },
+  { word1: "직업", word2: "일자리", meaning: "돈을 벌기 위해 하는 일" },
+  { word1: "보존", word2: "유지", meaning: "잘 지키는 것" },
+  { word1: "발명", word2: "창조", meaning: "새로운 것을 만드는 것" },
+  { word1: "발견", word2: "찾아내다", meaning: "몰랐던 것을 알아내는 것" },
+  { word1: "축제", word2: "잔치", meaning: "즐겁게 모여 노는 행사" },
+  { word1: "수확", word2: "거두다", meaning: "농작물을 거두는 것" },
+  { word1: "과학자", word2: "연구자", meaning: "자연을 연구하는 사람" },
+  { word1: "멸종", word2: "절멸", meaning: "종이 완전히 사라지는 것" },
+];
+
+const SYNONYMS_5_6: SynonymPair[] = [
+  { word1: "정의", word2: "공정", meaning: "올바르고 공평한 것" },
+  { word1: "자유", word2: "해방", meaning: "구속이 없는 상태" },
+  { word1: "평등", word2: "균등", meaning: "차별 없이 같은 것" },
+  { word1: "편견", word2: "선입견", meaning: "한쪽으로 치우친 생각" },
+  { word1: "차별", word2: "불평등", meaning: "공평하지 않은 대우" },
+  { word1: "소통", word2: "의사소통", meaning: "생각을 주고받는 것" },
+  { word1: "혁명", word2: "변혁", meaning: "근본적으로 바꾸는 것" },
+  { word1: "독립", word2: "자주", meaning: "스스로 서는 것" },
+  { word1: "에너지", word2: "동력", meaning: "일을 할 수 있는 힘" },
+  { word1: "가설", word2: "추측", meaning: "아직 증명되지 않은 생각" },
+  { word1: "분석", word2: "해부", meaning: "나누어 자세히 보는 것" },
+  { word1: "비평", word2: "평론", meaning: "작품을 분석하는 것" },
+  { word1: "창의성", word2: "독창성", meaning: "새롭게 생각하는 능력" },
+  { word1: "논리", word2: "이치", meaning: "앞뒤가 맞는 사고" },
+  { word1: "근거", word2: "증거", meaning: "주장을 뒷받침하는 것" },
+  { word1: "통찰", word2: "혜안", meaning: "깊이 보는 눈" },
+  { word1: "고독", word2: "외로움", meaning: "혼자 쓸쓸한 상태" },
+  { word1: "영감", word2: "착상", meaning: "번뜩이는 생각" },
+  { word1: "타협", word2: "절충", meaning: "서로 양보하는 것" },
+  { word1: "공존", word2: "상생", meaning: "함께 살아가는 것" },
+];
+
+// ============================================================
+// Antonym pairs (반의어) by grade level
+// ============================================================
+
+interface AntonymPair {
+  word1: string;
+  word2: string;
+  meaning1: string;
+  meaning2: string;
+}
+
+const ANTONYMS_1_2: AntonymPair[] = [
+  {
+    word1: "크다",
+    word2: "작다",
+    meaning1: "크기가 큰 것",
+    meaning2: "크기가 작은 것",
+  },
+  {
+    word1: "높다",
+    word2: "낮다",
+    meaning1: "위쪽에 있는 것",
+    meaning2: "아래쪽에 있는 것",
+  },
+  {
+    word1: "길다",
+    word2: "짧다",
+    meaning1: "길이가 긴 것",
+    meaning2: "길이가 짧은 것",
+  },
+  {
+    word1: "넓다",
+    word2: "좁다",
+    meaning1: "넓이가 큰 것",
+    meaning2: "넓이가 작은 것",
+  },
+  {
+    word1: "밝다",
+    word2: "어둡다",
+    meaning1: "빛이 있는 것",
+    meaning2: "빛이 없는 것",
+  },
+  {
+    word1: "뜨겁다",
+    word2: "차갑다",
+    meaning1: "온도가 높은 것",
+    meaning2: "온도가 낮은 것",
+  },
+  {
+    word1: "빠르다",
+    word2: "느리다",
+    meaning1: "속도가 빠른 것",
+    meaning2: "속도가 느린 것",
+  },
+  {
+    word1: "무겁다",
+    word2: "가볍다",
+    meaning1: "무게가 많이 나가는 것",
+    meaning2: "무게가 적게 나가는 것",
+  },
+  {
+    word1: "기쁘다",
+    word2: "슬프다",
+    meaning1: "마음이 즐거운 것",
+    meaning2: "마음이 아픈 것",
+  },
+  {
+    word1: "많다",
+    word2: "적다",
+    meaning1: "수가 많은 것",
+    meaning2: "수가 적은 것",
+  },
+  {
+    word1: "웃다",
+    word2: "울다",
+    meaning1: "즐거울 때 하는 표정",
+    meaning2: "슬플 때 눈물 흘리는 것",
+  },
+  {
+    word1: "앞",
+    word2: "뒤",
+    meaning1: "얼굴이 향하는 쪽",
+    meaning2: "등이 향하는 쪽",
+  },
+  { word1: "위", word2: "아래", meaning1: "높은 쪽", meaning2: "낮은 쪽" },
+  {
+    word1: "아침",
+    word2: "저녁",
+    meaning1: "해가 뜰 때",
+    meaning2: "해가 질 때",
+  },
+  {
+    word1: "시작",
+    word2: "끝",
+    meaning1: "처음 하는 것",
+    meaning2: "마무리하는 것",
+  },
+  {
+    word1: "열다",
+    word2: "닫다",
+    meaning1: "문을 여는 것",
+    meaning2: "문을 닫는 것",
+  },
+  {
+    word1: "오다",
+    word2: "가다",
+    meaning1: "이쪽으로 움직이는 것",
+    meaning2: "저쪽으로 움직이는 것",
+  },
+  {
+    word1: "좋다",
+    word2: "나쁘다",
+    meaning1: "마음에 드는 것",
+    meaning2: "마음에 들지 않는 것",
+  },
+  { word1: "덥다", word2: "춥다", meaning1: "더운 것", meaning2: "추운 것" },
+  {
+    word1: "낮",
+    word2: "밤",
+    meaning1: "해가 있는 때",
+    meaning2: "해가 없는 때",
+  },
+];
+
+const ANTONYMS_3_4: AntonymPair[] = [
+  {
+    word1: "생산",
+    word2: "소비",
+    meaning1: "물건을 만드는 것",
+    meaning2: "물건을 쓰는 것",
+  },
+  {
+    word1: "수출",
+    word2: "수입",
+    meaning1: "외국에 파는 것",
+    meaning2: "외국에서 사는 것",
+  },
+  {
+    word1: "증발",
+    word2: "응결",
+    meaning1: "액체가 기체로 변하는 것",
+    meaning2: "기체가 액체로 변하는 것",
+  },
+  {
+    word1: "수직",
+    word2: "수평",
+    meaning1: "곧게 선 방향",
+    meaning2: "옆으로 고른 방향",
+  },
+  {
+    word1: "성실",
+    word2: "게으름",
+    meaning1: "열심히 하는 것",
+    meaning2: "해야 할 일을 하지 않는 것",
+  },
+  {
+    word1: "정직",
+    word2: "거짓",
+    meaning1: "바르고 참된 것",
+    meaning2: "사실이 아닌 것",
+  },
+  {
+    word1: "자유",
+    word2: "속박",
+    meaning1: "구속이 없는 것",
+    meaning2: "묶여 있는 것",
+  },
+  {
+    word1: "전진",
+    word2: "후퇴",
+    meaning1: "앞으로 나가는 것",
+    meaning2: "뒤로 물러나는 것",
+  },
+  {
+    word1: "찬성",
+    word2: "반대",
+    meaning1: "좋다고 동의하는 것",
+    meaning2: "싫다고 거부하는 것",
+  },
+  {
+    word1: "이익",
+    word2: "손해",
+    meaning1: "득이 되는 것",
+    meaning2: "잃는 것",
+  },
+  {
+    word1: "안전",
+    word2: "위험",
+    meaning1: "다치지 않는 것",
+    meaning2: "다칠 수 있는 것",
+  },
+  {
+    word1: "평화",
+    word2: "전쟁",
+    meaning1: "싸움이 없는 상태",
+    meaning2: "나라끼리 싸우는 것",
+  },
+  {
+    word1: "고체",
+    word2: "기체",
+    meaning1: "단단한 물질 상태",
+    meaning2: "눈에 안 보이는 물질 상태",
+  },
+  {
+    word1: "도시",
+    word2: "시골",
+    meaning1: "사람이 많이 사는 곳",
+    meaning2: "자연이 많은 곳",
+  },
+  {
+    word1: "고대",
+    word2: "현대",
+    meaning1: "아주 오래된 시대",
+    meaning2: "지금의 시대",
+  },
+];
+
+const ANTONYMS_5_6: AntonymPair[] = [
+  {
+    word1: "주관",
+    word2: "객관",
+    meaning1: "개인의 생각으로 보는 것",
+    meaning2: "감정 없이 보는 것",
+  },
+  {
+    word1: "구체",
+    word2: "추상",
+    meaning1: "눈에 보이는 것",
+    meaning2: "형태가 없는 것",
+  },
+  {
+    word1: "귀납",
+    word2: "연역",
+    meaning1: "개별에서 일반으로",
+    meaning2: "일반에서 개별로",
+  },
+  {
+    word1: "분석",
+    word2: "종합",
+    meaning1: "나누어 보는 것",
+    meaning2: "합쳐 보는 것",
+  },
+  {
+    word1: "이상",
+    word2: "현실",
+    meaning1: "꿈꾸는 모습",
+    meaning2: "실제 상태",
+  },
+  {
+    word1: "독립",
+    word2: "종속",
+    meaning1: "스스로 서는 것",
+    meaning2: "다른 것에 매인 것",
+  },
+  {
+    word1: "민주",
+    word2: "독재",
+    meaning1: "국민이 주인인 것",
+    meaning2: "한 사람이 지배하는 것",
+  },
+  {
+    word1: "통일",
+    word2: "분단",
+    meaning1: "하나로 합치는 것",
+    meaning2: "둘로 나누는 것",
+  },
+  {
+    word1: "인플레이션",
+    word2: "디플레이션",
+    meaning1: "물가가 오르는 것",
+    meaning2: "물가가 내리는 것",
+  },
+  {
+    word1: "산화",
+    word2: "환원",
+    meaning1: "산소와 결합하는 것",
+    meaning2: "산소를 잃는 것",
+  },
+  {
+    word1: "이타심",
+    word2: "이기심",
+    meaning1: "남을 위하는 마음",
+    meaning2: "자기만 생각하는 마음",
+  },
+  {
+    word1: "선의",
+    word2: "악의",
+    meaning1: "좋은 의도",
+    meaning2: "나쁜 의도",
+  },
+  { word1: "수요", word2: "공급", meaning1: "사려는 것", meaning2: "파는 것" },
+  {
+    word1: "보수",
+    word2: "진보",
+    meaning1: "기존 것을 지키려는 것",
+    meaning2: "새것을 추구하는 것",
+  },
+  {
+    word1: "전도",
+    word2: "절연",
+    meaning1: "열이나 전기가 통하는 것",
+    meaning2: "열이나 전기가 안 통하는 것",
+  },
+];
+
+// ============================================================
+// Idioms & Proverbs (관용어/속담) by grade level
+// ============================================================
+
+interface IdiomEntry {
+  expression: string;
+  meaning: string;
+  example: string;
+}
+
+const IDIOMS_1_2: IdiomEntry[] = [
+  {
+    expression: "눈이 높다",
+    meaning: "기준이 까다롭다",
+    example: "동생은 눈이 높아서 아무 옷이나 안 입어요.",
+  },
+  {
+    expression: "발이 넓다",
+    meaning: "아는 사람이 많다",
+    example: "아빠는 발이 넓어서 어디를 가든 아는 분이 있어요.",
+  },
+  {
+    expression: "손이 크다",
+    meaning: "음식을 많이 만든다",
+    example: "할머니는 손이 커서 밥을 많이 차려요.",
+  },
+  {
+    expression: "귀가 얇다",
+    meaning: "남의 말을 쉽게 믿는다",
+    example: "언니는 귀가 얇아서 무슨 말이든 잘 믿어요.",
+  },
+  {
+    expression: "입이 무겁다",
+    meaning: "비밀을 잘 지킨다",
+    example: "그 친구는 입이 무거워서 비밀을 안 말해요.",
+  },
+  {
+    expression: "고래 싸움에 새우 등 터진다",
+    meaning: "강한 자들의 싸움에 약한 자가 피해를 본다",
+    example: "형들이 싸우다가 내 장난감이 부서졌어요.",
+  },
+  {
+    expression: "세 살 버릇 여든까지 간다",
+    meaning: "어릴 때 습관이 오래간다",
+    example: "좋은 습관을 어릴 때부터 기르세요.",
+  },
+  {
+    expression: "가는 말이 고와야 오는 말이 곱다",
+    meaning: "남에게 좋게 말하면 나도 좋은 말을 듣는다",
+    example: "친구에게 예쁘게 말하니까 친구도 좋게 말해 줬어요.",
+  },
+  {
+    expression: "원숭이도 나무에서 떨어진다",
+    meaning: "아무리 잘해도 실수할 수 있다",
+    example: "수학을 잘하는 친구도 가끔 틀려요.",
+  },
+  {
+    expression: "낮말은 새가 듣고 밤말은 쥐가 듣는다",
+    meaning: "어디서든 말조심해야 한다",
+    example: "나쁜 말은 안 하는 게 좋아요.",
+  },
+  {
+    expression: "티끌 모아 태산",
+    meaning: "작은 것이 쌓이면 큰 것이 된다",
+    example: "매일 100원씩 모으면 큰돈이 돼요.",
+  },
+  {
+    expression: "소 잃고 외양간 고친다",
+    meaning: "일이 벌어진 뒤에야 준비한다",
+    example: "감기 걸리고 나서야 옷을 따뜻하게 입었어요.",
+  },
+  {
+    expression: "하늘의 별 따기",
+    meaning: "아주 어려운 일",
+    example: "그 장난감을 구하기는 하늘의 별 따기예요.",
+  },
+  {
+    expression: "배보다 배꼽이 크다",
+    meaning: "부수적인 것이 본래보다 크다",
+    example: "선물 포장이 선물보다 더 비싸요.",
+  },
+  {
+    expression: "콩 심은 데 콩 나고 팥 심은 데 팥 난다",
+    meaning: "원인에 따라 결과가 정해진다",
+    example: "열심히 공부하면 좋은 결과가 나와요.",
+  },
+];
+
+const IDIOMS_3_4: IdiomEntry[] = [
+  {
+    expression: "눈코 뜰 새 없다",
+    meaning: "매우 바쁘다",
+    example: "시험 기간에는 눈코 뜰 새 없이 바빠요.",
+  },
+  {
+    expression: "발등에 불이 떨어지다",
+    meaning: "급한 일이 생기다",
+    example: "과제 마감이 내일이라 발등에 불이 떨어졌어요.",
+  },
+  {
+    expression: "우물 안 개구리",
+    meaning: "세상 물정을 모르는 사람",
+    example: "좁은 경험만 가지고 판단하면 우물 안 개구리가 돼요.",
+  },
+  {
+    expression: "구슬이 서 말이라도 꿰어야 보배",
+    meaning: "아무리 좋아도 쓸모있게 해야 가치가 있다",
+    example: "좋은 아이디어도 실천해야 의미가 있어요.",
+  },
+  {
+    expression: "빈 수레가 요란하다",
+    meaning: "실력 없는 사람이 더 떠든다",
+    example: "공부를 안 한 사람이 더 시끄럽게 떠들어요.",
+  },
+  {
+    expression: "꿩 대신 닭",
+    meaning: "원하는 것 대신 비슷한 것으로 대신한다",
+    example: "딸기가 없어서 꿩 대신 닭으로 사과를 샀어요.",
+  },
+  {
+    expression: "등잔 밑이 어둡다",
+    meaning: "가까운 곳의 일을 잘 모른다",
+    example: "옆집 친구가 이사 간 줄 몰랐어요.",
+  },
+  {
+    expression: "쇠뿔도 단김에 빼라",
+    meaning: "일을 결심하면 바로 해야 한다",
+    example: "방 청소를 하겠다고 마음먹으면 바로 시작하세요.",
+  },
+  {
+    expression: "가려운 곳을 긁어 주다",
+    meaning: "필요한 것을 해 주다",
+    example: "선생님이 딱 궁금한 부분을 설명해 주셨어요.",
+  },
+  {
+    expression: "호랑이도 제 말 하면 온다",
+    meaning: "사람 이야기를 하면 그 사람이 나타난다",
+    example: "친구 이야기를 하는데 정말 나타났어요.",
+  },
+  {
+    expression: "바늘 가는 데 실 간다",
+    meaning: "늘 함께 다니는 사이",
+    example: "그 두 친구는 바늘 가는 데 실 가듯 항상 함께예요.",
+  },
+  {
+    expression: "되로 주고 말로 받는다",
+    meaning: "적게 주고 많이 돌려받는다",
+    example: "남에게 좋은 일을 하면 더 좋은 일이 돌아와요.",
+  },
+  {
+    expression: "사공이 많으면 배가 산으로 간다",
+    meaning: "지시하는 사람이 많으면 일이 안 된다",
+    example: "모둠 활동에서 다 지시만 하면 일이 엉망이 돼요.",
+  },
+  {
+    expression: "금강산도 식후경",
+    meaning: "밥을 먹어야 무엇이든 할 수 있다",
+    example: "아무리 바빠도 밥은 먹어야 해요.",
+  },
+  {
+    expression: "백지장도 맞들면 낫다",
+    meaning: "쉬운 일도 함께 하면 더 좋다",
+    example: "청소를 함께 하니까 금방 끝났어요.",
+  },
+];
+
+const IDIOMS_5_6: IdiomEntry[] = [
+  {
+    expression: "사족을 달다",
+    meaning: "불필요한 것을 덧붙이다",
+    example: "글에 사족을 달지 말고 핵심만 쓰세요.",
+  },
+  {
+    expression: "미꾸라지 한 마리가 온 웅덩이를 흐린다",
+    meaning: "한 사람의 잘못이 전체에 피해를 준다",
+    example: "한 학생의 행동이 반 전체의 평가를 나쁘게 했어요.",
+  },
+  {
+    expression: "빛 좋은 개살구",
+    meaning: "겉만 번지르르하고 속은 없다",
+    example: "포장만 예쁘고 맛이 없는 과자예요.",
+  },
+  {
+    expression: "산 넘어 산이다",
+    meaning: "어려움을 해결해도 또 어려움이 있다",
+    example: "수학 문제를 풀었더니 더 어려운 문제가 나왔어요.",
+  },
+  {
+    expression: "모로 가도 서울만 가면 된다",
+    meaning: "방법이야 어떻든 결과만 좋으면 된다",
+    example: "풀이 과정은 달라도 답이 맞으면 돼요.",
+  },
+  {
+    expression: "침소봉대",
+    meaning: "작은 일을 크게 부풀린다",
+    example: "작은 실수를 가지고 크게 떠들면 안 돼요.",
+  },
+  {
+    expression: "우이독경",
+    meaning: "아무리 말해도 알아듣지 못한다",
+    example: "동생에게 설명해도 우이독경이에요.",
+  },
+  {
+    expression: "수어지교",
+    meaning: "물과 물고기 같은 깊은 우정",
+    example: "그 두 친구는 수어지교라 할 수 있어요.",
+  },
+  {
+    expression: "백미",
+    meaning: "여러 것 중 가장 뛰어난 것",
+    example: "이 작품이 전시회의 백미예요.",
+  },
+  {
+    expression: "함구무언",
+    meaning: "입을 다물고 말하지 않는 것",
+    example: "그 사건에 대해 함구무언을 지키고 있어요.",
+  },
+  {
+    expression: "금과옥조",
+    meaning: "금이나 옥같이 소중한 법칙",
+    example: "건강이 최고라는 것은 금과옥조의 진리예요.",
+  },
+  {
+    expression: "작심삼일",
+    meaning: "결심한 것이 사흘을 못 간다",
+    example: "운동을 시작했는데 작심삼일이 됐어요.",
+  },
+  {
+    expression: "사필귀정",
+    meaning: "모든 일은 바른 길로 돌아간다",
+    example: "진실은 결국 밝혀지게 돼요.",
+  },
+  {
+    expression: "각골난망",
+    meaning: "큰 은혜를 잊지 못하는 것",
+    example: "선생님의 가르침은 각골난망이에요.",
+  },
+  {
+    expression: "견물생심",
+    meaning: "물건을 보면 욕심이 생긴다",
+    example: "예쁜 신발을 보니 견물생심으로 사고 싶어졌어요.",
+  },
+];
+
+// ============================================================
+// Multi-meaning words (다의어) by grade level
+// ============================================================
+
+interface MultiMeaningWord {
+  word: string;
+  meanings: { meaning: string; example: string }[];
+}
+
+const MULTI_MEANING_1_2: MultiMeaningWord[] = [
+  {
+    word: "눈",
+    meanings: [
+      {
+        meaning: "사물을 보는 감각 기관",
+        example: "눈이 아파서 안과에 갔어요.",
+      },
+      { meaning: "겨울에 하늘에서 내리는 흰 것", example: "눈이 펑펑 내려요." },
+    ],
+  },
+  {
+    word: "배",
+    meanings: [
+      { meaning: "몸의 가운데 부분", example: "배가 고파요." },
+      { meaning: "물 위에 뜨는 탈것", example: "배를 타고 섬에 갔어요." },
+      { meaning: "달콤한 과일의 하나", example: "배가 아주 달아요." },
+    ],
+  },
+  {
+    word: "밤",
+    meanings: [
+      { meaning: "해가 지고 어두운 때", example: "밤에 별이 떠요." },
+      {
+        meaning: "가시 껍질 안에 있는 갈색 열매",
+        example: "밤을 구워 먹었어요.",
+      },
+    ],
+  },
+  {
+    word: "말",
+    meanings: [
+      { meaning: "사람이 입으로 내는 소리", example: "예쁜 말을 쓰세요." },
+      { meaning: "사람이 타는 큰 동물", example: "말을 타고 달렸어요." },
+    ],
+  },
+  {
+    word: "차",
+    meanings: [
+      {
+        meaning: "사람이 타고 다니는 자동차",
+        example: "차를 타고 학교에 갔어요.",
+      },
+      {
+        meaning: "뜨거운 물에 우려 마시는 음료",
+        example: "따뜻한 차를 마셨어요.",
+      },
+    ],
+  },
+  {
+    word: "다리",
+    meanings: [
+      { meaning: "걸을 때 쓰는 신체 부위", example: "다리가 아파요." },
+      { meaning: "강 위에 놓인 길", example: "다리를 건너 갔어요." },
+    ],
+  },
+  {
+    word: "꽃",
+    meanings: [
+      { meaning: "식물에서 피는 예쁜 부분", example: "꽃이 활짝 피었어요." },
+      {
+        meaning: "아름다운 시절을 비유하는 말",
+        example: "청춘은 인생의 꽃이에요.",
+      },
+    ],
+  },
+  {
+    word: "손",
+    meanings: [
+      { meaning: "물건을 잡는 신체 부위", example: "손을 깨끗이 씻어요." },
+      { meaning: "집에 찾아온 사람", example: "오늘 손이 많이 왔어요." },
+    ],
+  },
+];
+
+const MULTI_MEANING_3_4: MultiMeaningWord[] = [
+  {
+    word: "결정",
+    meanings: [
+      { meaning: "마음을 정하는 것", example: "중요한 결정을 내렸어요." },
+      {
+        meaning: "규칙적인 모양의 고체",
+        example: "소금 결정을 현미경으로 보았어요.",
+      },
+    ],
+  },
+  {
+    word: "수도",
+    meanings: [
+      { meaning: "나라의 중심 도시", example: "서울은 대한민국의 수도예요." },
+      { meaning: "물을 보내는 관", example: "수도에서 물이 나와요." },
+    ],
+  },
+  {
+    word: "반사",
+    meanings: [
+      {
+        meaning: "빛이 부딪혀 되돌아오는 것",
+        example: "거울에서 빛의 반사가 일어나요.",
+      },
+      {
+        meaning: "자동으로 반응하는 것",
+        example: "뜨거운 것에 손을 대면 반사적으로 떼요.",
+      },
+    ],
+  },
+  {
+    word: "조류",
+    meanings: [
+      { meaning: "새의 종류", example: "조류 관찰을 하러 갔어요." },
+      { meaning: "바닷물의 흐름", example: "조류가 빠르게 흘러요." },
+    ],
+  },
+  {
+    word: "기압",
+    meanings: [
+      { meaning: "공기의 압력", example: "고기압일 때 날씨가 맑아요." },
+      { meaning: "위엄 있는 분위기", example: "그 사람의 기압에 눌렸어요." },
+    ],
+  },
+  {
+    word: "문",
+    meanings: [
+      { meaning: "방으로 들어가는 곳", example: "문을 열어 주세요." },
+      { meaning: "글이나 학문", example: "국문학을 공부해요." },
+    ],
+  },
+  {
+    word: "기",
+    meanings: [
+      { meaning: "기운이나 에너지", example: "기가 막혀 말이 안 나왔어요." },
+      { meaning: "깃발", example: "태극기를 게양했어요." },
+    ],
+  },
+  {
+    word: "절기",
+    meanings: [
+      {
+        meaning: "계절의 변화 구분",
+        example: "입춘은 봄의 시작을 알리는 절기예요.",
+      },
+      { meaning: "알맞은 시기", example: "절기를 맞춰 씨앗을 뿌렸어요." },
+    ],
+  },
+];
+
+const MULTI_MEANING_5_6: MultiMeaningWord[] = [
+  {
+    word: "비례",
+    meanings: [
+      { meaning: "비율이 같은 관계", example: "속도와 거리는 비례해요." },
+      {
+        meaning: "어떤 것에 맞추어 늘거나 줄어드는 것",
+        example: "노력에 비례해서 성적이 올라요.",
+      },
+    ],
+  },
+  {
+    word: "복사",
+    meanings: [
+      {
+        meaning: "열이 빛처럼 전달되는 것",
+        example: "복사 에너지로 열이 전달돼요.",
+      },
+      { meaning: "문서를 똑같이 만드는 것", example: "문서를 복사했어요." },
+    ],
+  },
+  {
+    word: "가치",
+    meanings: [
+      { meaning: "물건의 값어치", example: "이 그림의 가치가 높아요." },
+      { meaning: "중요하게 여기는 기준", example: "정직은 소중한 가치예요." },
+    ],
+  },
+  {
+    word: "시점",
+    meanings: [
+      {
+        meaning: "이야기의 서술 관점",
+        example: "1인칭 시점으로 쓴 소설이에요.",
+      },
+      { meaning: "어떤 때", example: "이 시점에서 판단해야 해요." },
+    ],
+  },
+  {
+    word: "변수",
+    meanings: [
+      { meaning: "값이 변하는 수", example: "방정식에서 x는 변수예요." },
+      { meaning: "예상치 못한 상황", example: "경기에 변수가 생겼어요." },
+    ],
+  },
+  {
+    word: "전도",
+    meanings: [
+      {
+        meaning: "열이나 전기가 전달되는 것",
+        example: "금속은 열전도가 잘 돼요.",
+      },
+      { meaning: "종교를 전파하는 것", example: "전도 활동을 했어요." },
+    ],
+  },
+  {
+    word: "매체",
+    meanings: [
+      { meaning: "정보를 전달하는 수단", example: "신문은 중요한 매체예요." },
+      {
+        meaning: "파동을 전달하는 물질",
+        example: "소리는 공기를 매체로 전달돼요.",
+      },
+    ],
+  },
+  {
+    word: "자본",
+    meanings: [
+      {
+        meaning: "사업에 쓰이는 돈",
+        example: "자본을 투자해서 사업을 시작했어요.",
+      },
+      {
+        meaning: "경제 활동의 기본 자원",
+        example: "자본주의 사회에서 자본은 중요해요.",
+      },
+    ],
+  },
+];
+
+// ============================================================
+// Word puzzle data (낱말퍼즐 - first/last letter hints)
+// ============================================================
+
+interface WordPuzzleEntry {
+  word: string;
+  meaning: string;
+  firstLetter: string;
+  lastLetter: string;
+  letterCount: number;
+}
+
+function makeWordPuzzle(word: string, meaning: string): WordPuzzleEntry {
+  const chars = [...word];
+  return {
+    word,
+    meaning,
+    firstLetter: chars[0],
+    lastLetter: chars[chars.length - 1],
+    letterCount: chars.length,
+  };
+}
+
+const WORD_PUZZLES_1_2: WordPuzzleEntry[] = [
+  makeWordPuzzle("가족", "함께 사는 사람들"),
+  makeWordPuzzle("학교", "공부하러 가는 곳"),
+  makeWordPuzzle("선생님", "가르쳐 주시는 분"),
+  makeWordPuzzle("강아지", "작은 개"),
+  makeWordPuzzle("무지개", "비 온 뒤 하늘의 색띠"),
+  makeWordPuzzle("연필", "글씨를 쓰는 도구"),
+  makeWordPuzzle("자전거", "페달을 밟아 가는 것"),
+  makeWordPuzzle("운동장", "뛰어노는 넓은 곳"),
+  makeWordPuzzle("도서관", "책이 많은 곳"),
+  makeWordPuzzle("생일", "태어난 날"),
+  makeWordPuzzle("고양이", "야옹 하고 우는 동물"),
+  makeWordPuzzle("미끄럼틀", "높은 곳에서 미끄러지는 기구"),
+  makeWordPuzzle("아이스크림", "차갑고 달콤한 간식"),
+  makeWordPuzzle("지우개", "연필 글씨를 지우는 도구"),
+  makeWordPuzzle("크레파스", "그림을 그리는 굵은 색연필"),
+  makeWordPuzzle("동물원", "동물을 구경하는 곳"),
+  makeWordPuzzle("놀이터", "미끄럼틀 그네가 있는 곳"),
+  makeWordPuzzle("병아리", "닭에서 태어난 아기 새"),
+  makeWordPuzzle("수박", "초록 껍질에 빨간 속"),
+  makeWordPuzzle("비행기", "하늘을 나는 탈것"),
+];
+
+const WORD_PUZZLES_3_4: WordPuzzleEntry[] = [
+  makeWordPuzzle("광합성", "식물이 빛으로 양분을 만드는 것"),
+  makeWordPuzzle("민주주의", "국민이 주인인 정치"),
+  makeWordPuzzle("현미경", "작은 것을 크게 보는 기구"),
+  makeWordPuzzle("횡단보도", "사람이 길을 건너는 곳"),
+  makeWordPuzzle("소방관", "불을 끄는 사람"),
+  makeWordPuzzle("천연기념물", "나라에서 보호하는 자연물"),
+  makeWordPuzzle("생태계", "생물과 환경이 어우러진 세계"),
+  makeWordPuzzle("나침반", "방향을 알려주는 도구"),
+  makeWordPuzzle("재활용", "쓴 것을 다시 쓰는 것"),
+  makeWordPuzzle("비빔밥", "여러 나물과 밥을 섞은 음식"),
+  makeWordPuzzle("고속도로", "자동차가 빠르게 달리는 길"),
+  makeWordPuzzle("사물놀이", "네 가지 타악기의 전통 음악"),
+  makeWordPuzzle("배드민턴", "라켓으로 셔틀콕을 치는 운동"),
+  makeWordPuzzle("태권도", "발차기를 많이 하는 한국 무술"),
+  makeWordPuzzle("알코올램프", "실험할 때 불을 피우는 기구"),
+];
+
+const WORD_PUZZLES_5_6: WordPuzzleEntry[] = [
+  makeWordPuzzle("인공지능", "사람처럼 생각하는 컴퓨터"),
+  makeWordPuzzle("삼권분립", "권력을 셋으로 나누는 것"),
+  makeWordPuzzle("기후변화", "지구 기후가 달라지는 현상"),
+  makeWordPuzzle("프로그래밍", "컴퓨터에게 명령을 내리는 것"),
+  makeWordPuzzle("지속가능발전", "환경을 지키며 성장하는 것"),
+  makeWordPuzzle("사이버보안", "인터넷에서 안전을 지키는 것"),
+  makeWordPuzzle("생물다양성", "여러 종류의 생물이 있는 것"),
+  makeWordPuzzle("대한민국임시정부", "독립운동을 이끈 정부"),
+  makeWordPuzzle("미디어리터러시", "미디어를 비판적으로 이해하는 능력"),
+  makeWordPuzzle("소인수분해", "자연수를 소수의 곱으로 나타내는 것"),
+  makeWordPuzzle("블록체인", "분산된 데이터 저장 기술"),
+  makeWordPuzzle("자율주행", "AI가 운전하는 기술"),
+  makeWordPuzzle("반도체", "전기가 통하기도 안 통하기도 하는 물질"),
+  makeWordPuzzle("백문불여일견", "백 번 듣기보다 한 번 보는 게 낫다"),
+  makeWordPuzzle("우주정거장", "우주 공간의 연구 시설"),
 ];
 
 // ============================================================
@@ -3765,3 +5262,94 @@ export function generateVocabPool(
     answer: w.word,
   }));
 }
+
+// ============================================================
+// New variant pool generators
+// ============================================================
+
+/** Get synonym pairs for a grade level */
+export function getSynonymPairs(grade: number, seed: number): SynonymPair[] {
+  const rng = seededRandom(seed);
+  let pairs: SynonymPair[];
+  if (grade <= 2) {
+    pairs = [...SYNONYMS_1_2];
+  } else if (grade <= 4) {
+    pairs = [...SYNONYMS_1_2, ...SYNONYMS_3_4];
+  } else {
+    pairs = [...SYNONYMS_3_4, ...SYNONYMS_5_6];
+  }
+  shuffleArray(pairs, rng);
+  return pairs;
+}
+
+/** Get antonym pairs for a grade level */
+export function getAntonymPairs(grade: number, seed: number): AntonymPair[] {
+  const rng = seededRandom(seed);
+  let pairs: AntonymPair[];
+  if (grade <= 2) {
+    pairs = [...ANTONYMS_1_2];
+  } else if (grade <= 4) {
+    pairs = [...ANTONYMS_1_2, ...ANTONYMS_3_4];
+  } else {
+    pairs = [...ANTONYMS_3_4, ...ANTONYMS_5_6];
+  }
+  shuffleArray(pairs, rng);
+  return pairs;
+}
+
+/** Get idiom/proverb entries for a grade level */
+export function getIdiomEntries(grade: number, seed: number): IdiomEntry[] {
+  const rng = seededRandom(seed);
+  let entries: IdiomEntry[];
+  if (grade <= 2) {
+    entries = [...IDIOMS_1_2];
+  } else if (grade <= 4) {
+    entries = [...IDIOMS_1_2, ...IDIOMS_3_4];
+  } else {
+    entries = [...IDIOMS_3_4, ...IDIOMS_5_6];
+  }
+  shuffleArray(entries, rng);
+  return entries;
+}
+
+/** Get multi-meaning word entries for a grade level */
+export function getMultiMeaningWords(
+  grade: number,
+  seed: number,
+): MultiMeaningWord[] {
+  const rng = seededRandom(seed);
+  let entries: MultiMeaningWord[];
+  if (grade <= 2) {
+    entries = [...MULTI_MEANING_1_2];
+  } else if (grade <= 4) {
+    entries = [...MULTI_MEANING_1_2, ...MULTI_MEANING_3_4];
+  } else {
+    entries = [...MULTI_MEANING_3_4, ...MULTI_MEANING_5_6];
+  }
+  shuffleArray(entries, rng);
+  return entries;
+}
+
+/** Get word puzzle entries for a grade level */
+export function getWordPuzzles(grade: number, seed: number): WordPuzzleEntry[] {
+  const rng = seededRandom(seed);
+  let entries: WordPuzzleEntry[];
+  if (grade <= 2) {
+    entries = [...WORD_PUZZLES_1_2];
+  } else if (grade <= 4) {
+    entries = [...WORD_PUZZLES_1_2, ...WORD_PUZZLES_3_4];
+  } else {
+    entries = [...WORD_PUZZLES_3_4, ...WORD_PUZZLES_5_6];
+  }
+  shuffleArray(entries, rng);
+  return entries;
+}
+
+// Re-export types for consumers
+export type {
+  SynonymPair,
+  AntonymPair,
+  IdiomEntry,
+  MultiMeaningWord,
+  WordPuzzleEntry,
+};

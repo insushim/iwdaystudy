@@ -37,7 +37,21 @@ import {
   getAvailableSocialUnits,
 } from "@/lib/curriculum/curriculum-sequence";
 import { generateSpellingPool } from "@/lib/curriculum/generators/spelling-generator";
-import { generateVocabPool } from "@/lib/curriculum/generators/vocab-generator";
+import {
+  generateVocabPool,
+  getSynonymPairs,
+  getAntonymPairs,
+  getIdiomEntries,
+  getMultiMeaningWords,
+  getWordPuzzles,
+} from "@/lib/curriculum/generators/vocab-generator";
+import type {
+  SynonymPair,
+  AntonymPair,
+  IdiomEntry as VocabIdiomEntry,
+  MultiMeaningWord,
+  WordPuzzleEntry,
+} from "@/lib/curriculum/generators/vocab-generator";
 import { generateKnowledgePool } from "@/lib/curriculum/generators/knowledge-generator";
 import { generateSafetyPool } from "@/lib/curriculum/generators/safety-generator";
 import { generateHanjaPool } from "@/lib/curriculum/generators/hanja-generator";
@@ -192,6 +206,13 @@ function shuffleChoices<T>(choices: T[], random: () => number): T[] {
   return next;
 }
 
+function shuffleArrayInPlace<T>(arr: T[], random: () => number): void {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
 function generateMathChoices(correct: number, random: () => number): string[] {
   const distractors = new Set<string>();
   const offsets = shuffleChoices([1, 2, 5, 10], random);
@@ -271,6 +292,11 @@ interface GradeData {
   english?: EnglishEntry[];
   science?: KnowledgeEntry[];
   social?: KnowledgeEntry[];
+  synonymPairs?: SynonymPair[];
+  antonymPairs?: AntonymPair[];
+  idioms?: VocabIdiomEntry[];
+  multiMeaningWords?: MultiMeaningWord[];
+  wordPuzzles?: WordPuzzleEntry[];
 }
 
 /**
@@ -1268,7 +1294,17 @@ function buildVocabQuestion(
           ? "낱말을 보고 알맞은 뜻을 고르세요."
           : variant === "input"
             ? "다음 뜻풀이를 보고 알맞은 낱말을 입력하세요."
-            : "다음 뜻풀이를 보고 알맞은 낱말을 고르세요.",
+            : variant === "synonym"
+              ? "다음 낱말과 뜻이 비슷한 말(유의어)을 고르세요."
+              : variant === "antonym"
+                ? "다음 낱말과 반대되는 말(반의어)을 고르세요."
+                : variant === "idiom"
+                  ? "다음 관용어/속담의 뜻을 고르세요."
+                  : variant === "multi_meaning"
+                    ? "다음 뜻풀이와 예문에 해당하는 다의어를 고르세요."
+                    : variant === "word_puzzle"
+                      ? "힌트를 보고 알맞은 낱말을 고르세요."
+                      : "다음 뜻풀이를 보고 알맞은 낱말을 고르세요.",
       clues: entry.meanings,
       meanings: entry.meanings,
       choices,
@@ -1786,6 +1822,13 @@ export function generateDailySet(
   const composition = GRADE_SET_COMPOSITION[gradeGroup];
   const data = getGradeData(grade, semester, finalSeed, subjectAccuracy);
 
+  // Attach new vocab variant pools
+  data.synonymPairs = getSynonymPairs(grade, finalSeed);
+  data.antonymPairs = getAntonymPairs(grade, finalSeed);
+  data.idioms = getIdiomEntries(grade, finalSeed);
+  data.multiMeaningWords = getMultiMeaningWords(grade, finalSeed);
+  data.wordPuzzles = getWordPuzzles(grade, finalSeed);
+
   const setNumber = (finalSeed % 10000) + 1;
 
   const dailySet: DailySet = {
@@ -1886,37 +1929,206 @@ export function generateDailySet(
           ),
         );
       } else if (subject === "vocabulary") {
-        const entry = pickUnused(data.vocab, "vocab");
-        const vvariants = ["clue", "clue", "reverse", "input"];
+        // Expanded variant pool with new question types
+        const vvariants = [
+          "clue",
+          "clue",
+          "reverse",
+          "input",
+          "synonym",
+          "antonym",
+          "idiom",
+          "multi_meaning",
+          "word_puzzle",
+        ];
         const vv = vvariants[Math.floor(random() * vvariants.length)];
-        let choices: string[];
-        if (vv === "reverse") {
-          choices = generateChoices(
-            entry.meanings[0],
-            data.vocab,
-            (v) => v.meanings[0],
-            random,
+
+        // Handle new variant types
+        if (
+          vv === "synonym" &&
+          data.synonymPairs &&
+          data.synonymPairs.length > 0
+        ) {
+          const idx = Math.floor(random() * data.synonymPairs.length);
+          const pair = data.synonymPairs[idx];
+          const askWord1 = random() > 0.5;
+          const questionWord = askWord1 ? pair.word1 : pair.word2;
+          const answerWord = askWord1 ? pair.word2 : pair.word1;
+          // Generate wrong choices from other synonym pairs
+          const wrongChoices = data.synonymPairs
+            .filter((_, i) => i !== idx)
+            .map((p) => (random() > 0.5 ? p.word1 : p.word2))
+            .filter((w) => w !== answerWord);
+          shuffleArrayInPlace(wrongChoices, random);
+          const choices = [answerWord, ...wrongChoices.slice(0, 3)];
+          shuffleArrayInPlace(choices, random);
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              {
+                meanings: [
+                  pair.meaning,
+                  `"${questionWord}"과(와) 뜻이 비슷한 말`,
+                ],
+                answer: answerWord,
+              },
+              choices,
+              "synonym",
+            ),
           );
-        } else if (vv === "input") {
-          choices = [];
+        } else if (
+          vv === "antonym" &&
+          data.antonymPairs &&
+          data.antonymPairs.length > 0
+        ) {
+          const idx = Math.floor(random() * data.antonymPairs.length);
+          const pair = data.antonymPairs[idx];
+          const askWord1 = random() > 0.5;
+          const questionWord = askWord1 ? pair.word1 : pair.word2;
+          const answerWord = askWord1 ? pair.word2 : pair.word1;
+          const wrongChoices = data.antonymPairs
+            .filter((_, i) => i !== idx)
+            .map((p) => (random() > 0.5 ? p.word1 : p.word2))
+            .filter((w) => w !== answerWord);
+          shuffleArrayInPlace(wrongChoices, random);
+          const choices = [answerWord, ...wrongChoices.slice(0, 3)];
+          shuffleArrayInPlace(choices, random);
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              {
+                meanings: [
+                  askWord1 ? pair.meaning1 : pair.meaning2,
+                  `"${questionWord}"의 반대말`,
+                ],
+                answer: answerWord,
+              },
+              choices,
+              "antonym",
+            ),
+          );
+        } else if (vv === "idiom" && data.idioms && data.idioms.length > 0) {
+          const idx = Math.floor(random() * data.idioms.length);
+          const idiom = data.idioms[idx];
+          const wrongChoices = data.idioms
+            .filter((_, i) => i !== idx)
+            .map((id) => id.meaning);
+          shuffleArrayInPlace(wrongChoices, random);
+          const choices = [idiom.meaning, ...wrongChoices.slice(0, 3)];
+          shuffleArrayInPlace(choices, random);
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              {
+                meanings: [idiom.expression, idiom.example],
+                answer: idiom.meaning,
+              },
+              choices,
+              "idiom",
+            ),
+          );
+        } else if (
+          vv === "multi_meaning" &&
+          data.multiMeaningWords &&
+          data.multiMeaningWords.length > 0
+        ) {
+          const idx = Math.floor(random() * data.multiMeaningWords.length);
+          const mmw = data.multiMeaningWords[idx];
+          // Pick one meaning and ask which word has this meaning
+          const mIdx = Math.floor(random() * mmw.meanings.length);
+          const correctMeaning = mmw.meanings[mIdx];
+          const wrongChoices = data.vocab
+            .map((v) => v.answer)
+            .filter((w) => w !== mmw.word);
+          shuffleArrayInPlace(wrongChoices, random);
+          const choices = [mmw.word, ...wrongChoices.slice(0, 3)];
+          shuffleArrayInPlace(choices, random);
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              {
+                meanings: [
+                  correctMeaning.meaning,
+                  `예문: ${correctMeaning.example}`,
+                ],
+                answer: mmw.word,
+              },
+              choices,
+              "multi_meaning",
+            ),
+          );
+        } else if (
+          vv === "word_puzzle" &&
+          data.wordPuzzles &&
+          data.wordPuzzles.length > 0
+        ) {
+          const idx = Math.floor(random() * data.wordPuzzles.length);
+          const puzzle = data.wordPuzzles[idx];
+          const wrongChoices = data.vocab
+            .map((v) => v.answer)
+            .filter((w) => w !== puzzle.word);
+          shuffleArrayInPlace(wrongChoices, random);
+          const choices = [puzzle.word, ...wrongChoices.slice(0, 3)];
+          shuffleArrayInPlace(choices, random);
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              {
+                meanings: [
+                  puzzle.meaning,
+                  `${puzzle.letterCount}글자, 첫 글자: ${puzzle.firstLetter}, 끝 글자: ${puzzle.lastLetter}`,
+                ],
+                answer: puzzle.word,
+              },
+              choices,
+              "word_puzzle",
+            ),
+          );
         } else {
-          choices = generateChoices(
-            entry.answer,
-            data.vocab,
-            (v) => v.answer,
-            random,
+          // Fallback to existing variants
+          const fallbackVv = ["clue", "reverse", "input"][
+            Math.floor(random() * 3)
+          ];
+          const entry = pickUnused(data.vocab, "vocab");
+          let choices: string[];
+          if (fallbackVv === "reverse") {
+            choices = generateChoices(
+              entry.meanings[0],
+              data.vocab,
+              (v) => v.meanings[0],
+              random,
+            );
+          } else if (fallbackVv === "input") {
+            choices = [];
+          } else {
+            choices = generateChoices(
+              entry.answer,
+              data.vocab,
+              (v) => v.answer,
+              random,
+            );
+          }
+          questions.push(
+            buildVocabQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              entry,
+              choices,
+              fallbackVv,
+            ),
           );
         }
-        questions.push(
-          buildVocabQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            entry,
-            choices,
-            vv,
-          ),
-        );
       } else if (subject === "general_knowledge") {
         const entry = pickUnused(data.knowledge, "knowledge");
         const kvariants = ["fill", "fill", "tf", "input"];

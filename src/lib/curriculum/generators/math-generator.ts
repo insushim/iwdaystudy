@@ -26,6 +26,10 @@ function gcdCalc(a: number, b: number): number {
   return b === 0 ? a : gcdCalc(b, a % b);
 }
 
+function lcmCalc(a: number, b: number): number {
+  return (a * b) / gcdCalc(a, b);
+}
+
 // ============================================================
 // Grade 1: 0~100, basic addition/subtraction, shapes
 // ============================================================
@@ -43,6 +47,15 @@ function generateGrade1Math(
     "counting3",
     "comparison",
     "comparison_symbol",
+    // New types
+    "word_problem_add",
+    "word_problem_sub",
+    "ordering",
+    "shape_identify",
+    "pattern_find",
+    "size_compare_visual",
+    "number_decompose",
+    "missing_number",
   ]);
 
   // Difficulty-based ranges for Grade 1
@@ -170,6 +183,192 @@ function generateGrade1Math(
       unit: "수의 크기 비교",
       numbers: [a, b],
     };
+  } else if (type === "word_problem_add") {
+    // 서술형 덧셈
+    const aMax = difficulty === 1 ? 5 : difficulty === 3 ? 15 : 9;
+    const a = randInt(rng, 1, aMax);
+    const b = randInt(rng, 1, aMax);
+    const scenario = pickOne(rng, [
+      {
+        place: "놀이터에서",
+        item: "친구",
+        verb: "만났습니다",
+        a_desc: "먼저 와 있던",
+        b_desc: "나중에 온",
+      },
+      {
+        place: "교실에서",
+        item: "색연필",
+        verb: "찾았습니다",
+        a_desc: "책상 위의",
+        b_desc: "서랍 속의",
+      },
+      {
+        place: "정원에서",
+        item: "나비",
+        verb: "보았습니다",
+        a_desc: "꽃 위의",
+        b_desc: "풀 위의",
+      },
+      {
+        place: "수족관에서",
+        item: "물고기",
+        verb: "세었습니다",
+        a_desc: "빨간",
+        b_desc: "파란",
+      },
+    ]);
+    return {
+      type: "addition",
+      expression: `${scenario.place} ${scenario.a_desc} ${scenario.item}가 ${a}마리, ${scenario.b_desc} ${scenario.item}가 ${b}마리 있습니다. 모두 몇 마리?`,
+      answer: a + b,
+      steps: [
+        `${scenario.a_desc} ${a}마리와 ${scenario.b_desc} ${b}마리를 더합니다`,
+        `${a} + ${b} = ${a + b}`,
+      ],
+      unit: "서술형 덧셈",
+      numbers: [a, b],
+      hasCarry: a + b >= 10,
+    };
+  } else if (type === "word_problem_sub") {
+    // 서술형 뺄셈
+    const maxVal = difficulty === 1 ? 9 : difficulty === 3 ? 18 : 12;
+    const a = randInt(rng, 3, maxVal);
+    const b = randInt(rng, 1, a - 1);
+    const scenario = pickOne(rng, [
+      { item: "쿠키", verb: "먹었습니다" },
+      { item: "풍선", verb: "터뜨렸습니다" },
+      { item: "스티커", verb: "친구에게 주었습니다" },
+      { item: "사탕", verb: "동생에게 나눠주었습니다" },
+    ]);
+    return {
+      type: "subtraction",
+      expression: `${scenario.item}가 ${a}개 있었는데 ${b}개를 ${scenario.verb} 남은 것은 몇 개?`,
+      answer: a - b,
+      steps: [`${a}개에서 ${b}개를 빼면 됩니다`, `${a} - ${b} = ${a - b}`],
+      unit: "서술형 뺄셈",
+      numbers: [a, b],
+      hasBorrow: false,
+    };
+  } else if (type === "ordering") {
+    // 순서배열 - 수를 크기 순으로 나열
+    const numCount = difficulty === 1 ? 3 : difficulty === 3 ? 5 : 4;
+    const rangeMax = difficulty === 1 ? 20 : difficulty === 3 ? 99 : 50;
+    const nums: number[] = [];
+    while (nums.length < numCount) {
+      const n = randInt(rng, 1, rangeMax);
+      if (!nums.includes(n)) nums.push(n);
+    }
+    const sorted = [...nums].sort((a, b) => a - b);
+    const ascending = rng() > 0.5;
+    const orderedNums = ascending ? sorted : [...sorted].reverse();
+    return {
+      type: "comparison",
+      expression: `${nums.join(", ")}을(를) ${ascending ? "작은 수부터" : "큰 수부터"} 나열하면? (첫 번째 수는?)`,
+      answer: orderedNums[0],
+      steps: [
+        `${ascending ? "작은 수부터" : "큰 수부터"} 정렬합니다`,
+        orderedNums.join(", "),
+      ],
+      unit: "순서배열",
+      numbers: nums,
+    };
+  } else if (type === "shape_identify") {
+    // 도형문제 - 꼭짓점, 변의 수
+    const shape = pickOne(rng, [
+      { name: "삼각형", sides: 3, vertices: 3 },
+      { name: "사각형", sides: 4, vertices: 4 },
+      { name: "오각형", sides: 5, vertices: 5 },
+      { name: "육각형", sides: 6, vertices: 6 },
+    ]);
+    const askSides = rng() > 0.5;
+    return {
+      type: "comparison",
+      expression: askSides
+        ? `${shape.name}의 변은 몇 개?`
+        : `${shape.name}의 꼭짓점은 몇 개?`,
+      answer: askSides ? shape.sides : shape.vertices,
+      steps: [
+        `${shape.name}은(는) ${shape.sides}개의 변과 ${shape.vertices}개의 꼭짓점이 있습니다`,
+      ],
+      unit: "도형문제",
+      numbers: [shape.sides],
+    };
+  } else if (type === "pattern_find") {
+    // 규칙찾기
+    const skip =
+      difficulty === 1 ? pickOne(rng, [1, 2, 3]) : pickOne(rng, [2, 3, 4, 5]);
+    const start = randInt(rng, 1, difficulty === 1 ? 5 : 10);
+    const count = difficulty === 1 ? 3 : difficulty === 3 ? 5 : 4;
+    const sequence = Array.from({ length: count }, (_, i) => start + skip * i);
+    const answer = start + skip * count;
+    return {
+      type: "counting",
+      expression: `${sequence.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+      answer,
+      steps: [
+        `${skip}씩 커지는 규칙입니다`,
+        `${sequence[sequence.length - 1]} + ${skip} = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...sequence, answer],
+    };
+  } else if (type === "size_compare_visual") {
+    // 크기비교 - 두 묶음 비교
+    const a = randInt(rng, 2, difficulty === 1 ? 10 : 20);
+    const b = randInt(rng, 2, difficulty === 1 ? 10 : 20);
+    const diff = Math.abs(a - b);
+    const itemA = pickOne(rng, ["빨간 공", "큰 상자", "긴 연필"]);
+    const itemB = pickOne(rng, ["파란 공", "작은 상자", "짧은 연필"]);
+    return {
+      type: "comparison",
+      expression: `${itemA}이 ${a}개, ${itemB}이 ${b}개 있습니다. 몇 개 더 많은가요?`,
+      answer: diff,
+      steps: [
+        a > b
+          ? `${itemA}이 더 많습니다`
+          : a < b
+            ? `${itemB}이 더 많습니다`
+            : `같습니다`,
+        `${Math.max(a, b)} - ${Math.min(a, b)} = ${diff}`,
+      ],
+      unit: "크기비교",
+      numbers: [a, b],
+    };
+  } else if (type === "number_decompose") {
+    // 수의 분해 - 10을 두 수로 가르기
+    const total =
+      difficulty === 1
+        ? pickOne(rng, [5, 6, 7, 8, 9, 10])
+        : pickOne(rng, [10, 11, 12, 13, 14, 15]);
+    const part1 = randInt(rng, 1, total - 1);
+    const part2 = total - part1;
+    return {
+      type: "addition",
+      expression: `${total}을 ${part1}과 어떤 수로 가르면? 어떤 수는?`,
+      answer: part2,
+      steps: [`${total} = ${part1} + ?`, `? = ${total} - ${part1} = ${part2}`],
+      unit: "수의 가르기",
+      numbers: [total, part1],
+    };
+  } else if (type === "missing_number") {
+    // 빈칸 채우기
+    const a = randInt(rng, 1, addMax);
+    const b = randInt(rng, 1, addMax);
+    const sum = a + b;
+    const askFirst = rng() > 0.5;
+    return {
+      type: "addition",
+      expression: askFirst
+        ? `? + ${b} = ${sum}에서 ?는?`
+        : `${a} + ? = ${sum}에서 ?는?`,
+      answer: askFirst ? a : b,
+      steps: [
+        askFirst ? `? = ${sum} - ${b} = ${a}` : `? = ${sum} - ${a} = ${b}`,
+      ],
+      unit: "빈칸 채우기",
+      numbers: [a, b, sum],
+    };
   } else {
     const a = randInt(rng, 1, compMax);
     const b = randInt(rng, 1, compMax);
@@ -202,6 +401,15 @@ function generateGrade2Math(
     "length_compare",
     "weight_compare",
     "clock_read",
+    // New types
+    "unit_convert_length",
+    "word_problem_mul",
+    "ordering_2digit",
+    "shape_compose",
+    "pattern_find_2",
+    "missing_operator",
+    "even_odd",
+    "word_problem_compare",
   ]);
 
   // Difficulty-based ranges for Grade 2
@@ -383,6 +591,172 @@ function generateGrade2Math(
       unit: "시각과 시간",
       numbers: [hour, min],
     };
+  } else if (type === "unit_convert_length") {
+    // 단위변환 - cm와 m
+    const meters = randInt(
+      rng,
+      1,
+      difficulty === 1 ? 3 : difficulty === 3 ? 10 : 5,
+    );
+    const extraCm = randInt(rng, 0, 99);
+    const totalCm = meters * 100 + extraCm;
+    const askDirection = rng() > 0.5;
+    if (askDirection) {
+      return {
+        type: "comparison",
+        expression: `${totalCm}cm는 몇 m 몇 cm?`,
+        answer: meters,
+        steps: [`100cm = 1m`, `${totalCm}cm = ${meters}m ${extraCm}cm`],
+        unit: "단위변환",
+        numbers: [totalCm],
+      };
+    }
+    return {
+      type: "comparison",
+      expression: `${meters}m ${extraCm}cm는 모두 몇 cm?`,
+      answer: totalCm,
+      steps: [
+        `${meters}m = ${meters * 100}cm`,
+        `${meters * 100} + ${extraCm} = ${totalCm}cm`,
+      ],
+      unit: "단위변환",
+      numbers: [meters, extraCm],
+    };
+  } else if (type === "word_problem_mul") {
+    // 서술형 곱셈
+    const a = randInt(rng, 2, mulMax);
+    const b = randInt(rng, 2, difficulty === 1 ? 5 : 9);
+    const scenario = pickOne(rng, [
+      { item: "접시", unit: "개", content: "딸기", contentUnit: "개" },
+      { item: "봉지", unit: "개", content: "사탕", contentUnit: "개" },
+      { item: "줄", unit: "줄", content: "의자", contentUnit: "개" },
+      { item: "상자", unit: "개", content: "귤", contentUnit: "개" },
+    ]);
+    return {
+      type: "multiplication",
+      expression: `${scenario.item} ${a}${scenario.unit}에 ${scenario.content}가 ${b}${scenario.contentUnit}씩 있습니다. 전체 ${scenario.content}는 몇 ${scenario.contentUnit}?`,
+      answer: a * b,
+      steps: [`${a} × ${b} = ${a * b}`],
+      unit: "서술형 곱셈",
+      numbers: [a, b],
+    };
+  } else if (type === "ordering_2digit") {
+    // 순서배열 - 두 자리 수
+    const numCount = difficulty === 1 ? 3 : difficulty === 3 ? 5 : 4;
+    const nums: number[] = [];
+    while (nums.length < numCount) {
+      const n = randInt(rng, 10, 99);
+      if (!nums.includes(n)) nums.push(n);
+    }
+    const sorted = [...nums].sort((a, b) => a - b);
+    const ascending = rng() > 0.5;
+    const orderedNums = ascending ? sorted : [...sorted].reverse();
+    return {
+      type: "comparison",
+      expression: `${nums.join(", ")}을(를) ${ascending ? "작은 수부터" : "큰 수부터"} 나열할 때 두 번째 수는?`,
+      answer: orderedNums[1],
+      steps: [
+        `${ascending ? "오름차순" : "내림차순"}: ${orderedNums.join(", ")}`,
+        `두 번째: ${orderedNums[1]}`,
+      ],
+      unit: "순서배열",
+      numbers: nums,
+    };
+  } else if (type === "shape_compose") {
+    // 도형 - 변의 합
+    const shape = pickOne(rng, [
+      { name: "정삼각형", sides: 3 },
+      { name: "정사각형", sides: 4 },
+      { name: "정오각형", sides: 5 },
+      { name: "정육각형", sides: 6 },
+    ]);
+    const sideLen = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const perimeter = shape.sides * sideLen;
+    return {
+      type: "addition",
+      expression: `한 변의 길이가 ${sideLen}cm인 ${shape.name}의 둘레는 몇 cm?`,
+      answer: perimeter,
+      steps: [
+        `${shape.name}은 ${shape.sides}개의 변이 있습니다`,
+        `${sideLen} × ${shape.sides} = ${perimeter}cm`,
+      ],
+      unit: "도형문제",
+      numbers: [sideLen, shape.sides],
+    };
+  } else if (type === "pattern_find_2") {
+    // 규칙찾기 - 곱셈 패턴
+    const base = randInt(rng, 2, mulMax);
+    const startMul = randInt(rng, 1, 3);
+    const count = difficulty === 1 ? 3 : 4;
+    const sequence = Array.from(
+      { length: count },
+      (_, i) => base * (startMul + i),
+    );
+    const answer = base * (startMul + count);
+    return {
+      type: "counting",
+      expression: `${sequence.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+      answer,
+      steps: [
+        `${base}씩 커지는 규칙입니다`,
+        `${sequence[sequence.length - 1]} + ${base} = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...sequence, answer],
+    };
+  } else if (type === "missing_operator") {
+    // 빈 연산자 찾기 - 답에 연산자 번호
+    const a = randInt(rng, 2, 9);
+    const b = randInt(rng, 1, a - 1);
+    const opType = pickOne(rng, ["add", "sub"]);
+    const result = opType === "add" ? a + b : a - b;
+    return {
+      type: "comparison",
+      expression: `${a} ○ ${b} = ${result}에서 ○에 알맞은 것은? (1: +, 2: -)`,
+      answer: opType === "add" ? 1 : 2,
+      steps: [
+        `${a} ${opType === "add" ? "+" : "-"} ${b} = ${result}`,
+        `답: ${opType === "add" ? "+" : "-"}`,
+      ],
+      unit: "빈칸 채우기",
+      numbers: [a, b, result],
+    };
+  } else if (type === "even_odd") {
+    // 짝수/홀수
+    const num = randInt(rng, 1, difficulty === 1 ? 20 : 50);
+    const isEven = num % 2 === 0;
+    return {
+      type: "comparison",
+      expression: `${num}은 짝수인가요 홀수인가요? (1: 짝수, 2: 홀수)`,
+      answer: isEven ? 1 : 2,
+      steps: [
+        `${num} ÷ 2 = ${isEven ? `${num / 2} (나누어떨어짐)` : `나머지 1`}`,
+        `${num}은 ${isEven ? "짝수" : "홀수"}입니다`,
+      ],
+      unit: "짝수와 홀수",
+      numbers: [num],
+    };
+  } else if (type === "word_problem_compare") {
+    // 서술형 비교
+    const a = randInt(rng, 10, difficulty === 1 ? 30 : 99);
+    const b = randInt(rng, 10, difficulty === 1 ? 30 : 99);
+    const items = pickOne(rng, [
+      { a: "민수", b: "영희", item: "구슬" },
+      { a: "철수", b: "지영", item: "색종이" },
+      { a: "준호", b: "서연", item: "스티커" },
+    ]);
+    const diff = Math.abs(a - b);
+    return {
+      type: "subtraction",
+      expression: `${items.a}는 ${items.item}를 ${a}개, ${items.b}는 ${b}개 가지고 있습니다. 누가 몇 개 더 많나요? (개수만 입력)`,
+      answer: diff,
+      steps: [
+        `${a > b ? items.a : items.b}가 더 많습니다`,
+        `${Math.max(a, b)} - ${Math.min(a, b)} = ${diff}개`,
+      ],
+      unit: "서술형 비교",
+      numbers: [a, b],
+    };
   } else {
     const lenMax = difficulty === 1 ? 15 : difficulty === 3 ? 60 : 30;
     const cm = randInt(rng, 5, lenMax);
@@ -414,6 +788,15 @@ function generateGrade3Math(
     "division_remainder",
     "fraction_intro",
     "fraction_compare",
+    // New types
+    "word_problem_division",
+    "ordering_fractions",
+    "shape_perimeter",
+    "unit_convert_km",
+    "pattern_find_mul",
+    "word_problem_multi_step",
+    "comparison_3digit",
+    "missing_number_mul",
   ]);
 
   // Difficulty-based ranges for Grade 3
@@ -551,6 +934,199 @@ function generateGrade3Math(
       unit: "분수의 기초",
       numbers: [n1, n2, denom],
     };
+  } else if (type === "word_problem_division") {
+    // 서술형 나눗셈
+    const divisor = randInt(rng, 2, difficulty === 1 ? 5 : 9);
+    const quotient = randInt(rng, 2, divMaxQ);
+    const dividend = divisor * quotient;
+    const scenario = pickOne(rng, [
+      {
+        item: "색종이",
+        action: "학생들에게 똑같이 나누어 주려고 합니다",
+        who: `${divisor}명`,
+      },
+      {
+        item: "쿠키",
+        action: "접시에 똑같이 담으려고 합니다",
+        who: `${divisor}개의 접시`,
+      },
+      {
+        item: "연필",
+        action: "필통에 똑같이 넣으려고 합니다",
+        who: `${divisor}개의 필통`,
+      },
+    ]);
+    return {
+      type: "division",
+      expression: `${scenario.item} ${dividend}개를 ${scenario.who}에 ${scenario.action}. 하나에 몇 개씩?`,
+      answer: quotient,
+      steps: [
+        `${dividend} ÷ ${divisor} = ${quotient}`,
+        `한 곳에 ${quotient}개씩`,
+      ],
+      unit: "서술형 나눗셈",
+      dividend,
+      divisor,
+      quotient,
+      remainder: 0,
+    };
+  } else if (type === "ordering_fractions") {
+    // 순서배열 - 같은 분모 분수
+    const denom =
+      difficulty === 1 ? pickOne(rng, [4, 5, 6]) : pickOne(rng, [6, 8, 10]);
+    const numCount = 3;
+    const nums: number[] = [];
+    while (nums.length < numCount) {
+      const n = randInt(rng, 1, denom - 1);
+      if (!nums.includes(n)) nums.push(n);
+    }
+    const sorted = [...nums].sort((a, b) => a - b);
+    return {
+      type: "fraction",
+      expression: `${nums.map((n) => `${n}/${denom}`).join(", ")}을 작은 것부터 나열할 때 가장 작은 분수의 분자는?`,
+      answer: sorted[0],
+      steps: [
+        `분모가 같으므로 분자가 작을수록 작은 분수`,
+        sorted.map((n) => `${n}/${denom}`).join(" < "),
+      ],
+      unit: "순서배열",
+      numbers: [...nums, denom],
+    };
+  } else if (type === "shape_perimeter") {
+    // 도형 둘레
+    const shapeType = pickOne(rng, ["rectangle", "square", "triangle"]);
+    if (shapeType === "rectangle") {
+      const w = randInt(rng, 3, difficulty === 1 ? 10 : 20);
+      const h = randInt(rng, 3, difficulty === 1 ? 10 : 20);
+      const perimeter = 2 * (w + h);
+      return {
+        type: "addition",
+        expression: `가로 ${w}cm, 세로 ${h}cm인 직사각형의 둘레는?`,
+        answer: perimeter,
+        steps: [
+          `둘레 = (가로 + 세로) × 2`,
+          `(${w} + ${h}) × 2 = ${perimeter}cm`,
+        ],
+        unit: "도형 둘레",
+        numbers: [w, h],
+      };
+    } else if (shapeType === "square") {
+      const side = randInt(rng, 2, difficulty === 1 ? 10 : 15);
+      return {
+        type: "multiplication",
+        expression: `한 변이 ${side}cm인 정사각형의 둘레는?`,
+        answer: side * 4,
+        steps: [`정사각형 둘레 = 한 변 × 4`, `${side} × 4 = ${side * 4}cm`],
+        unit: "도형 둘레",
+        numbers: [side],
+      };
+    } else {
+      const a = randInt(rng, 3, 10);
+      const b = randInt(rng, 3, 10);
+      const c = randInt(rng, Math.abs(a - b) + 1, a + b - 1); // triangle inequality
+      return {
+        type: "addition",
+        expression: `세 변의 길이가 ${a}cm, ${b}cm, ${c}cm인 삼각형의 둘레는?`,
+        answer: a + b + c,
+        steps: [`${a} + ${b} + ${c} = ${a + b + c}cm`],
+        unit: "도형 둘레",
+        numbers: [a, b, c],
+      };
+    }
+  } else if (type === "unit_convert_km") {
+    // 단위변환 - m와 km
+    const km = randInt(rng, 1, difficulty === 1 ? 3 : 9);
+    const extraM = randInt(rng, 0, 9) * 100;
+    const totalM = km * 1000 + extraM;
+    const askDirection = rng() > 0.5;
+    if (askDirection) {
+      return {
+        type: "comparison",
+        expression: `${totalM}m는 몇 km 몇 m?`,
+        answer: km,
+        steps: [`1000m = 1km`, `${totalM}m = ${km}km ${extraM}m`],
+        unit: "단위변환",
+        numbers: [totalM],
+      };
+    }
+    return {
+      type: "comparison",
+      expression: `${km}km ${extraM}m는 모두 몇 m?`,
+      answer: totalM,
+      steps: [
+        `${km}km = ${km * 1000}m`,
+        `${km * 1000} + ${extraM} = ${totalM}m`,
+      ],
+      unit: "단위변환",
+      numbers: [km, extraM],
+    };
+  } else if (type === "pattern_find_mul") {
+    // 규칙찾기 - 곱셈 패턴
+    const base = randInt(rng, 2, 5);
+    const sequence = Array.from(
+      { length: 4 },
+      (_, i) => base * (i + 1) * (i + 1),
+    );
+    // Pattern: base×1, base×4, base×9, base×16 → 제곱수 패턴
+    // Simpler: just multiply pattern
+    const mult = randInt(rng, 2, 4);
+    const seq = Array.from({ length: 3 }, (_, i) => mult * Math.pow(2, i));
+    const answer = mult * Math.pow(2, 3);
+    return {
+      type: "counting",
+      expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는? (규칙: 2배씩)`,
+      answer,
+      steps: [
+        `앞의 수에 2를 곱하는 규칙입니다`,
+        `${seq[seq.length - 1]} × 2 = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...seq, answer],
+    };
+  } else if (type === "word_problem_multi_step") {
+    // 서술형 복합 문제
+    const price = randInt(rng, 2, 5) * 100;
+    const count = randInt(rng, 2, difficulty === 1 ? 3 : 5);
+    const money = price * count + randInt(rng, 1, 5) * 100;
+    const total = price * count;
+    const change = money - total;
+    return {
+      type: "mixed",
+      expression: `${price}원짜리 빵을 ${count}개 사고 ${money}원을 냈습니다. 거스름돈은?`,
+      answer: change,
+      steps: [
+        `빵 가격: ${price} × ${count} = ${total}원`,
+        `거스름돈: ${money} - ${total} = ${change}원`,
+      ],
+      unit: "서술형 복합",
+      numbers: [price, count, money],
+    };
+  } else if (type === "comparison_3digit") {
+    // 크기비교 - 세 자리 수
+    const a = randInt(rng, 100, 999);
+    const b = randInt(rng, 100, 999);
+    const symbol = a > b ? ">" : a < b ? "<" : "=";
+    return {
+      type: "comparison",
+      expression: `${a} ○ ${b}에서 ○에 알맞은 기호는? (1: >, 2: <, 3: =)`,
+      answer: a > b ? 1 : a < b ? 2 : 3,
+      steps: [`백의 자리부터 비교합니다`, `${a} ${symbol} ${b}`],
+      unit: "크기비교",
+      numbers: [a, b],
+    };
+  } else if (type === "missing_number_mul") {
+    // 빈칸 곱셈
+    const a = randInt(rng, 2, mulMaxA);
+    const b = randInt(rng, 2, mulMaxB);
+    const product = a * b;
+    return {
+      type: "multiplication",
+      expression: `${a} × ? = ${product}에서 ?는?`,
+      answer: b,
+      steps: [`? = ${product} ÷ ${a} = ${b}`],
+      unit: "빈칸 곱셈",
+      numbers: [a, product],
+    };
   } else {
     // fraction intro
     const denom =
@@ -587,6 +1163,15 @@ function generateGrade4Math(
     "angle_calc",
     "fraction_add",
     "graph_read",
+    // New types
+    "word_problem_area",
+    "ordering_large",
+    "shape_area_triangle",
+    "unit_convert_weight",
+    "pattern_find_complex",
+    "mixed_word_problem",
+    "estimation",
+    "symmetry",
   ]);
 
   if (type === "multiplication_2digit") {
@@ -776,7 +1361,7 @@ function generateGrade4Math(
           `최고: ${months[maxIdx]} ${maxVal}°C, 최저: ${minVal}°C`,
           `차이: ${maxVal} - ${minVal} = ${maxVal - minVal}°C`,
         ],
-        unit: "네 자리 덧셈",
+        unit: "그래프 읽기",
         numbers: values,
       };
     }
@@ -785,8 +1370,214 @@ function generateGrade4Math(
       expression: `기온 그래프: ${months.map((m, i) => `${m}=${values[i]}°C`).join(", ")}. 가장 높은 달의 기온은?`,
       answer: maxVal,
       steps: [`${months[maxIdx]}의 기온이 ${maxVal}°C로 가장 높습니다`],
-      unit: "네 자리 덧셈",
+      unit: "그래프 읽기",
       numbers: values,
+    };
+  } else if (type === "word_problem_area") {
+    // 서술형 넓이 문제
+    const w = randInt(rng, 3, difficulty === 1 ? 10 : 15);
+    const h = randInt(rng, 3, difficulty === 1 ? 10 : 15);
+    const scenario = pickOne(rng, [
+      "교실 바닥",
+      "꽃밭",
+      "운동장의 직사각형 구역",
+      "색종이",
+    ]);
+    return {
+      type: "area",
+      expression: `${scenario}의 가로가 ${w}m, 세로가 ${h}m입니다. 넓이는 몇 m²?`,
+      answer: w * h,
+      steps: [`직사각형 넓이 = 가로 × 세로`, `${w} × ${h} = ${w * h}m²`],
+      unit: "서술형 넓이",
+      numbers: [w, h],
+    };
+  } else if (type === "ordering_large") {
+    // 순서배열 - 큰 수
+    const numCount = difficulty === 1 ? 3 : 4;
+    const nums: number[] = [];
+    while (nums.length < numCount) {
+      const n = randInt(rng, 1000, 9999);
+      if (!nums.includes(n)) nums.push(n);
+    }
+    const sorted = [...nums].sort((a, b) => a - b);
+    return {
+      type: "comparison",
+      expression: `${nums.join(", ")}을(를) 작은 수부터 나열할 때 가장 큰 수는?`,
+      answer: sorted[sorted.length - 1],
+      steps: [
+        `오름차순: ${sorted.join(", ")}`,
+        `가장 큰 수: ${sorted[sorted.length - 1]}`,
+      ],
+      unit: "순서배열",
+      numbers: nums,
+    };
+  } else if (type === "shape_area_triangle") {
+    // 도형 - 삼각형 넓이
+    const base = randInt(rng, 4, difficulty === 1 ? 10 : 20);
+    const height = randInt(rng, 2, difficulty === 1 ? 8 : 16);
+    // ensure even product for clean division
+    const adjustedBase = base % 2 === 1 && height % 2 === 1 ? base + 1 : base;
+    const area = (adjustedBase * height) / 2;
+    return {
+      type: "area",
+      expression: `밑변 ${adjustedBase}cm, 높이 ${height}cm인 삼각형의 넓이는?`,
+      answer: area,
+      steps: [
+        `삼각형 넓이 = 밑변 × 높이 ÷ 2`,
+        `${adjustedBase} × ${height} ÷ 2 = ${area}cm²`,
+      ],
+      unit: "삼각형 넓이",
+      numbers: [adjustedBase, height],
+    };
+  } else if (type === "unit_convert_weight") {
+    // 단위변환 - g과 kg
+    const kg = randInt(rng, 1, difficulty === 1 ? 5 : 10);
+    const extraG = randInt(rng, 0, 9) * 100;
+    const totalG = kg * 1000 + extraG;
+    const askDirection = rng() > 0.5;
+    if (askDirection) {
+      return {
+        type: "comparison",
+        expression: `${totalG}g은 몇 kg 몇 g?`,
+        answer: kg,
+        steps: [`1000g = 1kg`, `${totalG}g = ${kg}kg ${extraG}g`],
+        unit: "단위변환",
+        numbers: [totalG],
+      };
+    }
+    return {
+      type: "comparison",
+      expression: `${kg}kg ${extraG}g은 모두 몇 g?`,
+      answer: totalG,
+      steps: [
+        `${kg}kg = ${kg * 1000}g`,
+        `${kg * 1000} + ${extraG} = ${totalG}g`,
+      ],
+      unit: "단위변환",
+      numbers: [kg, extraG],
+    };
+  } else if (type === "pattern_find_complex") {
+    // 규칙찾기 - 복잡한 패턴
+    const patternType = pickOne(rng, ["add_increase", "multiply", "alternate"]);
+    if (patternType === "add_increase") {
+      // 1, 3, 6, 10, 15, ... (삼각수)
+      const start = randInt(rng, 1, 3);
+      const seq = [start];
+      for (let i = 1; i < 4; i++) {
+        seq.push(seq[seq.length - 1] + (i + 1));
+      }
+      const answer = seq[seq.length - 1] + 5;
+      return {
+        type: "counting",
+        expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는? (더하는 수가 1씩 증가)`,
+        answer,
+        steps: [
+          `차이: ${seq[1] - seq[0]}, ${seq[2] - seq[1]}, ${seq[3] - seq[2]}으로 1씩 증가`,
+          `${seq[seq.length - 1]} + 5 = ${answer}`,
+        ],
+        unit: "규칙찾기",
+        numbers: [...seq, answer],
+      };
+    } else if (patternType === "multiply") {
+      const base = pickOne(rng, [2, 3]);
+      const seq = Array.from({ length: 4 }, (_, i) => Math.pow(base, i + 1));
+      const answer = Math.pow(base, 5);
+      return {
+        type: "counting",
+        expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+        answer,
+        steps: [
+          `${base}를 반복해서 곱하는 규칙`,
+          `${seq[seq.length - 1]} × ${base} = ${answer}`,
+        ],
+        unit: "규칙찾기",
+        numbers: [...seq, answer],
+      };
+    } else {
+      // alternate: +3, -1, +3, -1 pattern
+      const start = randInt(rng, 5, 10);
+      const addVal = randInt(rng, 2, 4);
+      const subVal = 1;
+      const seq = [start];
+      for (let i = 0; i < 5; i++) {
+        seq.push(seq[seq.length - 1] + (i % 2 === 0 ? addVal : -subVal));
+      }
+      const answer =
+        seq[seq.length - 1] + (seq.length % 2 === 1 ? addVal : -subVal);
+      return {
+        type: "counting",
+        expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+        answer,
+        steps: [`+${addVal}, -${subVal}이 반복되는 규칙`, `답: ${answer}`],
+        unit: "규칙찾기",
+        numbers: [...seq, answer],
+      };
+    }
+  } else if (type === "mixed_word_problem") {
+    // 서술형 혼합 계산
+    const itemPrice = randInt(rng, 2, 8) * 100;
+    const count1 = randInt(rng, 2, 5);
+    const count2 = randInt(rng, 1, 3);
+    const item1 = pickOne(rng, ["연필", "지우개", "공책"]);
+    const item2 = pickOne(rng, ["자", "풀", "가위"]);
+    const price2 = randInt(rng, 3, 9) * 100;
+    const total = itemPrice * count1 + price2 * count2;
+    return {
+      type: "mixed",
+      expression: `${item1} ${count1}개(개당 ${itemPrice}원)와 ${item2} ${count2}개(개당 ${price2}원)의 총 가격은?`,
+      answer: total,
+      steps: [
+        `${item1}: ${itemPrice} × ${count1} = ${itemPrice * count1}원`,
+        `${item2}: ${price2} × ${count2} = ${price2 * count2}원`,
+        `합계: ${itemPrice * count1} + ${price2 * count2} = ${total}원`,
+      ],
+      unit: "서술형 혼합",
+      numbers: [itemPrice, count1, price2, count2],
+    };
+  } else if (type === "estimation") {
+    // 어림 - 반올림
+    const num = randInt(rng, 100, 9999);
+    const place = pickOne(rng, [10, 100, 1000]);
+    const placeNames: Record<number, string> = {
+      10: "십의 자리",
+      100: "백의 자리",
+      1000: "천의 자리",
+    };
+    const rounded = Math.round(num / place) * place;
+    return {
+      type: "comparison",
+      expression: `${num}을 ${placeNames[place]}에서 반올림하면?`,
+      answer: rounded,
+      steps: [`${placeNames[place]}에서 반올림합니다`, `${num} → ${rounded}`],
+      unit: "어림하기",
+      numbers: [num, place],
+    };
+  } else if (type === "symmetry") {
+    // 대칭 - 선대칭 도형
+    const shape = pickOne(rng, [
+      { name: "정삼각형", axes: 3 },
+      { name: "정사각형", axes: 4 },
+      { name: "정오각형", axes: 5 },
+      { name: "정육각형", axes: 6 },
+      { name: "원", axes: 0 }, // infinite but we'll say 0 as special
+    ]);
+    if (shape.name === "원") {
+      return {
+        type: "comparison",
+        expression: `정삼각형의 대칭축은 몇 개?`,
+        answer: 3,
+        steps: [`정삼각형은 3개의 대칭축이 있습니다`],
+        unit: "대칭",
+        numbers: [3],
+      };
+    }
+    return {
+      type: "comparison",
+      expression: `${shape.name}의 대칭축은 몇 개?`,
+      answer: shape.axes,
+      steps: [`${shape.name}은(는) ${shape.axes}개의 대칭축이 있습니다`],
+      unit: "대칭",
+      numbers: [shape.axes],
     };
   } else {
     // fraction addition (same denominator)
@@ -847,6 +1638,13 @@ function generateGrade5Math(
     "fraction_sub",
     "fraction_sub",
     "simplify_fraction",
+    // New types
+    "word_problem_fraction",
+    "ordering_fractions_diff_denom",
+    "unit_convert_area",
+    "pattern_arithmetic_seq",
+    "comparison_fractions",
+    "multiple_check",
   ];
   const sem2Types = [
     "decimal_multiply",
@@ -854,6 +1652,13 @@ function generateGrade5Math(
     "decimal_multiply2",
     "area",
     "fraction_multiply",
+    // New types
+    "word_problem_decimal",
+    "trapezoid_area",
+    "parallelogram_area",
+    "decimal_subtract",
+    "unit_convert_capacity",
+    "pattern_geometric",
   ];
   const type = pickOne(rng, semester === 1 ? sem1Types : sem2Types);
 
@@ -1170,6 +1975,212 @@ function generateGrade5Math(
       unit: "넓이",
       numbers: [w, h],
     };
+  } else if (type === "word_problem_fraction") {
+    // 서술형 분수
+    const denom = pickOne(rng, [3, 4, 5, 6, 8]);
+    const n1 = randInt(rng, 1, denom - 2);
+    const n2 = randInt(rng, 1, denom - n1);
+    const item = pickOne(rng, ["피자", "케이크", "수박", "초콜릿"]);
+    return {
+      type: "fraction",
+      expression: `${item}의 ${n1}/${denom}을 먹고, ${n2}/${denom}을 더 먹었습니다. 모두 얼마나 먹었나요? (분자만 입력)`,
+      answer: n1 + n2,
+      steps: [
+        `분모가 같으므로 분자끼리 더합니다`,
+        `${n1} + ${n2} = ${n1 + n2}`,
+        `답: ${n1 + n2}/${denom}`,
+      ],
+      unit: "서술형 분수",
+      numbers: [n1, n2, denom],
+    };
+  } else if (type === "ordering_fractions_diff_denom") {
+    // 순서배열 - 다른 분모 분수 크기 비교
+    const d1 = pickOne(rng, [2, 3, 4]);
+    const d2 = pickOne(rng, [3, 4, 6]);
+    const n1 = randInt(rng, 1, d1 - 1);
+    const n2 = randInt(rng, 1, d2 - 1);
+    const val1 = n1 / d1;
+    const val2 = n2 / d2;
+    const bigger = val1 > val2 ? 1 : val1 < val2 ? 2 : 0;
+    return {
+      type: "fraction",
+      expression: `${n1}/${d1}과 ${n2}/${d2} 중 더 큰 분수는? (1: ${n1}/${d1}, 2: ${n2}/${d2}, 0: 같음)`,
+      answer: bigger,
+      steps: [
+        `통분하여 비교합니다`,
+        `${n1}/${d1} = ${n1 * (lcmCalc(d1, d2) / d1)}/${lcmCalc(d1, d2)}, ${n2}/${d2} = ${n2 * (lcmCalc(d1, d2) / d2)}/${lcmCalc(d1, d2)}`,
+        bigger === 1
+          ? `${n1}/${d1}이 더 큽니다`
+          : bigger === 2
+            ? `${n2}/${d2}이 더 큽니다`
+            : `같습니다`,
+      ],
+      unit: "크기비교",
+      numbers: [n1, d1, n2, d2],
+    };
+  } else if (type === "unit_convert_area") {
+    // 단위변환 - 넓이 cm² ↔ m²
+    const side = randInt(rng, 1, 5);
+    const areaCm2 = side * side * 10000;
+    return {
+      type: "comparison",
+      expression: `${side}m × ${side}m = ${side * side}m²는 몇 cm²?`,
+      answer: areaCm2,
+      steps: [
+        `1m² = 10000cm²`,
+        `${side * side}m² = ${side * side} × 10000 = ${areaCm2}cm²`,
+      ],
+      unit: "단위변환",
+      numbers: [side],
+    };
+  } else if (type === "pattern_arithmetic_seq") {
+    // 규칙찾기 - 등차수열
+    const first = randInt(rng, 1, 10);
+    const diff = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const count = 4;
+    const seq = Array.from({ length: count }, (_, i) => first + diff * i);
+    const answer = first + diff * count;
+    return {
+      type: "counting",
+      expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+      answer,
+      steps: [
+        `공차가 ${diff}인 등차수열`,
+        `${seq[seq.length - 1]} + ${diff} = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...seq, answer],
+    };
+  } else if (type === "comparison_fractions") {
+    // 크기비교 - 분수와 소수
+    const denom = pickOne(rng, [2, 4, 5, 10]);
+    const numer = randInt(rng, 1, denom - 1);
+    const fracVal = numer / denom;
+    const decimal = Math.round(fracVal * 10) / 10;
+    return {
+      type: "fraction",
+      expression: `${numer}/${denom}을 소수로 나타내면?`,
+      answer: decimal,
+      steps: [`${numer} ÷ ${denom} = ${decimal}`],
+      unit: "크기비교",
+      numbers: [numer, denom],
+    };
+  } else if (type === "multiple_check") {
+    // 배수 판별
+    const base = pickOne(rng, [2, 3, 4, 5, 6, 9]);
+    const num = base * randInt(rng, 3, 20);
+    const wrong = num + randInt(rng, 1, base - 1);
+    const askAbout = rng() > 0.5 ? num : wrong;
+    const isMultiple = askAbout % base === 0;
+    return {
+      type: "comparison",
+      expression: `${askAbout}은(는) ${base}의 배수인가요? (1: 예, 2: 아니오)`,
+      answer: isMultiple ? 1 : 2,
+      steps: [
+        `${askAbout} ÷ ${base} = ${isMultiple ? `${askAbout / base} (나누어떨어짐)` : `나머지 ${askAbout % base}`}`,
+        `${isMultiple ? "배수입니다" : "배수가 아닙니다"}`,
+      ],
+      unit: "약수와 배수",
+      numbers: [askAbout, base],
+    };
+  } else if (type === "word_problem_decimal") {
+    // 서술형 소수
+    const price = randInt(rng, 10, 99) / 10;
+    const count = randInt(rng, 2, 5);
+    const total = Math.round(price * count * 10) / 10;
+    const item = pickOne(rng, ["주스", "우유", "요구르트", "물"]);
+    return {
+      type: "decimal",
+      expression: `${item} 한 개에 ${price}L입니다. ${count}개면 모두 몇 L?`,
+      answer: total,
+      steps: [`${price} × ${count} = ${total}L`],
+      unit: "서술형 소수",
+      numbers: [Math.round(price * 10), count],
+    };
+  } else if (type === "trapezoid_area") {
+    // 사다리꼴 넓이
+    const top = randInt(rng, 3, difficulty === 1 ? 8 : 15);
+    const bottom = randInt(rng, top + 1, difficulty === 1 ? 12 : 20);
+    const height = randInt(rng, 2, difficulty === 1 ? 6 : 12);
+    // Ensure clean division
+    const adjustedHeight = (top + bottom) % 2 === 1 ? height * 2 : height;
+    const area = ((top + bottom) * adjustedHeight) / 2;
+    return {
+      type: "area",
+      expression: `윗변 ${top}cm, 아랫변 ${bottom}cm, 높이 ${adjustedHeight}cm인 사다리꼴의 넓이는?`,
+      answer: area,
+      steps: [
+        `사다리꼴 넓이 = (윗변 + 아랫변) × 높이 ÷ 2`,
+        `(${top} + ${bottom}) × ${adjustedHeight} ÷ 2 = ${area}cm²`,
+      ],
+      unit: "사다리꼴 넓이",
+      numbers: [top, bottom, adjustedHeight],
+    };
+  } else if (type === "parallelogram_area") {
+    // 평행사변형 넓이
+    const base = randInt(rng, 3, difficulty === 1 ? 10 : 18);
+    const height = randInt(rng, 2, difficulty === 1 ? 8 : 14);
+    const area = base * height;
+    return {
+      type: "area",
+      expression: `밑변 ${base}cm, 높이 ${height}cm인 평행사변형의 넓이는?`,
+      answer: area,
+      steps: [
+        `평행사변형 넓이 = 밑변 × 높이`,
+        `${base} × ${height} = ${area}cm²`,
+      ],
+      unit: "평행사변형 넓이",
+      numbers: [base, height],
+    };
+  } else if (type === "decimal_subtract") {
+    // 소수 뺄셈
+    const aInt = randInt(rng, 30, 99);
+    const bInt = randInt(rng, 10, aInt - 1);
+    const a = aInt / 10;
+    const b = bInt / 10;
+    const answer = Math.round((a - b) * 10) / 10;
+    return {
+      type: "decimal",
+      expression: `${a} - ${b} = ?`,
+      answer,
+      steps: [`소수점을 맞추어 뺍니다`, `${a} - ${b} = ${answer}`],
+      unit: "소수의 뺄셈",
+      numbers: [aInt, bInt],
+    };
+  } else if (type === "unit_convert_capacity") {
+    // 단위변환 - mL와 L
+    const liters = randInt(rng, 1, 5);
+    const extraMl = randInt(rng, 0, 9) * 100;
+    const totalMl = liters * 1000 + extraMl;
+    return {
+      type: "comparison",
+      expression: `${totalMl}mL는 몇 L 몇 mL?`,
+      answer: liters,
+      steps: [`1000mL = 1L`, `${totalMl}mL = ${liters}L ${extraMl}mL`],
+      unit: "단위변환",
+      numbers: [totalMl],
+    };
+  } else if (type === "pattern_geometric") {
+    // 규칙찾기 - 등비수열
+    const first = pickOne(rng, [1, 2, 3]);
+    const ratio = pickOne(rng, [2, 3]);
+    const count = 4;
+    const seq = Array.from(
+      { length: count },
+      (_, i) => first * Math.pow(ratio, i),
+    );
+    const answer = first * Math.pow(ratio, count);
+    return {
+      type: "counting",
+      expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는?`,
+      answer,
+      steps: [
+        `${ratio}배씩 커지는 규칙`,
+        `${seq[seq.length - 1]} × ${ratio} = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...seq, answer],
+    };
   } else {
     // LCM/GCD
     const easyNums = [4, 6, 8, 10, 12];
@@ -1226,6 +2237,15 @@ function generateGrade6Math(
     "proportion_word",
     "probability",
     "volume",
+    // New types
+    "word_problem_ratio",
+    "ordering_decimals",
+    "unit_convert_speed",
+    "pattern_fibonacci",
+    "fraction_division",
+    "surface_area",
+    "average",
+    "cylinder_volume",
   ]);
 
   if (type === "ratio") {
@@ -1425,6 +2445,160 @@ function generateGrade6Math(
       steps: [`${items}C${choose} = ${comb}`],
       unit: "경우의 수",
       numbers: [items, choose],
+    };
+  } else if (type === "word_problem_ratio") {
+    // 서술형 비율 문제
+    const total = randInt(rng, 20, difficulty === 1 ? 50 : 100);
+    const ratioA = randInt(rng, 1, 4);
+    const ratioB = randInt(rng, 1, 4);
+    const ratioSum = ratioA + ratioB;
+    // Ensure total is divisible by ratioSum
+    const adjustedTotal = Math.floor(total / ratioSum) * ratioSum;
+    const partA = (adjustedTotal / ratioSum) * ratioA;
+    const nameA = pickOne(rng, ["남학생", "빨간 공", "사과"]);
+    const nameB = pickOne(rng, ["여학생", "파란 공", "배"]);
+    return {
+      type: "ratio",
+      expression: `${nameA}과 ${nameB}의 비가 ${ratioA}:${ratioB}이고 전체가 ${adjustedTotal}명일 때 ${nameA}은 몇 명?`,
+      answer: partA,
+      steps: [
+        `전체 비: ${ratioA} + ${ratioB} = ${ratioSum}`,
+        `${nameA}: ${adjustedTotal} × ${ratioA}/${ratioSum} = ${partA}명`,
+      ],
+      unit: "서술형 비율",
+      numbers: [ratioA, ratioB, adjustedTotal],
+    };
+  } else if (type === "ordering_decimals") {
+    // 순서배열 - 소수
+    const numCount = difficulty === 1 ? 3 : 4;
+    const nums: number[] = [];
+    while (nums.length < numCount) {
+      const n = randInt(rng, 1, 99) / 10;
+      if (!nums.includes(n)) nums.push(n);
+    }
+    const sorted = [...nums].sort((a, b) => a - b);
+    return {
+      type: "comparison",
+      expression: `${nums.join(", ")}을(를) 작은 수부터 나열할 때 가장 작은 수는?`,
+      answer: sorted[0],
+      steps: [`오름차순: ${sorted.join(", ")}`],
+      unit: "순서배열",
+      numbers: nums.map((n) => Math.round(n * 10)),
+    };
+  } else if (type === "unit_convert_speed") {
+    // 단위변환 - 속도 (km/h ↔ m/min)
+    const kmH = randInt(rng, 2, difficulty === 1 ? 6 : 12) * 6; // Multiple of 6 for clean division
+    const mMin = Math.round((kmH * 1000) / 60);
+    return {
+      type: "comparison",
+      expression: `시속 ${kmH}km는 분속 몇 m?`,
+      answer: mMin,
+      steps: [
+        `${kmH}km = ${kmH * 1000}m`,
+        `1시간 = 60분`,
+        `${kmH * 1000} ÷ 60 = ${mMin}m/분`,
+      ],
+      unit: "단위변환",
+      numbers: [kmH],
+    };
+  } else if (type === "pattern_fibonacci") {
+    // 규칙찾기 - 피보나치류 패턴 (앞 두 수의 합)
+    const a = randInt(rng, 1, 3);
+    const b = randInt(rng, 2, 5);
+    const seq = [a, b];
+    for (let i = 0; i < 3; i++) {
+      seq.push(seq[seq.length - 1] + seq[seq.length - 2]);
+    }
+    const answer = seq[seq.length - 1] + seq[seq.length - 2];
+    return {
+      type: "counting",
+      expression: `${seq.join(", ")}, ? 에서 ?에 알맞은 수는? (규칙: 앞 두 수의 합)`,
+      answer,
+      steps: [
+        `앞의 두 수를 더하는 규칙`,
+        `${seq[seq.length - 2]} + ${seq[seq.length - 1]} = ${answer}`,
+      ],
+      unit: "규칙찾기",
+      numbers: [...seq, answer],
+    };
+  } else if (type === "fraction_division") {
+    // 분수의 나눗셈
+    const n1 = randInt(rng, 1, difficulty === 1 ? 4 : 6);
+    const d1 = randInt(rng, n1 + 1, difficulty === 1 ? 6 : 10);
+    const n2 = randInt(rng, 1, difficulty === 1 ? 3 : 5);
+    const d2 = randInt(rng, n2 + 1, difficulty === 1 ? 5 : 8);
+    // n1/d1 ÷ n2/d2 = n1*d2 / d1*n2
+    const resultN = n1 * d2;
+    const resultD = d1 * n2;
+    const g = gcdCalc(resultN, resultD);
+    const simplifiedN = resultN / g;
+    const simplifiedD = resultD / g;
+    return {
+      type: "fraction",
+      expression: `${n1}/${d1} ÷ ${n2}/${d2} = ? (분자만 입력, 약분 후)`,
+      answer: simplifiedN,
+      steps: [
+        `나누기는 역수를 곱합니다`,
+        `${n1}/${d1} × ${d2}/${n2} = ${resultN}/${resultD}`,
+        `약분: ${simplifiedN}/${simplifiedD}`,
+      ],
+      unit: "분수의 나눗셈",
+      numbers: [n1, d1, n2, d2],
+    };
+  } else if (type === "surface_area") {
+    // 직육면체 겉넓이
+    const w = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const h = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const d = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const surfaceArea = 2 * (w * h + h * d + w * d);
+    return {
+      type: "area",
+      expression: `가로 ${w}cm, 세로 ${h}cm, 높이 ${d}cm 직육면체의 겉넓이는?`,
+      answer: surfaceArea,
+      steps: [
+        `겉넓이 = 2 × (가로×세로 + 세로×높이 + 가로×높이)`,
+        `2 × (${w}×${h} + ${h}×${d} + ${w}×${d})`,
+        `2 × (${w * h} + ${h * d} + ${w * d}) = ${surfaceArea}cm²`,
+      ],
+      unit: "겉넓이",
+      numbers: [w, h, d],
+    };
+  } else if (type === "average") {
+    // 평균
+    const count = difficulty === 1 ? 3 : difficulty === 3 ? 6 : 4;
+    const values = Array.from({ length: count }, () => randInt(rng, 50, 100));
+    const sum = values.reduce((a, b) => a + b, 0);
+    // Ensure clean average
+    const remainder = sum % count;
+    if (remainder !== 0) values[0] += count - remainder;
+    const adjustedSum = values.reduce((a, b) => a + b, 0);
+    const avg = adjustedSum / count;
+    return {
+      type: "comparison",
+      expression: `시험 점수가 ${values.join(", ")}점일 때 평균은?`,
+      answer: avg,
+      steps: [
+        `합계: ${values.join(" + ")} = ${adjustedSum}`,
+        `평균: ${adjustedSum} ÷ ${count} = ${avg}점`,
+      ],
+      unit: "평균",
+      numbers: values,
+    };
+  } else if (type === "cylinder_volume") {
+    // 원기둥 부피
+    const r = randInt(rng, 2, difficulty === 1 ? 5 : 10);
+    const h = randInt(rng, 3, difficulty === 1 ? 8 : 15);
+    const volume = Math.round(r * r * 3.14 * h * 100) / 100;
+    return {
+      type: "volume",
+      expression: `밑면 반지름 ${r}cm, 높이 ${h}cm인 원기둥의 부피는? (원주율 3.14)`,
+      answer: volume,
+      steps: [
+        `원기둥 부피 = 밑면적 × 높이 = π × r² × h`,
+        `3.14 × ${r}² × ${h} = 3.14 × ${r * r} × ${h} = ${volume}cm³`,
+      ],
+      unit: "원기둥의 부피",
+      numbers: [r, h],
     };
   } else {
     // volume
