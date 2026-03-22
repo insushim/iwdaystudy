@@ -357,7 +357,7 @@ function generateGrade2Math(
         `${kg1}과 ${kg2}를 비교합니다`,
         `${Math.max(kg1, kg2)}kg이 더 무겁습니다`,
       ],
-      unit: "길이 재기",
+      unit: "무게 재기",
       numbers: [kg1, kg2],
     };
   } else if (type === "clock_read") {
@@ -1017,16 +1017,48 @@ function generateGrade5Math(
     const isAdd = rng() > 0.4;
     const n1c = n1 * (lcm / d1);
     const n2c = n2 * (lcm / d2);
-    const resultNum = isAdd ? n1c + n2c : Math.abs(n1c - n2c);
-    const op = isAdd ? "+" : "-";
+
+    // For subtraction, ensure first fraction is larger than second
+    let resultNum: number;
+    let op: string;
+    let finalN1: number, finalN2: number, finalD1: number, finalD2: number;
+
+    if (isAdd) {
+      resultNum = n1c + n2c;
+      op = "+";
+      finalN1 = n1;
+      finalN2 = n2;
+      finalD1 = d1;
+      finalD2 = d2;
+    } else {
+      // For subtraction, make sure we don't get negative results
+      if (n1c >= n2c) {
+        resultNum = n1c - n2c;
+        finalN1 = n1;
+        finalN2 = n2;
+        finalD1 = d1;
+        finalD2 = d2;
+      } else {
+        resultNum = n2c - n1c;
+        finalN1 = n2;
+        finalN2 = n1;
+        finalD1 = d2;
+        finalD2 = d1;
+      }
+      op = "-";
+    }
     if (difficulty === 3) {
       // Mixed operation: add then subtract a third fraction
-      const n3 = randInt(rng, 1, Math.max(1, Math.min(d1 - 1, resultNum - 1)));
-      const n3c = n3 * (lcm / d1);
-      const finalResult = Math.abs(resultNum - n3c);
+      const n3 = randInt(
+        rng,
+        1,
+        Math.max(1, Math.min(finalD1 - 1, resultNum - 1)),
+      );
+      const n3c = n3 * (lcm / finalD1);
+      const finalResult = Math.max(0, resultNum - n3c); // Ensure non-negative
       return {
         type: "fraction",
-        expression: `${n1}/${d1} ${op} ${n2}/${d2} - ${n3}/${d1} = ? (분자만 입력, 분모=${lcm})`,
+        expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} - ${n3}/${finalD1} = ? (분자만 입력, 분모=${lcm})`,
         answer: finalResult,
         steps: [
           `공통분모: ${lcm}`,
@@ -1034,19 +1066,19 @@ function generateGrade5Math(
           `${resultNum}/${lcm} - ${n3c}/${lcm} = ${finalResult}/${lcm}`,
         ],
         unit: "분수의 덧셈",
-        numbers: [n1, d1, n2, d2, n3],
+        numbers: [finalN1, finalD1, finalN2, finalD2, n3],
       };
     }
     return {
       type: "fraction",
-      expression: `${n1}/${d1} ${op} ${n2}/${d2} = ? (분자만 입력)`,
+      expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} = ? (분자만 입력)`,
       answer: resultNum,
       steps: [
         `공통분모: ${lcm}`,
-        `${n1c}/${lcm} ${op} ${n2c}/${lcm} = ${resultNum}/${lcm}`,
+        `${finalN1 * (lcm / finalD1)}/${lcm} ${op} ${finalN2 * (lcm / finalD2)}/${lcm} = ${resultNum}/${lcm}`,
       ],
       unit: isAdd ? "분수의 덧셈" : "분수의 뺄셈",
-      numbers: [n1, d1, n2, d2],
+      numbers: [finalN1, finalD1, finalN2, finalD2],
     };
   } else if (type === "fraction_multiply") {
     const nMax = difficulty === 1 ? 3 : difficulty === 3 ? 8 : 5;

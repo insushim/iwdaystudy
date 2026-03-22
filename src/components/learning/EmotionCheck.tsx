@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { EMOTION_CATEGORIES } from '@/lib/constants';
-import type { EmotionData } from '@/types/learning';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { EMOTION_CATEGORIES } from "@/lib/constants";
+import type { EmotionData } from "@/types/learning";
 
 interface Props {
   onAnswer: (answer: EmotionData) => void;
@@ -12,16 +12,52 @@ interface Props {
 }
 
 const EMOTION_EMOJIS: Record<string, string[]> = {
-  '\uC5D0\uB108\uC9C0': ['\uD83D\uDE34', '\uD83D\uDE10', '\uD83D\uDE0A', '\uD83D\uDE04', '\uD83D\uDD25'],
-  '\uAE30\uBD84': ['\uD83D\uDE22', '\uD83D\uDE15', '\uD83D\uDE42', '\uD83D\uDE01', '\uD83E\uDD73'],
-  '\uAC74\uAC15': ['\uD83E\uDD12', '\uD83D\uDE37', '\uD83D\uDE10', '\uD83D\uDE0A', '\uD83D\uDCAA'],
-  '\uC758\uC695': ['\uD83D\uDE29', '\uD83D\uDE11', '\uD83D\uDE42', '\uD83D\uDCAA', '\uD83D\uDE80'],
-  '\uAC10\uC815': ['\uD83D\uDE30', '\uD83D\uDE1F', '\uD83D\uDE0C', '\uD83D\uDE0A', '\uD83D\uDC96'],
+  "\uC5D0\uB108\uC9C0": [
+    "\uD83D\uDE34",
+    "\uD83D\uDE10",
+    "\uD83D\uDE0A",
+    "\uD83D\uDE04",
+    "\uD83D\uDD25",
+  ],
+  "\uAE30\uBD84": [
+    "\uD83D\uDE22",
+    "\uD83D\uDE15",
+    "\uD83D\uDE42",
+    "\uD83D\uDE01",
+    "\uD83E\uDD73",
+  ],
+  "\uAC74\uAC15": [
+    "\uD83E\uDD12",
+    "\uD83D\uDE37",
+    "\uD83D\uDE10",
+    "\uD83D\uDE0A",
+    "\uD83D\uDCAA",
+  ],
+  "\uC758\uC695": [
+    "\uD83D\uDE29",
+    "\uD83D\uDE11",
+    "\uD83D\uDE42",
+    "\uD83D\uDCAA",
+    "\uD83D\uDE80",
+  ],
+  "\uAC10\uC815": [
+    "\uD83D\uDE30",
+    "\uD83D\uDE1F",
+    "\uD83D\uDE0C",
+    "\uD83D\uDE0A",
+    "\uD83D\uDC96",
+  ],
 };
 
-const EMOTION_COLORS = ['#E74C3C', '#FF6B35', '#F9CA24', '#2ECC71', '#4169E1'];
+const EMOTION_COLORS = ["#E74C3C", "#FF6B35", "#F9CA24", "#2ECC71", "#4169E1"];
 
-const KEYS: (keyof EmotionData)[] = ['energy', 'mood', 'health', 'motivation', 'feeling'];
+const KEYS: (keyof EmotionData)[] = [
+  "energy",
+  "mood",
+  "health",
+  "motivation",
+  "feeling",
+];
 
 export default function EmotionCheck({ onAnswer, showResult }: Props) {
   const [values, setValues] = useState<EmotionData>({
@@ -56,9 +92,7 @@ export default function EmotionCheck({ onAnswer, showResult }: Props) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <p className="text-lg font-bold text-foreground">
-          오늘 기분은 어때요?
-        </p>
+        <p className="text-lg font-bold text-foreground">오늘 기분은 어때요?</p>
         <p className="text-sm text-muted-foreground mt-1">
           이모지를 눌러 오늘의 기분을 알려주세요
         </p>
@@ -68,7 +102,13 @@ export default function EmotionCheck({ onAnswer, showResult }: Props) {
         {EMOTION_CATEGORIES.map((cat, i) => {
           const key = KEYS[i];
           const value = values[key];
-          const emojis = EMOTION_EMOJIS[cat] || ['\uD83D\uDE10', '\uD83D\uDE10', '\uD83D\uDE10', '\uD83D\uDE10', '\uD83D\uDE10'];
+          const emojis = EMOTION_EMOJIS[cat] || [
+            "\uD83D\uDE10",
+            "\uD83D\uDE10",
+            "\uD83D\uDE10",
+            "\uD83D\uDE10",
+            "\uD83D\uDE10",
+          ];
           const emojiIndex = getEmojiIndex(value);
           const color = getColor(value);
 
@@ -104,14 +144,18 @@ export default function EmotionCheck({ onAnswer, showResult }: Props) {
                     whileTap={!showResult ? { scale: 0.9 } : undefined}
                     className={`flex-1 flex items-center justify-center h-11 rounded-xl text-xl transition-all min-h-[44px] ${
                       ei === emojiIndex
-                        ? 'ring-2 shadow-sm scale-110'
-                        : 'hover:bg-muted/50 opacity-60'
-                    } ${showResult ? 'cursor-default' : 'cursor-pointer'}`}
-                    style={ei === emojiIndex ? {
-                      ringColor: color,
-                      backgroundColor: `${color}15`,
-                      borderColor: color,
-                    } : {}}
+                        ? "ring-2 shadow-sm scale-110"
+                        : "hover:bg-muted/50 opacity-60"
+                    } ${showResult ? "cursor-default" : "cursor-pointer"}`}
+                    style={
+                      ei === emojiIndex
+                        ? ({
+                            "--tw-ring-color": color,
+                            backgroundColor: `${color}15`,
+                            borderColor: color,
+                          } as React.CSSProperties)
+                        : {}
+                    }
                   >
                     {emoji}
                   </motion.button>
@@ -126,7 +170,7 @@ export default function EmotionCheck({ onAnswer, showResult }: Props) {
                     className="h-full rounded-full"
                     style={{ backgroundColor: color }}
                     animate={{ width: `${value}%` }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   />
                 </div>
 
@@ -144,7 +188,7 @@ export default function EmotionCheck({ onAnswer, showResult }: Props) {
                     [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-3 [&::-moz-range-thumb]:shadow-md [&::-moz-range-thumb]:cursor-pointer"
                   style={{
                     // @ts-ignore
-                    '--webkit-slider-thumb-border-color': color,
+                    "--webkit-slider-thumb-border-color": color,
                   }}
                 />
               </div>

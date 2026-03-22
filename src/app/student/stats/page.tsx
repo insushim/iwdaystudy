@@ -560,8 +560,8 @@ export default function StudentStatsPage() {
                         borderRadius: "8px",
                         fontSize: "12px",
                       }}
-                      formatter={(value: number) => [
-                        `${value}P`,
+                      formatter={(value: number | undefined) => [
+                        `${value ?? 0}P`,
                         "획득 포인트",
                       ]}
                     />
@@ -599,8 +599,8 @@ export default function StudentStatsPage() {
                         borderRadius: "8px",
                         fontSize: "12px",
                       }}
-                      formatter={(value: number) => [
-                        value === 0 ? "미학습" : `${value}점`,
+                      formatter={(value: number | undefined) => [
+                        (value ?? 0) === 0 ? "미학습" : `${value ?? 0}점`,
                         "점수",
                       ]}
                     />
@@ -660,7 +660,10 @@ export default function StudentStatsPage() {
                       borderRadius: "8px",
                       fontSize: "12px",
                     }}
-                    formatter={(value: number) => [`${value}점`, "평균"]}
+                    formatter={(value: number | undefined) => [
+                      `${value ?? 0}점`,
+                      "평균",
+                    ]}
                   />
                   <Bar dataKey="score" radius={[6, 6, 0, 0]} maxBarSize={48}>
                     {weekComparison.map((entry, idx) => (

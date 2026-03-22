@@ -370,8 +370,8 @@ export default function ParentChildrenPage() {
                               borderRadius: "8px",
                               fontSize: "12px",
                             }}
-                            formatter={(value: number) => [
-                              value === 0 ? "미학습" : `${value}점`,
+                            formatter={(value: number | undefined) => [
+                              (value ?? 0) === 0 ? "미학습" : `${value ?? 0}점`,
                               "점수",
                             ]}
                           />

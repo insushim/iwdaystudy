@@ -65,7 +65,7 @@ const GRADE_3_4_HANJA: HanjaData[] = [
   {
     character: "金",
     reading: "금",
-    meaning: "쇠 금",
+    meaning: "금 금",
     strokes: 8,
     words: ["금메달", "황금", "금속"],
     sentence: "금메달을 따기 위해 열심히 연습했다.",

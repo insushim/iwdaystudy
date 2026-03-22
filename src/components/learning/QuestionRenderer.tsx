@@ -146,6 +146,7 @@ export default function QuestionRenderer({
       case "safety":
         return <SafetyQuiz {...commonProps} />;
 
+      case "korean":
       case "creative":
       case "general_knowledge":
       case "science":

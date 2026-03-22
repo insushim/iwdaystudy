@@ -89,7 +89,10 @@ export function SubjectChart({
                     borderRadius: "8px",
                     fontSize: "12px",
                   }}
-                  formatter={(value: number) => [`${value}%`, "정답률"]}
+                  formatter={(value: number | undefined) => [
+                    `${value ?? 0}%`,
+                    "정답률",
+                  ]}
                 />
                 <Bar dataKey="accuracy" radius={[6, 6, 0, 0]} maxBarSize={40}>
                   {data.map((entry, index) => (

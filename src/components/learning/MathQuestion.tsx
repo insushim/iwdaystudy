@@ -27,13 +27,18 @@ export default function MathQuestion({
   const [showSteps, setShowSteps] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
-  const variant = (content?.variant as string) || "choice";
-  const expression = content?.expression || "";
+  // Type guard for content
+  const mathContent = content as any;
+  const variant = mathContent?.variant || "choice";
+  const expression = mathContent?.expression || "";
   const correctAnswer = String(
-    answer?.correct ?? answer?.answer ?? answer?.text ?? "",
+    (answer as any)?.correct ??
+      (answer as any)?.answer ??
+      (answer as any)?.text ??
+      "",
   );
-  const choices: string[] = content?.choices || [];
-  const steps: string[] = answer?.steps || [];
+  const choices: string[] = mathContent?.choices || [];
+  const steps: string[] = (answer as any)?.steps || [];
   const operator = expression.match(/[+\-]/)?.[0] || "";
   const operands = expression
     .split(/\s*[+\-]\s*/)
@@ -56,9 +61,9 @@ export default function MathQuestion({
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {content?.unit && (
+      {mathContent?.unit && (
         <span className="inline-flex items-center gap-1 rounded-full bg-[#FF6B35]/10 px-3 py-1 text-xs font-semibold text-[#FF6B35]">
-          {content.unit}
+          {mathContent.unit}
         </span>
       )}
 

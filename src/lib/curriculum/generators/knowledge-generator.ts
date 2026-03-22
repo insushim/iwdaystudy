@@ -34,7 +34,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   // === 동물 (35) ===
   {
     text: "강아지의 새끼를 ___라고 부른다.",
-    answer: "강아지",
+    answer: "새끼 강아지",
     category: "동물",
   },
   {
@@ -1553,7 +1553,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   {
     text: "우리나라에서 가장 높은 산은 ___이다.",
-    answer: "한라산",
+    answer: "백두산",
     category: "지리",
   },
   {

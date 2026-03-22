@@ -449,8 +449,8 @@ export default function ParentReportsPage() {
                           borderRadius: "8px",
                           fontSize: "12px",
                         }}
-                        formatter={(value: number) => [
-                          `${value}점`,
+                        formatter={(value: number | undefined) => [
+                          `${value ?? 0}점`,
                           "평균 점수",
                         ]}
                       />

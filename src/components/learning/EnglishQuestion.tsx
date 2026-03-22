@@ -22,21 +22,28 @@ export default function EnglishQuestion({
   showResult,
   isCorrect,
 }: Props) {
+  // Type guard for content
+  const englishContent = content as any;
   const [selected, setSelected] = useState<string | null>(null);
-  const variant: string = (content?.variant as string) || "word";
+  const variant: string = englishContent?.variant || "word";
   const correctWord = String(
-    answer?.correct ?? answer?.word ?? answer?.text ?? "",
+    (answer as any)?.correct ??
+      (answer as any)?.word ??
+      (answer as any)?.text ??
+      "",
   );
-  const choices: string[] = content?.choices || [];
+  const choices: string[] = englishContent?.choices || [];
 
   const handleSpeak = useCallback(() => {
     if (typeof window === "undefined" || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(content.sentence);
+    const utterance = new SpeechSynthesisUtterance(
+      englishContent?.sentence || "",
+    );
     utterance.lang = "en-US";
     utterance.rate = 0.75;
     window.speechSynthesis.speak(utterance);
-  }, [content.sentence]);
+  }, [englishContent?.sentence]);
 
   const handleSelect = (choice: string) => {
     if (showResult) return;
@@ -44,9 +51,9 @@ export default function EnglishQuestion({
     onAnswer(choice);
   };
 
-  const maskedSentence = String(content?.sentence || "").replace(
+  const maskedSentence = String(englishContent?.sentence || "").replace(
     new RegExp(
-      `\\b${String(content?.word || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
+      `\\b${String(englishContent?.word || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
       "i",
     ),
     "_____",
@@ -65,7 +72,7 @@ export default function EnglishQuestion({
             다음 뜻에 해당하는 영단어를 고르세요
           </p>
           <p className="text-3xl font-black text-foreground">
-            {content.translation || content.meaning || ""}
+            {englishContent?.translation || englishContent?.meaning || ""}
           </p>
         </motion.div>
       )}
@@ -89,9 +96,9 @@ export default function EnglishQuestion({
               문장을 눌러 발음을 들어보세요
             </p>
           </motion.button>
-          {content.translation && (
+          {englishContent?.translation && (
             <p className="text-sm text-muted-foreground">
-              뜻: {content.translation}
+              뜻: {englishContent?.translation}
             </p>
           )}
         </>
@@ -119,14 +126,14 @@ export default function EnglishQuestion({
 
       {variant !== "meaning" && (
         <div className="flex flex-wrap items-center justify-center gap-3">
-          {content.pronunciation && (
+          {englishContent?.pronunciation && (
             <div className="rounded-full bg-muted px-4 py-2 text-sm text-muted-foreground">
-              [{content.pronunciation}]
+              [{englishContent?.pronunciation}]
             </div>
           )}
-          {content.practice?.length > 0 && (
+          {englishContent?.practice?.length > 0 && (
             <div className="rounded-full bg-[#4169E1]/10 px-4 py-2 text-sm font-medium text-[#4169E1]">
-              관련 단어 {content.practice.join(", ")}
+              관련 단어 {englishContent?.practice.join(", ")}
             </div>
           )}
         </div>

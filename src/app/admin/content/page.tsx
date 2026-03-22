@@ -70,7 +70,10 @@ function loadSetsFromStorage(): ContentSet[] {
       // Determine primary subject from questions
       const subjectCounts: Record<string, number> = {};
       for (const q of setQuestions) {
-        if (q.subject !== "emotion_check" && q.subject !== "readiness_check") {
+        if (
+          q.question_type !== "emotion_check" &&
+          q.question_type !== "readiness_check"
+        ) {
           subjectCounts[q.subject] = (subjectCounts[q.subject] || 0) + 1;
         }
       }

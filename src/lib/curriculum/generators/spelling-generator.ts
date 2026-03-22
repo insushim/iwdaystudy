@@ -38,6 +38,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
     wrong: "안 되",
     explanation: "'안 돼'(안 되어)가 올바른 표현입니다.",
     gradeMin: 1,
+    sentence: "그건 {word}요.",
   },
   {
     correct: "왜",
@@ -48,14 +49,16 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   {
     correct: "개",
     wrong: "게",
-    explanation: "'개'가 올바른 표기입니다.",
+    explanation: "강아지 한 '개'가 올바른 표기입니다.",
     gradeMin: 1,
+    sentence: "강아지 한 {word}가 있어요.",
   },
   {
     correct: "네",
     wrong: "내",
     explanation: "'네'(당신의)와 '내'(나의)를 구별합니다.",
     gradeMin: 1,
+    sentence: "{word} 가방이 예뻐요.",
   },
 
   // 된소리/거센소리 혼동

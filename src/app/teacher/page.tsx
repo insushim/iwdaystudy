@@ -570,7 +570,10 @@ export default function TeacherDashboardPage() {
                           borderRadius: "8px",
                           fontSize: "12px",
                         }}
-                        formatter={(value: number) => [`${value}%`, "완료율"]}
+                        formatter={(value: number | undefined) => [
+                          `${value ?? 0}%`,
+                          "완료율",
+                        ]}
                       />
                       <Line
                         type="monotone"
@@ -634,7 +637,10 @@ export default function TeacherDashboardPage() {
                             borderRadius: "8px",
                             fontSize: "12px",
                           }}
-                          formatter={(value: number) => [`${value}점`, "평균"]}
+                          formatter={(value: number | undefined) => [
+                            `${value ?? 0}점`,
+                            "평균",
+                          ]}
                         />
                         <Bar
                           dataKey="avg"

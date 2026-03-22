@@ -1,14 +1,22 @@
-'use client';
+"use client";
 
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Play, CheckCircle, Clock, BookOpen, Sparkles, Flame, Zap } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { SUBJECTS } from '@/types/learning';
-import type { DailySet, Question } from '@/types/database';
+import { useMemo } from "react";
+import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Play,
+  CheckCircle,
+  Clock,
+  BookOpen,
+  Sparkles,
+  Flame,
+  Zap,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { SUBJECTS } from "@/types/learning";
+import type { DailySet, Question } from "@/types/database";
 
 interface Props {
   dailySet: DailySet;
@@ -18,20 +26,27 @@ interface Props {
   streak?: number;
 }
 
-export default function DailySetCard({ dailySet, questions, isCompleted = false, score, streak = 0 }: Props) {
+export default function DailySetCard({
+  dailySet,
+  questions,
+  isCompleted = false,
+  score,
+  streak = 0,
+}: Props) {
   const router = useRouter();
 
   // Collect unique subjects from questions
   const uniqueSubjects = questions
-    ? Array.from(new Set(questions.map((q) => q.subject)))
-        .filter((s) => !['emotion_check', 'readiness_check'].includes(s))
+    ? Array.from(new Set(questions.map((q) => q.subject))).filter(
+        (s) => !["emotion_check", "readiness_check"].includes(s),
+      )
     : [];
 
   // Check if this is today's set
   const isToday = useMemo(() => {
-    const today = new Date().toISOString().split('T')[0];
-    return dailySet.date === today;
-  }, [dailySet.date]);
+    const today = new Date().toISOString().split("T")[0];
+    return dailySet.created_at.split("T")[0] === today;
+  }, [dailySet.created_at]);
 
   // Completion percentage ring for score
   const scorePercent = score !== undefined ? Math.min(score, 100) : 0;
@@ -42,16 +57,22 @@ export default function DailySetCard({ dailySet, questions, isCompleted = false,
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <Card className={`learning-card overflow-hidden ${isCompleted ? 'border-green-300 bg-green-50/50' : 'border-primary/20'}`}>
+      <Card
+        className={`learning-card overflow-hidden ${isCompleted ? "border-green-300 bg-green-50/50" : "border-primary/20"}`}
+      >
         {/* Top colored bar with gradient */}
-        <div className={`h-1.5 ${isCompleted ? 'bg-green-500' : 'bg-gradient-to-r from-primary via-ara-blue to-ara-purple'}`} />
+        <div
+          className={`h-1.5 ${isCompleted ? "bg-green-500" : "bg-gradient-to-r from-primary via-ara-blue to-ara-purple"}`}
+        />
 
         <CardContent className="p-5">
           {/* Header row */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h3 className="text-lg font-bold text-foreground">{dailySet.title}</h3>
+                <h3 className="text-lg font-bold text-foreground">
+                  {dailySet.title}
+                </h3>
                 {streak > 0 && !isCompleted && (
                   <motion.div
                     animate={{ scale: [1, 1.1, 1] }}
@@ -59,19 +80,21 @@ export default function DailySetCard({ dailySet, questions, isCompleted = false,
                     className="flex items-center gap-0.5 rounded-full bg-orange-50 px-2 py-0.5 border border-orange-200"
                   >
                     <Flame className="h-3 w-3 text-orange-500" />
-                    <span className="text-[10px] font-bold text-orange-600">{streak}일</span>
+                    <span className="text-[10px] font-bold text-orange-600">
+                      {streak}일
+                    </span>
                   </motion.div>
                 )}
               </div>
               <p className="text-sm text-muted-foreground mt-1">
-                {dailySet.description || '오늘의 아침학습'}
+                {dailySet.description || "오늘의 아침학습"}
               </p>
             </div>
             {isCompleted ? (
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 200 }}
+                transition={{ type: "spring", stiffness: 200 }}
                 className="flex items-center gap-1 text-green-600"
               >
                 <CheckCircle className="w-6 h-6" />
@@ -81,13 +104,19 @@ export default function DailySetCard({ dailySet, questions, isCompleted = false,
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <Badge variant="outline" className="border-primary text-primary gap-1 bg-primary/5">
+                <Badge
+                  variant="outline"
+                  className="border-primary text-primary gap-1 bg-primary/5"
+                >
                   <Sparkles className="h-3 w-3" />
                   오늘의 학습
                 </Badge>
               </motion.div>
             ) : (
-              <Badge variant="outline" className="border-primary text-primary gap-1">
+              <Badge
+                variant="outline"
+                className="border-primary text-primary gap-1"
+              >
                 <Sparkles className="h-3 w-3" />
                 오늘의 학습
               </Badge>
@@ -109,9 +138,18 @@ export default function DailySetCard({ dailySet, questions, isCompleted = false,
                 {/* Mini score ring */}
                 <div className="relative w-6 h-6">
                   <svg className="w-full h-full -rotate-90" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" fill="none" stroke="#E5E7EB" strokeWidth="2" />
                     <circle
-                      cx="12" cy="12" r="10"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      fill="none"
+                      stroke="#E5E7EB"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
                       fill="none"
                       stroke="#22C55E"
                       strokeWidth="2"

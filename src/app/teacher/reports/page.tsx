@@ -467,14 +467,17 @@ export default function TeacherReportsPage() {
                               borderRadius: "8px",
                               fontSize: "12px",
                             }}
-                            formatter={(value: number, name: string) => {
+                            formatter={(
+                              value: number | undefined,
+                              name: string | undefined,
+                            ) => {
                               const label =
                                 name === "avg"
                                   ? "평균"
                                   : name === "highest"
                                     ? "최고"
                                     : "최저";
-                              return [`${value}점`, label];
+                              return [`${value ?? 0}점`, label];
                             }}
                           />
                           <Bar
@@ -613,7 +616,10 @@ export default function TeacherReportsPage() {
                         borderRadius: "8px",
                         fontSize: "12px",
                       }}
-                      formatter={(value: number) => [`${value}명`, "참여"]}
+                      formatter={(value: number | undefined) => [
+                        `${value ?? 0}명`,
+                        "참여",
+                      ]}
                     />
                     <Bar
                       dataKey="attended"
