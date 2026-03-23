@@ -5957,12 +5957,13 @@ export function generateEnglishPool(
       "대화표현",
       "문장만들기",
     ]);
-    pool = pool.filter((entry) => {
+    const filtered = pool.filter((entry) => {
       const wordLen = entry.word.split(/\s+/)[0].length; // first word length
       const isShort = wordLen <= 5;
       const isEasyTopic = entry.unit ? easyTopics.has(entry.unit) : false;
       return isShort || isEasyTopic;
     });
+    if (filtered.length > 0) pool = filtered;
   } else if (difficulty === 3) {
     // Hard: longer words (>5 chars) and complex topics (science, environment, feelings)
     const hardTopics = new Set([
@@ -5988,12 +5989,13 @@ export function generateEnglishPool(
       "듣기이해",
       "그림보고영어",
     ]);
-    pool = pool.filter((entry) => {
+    const filtered = pool.filter((entry) => {
       const wordLen = entry.word.split(/\s+/)[0].length;
       const isLong = wordLen > 5;
       const isHardTopic = entry.unit ? hardTopics.has(entry.unit) : false;
       return isLong || isHardTopic;
     });
+    if (filtered.length > 0) pool = filtered;
   }
   // difficulty === 2: no filtering (current behavior)
 

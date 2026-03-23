@@ -75,6 +75,7 @@ export const useLearningStore = create<LearningState>((set, get) => ({
         answer: null,
         isCorrect: null,
         isAnswered: false,
+        score: 0,
         timeSpent: 0,
       })),
       currentIndex: 0,
@@ -101,6 +102,7 @@ export const useLearningStore = create<LearningState>((set, get) => ({
               answer,
               isCorrect,
               isAnswered: true,
+              score,
               timeSpent: state.timeSpent,
             }
           : qs,

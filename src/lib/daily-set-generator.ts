@@ -330,7 +330,8 @@ function filterScienceByProgress(
 ): KnowledgeEntry[] {
   const available = getAvailableScienceUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-2 or no sequence defined
-  return items.filter((m) => !m.unit || available.has(m.unit));
+  const filtered = items.filter((m) => !m.unit || available.has(m.unit));
+  return filtered.length > 0 ? filtered : items;
 }
 
 /**
@@ -345,7 +346,8 @@ function filterEnglishByProgress(
 ): EnglishEntry[] {
   const available = getAvailableEnglishUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-2 or no sequence defined
-  return items.filter((m) => !m.unit || available.has(m.unit));
+  const filtered = items.filter((m) => !m.unit || available.has(m.unit));
+  return filtered.length > 0 ? filtered : items;
 }
 
 /**
@@ -360,7 +362,8 @@ function filterSocialByProgress(
 ): KnowledgeEntry[] {
   const available = getAvailableSocialUnits(grade, semester);
   if (available.size === 0) return items; // grades 1-4 or no sequence defined
-  return items.filter((m) => !m.unit || available.has(m.unit));
+  const filtered = items.filter((m) => !m.unit || available.has(m.unit));
+  return filtered.length > 0 ? filtered : items;
 }
 
 // ============================================================

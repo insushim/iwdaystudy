@@ -9,6 +9,7 @@ export interface QuestionState {
   answer: any;
   isCorrect: boolean | null;
   isAnswered: boolean;
+  score: number;
   timeSpent: number;
 }
 

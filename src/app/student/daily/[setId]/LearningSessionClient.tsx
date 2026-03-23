@@ -396,13 +396,13 @@ export default function LearningSessionClient() {
     };
     saveLearningRecord(record);
 
-    const responses: QuestionResponse[] = states.map((qs, i) => ({
+    const responses: QuestionResponse[] = states.map((qs) => ({
       id: generateId(),
       learning_record_id: recordId,
       question_id: qs.questionId,
       student_answer: JSON.stringify(qs.answer),
       is_correct: qs.isCorrect,
-      score: qs.isCorrect ? questions[i].points : 0,
+      score: qs.score,
       time_spent_seconds: qs.timeSpent,
       attempts: 1,
       created_at: new Date().toISOString(),

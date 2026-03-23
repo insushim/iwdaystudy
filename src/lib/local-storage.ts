@@ -36,6 +36,7 @@ function getList<T>(key: string): T[] {
 }
 
 function saveList<T>(key: string, items: T[]): void {
+  if (typeof window === "undefined") return;
   localStorage.setItem(key, JSON.stringify(items));
 }
 
