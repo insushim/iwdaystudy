@@ -833,6 +833,7 @@ export default function LearningSessionClient() {
               onAnswer={handleAnswer}
               showResult={!!currentState?.isAnswered}
               isCorrect={currentState?.isCorrect ?? null}
+              hideCorrectAnswer={true}
             />
           </AnimatePresence>
 

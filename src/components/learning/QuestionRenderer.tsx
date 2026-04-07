@@ -25,6 +25,7 @@ interface Props {
   onAnswer: (answer: unknown) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 // Mini confetti burst for correct answers
@@ -63,6 +64,7 @@ export default function QuestionRenderer({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   const [showHint, setShowHint] = useState(false);
   const [showBurst, setShowBurst] = useState(false);
@@ -96,6 +98,7 @@ export default function QuestionRenderer({
       onAnswer,
       showResult,
       isCorrect,
+      hideCorrectAnswer,
     };
 
     // Route special question types first
@@ -256,9 +259,9 @@ export default function QuestionRenderer({
             {renderQuestion()}
           </motion.div>
 
-          {/* Explanation on result */}
+          {/* Explanation on result (hidden when hideCorrectAnswer and wrong) */}
           <AnimatePresence>
-            {showResult && question.explanation && (
+            {showResult && question.explanation && !(hideCorrectAnswer && !isCorrect) && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}

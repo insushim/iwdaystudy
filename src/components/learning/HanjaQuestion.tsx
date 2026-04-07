@@ -13,6 +13,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 const OPTION_LABELS = ["1", "2", "3", "4"];
@@ -25,6 +26,7 @@ export default function HanjaQuestion({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState("");
@@ -138,11 +140,15 @@ export default function HanjaQuestion({
                 <div
                   key={`${choice}-${index}`}
                   className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
-                    choice === correct
-                      ? "border-green-400 bg-green-50 text-green-700"
-                      : selected === choice
+                    hideCorrectAnswer && !isCorrect
+                      ? selected === choice
                         ? "border-red-300 bg-red-50 text-red-500"
                         : "border-border text-muted-foreground"
+                      : choice === correct
+                        ? "border-green-400 bg-green-50 text-green-700"
+                        : selected === choice
+                          ? "border-red-300 bg-red-50 text-red-500"
+                          : "border-border text-muted-foreground"
                   }`}
                 >
                   <span className="mr-2 text-sm text-muted-foreground">
@@ -175,7 +181,7 @@ export default function HanjaQuestion({
       ) : (
         <XCircle className="h-5 w-5 text-red-500" />
       )}
-      <span>{isCorrect ? "정답이에요!" : `정답: ${correct}`}</span>
+      <span>{isCorrect ? "정답이에요!" : hideCorrectAnswer ? "틀렸어요! 나중에 다시 풀어봐요" : `정답: ${correct}`}</span>
     </motion.div>
   );
 
@@ -306,11 +312,15 @@ export default function HanjaQuestion({
                   <div
                     key={`${choice}-${index}`}
                     className={`flex items-center justify-center rounded-2xl border-2 h-24 text-5xl font-serif ${
-                      choice === correctAnswer
-                        ? "border-green-400 bg-green-50 text-green-700"
-                        : selected === choice
+                      hideCorrectAnswer && !isCorrect
+                        ? selected === choice
                           ? "border-red-300 bg-red-50 text-red-400"
                           : "border-border text-muted-foreground/50"
+                        : choice === correctAnswer
+                          ? "border-green-400 bg-green-50 text-green-700"
+                          : selected === choice
+                            ? "border-red-300 bg-red-50 text-red-400"
+                            : "border-border text-muted-foreground/50"
                     }`}
                   >
                     {choice}
@@ -403,13 +413,15 @@ export default function HanjaQuestion({
                   <span className="font-bold text-red-500">{selected}</span>
                 </p>
               )}
-              <div className="flex items-center gap-2 text-lg font-bold text-[#8B4513]">
-                <span className="font-serif text-4xl">{character}</span>
-                <span>=</span>
-                <span>{meaning}</span>
-                <span>=</span>
-                <span>{correctAnswer}</span>
-              </div>
+              {!(hideCorrectAnswer && !isCorrect) && (
+                <div className="flex items-center gap-2 text-lg font-bold text-[#8B4513]">
+                  <span className="font-serif text-4xl">{character}</span>
+                  <span>=</span>
+                  <span>{meaning}</span>
+                  <span>=</span>
+                  <span>{correctAnswer}</span>
+                </div>
+              )}
               <WordBadges />
             </motion.div>
           )}

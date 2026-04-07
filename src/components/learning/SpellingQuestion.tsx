@@ -10,6 +10,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 const OPTION_LABELS = ["1", "2", "3", "4"];
@@ -19,6 +20,7 @@ export default function SpellingQuestion({
   answer,
   onAnswer,
   showResult,
+  hideCorrectAnswer = false,
 }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const variant = (content?.variant as string) || "sentence";
@@ -86,7 +88,7 @@ export default function SpellingQuestion({
                 ? "border-[#A18CD1] bg-[#A18CD1]/10 ring-2 ring-[#A18CD1]/30 shadow-md shadow-[#A18CD1]/10"
                 : "border-border hover:border-[#A18CD1]/50 hover:bg-[#A18CD1]/5"
             } ${
-              showResult && option === correctAnswer
+              showResult && option === correctAnswer && !(hideCorrectAnswer && selected !== option)
                 ? "border-green-400 bg-green-50 ring-2 ring-green-200"
                 : ""
             } ${
@@ -105,7 +107,7 @@ export default function SpellingQuestion({
               {option}
             </p>
 
-            {showResult && option === correctAnswer && (
+            {showResult && option === correctAnswer && !(hideCorrectAnswer && selected !== option) && (
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -129,7 +131,7 @@ export default function SpellingQuestion({
 
       {/* Show correction info for 'word' variant after answering */}
       <AnimatePresence>
-        {showResult && variant === "word" && correctPart && (
+        {showResult && variant === "word" && correctPart && !(hideCorrectAnswer && selected !== correctAnswer) && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -144,7 +146,7 @@ export default function SpellingQuestion({
       </AnimatePresence>
 
       <AnimatePresence>
-        {showResult && explanation && (
+        {showResult && explanation && !(hideCorrectAnswer && selected !== correctAnswer) && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}

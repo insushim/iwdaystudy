@@ -10,6 +10,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 export default function VocabQuestion({
@@ -18,6 +19,7 @@ export default function VocabQuestion({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -141,20 +143,24 @@ export default function VocabQuestion({
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center gap-4"
           >
-            {/* Answer reveal */}
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              className="text-5xl font-black text-foreground"
-            >
-              {correctAnswer}
-            </motion.div>
+            {/* Answer reveal (hidden when hideCorrectAnswer and wrong) */}
+            {!(hideCorrectAnswer && !isCorrect) && (
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="text-5xl font-black text-foreground"
+              >
+                {correctAnswer}
+              </motion.div>
+            )}
 
             {/* Show meanings below answer */}
-            <div className="text-center text-sm text-muted-foreground">
-              <span className="font-medium">뜻:</span> {meanings.join(", ")}
-            </div>
+            {!(hideCorrectAnswer && !isCorrect) && (
+              <div className="text-center text-sm text-muted-foreground">
+                <span className="font-medium">뜻:</span> {meanings.join(", ")}
+              </div>
+            )}
 
             <motion.div
               initial={{ scale: 0.8 }}
@@ -171,6 +177,11 @@ export default function VocabQuestion({
                   <CheckCircle className="h-5 w-5 text-green-500" />
                   <span>맞았어요!</span>
                 </>
+              ) : hideCorrectAnswer ? (
+                <>
+                  <XCircle className="h-5 w-5 text-red-500" />
+                  <span>틀렸어요! 나중에 다시 풀어봐요</span>
+                </>
               ) : (
                 <>
                   <XCircle className="h-5 w-5 text-red-500" />
@@ -186,11 +197,15 @@ export default function VocabQuestion({
                   <div
                     key={i}
                     className={`h-12 min-h-[44px] flex items-center justify-center text-base font-bold rounded-xl border-2 ${
-                      choice === correctAnswer
-                        ? "border-green-400 bg-green-50 text-green-700"
-                        : selected === choice
+                      hideCorrectAnswer && !isCorrect
+                        ? selected === choice
                           ? "border-red-300 bg-red-50 text-red-500 line-through"
                           : "border-border text-muted-foreground"
+                        : choice === correctAnswer
+                          ? "border-green-400 bg-green-50 text-green-700"
+                          : selected === choice
+                            ? "border-red-300 bg-red-50 text-red-500 line-through"
+                            : "border-border text-muted-foreground"
                     }`}
                   >
                     {choice}

@@ -11,6 +11,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 export default function SafetyQuiz({
@@ -19,6 +20,7 @@ export default function SafetyQuiz({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   const correctAnswer = answer?.answer || answer?.correct || answer?.text || "";
   const [selected, setSelected] = useState<string | null>(null);
@@ -48,7 +50,7 @@ export default function SafetyQuiz({
                 : "bg-red-100 text-red-700"
             }`}
           >
-            {correctAnswer}
+            {hideCorrectAnswer && !isCorrect ? "?" : correctAnswer}
           </span>
         ) : (
           <span className="inline-block min-w-[4ch] border-b-2 border-[#E74C3C] px-2 mx-1">
@@ -202,6 +204,11 @@ export default function SafetyQuiz({
                   <CheckCircle className="h-5 w-5 text-green-500" />
                   <span>맞았어요! 안전을 잘 알고 있네요!</span>
                 </>
+              ) : hideCorrectAnswer ? (
+                <>
+                  <XCircle className="h-5 w-5 text-red-500" />
+                  <span>틀렸어요! 나중에 다시 풀어봐요</span>
+                </>
               ) : (
                 <>
                   <XCircle className="h-5 w-5 text-red-500" />
@@ -216,11 +223,15 @@ export default function SafetyQuiz({
                   <div
                     key={i}
                     className={`flex items-center gap-2 h-auto min-h-[48px] py-2 px-4 text-sm font-bold rounded-xl border-2 ${
-                      choice === correctAnswer
-                        ? "border-green-400 bg-green-50 text-green-700"
-                        : selected === choice
+                      hideCorrectAnswer && !isCorrect
+                        ? selected === choice
                           ? "border-red-300 bg-red-50 text-red-500"
                           : "border-border text-muted-foreground"
+                        : choice === correctAnswer
+                          ? "border-green-400 bg-green-50 text-green-700"
+                          : selected === choice
+                            ? "border-red-300 bg-red-50 text-red-500"
+                            : "border-border text-muted-foreground"
                     }`}
                   >
                     <span className="text-muted-foreground flex-shrink-0">

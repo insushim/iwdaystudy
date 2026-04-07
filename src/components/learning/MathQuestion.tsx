@@ -12,6 +12,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 const OPTION_LABELS = ["1", "2", "3", "4"];
@@ -22,6 +23,7 @@ export default function MathQuestion({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [showSteps, setShowSteps] = useState(false);
@@ -99,7 +101,7 @@ export default function MathQuestion({
               <span>{operands[1]}</span>
             </div>
             <div className="pr-2 pt-1 text-muted-foreground/40">
-              {showResult ? correctAnswer : "?"}
+              {showResult && !(hideCorrectAnswer && !isCorrect) ? correctAnswer : "?"}
             </div>
           </div>
         </motion.div>
@@ -183,7 +185,7 @@ export default function MathQuestion({
               ) : (
                 <XCircle className="h-6 w-6 text-red-500" />
               )}
-              <span>{isCorrect ? "정답이에요" : `정답: ${correctAnswer}`}</span>
+              <span>{isCorrect ? "정답이에요" : hideCorrectAnswer ? "틀렸어요! 나중에 다시 풀어봐요" : `정답: ${correctAnswer}`}</span>
             </motion.div>
 
             {choices.length > 0 && (
@@ -192,11 +194,15 @@ export default function MathQuestion({
                   <div
                     key={choice}
                     className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
-                      choice === correctAnswer
-                        ? "border-green-400 bg-green-50 text-green-700"
-                        : selected === choice
+                      hideCorrectAnswer && !isCorrect
+                        ? selected === choice
                           ? "border-red-300 bg-red-50 text-red-500"
                           : "border-border text-muted-foreground"
+                        : choice === correctAnswer
+                          ? "border-green-400 bg-green-50 text-green-700"
+                          : selected === choice
+                            ? "border-red-300 bg-red-50 text-red-500"
+                            : "border-border text-muted-foreground"
                     }`}
                   >
                     <span className="mr-2 text-sm text-muted-foreground">
@@ -208,7 +214,7 @@ export default function MathQuestion({
               </div>
             )}
 
-            {steps.length > 0 && (
+            {steps.length > 0 && !(hideCorrectAnswer && !isCorrect) && (
               <div className="w-full max-w-sm">
                 <Button
                   variant="ghost"

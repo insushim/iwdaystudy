@@ -11,6 +11,7 @@ interface Props {
   onAnswer: (answer: string) => void;
   showResult: boolean;
   isCorrect: boolean | null;
+  hideCorrectAnswer?: boolean;
 }
 
 const OPTION_LABELS = ["1", "2", "3", "4"];
@@ -21,6 +22,7 @@ export default function EnglishQuestion({
   onAnswer,
   showResult,
   isCorrect,
+  hideCorrectAnswer = false,
 }: Props) {
   // Type guard for content
   const englishContent = content as any;
@@ -221,7 +223,7 @@ export default function EnglishQuestion({
               ) : (
                 <XCircle className="h-5 w-5 text-red-500" />
               )}
-              <span>{isCorrect ? "정답이에요" : `정답: ${correctWord}`}</span>
+              <span>{isCorrect ? "정답이에요" : hideCorrectAnswer ? "틀렸어요! 나중에 다시 풀어봐요" : `정답: ${correctWord}`}</span>
             </motion.div>
 
             <div className="grid grid-cols-2 gap-2 w-full max-w-md">
@@ -229,11 +231,15 @@ export default function EnglishQuestion({
                 <div
                   key={choice}
                   className={`flex items-center justify-center rounded-xl border-2 px-4 py-3 text-base font-bold min-h-[44px] ${
-                    choice === correctWord
-                      ? "border-green-400 bg-green-50 text-green-700"
-                      : selected === choice
+                    hideCorrectAnswer && !isCorrect
+                      ? selected === choice
                         ? "border-red-300 bg-red-50 text-red-500"
                         : "border-border text-muted-foreground"
+                      : choice === correctWord
+                        ? "border-green-400 bg-green-50 text-green-700"
+                        : selected === choice
+                          ? "border-red-300 bg-red-50 text-red-500"
+                          : "border-border text-muted-foreground"
                   }`}
                 >
                   <span className="mr-2 text-sm text-muted-foreground">
