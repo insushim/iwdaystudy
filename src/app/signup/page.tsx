@@ -34,6 +34,12 @@ const ROLE_OPTIONS: {
 }[] = [
   { value: "student", label: "학생", icon: "🎒", desc: "매일 아침학습을 해요" },
   {
+    value: "parent",
+    label: "학부모",
+    icon: "👨‍👩‍👧",
+    desc: "자녀의 학습을 관리해요",
+  },
+  {
     value: "teacher",
     label: "학급 관리자",
     icon: "👩‍🏫",
@@ -337,6 +343,23 @@ export default function SignupPage() {
                     </Select>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {/* Parent: child connection */}
+            {role === "parent" && (
+              <div className="space-y-4 rounded-xl border border-[#4ECDC4]/20 bg-[#4ECDC4]/5 p-4">
+                <p className="text-sm font-medium text-[#4ECDC4]">자녀 연결 (선택)</p>
+                <p className="text-xs text-muted-foreground">
+                  자녀의 학생 ID를 입력하면 바로 연결됩니다. 나중에 설정에서도 추가할 수 있어요.
+                </p>
+                <Input
+                  type="text"
+                  placeholder="자녀 학생 ID (예: ara01)"
+                  value={schoolName}
+                  onChange={(e) => setSchoolName(e.target.value)}
+                  className="h-11"
+                />
               </div>
             )}
 

@@ -29,6 +29,7 @@ import {
   getLearningRecords,
   getStreakCount,
   getTotalPoints,
+  getSubjectStats,
 } from "@/lib/local-storage";
 
 interface ChildData {
@@ -43,6 +44,8 @@ interface ChildData {
   avgScore: number;
   totalPoints: number;
   recentScores: number[];
+  weakSubjects: { subject: string; accuracy: number }[];
+  totalSessions: number;
 }
 
 function buildChildData(childProfile: {
@@ -100,6 +103,14 @@ function buildChildData(childProfile: {
     )
     .reverse();
 
+  // 약점 과목 분석
+  const subjectStats = getSubjectStats(childProfile.id);
+  const weakSubjects = Object.entries(subjectStats)
+    .filter(([, s]) => s.total >= 3)
+    .sort((a, b) => a[1].accuracy - b[1].accuracy)
+    .slice(0, 3)
+    .map(([subject, stats]) => ({ subject, accuracy: stats.accuracy }));
+
   return {
     id: childProfile.id,
     name: childProfile.name,
@@ -112,6 +123,8 @@ function buildChildData(childProfile: {
     avgScore,
     totalPoints,
     recentScores,
+    weakSubjects,
+    totalSessions: completedRecords.length,
   };
 }
 
@@ -306,6 +319,46 @@ export default function ParentDashboardPage() {
                 ) : (
                   <div className="text-center py-4 text-sm text-muted-foreground">
                     아직 학습 기록이 없습니다
+                  </div>
+                )}
+
+                {/* 약점 과목 분석 */}
+                {child.weakSubjects.length > 0 && child.totalSessions >= 3 && (
+                  <div>
+                    <p className="text-sm font-medium mb-2 flex items-center gap-1.5">
+                      <BookOpen className="h-4 w-4 text-amber-500" />
+                      보강이 필요한 과목
+                    </p>
+                    <div className="space-y-2">
+                      {child.weakSubjects.map((ws) => (
+                        <div key={ws.subject} className="flex items-center gap-3">
+                          <span className="text-xs font-medium w-14 text-muted-foreground">
+                            {ws.subject === "math" ? "수학" :
+                             ws.subject === "spelling" ? "맞춤법" :
+                             ws.subject === "vocabulary" ? "어휘" :
+                             ws.subject === "hanja" ? "한자" :
+                             ws.subject === "english" ? "영어" :
+                             ws.subject === "korean" ? "국어" :
+                             ws.subject === "science" ? "과학" :
+                             ws.subject === "social" ? "사회" :
+                             ws.subject === "safety" ? "안전" :
+                             ws.subject === "general_knowledge" ? "상식" :
+                             ws.subject}
+                          </span>
+                          <Progress
+                            value={ws.accuracy}
+                            className="flex-1 h-2"
+                          />
+                          <span className={`text-xs font-bold min-w-[3ch] text-right ${
+                            ws.accuracy >= 80 ? "text-emerald-600" :
+                            ws.accuracy >= 60 ? "text-amber-600" :
+                            "text-red-500"
+                          }`}>
+                            {ws.accuracy}%
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </CardContent>
