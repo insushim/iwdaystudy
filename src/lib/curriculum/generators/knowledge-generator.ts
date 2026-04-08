@@ -927,7 +927,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "세계에서 가장 긴 동물은 ___이다.",
+    text: "세계에서 가장 큰 동물은 ___이다.",
     answer: "흰긴수염고래",
     category: "동물",
   },
@@ -3243,7 +3243,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   { text: "에펠탑은 ___에 있다.", answer: "프랑스", category: "지리" },
   {
     text: "세계에서 인구가 가장 많은 나라는 ___이다.",
-    answer: "중국",
+    answer: "인도",
     category: "지리",
   },
   {
@@ -4400,7 +4400,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   {
     text: "세계에서 인구가 가장 많은 나라는 ___이다.",
-    answer: "중국",
+    answer: "인도",
     category: "지리",
   },
   { text: "일본의 수도는 ___이다.", answer: "도쿄", category: "지리" },

@@ -2178,7 +2178,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
   },
   {
     text: "세계에서 가장 인구가 많은 나라는 ___이다.",
-    answer: "중국",
+    answer: "인도",
     category: "세계",
     gradeGroup: "upper",
   },
@@ -5537,7 +5537,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "세계",
     "upper",
   ],
-  ["세계에서 인구가 두 번째로 많은 나라는 ___이다.", "인도", "세계", "upper"],
+  ["세계에서 인구가 두 번째로 많은 나라는 ___이다.", "중국", "세계", "upper"],
   ["아시아에서 가장 넓은 나라는 ___이다.", "러시아", "세계", "upper"],
   ["조선 시대 임금이 살던 궁궐은 ___이다.", "경복궁", "역사", "lower"],
   ["고인돌은 ___시대의 무덤이다.", "청동기", "역사", "upper"],

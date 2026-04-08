@@ -1297,7 +1297,7 @@ const G34_TIME_BASIC: W[] = [
   { w: "late", p: "레이트", k: "늦은", pr: ["early", "hurry"] },
   { w: "already", p: "올레디", k: "이미", pr: ["yet", "done"] },
   { w: "still", p: "스틸", k: "아직", pr: ["already", "yet"] },
-  { w: "often", p: "오픈", k: "자주", pr: ["rarely", "many"] },
+  { w: "often", p: "오프튼", k: "자주", pr: ["rarely", "many"] },
   { w: "once", p: "원스", k: "한 번", pr: ["twice", "one"] },
   { w: "twice", p: "트와이스", k: "두 번", pr: ["once", "two"] },
   { w: "before", p: "비포", k: "전에", pr: ["after", "first"] },
@@ -1419,7 +1419,7 @@ const G34_QUESTIONS: W[] = [
   { w: "how far", p: "하우 파", k: "얼마나 먼", pr: ["distance", "near"] },
   {
     w: "how often",
-    p: "하우 오픈",
+    p: "하우 오프튼",
     k: "얼마나 자주",
     pr: ["always", "sometimes"],
   },

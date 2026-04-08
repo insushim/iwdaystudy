@@ -1301,13 +1301,13 @@ function generateGrade4Math(
       numbers: [angle1, angle2],
     };
   } else if (type === "angle_calc") {
-    const a1Max = difficulty === 1 ? 60 : difficulty === 3 ? 150 : 120;
-    const a2Max = difficulty === 1 ? 30 : difficulty === 3 ? 90 : 60;
+    const a1Max = difficulty === 1 ? 60 : difficulty === 3 ? 120 : 120;
+    const a2Max = difficulty === 1 ? 30 : difficulty === 3 ? 50 : 60;
     const a1 = randInt(rng, 20, a1Max);
-    const a2 = randInt(rng, 10, a2Max);
+    const a2 = randInt(rng, 10, Math.min(a2Max, 170 - a1));
     const isAdd = rng() > 0.5;
     if (difficulty === 3) {
-      // Multi-step: add two angles then subtract from 180
+      // Multi-step: add two angles then subtract from 180 (ensure positive result)
       const sum = a1 + a2;
       return {
         type: "angle",

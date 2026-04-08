@@ -123,7 +123,7 @@ const GRADE_3_4_HANJA: HanjaData[] = [
     reading: "운",
     meaning: "구름 운",
     strokes: 12,
-    words: ["구름", "운동", "운해"],
+    words: ["구름", "운무", "운해"],
     sentence: "하늘에 흰 구름이 떠다닌다.",
   },
   {
@@ -1525,7 +1525,7 @@ const GRADE_3_4_HANJA: HanjaData[] = [
   {
     character: "情",
     reading: "정",
-    meaning: "뜻 정",
+    meaning: "정 정",
     strokes: 11,
     words: ["감정", "우정", "사정"],
     sentence: "친구와의 우정은 소중하다.",
@@ -1798,7 +1798,7 @@ const GRADE_3_4_HANJA: HanjaData[] = [
   {
     character: "功",
     reading: "공",
-    meaning: "공 공",
+    meaning: "공로 공",
     strokes: 5,
     words: ["성공", "공부", "공로"],
     sentence: "열심히 노력하면 성공할 수 있다.",
@@ -1806,7 +1806,7 @@ const GRADE_3_4_HANJA: HanjaData[] = [
   {
     character: "業",
     reading: "업",
-    meaning: "업 업",
+    meaning: "일 업",
     strokes: 13,
     words: ["직업", "수업", "졸업"],
     sentence: "수업 시간에 집중하자.",
@@ -4166,7 +4166,7 @@ const GRADE_5_6_HANJA: HanjaData[] = [
   {
     character: "業",
     reading: "업",
-    meaning: "업 업",
+    meaning: "일 업",
     strokes: 13,
     words: ["산업", "기업", "농업"],
     sentence: "농업은 식량을 생산하는 중요한 산업이다.",
@@ -7545,7 +7545,7 @@ export const HANJA_IDIOMS: HanjaIdiom[] = [
     meaning: "자기가 저지른 일의 결과를 자기가 받음.",
     characters: [
       { char: "自", meaning: "스스로 자" },
-      { char: "業", meaning: "업 업" },
+      { char: "業", meaning: "일 업" },
       { char: "自", meaning: "스스로 자" },
       { char: "得", meaning: "얻을 득" },
     ],
