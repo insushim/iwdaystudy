@@ -367,8 +367,8 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "부딪히다",
-    wrong: "부딪치다",
-    explanation: "'부딪히다'가 표준어입니다.",
+    wrong: "부딛히다",
+    explanation: "다른 것에 의해 부딪게 될 때 '부딪히다'가 올바릅니다.",
     gradeMin: 5,
   },
   {
@@ -1442,7 +1442,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "칼",
-    wrong: "칼ㄹ",
+    wrong: "캃",
     explanation: "'칼'이 올바른 표기입니다.",
     gradeMin: 1,
   },
@@ -1509,7 +1509,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "수박",
-    wrong: "수박ㄱ",
+    wrong: "수밖",
     explanation: "'수박'이 올바른 표기입니다.",
     gradeMin: 1,
   },
@@ -1539,7 +1539,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "엄마",
-    wrong: "엄마ㅁ",
+    wrong: "엄맘",
     explanation: "'엄마'가 올바른 표기입니다.",
     gradeMin: 1,
   },
@@ -1965,13 +1965,13 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "뒤꿈치",
-    wrong: "뒤꿈치",
+    wrong: "뒤꿈지",
     explanation: "'뒤꿈치'가 올바른 표기입니다.",
     gradeMin: 4,
   },
   {
     correct: "발뒤꿈치",
-    wrong: "발뒤꿈치",
+    wrong: "발뒤꿈지",
     explanation: "'발뒤꿈치'가 올바른 표기입니다.",
     gradeMin: 4,
   },
@@ -2046,7 +2046,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "개구리",
-    wrong: "개구리",
+    wrong: "개굴이",
     explanation: "'개구리'가 올바른 표기입니다.",
     gradeMin: 5,
   },
@@ -2210,7 +2210,7 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "연구",
-    wrong: "연구ㅜ",
+    wrong: "연귀",
     explanation: "'연구'가 올바른 표기입니다.",
     gradeMin: 5,
   },
@@ -2242,8 +2242,8 @@ const SPELLING_PATTERNS: SpellingPattern[] = [
   },
   {
     correct: "고지식하다",
-    wrong: "곧이곧대로",
-    explanation: "'고지식하다'는 용통성이 없다는 뜻입니다.",
+    wrong: "고지식 하다",
+    explanation: "'고지식하다'는 융통성이 없다는 뜻으로, 붙여 씁니다.",
     gradeMin: 6,
   },
   {
