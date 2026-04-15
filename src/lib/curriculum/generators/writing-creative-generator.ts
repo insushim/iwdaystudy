@@ -1183,16 +1183,6 @@ const CREATIVE_56: KnowledgeEntry[] = [
   ...CREATIVE_34,
   // ── 과학 (5-6학년) ──
   {
-    text: "아인슈타인의 유명한 공식은 E=mc___이다.",
-    answer: "²",
-    category: "과학",
-  },
-  {
-    text: "피타고라스 정리에서 c²=a²+___이다.",
-    answer: "b²",
-    category: "수학",
-  },
-  {
     text: "달의 인력이 지구보다 약한 이유는 ___이 작기 때문이다.",
     answer: "질량",
     category: "추론",

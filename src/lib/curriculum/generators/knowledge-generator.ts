@@ -4990,18 +4990,13 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // === 수학상식 (심화, 20) ===
   {
-    text: "피타고라스의 정리에서 빗변의 제곱은 나머지 두 변의 제곱의 ___이다.",
-    answer: "합",
+    text: "원의 넓이는 반지름 × 반지름 × ___이다.",
+    answer: "3.14",
     category: "수학상식",
   },
   {
-    text: "원의 넓이를 구하는 공식은 πr___이다.",
-    answer: "²",
-    category: "수학상식",
-  },
-  {
-    text: "원의 둘레를 구하는 공식은 2π___이다.",
-    answer: "r",
+    text: "원의 둘레는 지름 × ___이다.",
+    answer: "3.14",
     category: "수학상식",
   },
   {
@@ -5044,7 +5039,6 @@ const GRADE_5_6: KnowledgeEntry[] = [
     answer: "0",
     category: "수학상식",
   },
-  { text: "정다면체는 모두 ___가지이다.", answer: "5", category: "수학상식" },
   {
     text: "대칭축이 무한히 많은 도형은 ___이다.",
     answer: "원",

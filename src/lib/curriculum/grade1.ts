@@ -2753,7 +2753,7 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
     answer: "12",
     category: "수학",
   },
-  { text: "물고기는 ___로 숨을 쉬어요.", answer: "아가미", category: "과학" },
+  { text: "물고기는 ___에서 살아요.", answer: "물", category: "과학" },
   // --- 추가 확장 (240+개) ---
   // 동물 추가
   { text: "강아지는 '___'하고 짖어요.", answer: "멍멍", category: "동물" },
@@ -2815,12 +2815,12 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
   { text: "밤에는 ___이 밝게 빛나요.", answer: "달", category: "과학" },
   { text: "지구는 ___모양이에요.", answer: "둥근", category: "과학" },
   {
-    text: "물체를 땅으로 끌어당기는 힘을 ___이라고 해요.",
-    answer: "중력",
+    text: "손에 든 물건을 놓으면 ___로 떨어져요.",
+    answer: "아래",
     category: "과학",
   },
   { text: "사람은 ___로 숨을 쉬어요.", answer: "코", category: "과학" },
-  { text: "식물은 ___을 만들어요.", answer: "산소", category: "과학" },
+  { text: "식물이 자라려면 ___이 필요해요.", answer: "물", category: "과학" },
   // 수학/숫자 추가
   { text: "10이 2개면 ___이에요.", answer: "20", category: "수학" },
   { text: "10이 5개면 ___이에요.", answer: "50", category: "수학" },

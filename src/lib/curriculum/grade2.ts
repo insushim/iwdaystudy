@@ -2874,8 +2874,8 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "물체가 땅으로 떨어지는 힘을 ___이라고 한다.",
-    answer: "중력",
+    text: "물건을 손에서 놓으면 ___으로 떨어진다.",
+    answer: "아래",
     category: "과학",
   },
   {
@@ -2924,20 +2924,17 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식물이 광합성 할 때 내보내는 기체는 ___이다.",
-    answer: "산소",
+    text: "식물이 자라려면 햇빛과 물과 ___이 필요하다.",
+    answer: "공기",
     category: "과학",
   },
-  { text: "물의 화학식은 H___O이다.", answer: "2", category: "과학" },
   { text: "전구를 켜려면 ___가 필요하다.", answer: "전기", category: "과학" },
   { text: "소리는 ___을 통해 전달된다.", answer: "공기", category: "과학" },
   {
-    text: "빛은 직선으로 ___한다.",
-    answer: "나아간다(직진)",
+    text: "거울을 보면 내 모습이 ___진다.",
+    answer: "비쳐",
     category: "과학",
   },
-  { text: "거울은 빛을 ___한다.", answer: "반사", category: "과학" },
-  { text: "렌즈는 빛을 ___한다.", answer: "굴절", category: "과학" },
   {
     text: "식물의 줄기는 물을 ___로 운반한다.",
     answer: "위",
@@ -2948,17 +2945,15 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
     answer: "나이테",
     category: "과학",
   },
-  { text: "양치식물은 ___로 번식한다.", answer: "포자", category: "과학" },
   {
     text: "사막에서 잘 자라는 식물은 ___이다.",
     answer: "선인장",
     category: "과학",
   },
-  { text: "가장 큰 꽃은 ___이다.", answer: "라플레시아", category: "과학" },
   // 동물 심화
   {
-    text: "돌고래는 ___를 사용해서 의사소통한다.",
-    answer: "초음파",
+    text: "바다에 사는 포유류로 영리한 동물은 ___이다.",
+    answer: "돌고래",
     category: "동물",
   },
   { text: "문어는 다리가 ___개이다.", answer: "8", category: "동물" },
@@ -3239,10 +3234,14 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
     answer: "이빨",
     category: "과학",
   },
-  { text: "사람의 혈액형은 크게 ___가지이다.", answer: "4", category: "과학" },
   {
-    text: "우리 몸에서 가장 큰 뼈는 ___이다.",
-    answer: "넓적다리뼈",
+    text: "우리 몸에서 피가 흐르는 길을 ___이라고 한다.",
+    answer: "혈관",
+    category: "과학",
+  },
+  {
+    text: "우리 몸에서 가장 긴 뼈는 ___에 있다.",
+    answer: "다리",
     category: "과학",
   },
   {
@@ -3250,16 +3249,11 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
     answer: "벌",
     category: "과학",
   },
-  {
-    text: "지구에서 가장 깊은 바다는 ___이다.",
-    answer: "마리아나 해구",
-    category: "과학",
-  },
   { text: "물이 100도에서 ___는다.", answer: "끓", category: "과학" },
   { text: "물이 0도에서 ___는다.", answer: "얼", category: "과학" },
   {
-    text: "고체가 액체로 변하는 것을 ___이라 한다.",
-    answer: "융해",
+    text: "얼음이 따뜻해지면 ___로 변한다.",
+    answer: "물",
     category: "과학",
   },
   { text: "식물의 꽃잎은 ___을 유인한다.", answer: "곤충", category: "과학" },
@@ -3303,8 +3297,8 @@ export const grade2KnowledgeData: KnowledgeEntry[] = [
   { text: "올림픽은 ___년마다 열린다.", answer: "4", category: "사회" },
   { text: "세계 인권의 날은 ___월 10일이다.", answer: "12", category: "사회" },
   // 수학
-  { text: "삼각형의 내각의 합은 ___도이다.", answer: "180", category: "수학" },
-  { text: "사각형의 내각의 합은 ___도이다.", answer: "360", category: "수학" },
+  { text: "삼각형은 꼭짓점이 ___개이다.", answer: "3", category: "수학" },
+  { text: "사각형은 꼭짓점이 ___개이다.", answer: "4", category: "수학" },
   { text: "0에 어떤 수를 더해도 ___이다.", answer: "그 수", category: "수학" },
   { text: "어떤 수에 1을 곱하면 ___이다.", answer: "그 수", category: "수학" },
   { text: "어떤 수에 0을 곱하면 ___이다.", answer: "0", category: "수학" },
