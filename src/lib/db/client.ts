@@ -35,6 +35,16 @@ export async function dbPut<T>(endpoint: string, body: unknown): Promise<T> {
   });
 }
 
-export async function dbDelete<T>(endpoint: string): Promise<T> {
-  return dbFetch<T>(endpoint, { method: 'DELETE' });
+export async function dbPatch<T>(endpoint: string, body: unknown): Promise<T> {
+  return dbFetch<T>(endpoint, {
+    method: 'PATCH',
+    body: JSON.stringify(body),
+  });
+}
+
+export async function dbDelete<T>(endpoint: string, body?: unknown): Promise<T> {
+  return dbFetch<T>(endpoint, {
+    method: 'DELETE',
+    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+  });
 }

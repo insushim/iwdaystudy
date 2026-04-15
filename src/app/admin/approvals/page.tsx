@@ -15,13 +15,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  localGetTeachersByStatus,
-  localApproveTeacher,
-  localRejectTeacher,
-} from "@/lib/local-auth";
+import { dbGet, dbPost } from "@/lib/db/client";
 import type { Profile } from "@/types/database";
-import type { ApprovalStatus } from "@/types/database";
 
 type TabValue = "pending" | "approved" | "rejected";
 
@@ -34,24 +29,45 @@ const tabs: { value: TabValue; label: string; icon: React.ElementType }[] = [
 export default function AdminApprovalsPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("pending");
   const [teachers, setTeachers] = useState<Profile[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadTeachers = useCallback(() => {
-    const result = localGetTeachersByStatus(activeTab as ApprovalStatus);
-    setTeachers(result);
+  const loadTeachers = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await dbGet<{ teachers: Profile[] }>(
+        `/admin/teachers?status=${activeTab}`,
+      );
+      setTeachers(result.teachers || []);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "교사 목록을 불러올 수 없습니다.");
+      setTeachers([]);
+    } finally {
+      setLoading(false);
+    }
   }, [activeTab]);
 
   useEffect(() => {
     loadTeachers();
   }, [loadTeachers]);
 
-  function handleApprove(id: string) {
-    localApproveTeacher(id);
-    loadTeachers();
+  async function handleApprove(id: string) {
+    try {
+      await dbPost("/admin/teacher-approval", { teacher_id: id, action: "approve" });
+      await loadTeachers();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "승인 실패");
+    }
   }
 
-  function handleReject(id: string) {
-    localRejectTeacher(id);
-    loadTeachers();
+  async function handleReject(id: string) {
+    try {
+      await dbPost("/admin/teacher-approval", { teacher_id: id, action: "reject" });
+      await loadTeachers();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "거절 실패");
+    }
   }
 
   return (
@@ -85,10 +101,23 @@ export default function AdminApprovalsPage() {
         ))}
       </div>
 
+      {/* Error message */}
+      {error && (
+        <Card className="border-red-200 bg-red-50 dark:border-red-900 dark:bg-red-950/30">
+          <CardContent className="py-3 text-sm text-red-700 dark:text-red-300">
+            {error}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Teacher List */}
       <Card>
         <CardContent className="p-0">
-          {teachers.length === 0 ? (
+          {loading ? (
+            <div className="flex flex-col items-center py-12 text-muted-foreground">
+              <p className="text-sm">불러오는 중...</p>
+            </div>
+          ) : teachers.length === 0 ? (
             <div className="flex flex-col items-center py-12 text-muted-foreground">
               <UserCheck className="h-10 w-10 mb-2 opacity-40" />
               <p className="text-sm">

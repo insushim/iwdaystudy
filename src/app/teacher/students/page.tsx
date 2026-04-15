@@ -30,8 +30,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAuthStore } from "@/stores/authStore";
-import { localGetAllUsers, localBulkDeleteStudents } from "@/lib/local-auth";
+import { dbGet, dbDelete } from "@/lib/db/client";
 import { getLearningRecords, getStreakCount } from "@/lib/local-storage";
+
+interface ServerStudent {
+  id: string;
+  email: string;
+  name: string;
+  grade: number | null;
+  semester: number | null;
+  class_name: string | null;
+  student_number: number | null;
+  streak_count: number | null;
+  total_points: number | null;
+  created_at: string;
+}
 
 interface StudentRow {
   id: string;
@@ -60,16 +73,22 @@ export default function TeacherStudentsPage() {
 
   useEffect(() => {
     if (!user) return;
+    let cancelled = false;
 
-    const allUsers = localGetAllUsers();
-    const myStudents = allUsers.filter(
-      (u) => u.role === "student" && u.teacher_id === user.id,
-    );
+    (async () => {
+      let myStudents: ServerStudent[] = [];
+      try {
+        const res = await dbGet<{ students: ServerStudent[] }>("/teacher/students");
+        myStudents = res.students || [];
+      } catch {
+        myStudents = [];
+      }
+      if (cancelled) return;
 
-    const rows: StudentRow[] = myStudents.map((student) => {
-      const records = getLearningRecords(student.id);
-      const completedRecords = records.filter((r) => r.is_completed);
-      const streak = getStreakCount(student.id);
+      const rows: StudentRow[] = myStudents.map((student) => {
+        const records = getLearningRecords(student.id);
+        const completedRecords = records.filter((r) => r.is_completed);
+        const streak = getStreakCount(student.id) || (student.streak_count ?? 0);
 
       // Average score
       let avgScore = 0;
@@ -122,8 +141,13 @@ export default function TeacherStudentsPage() {
       };
     });
 
-    setStudentRows(rows);
-    setIsLoaded(true);
+      setStudentRows(rows);
+      setIsLoaded(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
 
   const filteredStudents = useMemo(() => {
@@ -241,7 +265,7 @@ export default function TeacherStudentsPage() {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => {
+              onClick={async () => {
                 if (!user) return;
                 if (
                   !confirm(
@@ -249,9 +273,17 @@ export default function TeacherStudentsPage() {
                   )
                 )
                   return;
-                const deleted = localBulkDeleteStudents(user.id);
-                alert(`${deleted}명의 학생이 삭제되었습니다.`);
-                setStudentRows([]);
+                try {
+                  const ids = studentRows.map((s) => s.id);
+                  const res = await dbDelete<{ deleted: number }>(
+                    "/teacher/students",
+                    { student_ids: ids },
+                  );
+                  alert(`${res.deleted}명의 학생이 삭제되었습니다.`);
+                  setStudentRows([]);
+                } catch (e) {
+                  alert(e instanceof Error ? e.message : "삭제에 실패했습니다.");
+                }
               }}
             >
               <Trash2 className="h-4 w-4 mr-1" />

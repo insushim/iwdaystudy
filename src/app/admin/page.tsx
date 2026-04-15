@@ -17,12 +17,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  localGetPendingTeacherCount,
-  localGetAllUsers,
-  shouldUseLocalAuth,
-} from "@/lib/local-auth";
-import { getLearningRecords } from "@/lib/local-storage";
 import { dbGet } from "@/lib/db/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -96,11 +90,7 @@ export default function AdminDashboard() {
   >([]);
 
   useEffect(() => {
-    if (shouldUseLocalAuth()) {
-      loadFromLocal();
-    } else {
-      loadFromApi();
-    }
+    loadFromApi();
   }, []);
 
   function formatTimeAgo(dateStr: string): string {
@@ -219,64 +209,17 @@ export default function AdminDashboard() {
       }>("/admin/stats");
       applyDashboardData(data);
     } catch {
-      // Fallback to local data if API fails
-      loadFromLocal();
-    }
-  }
-
-  function loadFromLocal() {
-    const allUsers = localGetAllUsers();
-    setPendingCount(localGetPendingTeacherCount());
-
-    const students = allUsers.filter((u) => u.role === "student");
-    const teachers = allUsers.filter(
-      (u) => u.role === "teacher" && u.approval_status === "approved",
-    );
-    const parents = allUsers.filter((u) => u.role === "parent");
-    const admins = allUsers.filter((u) => u.role === "admin");
-
-    const paidSubscriptions = allUsers.filter(
-      (u) => u.subscription_plan !== "free" && u.subscription_plan !== undefined,
-    ).length;
-
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 86400000).toISOString().split("T")[0];
-    let activeStudents = 0;
-    for (const student of students) {
-      const records = getLearningRecords(student.id);
-      const hasRecent = records.some((r) => {
-        const d = (r.completed_at || r.created_at).split("T")[0];
-        return d >= sevenDaysAgo;
+      applyDashboardData({
+        totalUsers: 0,
+        paidSubscriptions: 0,
+        activeStudents: 0,
+        totalSets: 0,
+        pendingTeachers: 0,
+        roleCounts: { student: 0, teacher: 0, parent: 0, admin: 0 },
+        recentUsers: [],
+        recentLearning: [],
       });
-      if (hasRecent) activeStudents++;
     }
-
-    let totalSets = 0;
-    try {
-      const setsData = localStorage.getItem("araharu_daily_sets");
-      if (setsData) totalSets = JSON.parse(setsData).length;
-    } catch { /* ignore */ }
-
-    const recentUsers = [...allUsers]
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-      .slice(0, 10)
-      .map((u) => ({ id: u.id, name: u.name, role: u.role, grade: u.grade ?? null, created_at: u.created_at }));
-
-    applyDashboardData({
-      totalUsers: allUsers.length,
-      paidSubscriptions,
-      activeStudents,
-      totalSets,
-      pendingTeachers: localGetPendingTeacherCount(),
-      roleCounts: {
-        student: students.length,
-        teacher: teachers.length,
-        parent: parents.length,
-        admin: admins.length,
-      },
-      recentUsers,
-      recentLearning: [],
-    });
   }
 
   const maxRole = Math.max(...roleBreakdown.map((r) => r.count), 1);

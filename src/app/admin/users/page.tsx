@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { localGetAllUsers, localUpdateProfile } from "@/lib/local-auth";
+import { dbGet, dbPost } from "@/lib/db/client";
 import type { Profile } from "@/types/database";
 
 interface UserRecord {
@@ -111,10 +111,20 @@ export default function UserManagementPage() {
   const [page, setPage] = useState(1);
   const perPage = 10;
 
-  // Load real users on mount
+  // Load users from the server
   useEffect(() => {
-    const allProfiles = localGetAllUsers();
-    setUsers(allProfiles.map(profileToUserRecord));
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await dbGet<{ users: Profile[] }>("/admin/users");
+        if (!cancelled) setUsers((res.users || []).map(profileToUserRecord));
+      } catch {
+        if (!cancelled) setUsers([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filteredUsers = users.filter((u) => {
@@ -137,37 +147,36 @@ export default function UserManagementPage() {
     page * perPage,
   );
 
-  function changeRole(
+  async function changeRole(
     userId: string,
     newRole: "student" | "parent" | "teacher" | "admin",
   ) {
-    // Persist to localStorage via localUpdateProfile
     try {
-      localUpdateProfile(userId, { role: newRole as any });
+      await dbPost("/admin/user-update", { user_id: userId, role: newRole });
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
+      );
+    } catch {
+      // ignore — UI stays in sync on next reload
+    }
+  }
+
+  async function toggleStatus(userId: string) {
+    const current = users.find((u) => u.id === userId);
+    if (!current) return;
+    const nextStatus = current.status === "active" ? "suspended" : "active";
+    const approvalStatus = nextStatus === "active" ? "approved" : "rejected";
+    try {
+      await dbPost("/admin/user-update", {
+        user_id: userId,
+        approval_status: approvalStatus,
+      });
+      setUsers((prev) =>
+        prev.map((u) => (u.id === userId ? { ...u, status: nextStatus } : u)),
+      );
     } catch {
       // ignore
     }
-    setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u)),
-    );
-  }
-
-  function toggleStatus(userId: string) {
-    setUsers((prev) =>
-      prev.map((u) => {
-        if (u.id !== userId) return u;
-        const nextStatus = u.status === "active" ? "suspended" : "active";
-        // Persist approval_status change
-        try {
-          localUpdateProfile(userId, {
-            approval_status: nextStatus === "active" ? "approved" : "rejected",
-          });
-        } catch {
-          // ignore
-        }
-        return { ...u, status: nextStatus };
-      }),
-    );
   }
 
   const totalActive = users.filter((u) => u.status === "active").length;

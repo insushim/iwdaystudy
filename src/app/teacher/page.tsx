@@ -41,7 +41,7 @@ import {
 } from "recharts";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { useAuthStore } from "@/stores/authStore";
-import { localGetAllUsers } from "@/lib/local-auth";
+import { dbGet } from "@/lib/db/client";
 import {
   getLearningRecords,
   getSubjectStats,
@@ -119,15 +119,18 @@ export default function TeacherDashboardPage() {
 
   useEffect(() => {
     if (!user) return;
+    let cancelled = false;
 
-    const allUsers = localGetAllUsers();
-    const myStudents = allUsers.filter(
-      (u) =>
-        u.role === "student" &&
-        (u.teacher_id === user.id ||
-          (user.school_name && u.school_name === user.school_name)),
-    );
-    setStudents(myStudents);
+    (async () => {
+      let myStudents: Profile[] = [];
+      try {
+        const res = await dbGet<{ students: Profile[] }>("/teacher/students");
+        myStudents = res.students || [];
+      } catch {
+        myStudents = [];
+      }
+      if (cancelled) return;
+      setStudents(myStudents);
 
     if (myStudents.length === 0) {
       setIsLoaded(true);
@@ -318,10 +321,15 @@ export default function TeacherDashboardPage() {
         avg: data.count > 0 ? Math.round(data.totalAccuracy / data.count) : 0,
         color: SUBJECT_COLORS[subj] || "#888",
       }))
-      .sort((a, b) => b.avg - a.avg);
-    setSubjectPerformance(subjPerf);
+        .sort((a, b) => b.avg - a.avg);
+      setSubjectPerformance(subjPerf);
 
-    setIsLoaded(true);
+      setIsLoaded(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [user]);
 
   const totalStudents = students.length;
