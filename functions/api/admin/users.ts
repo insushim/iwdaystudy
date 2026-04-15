@@ -1,12 +1,18 @@
 // GET /api/admin/users?role=&limit=&offset= - list all users (admin only)
 
+import { verifyToken } from "../../lib/crypto";
+
 interface Env {
   DB: D1Database;
+  AUTH_SECRET: string;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
-  if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
+  const authHeader = context.request.headers.get("Authorization");
+  const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  const tokenData = token ? await verifyToken(token, context.env.AUTH_SECRET) : null;
+  if (!tokenData) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
+  const userId = tokenData.id;
 
   const caller = await context.env.DB.prepare(
     'SELECT role FROM profiles WHERE id = ?',
