@@ -76,8 +76,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     });
 
     if (!claudeResponse.ok) {
-      const errText = await claudeResponse.text();
-      return jsonResponse({ message: `AI API 오류: ${claudeResponse.status}`, detail: errText }, 502);
+      return jsonResponse({ message: 'AI 문제 생성 서비스가 일시적으로 응답하지 않습니다.' }, 502);
     }
 
     const claudeData = await claudeResponse.json() as any;
@@ -91,10 +90,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       const jsonStr = jsonMatch ? (jsonMatch[1] || jsonMatch[0]) : aiText;
       generatedQuestions = JSON.parse(jsonStr);
     } catch {
-      return jsonResponse({
-        message: 'AI가 생성한 데이터를 파싱할 수 없습니다.',
-        raw: aiText,
-      }, 500);
+      return jsonResponse({ message: 'AI가 생성한 데이터를 파싱할 수 없습니다.' }, 500);
     }
 
     // Create the daily set in D1
@@ -144,8 +140,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       total_points: totalPoints,
       questions: generatedQuestions,
     }, 201);
-  } catch (err: any) {
-    return jsonResponse({ message: err.message || '문제 생성 중 오류가 발생했습니다.' }, 500);
+  } catch {
+    return jsonResponse({ message: '문제 생성 중 오류가 발생했습니다.' }, 500);
   }
 };
 

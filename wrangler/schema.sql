@@ -206,3 +206,11 @@ INSERT OR IGNORE INTO badges (id, name, description, icon, condition_type, condi
 ('b013', '새벽 학습자', '오전 7시 이전 학습 완료!', '🌅', 'early_bird', 1, 'rare'),
 ('b014', '주말 전사', '주말에도 학습 완료!', '💪', 'weekend_learner', 1, 'common'),
 ('b015', '전 과목 마스터', '모든 과목 정답률 90% 이상!', '🎓', 'all_subject_90', 90, 'legendary');
+
+-- Rate limiting (per IP + path)
+CREATE TABLE IF NOT EXISTS rate_limits (
+  key TEXT PRIMARY KEY,
+  count INTEGER NOT NULL DEFAULT 0,
+  window_start INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON rate_limits(window_start);

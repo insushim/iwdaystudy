@@ -121,9 +121,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       recentUsers,
       recentLearning,
     });
-  } catch (err: any) {
+  } catch {
     return jsonResponse(
-      { message: err.message || "관리자 통계 조회 중 오류가 발생했습니다." },
+      { message: "관리자 통계 조회 중 오류가 발생했습니다." },
       500,
     );
   }

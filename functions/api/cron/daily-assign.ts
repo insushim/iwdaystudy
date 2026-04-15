@@ -130,8 +130,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       skippedCount,
       errors,
     });
-  } catch (err: any) {
-    return jsonResponse({ message: err.message || '일일 배정 중 오류가 발생했습니다.' }, 500);
+  } catch {
+    return jsonResponse({ message: '일일 배정 중 오류가 발생했습니다.' }, 500);
   }
 };
 

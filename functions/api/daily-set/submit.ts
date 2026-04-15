@@ -134,8 +134,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       total_points: streakResult.totalPoints,
       new_badges: newBadges,
     });
-  } catch (err: any) {
-    return jsonResponse({ message: err.message || '결과 제출 중 오류가 발생했습니다.' }, 500);
+  } catch {
+    return jsonResponse({ message: '결과 제출 중 오류가 발생했습니다.' }, 500);
   }
 };
 

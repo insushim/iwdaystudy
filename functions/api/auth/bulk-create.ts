@@ -92,9 +92,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       skipped: skipped.length,
       message: `${created.length}명 생성, ${skipped.length}명 이미 존재`,
     }, 201);
-  } catch (err: any) {
+  } catch {
     return jsonResponse(
-      { message: err.message || "학생 일괄생성 중 오류가 발생했습니다." },
+      { message: "학생 일괄생성 중 오류가 발생했습니다." },
       500,
     );
   }

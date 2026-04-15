@@ -201,8 +201,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       badges,
       weakSubjects,
     });
-  } catch (err: any) {
-    return jsonResponse({ message: err.message || '리포트 조회 중 오류가 발생했습니다.' }, 500);
+  } catch {
+    return jsonResponse({ message: '리포트 조회 중 오류가 발생했습니다.' }, 500);
   }
 };
 

@@ -90,8 +90,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       questions,
       record,
     });
-  } catch (err: any) {
-    return jsonResponse({ message: err.message || '학습 세트 조회 중 오류가 발생했습니다.' }, 500);
+  } catch {
+    return jsonResponse({ message: '학습 세트 조회 중 오류가 발생했습니다.' }, 500);
   }
 };
 
