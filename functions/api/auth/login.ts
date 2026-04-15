@@ -120,7 +120,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     const { password_hash: _ph, ...safeUser } = user as Record<string, unknown>;
     return jsonResponse({ user: safeUser, token });
-  } catch {
+  } catch (err) {
+    console.error("login error:", err instanceof Error ? err.stack : String(err));
     return jsonResponse(
       { message: "로그인 처리 중 오류가 발생했습니다." },
       500,
