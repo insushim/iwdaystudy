@@ -1,24 +1,35 @@
 // Cloudflare Workers crypto utilities
-// SHA-256 + salt password hashing, HMAC-SHA256 token signing
+// PBKDF2-SHA-256 password hashing (with SHA-256 + simpleHash legacy fallback for migration)
+// HMAC-SHA-256 token signing.
 
 // ── Password Hashing ──────────────────────────────────
 
+const PBKDF2_ITERATIONS = 100_000;
+const PBKDF2_KEY_LEN = 32;
+const PBKDF2_SALT_LEN = 16;
+
 export async function hashPassword(password: string): Promise<string> {
-  const salt = new Uint8Array(16);
+  const salt = new Uint8Array(PBKDF2_SALT_LEN);
   crypto.getRandomValues(salt);
-  const saltHex = bufferToHex(salt);
-  const encoder = new TextEncoder();
-  const hashBuffer = await crypto.subtle.digest(
-    "SHA-256",
-    encoder.encode(saltHex + password),
-  );
-  return `${saltHex}:${bufferToHex(new Uint8Array(hashBuffer))}`;
+  const derived = await pbkdf2(password, salt, PBKDF2_ITERATIONS, PBKDF2_KEY_LEN);
+  return `pbkdf2$${PBKDF2_ITERATIONS}$${bufferToHex(salt)}$${bufferToHex(derived)}`;
 }
 
 export async function verifyPassword(
   password: string,
   storedHash: string,
 ): Promise<boolean> {
+  if (storedHash.startsWith("pbkdf2$")) {
+    const parts = storedHash.split("$");
+    if (parts.length !== 4) return false;
+    const iterations = parseInt(parts[1], 10);
+    const salt = hexToBuffer(parts[2]);
+    const expected = hexToBuffer(parts[3]);
+    if (!iterations || !salt.length || !expected.length) return false;
+    const derived = await pbkdf2(password, salt, iterations, expected.length);
+    return constantTimeEqual(derived, expected);
+  }
+  // Legacy SHA-256 + salt
   if (storedHash.includes(":")) {
     const [saltHex, expectedHash] = storedHash.split(":");
     const encoder = new TextEncoder();
@@ -26,14 +37,58 @@ export async function verifyPassword(
       "SHA-256",
       encoder.encode(saltHex + password),
     );
-    return bufferToHex(new Uint8Array(hashBuffer)) === expectedHash;
+    return constantTimeHexEqual(
+      bufferToHex(new Uint8Array(hashBuffer)),
+      expectedHash,
+    );
   }
   // Legacy simpleHash fallback
-  return storedHash === simpleHashLegacy(password);
+  return constantTimeHexEqual(storedHash, simpleHashLegacy(password));
 }
 
 export function isLegacyHash(storedHash: string): boolean {
-  return !storedHash.includes(":");
+  return !storedHash.startsWith("pbkdf2$");
+}
+
+async function pbkdf2(
+  password: string,
+  salt: Uint8Array,
+  iterations: number,
+  keyLen: number,
+): Promise<Uint8Array> {
+  const encoder = new TextEncoder();
+  const baseKey = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(password),
+    { name: "PBKDF2" },
+    false,
+    ["deriveBits"],
+  );
+  const bits = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      salt,
+      iterations,
+      hash: "SHA-256",
+    },
+    baseKey,
+    keyLen * 8,
+  );
+  return new Uint8Array(bits);
+}
+
+function constantTimeEqual(a: Uint8Array, b: Uint8Array): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  return diff === 0;
+}
+
+function constantTimeHexEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 function simpleHashLegacy(str: string): string {
