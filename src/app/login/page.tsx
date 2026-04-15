@@ -40,7 +40,7 @@ export default function LoginPage() {
     }
 
     try {
-      await login(email, password);
+      await login(email, password, isStudentMode ? "student" : "staff");
       // Role-based redirect
       const { user } = useAuthStore.getState();
       if (user?.role === "admin") {

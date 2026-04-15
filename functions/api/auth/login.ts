@@ -15,10 +15,12 @@ interface Env {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    const { email, password } = (await context.request.json()) as {
-      email: string;
-      password: string;
-    };
+    const { email, password, expected_role } =
+      (await context.request.json()) as {
+        email: string;
+        password: string;
+        expected_role?: "student" | "staff";
+      };
 
     if (!email || !password) {
       return jsonResponse(
@@ -80,6 +82,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       )
         .bind(newHash, new Date().toISOString(), user.id)
         .run();
+    }
+
+    // Enforce role-gated login (student tab vs. staff tab)
+    if (expected_role === "student" && user.role !== "student") {
+      return jsonResponse(
+        { message: "학생 로그인 탭에서는 학생 계정만 로그인할 수 있습니다." },
+        403,
+      );
+    }
+    if (
+      expected_role === "staff" &&
+      user.role !== "teacher" &&
+      user.role !== "parent" &&
+      user.role !== "admin"
+    ) {
+      return jsonResponse(
+        {
+          message:
+            "선생님/학부모 로그인 탭에서는 학생 계정으로 로그인할 수 없습니다.",
+        },
+        403,
+      );
     }
 
     // Block unapproved teachers
