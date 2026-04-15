@@ -33,8 +33,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const body = await context.request.json() as GenerateBody;
     const { grade, semester, subjects } = body;
 
-    if (!grade || grade < 1 || grade > 6 || !semester) {
-      return jsonResponse({ message: '올바른 학년/학기를 지정해주세요.' }, 400);
+    if (typeof grade !== 'number' || grade < 1 || grade > 6) {
+      return jsonResponse({ message: '올바른 학년을 지정해주세요. (1~6)' }, 400);
+    }
+    if (semester !== 1 && semester !== 2) {
+      return jsonResponse({ message: '올바른 학기를 지정해주세요. (1 또는 2)' }, 400);
+    }
+    const ALLOWED_SUBJECTS = [
+      'math', 'spelling', 'vocabulary', 'hanja', 'english', 'writing',
+      'general_knowledge', 'safety', 'science', 'social', 'creative', 'korean',
+    ];
+    if (subjects !== undefined) {
+      if (!Array.isArray(subjects) || subjects.length > 20) {
+        return jsonResponse({ message: '과목 목록이 올바르지 않습니다.' }, 400);
+      }
+      for (const s of subjects) {
+        if (typeof s !== 'string' || !ALLOWED_SUBJECTS.includes(s)) {
+          return jsonResponse({ message: '허용되지 않은 과목입니다.' }, 400);
+        }
+      }
+    }
+    if (body.set_number !== undefined && (typeof body.set_number !== 'number' || body.set_number < 1 || body.set_number > 9999)) {
+      return jsonResponse({ message: 'set_number 값이 올바르지 않습니다.' }, 400);
     }
 
     const apiKey = context.env.ANTHROPIC_API_KEY;

@@ -44,8 +44,43 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       responses,
     } = body;
 
-    if (!daily_set_id || !responses || !Array.isArray(responses)) {
-      return jsonResponse({ message: '필수 데이터가 누락되었습니다.' }, 400);
+    if (!daily_set_id || typeof daily_set_id !== 'string' || daily_set_id.length > 64) {
+      return jsonResponse({ message: '올바르지 않은 학습 세트입니다.' }, 400);
+    }
+    if (!responses || !Array.isArray(responses) || responses.length > 50) {
+      return jsonResponse({ message: '응답 데이터가 올바르지 않습니다.' }, 400);
+    }
+    if (
+      typeof total_score !== 'number' ||
+      typeof max_score !== 'number' ||
+      typeof time_spent_seconds !== 'number' ||
+      total_score < 0 ||
+      max_score <= 0 ||
+      max_score > 10000 ||
+      total_score > max_score ||
+      time_spent_seconds < 0 ||
+      time_spent_seconds > 86400
+    ) {
+      return jsonResponse({ message: '점수/시간 값이 올바르지 않습니다.' }, 400);
+    }
+    for (const r of responses) {
+      if (!r.question_id || typeof r.question_id !== 'string' || r.question_id.length > 64) {
+        return jsonResponse({ message: '응답 형식이 올바르지 않습니다.' }, 400);
+      }
+      if (typeof r.score !== 'number' || r.score < 0 || r.score > 1000) {
+        return jsonResponse({ message: '응답 점수가 올바르지 않습니다.' }, 400);
+      }
+      if (typeof r.attempts !== 'number' || r.attempts < 0 || r.attempts > 100) {
+        return jsonResponse({ message: '시도 횟수가 올바르지 않습니다.' }, 400);
+      }
+    }
+
+    // Verify the daily_set_id actually exists and is published
+    const setExists = await context.env.DB.prepare(
+      'SELECT id FROM daily_sets WHERE id = ? AND is_published = 1'
+    ).bind(daily_set_id).first();
+    if (!setExists) {
+      return jsonResponse({ message: '존재하지 않는 학습 세트입니다.' }, 404);
     }
 
     // Check for existing record (upsert)

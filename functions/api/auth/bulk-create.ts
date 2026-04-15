@@ -23,6 +23,22 @@ interface BulkCreateBody {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
+    const callerId = (context as any).userId as string | undefined;
+    if (!callerId) {
+      return jsonResponse({ message: "인증이 필요합니다." }, 401);
+    }
+
+    const caller = await context.env.DB.prepare(
+      "SELECT role, approval_status FROM profiles WHERE id = ?",
+    ).bind(callerId).first<{ role: string; approval_status: string | null }>();
+
+    if (!caller || (caller.role !== "teacher" && caller.role !== "admin")) {
+      return jsonResponse({ message: "교사 또는 관리자 권한이 필요합니다." }, 403);
+    }
+    if (caller.role === "teacher" && caller.approval_status !== "approved") {
+      return jsonResponse({ message: "승인되지 않은 교사 계정입니다." }, 403);
+    }
+
     const { students } = (await context.request.json()) as BulkCreateBody;
 
     if (!students || !Array.isArray(students) || students.length === 0) {
@@ -33,25 +49,35 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return jsonResponse({ message: "한 번에 최대 100명까지 생성 가능합니다." }, 400);
     }
 
-    const now = new Date().toISOString();
-    const created: string[] = [];
-    const skipped: string[] = [];
-
-    // Ensure teacher exists in D1 (upsert stub if missing)
-    const firstStudent = students[0];
-    if (firstStudent?.teacher_id) {
-      const teacher = await context.env.DB.prepare(
-        "SELECT id FROM profiles WHERE id = ?",
-      ).bind(firstStudent.teacher_id).first();
-      if (!teacher) {
-        await context.env.DB.prepare(
-          `INSERT OR IGNORE INTO profiles (id, email, name, role, password_hash, approval_status, subscription_plan, streak_count, total_points, created_at, updated_at)
-           VALUES (?, ?, 'Teacher', 'teacher', '', 'approved', 'free', 0, 0, ?, ?)`,
-        ).bind(firstStudent.teacher_id, `teacher-${firstStudent.teacher_id.slice(0,8)}@local`, now, now).run();
+    for (const s of students) {
+      if (!s.email || !s.name || !s.password || typeof s.grade !== "number" || typeof s.semester !== "number") {
+        return jsonResponse({ message: "학생 정보가 올바르지 않습니다." }, 400);
+      }
+      if (s.email.length > 120 || s.name.length > 60 || s.password.length < 4 || s.password.length > 200) {
+        return jsonResponse({ message: "입력값 길이가 허용 범위를 벗어났습니다." }, 400);
+      }
+      if (s.grade < 1 || s.grade > 6 || (s.semester !== 1 && s.semester !== 2)) {
+        return jsonResponse({ message: "학년/학기 값이 올바르지 않습니다." }, 400);
       }
     }
 
+    const now = new Date().toISOString();
+    const created: string[] = [];
+    const skipped: string[] = [];
+    const isAdmin = caller.role === "admin";
+
     for (const s of students) {
+      // Teachers can only create students under themselves.
+      // Admins may pass an explicit teacher_id, which must reference an existing approved teacher.
+      const teacherId = isAdmin && s.teacher_id ? s.teacher_id : callerId;
+      if (isAdmin && s.teacher_id && s.teacher_id !== callerId) {
+        const t = await context.env.DB.prepare(
+          "SELECT role, approval_status FROM profiles WHERE id = ?",
+        ).bind(s.teacher_id).first<{ role: string; approval_status: string | null }>();
+        if (!t || t.role !== "teacher" || t.approval_status !== "approved") {
+          return jsonResponse({ message: "지정한 교사 ID가 유효하지 않습니다." }, 400);
+        }
+      }
       // Check if email already exists
       const existing = await context.env.DB.prepare(
         "SELECT id FROM profiles WHERE email = ?",
@@ -76,7 +102,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           s.grade,
           s.semester,
           s.class_name,
-          s.teacher_id,
+          teacherId,
           s.student_number,
           await hashPassword(s.password),
           now,

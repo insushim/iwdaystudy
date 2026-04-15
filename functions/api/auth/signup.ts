@@ -30,11 +30,29 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return jsonResponse({ message: "올바르지 않은 역할입니다." }, 400);
     }
 
-    if (password.length < 4) {
+    if (typeof email !== "string" || email.length > 120 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return jsonResponse({ message: "이메일 형식이 올바르지 않습니다." }, 400);
+    }
+
+    if (typeof name !== "string" || name.length < 1 || name.length > 60) {
+      return jsonResponse({ message: "이름은 1~60자여야 합니다." }, 400);
+    }
+
+    if (typeof password !== "string" || password.length < 8 || password.length > 200) {
       return jsonResponse(
-        { message: "비밀번호는 최소 4자 이상이어야 합니다." },
+        { message: "비밀번호는 8자 이상 200자 이하여야 합니다." },
         400,
       );
+    }
+
+    if (grade !== undefined && grade !== null && (typeof grade !== "number" || grade < 1 || grade > 6)) {
+      return jsonResponse({ message: "학년 값이 올바르지 않습니다." }, 400);
+    }
+    if (semester !== undefined && semester !== null && semester !== 1 && semester !== 2) {
+      return jsonResponse({ message: "학기 값이 올바르지 않습니다." }, 400);
+    }
+    if (school_name !== undefined && school_name !== null && (typeof school_name !== "string" || school_name.length > 80)) {
+      return jsonResponse({ message: "학교명이 너무 깁니다." }, 400);
     }
 
     const existing = await context.env.DB.prepare(
@@ -44,15 +62,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       .first();
 
     if (existing) {
-      return jsonResponse({ message: "이미 등록된 이메일입니다." }, 409);
+      // Do not disclose whether the email is already registered (user enumeration)
+      return jsonResponse({ message: "가입 요청을 처리할 수 없습니다." }, 409);
     }
 
     const id = crypto.randomUUID();
     const passwordHash = await hashPassword(password);
     const now = new Date().toISOString();
 
-    // All roles auto-approved (admin can revoke later if needed)
-    const approvalStatus = "approved";
+    // Teachers must be approved by admin before they can use privileged endpoints
+    const approvalStatus = role === "teacher" ? "pending" : "approved";
 
     await context.env.DB.prepare(
       `INSERT INTO profiles (id, email, name, role, grade, semester, school_name, password_hash, approval_status, subscription_plan, streak_count, total_points, created_at, updated_at)
