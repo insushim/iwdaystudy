@@ -73,9 +73,22 @@ export default function AdminLayout({
   const { user, isAuthenticated } = useAuthStore();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Wait for zustand persist to hydrate from localStorage before
+  // making any auth decisions — otherwise refresh bounces to /login.
+  useEffect(() => {
+    if (useAuthStore.persist.hasHydrated()) {
+      setHydrated(true);
+      return;
+    }
+    const unsub = useAuthStore.persist.onFinishHydration(() => setHydrated(true));
+    return () => unsub();
+  }, []);
 
   // Protect admin routes
   useEffect(() => {
+    if (!hydrated) return;
     if (!isAuthenticated) {
       router.push("/login");
       return;
@@ -83,7 +96,7 @@ export default function AdminLayout({
     if (user && user.role !== "admin") {
       router.push("/dashboard");
     }
-  }, [isAuthenticated, user, router]);
+  }, [hydrated, isAuthenticated, user, router]);
 
   function isActive(href: string) {
     if (href === "/admin") return pathname === "/admin";
