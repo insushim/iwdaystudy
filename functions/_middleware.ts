@@ -8,6 +8,7 @@ interface Env {
   ASSETS: Fetcher;
   AUTH_SECRET: string;
   ALLOWED_ORIGIN?: string;
+  CRON_SECRET?: string;
 }
 
 const DEFAULT_ORIGIN = "https://araharu.pages.dev";
@@ -17,6 +18,13 @@ function resolveAllowedOrigin(requestOrigin: string | null, env: Env): string {
   const allowList = allowed.split(",").map((o) => o.trim());
   if (requestOrigin && allowList.includes(requestOrigin)) return requestOrigin;
   return allowList[0];
+}
+
+function constantTimeStringEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
 }
 
 // Paths that do NOT require authentication
@@ -121,25 +129,37 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   // Only apply auth checks to /api routes
   if (url.pathname.startsWith('/api') && !isPublicPath(url.pathname)) {
-    const authHeader = request.headers.get('Authorization');
-    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-    const tokenData = token ? await verifyToken(token, context.env.AUTH_SECRET) : null;
-    if (!tokenData) {
-      return new Response(
-        JSON.stringify({ message: '인증이 필요합니다.' }),
-        {
-          status: 401,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': allowedOrigin,
-            'Vary': 'Origin',
-          },
-        }
-      );
+    // Cron endpoints accept a shared secret instead of a JWT
+    const isCron = url.pathname.startsWith('/api/cron/');
+    const cronHeader = request.headers.get('X-Cron-Secret');
+    const cronOk =
+      isCron &&
+      !!context.env.CRON_SECRET &&
+      !!cronHeader &&
+      constantTimeStringEqual(cronHeader, context.env.CRON_SECRET);
+
+    if (!cronOk) {
+      const authHeader = request.headers.get('Authorization');
+      const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+      const tokenData = token ? await verifyToken(token, context.env.AUTH_SECRET) : null;
+      if (!tokenData) {
+        return new Response(
+          JSON.stringify({ message: '인증이 필요합니다.' }),
+          {
+            status: 401,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': allowedOrigin,
+              'Vary': 'Origin',
+            },
+          }
+        );
+      }
+      (context as any).userId = tokenData.id;
+      (context as any).userEmail = tokenData.email;
+    } else {
+      (context as any).cronAuthenticated = true;
     }
-    // Attach user info to context for downstream functions
-    (context as any).userId = tokenData.id;
-    (context as any).userEmail = tokenData.email;
   }
 
   // Continue to the actual function handler

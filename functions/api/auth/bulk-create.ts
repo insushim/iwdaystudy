@@ -2,6 +2,7 @@
 // Creates multiple student accounts in D1 for cross-device login
 
 import { hashPassword } from "../../lib/crypto";
+import { logAudit, clientIp } from "../../lib/audit";
 
 interface Env {
   DB: D1Database;
@@ -112,6 +113,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
       created.push(s.email);
     }
+
+    await logAudit(context.env.DB, {
+      actorId: callerId,
+      actorRole: caller.role,
+      action: "bulk_create_students",
+      targetType: "students",
+      ip: clientIp(context.request),
+      metadata: { created: created.length, skipped: skipped.length },
+    });
 
     return jsonResponse({
       created: created.length,

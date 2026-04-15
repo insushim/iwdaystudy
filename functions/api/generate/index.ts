@@ -2,6 +2,8 @@
 // AI question generation using Anthropic Claude API
 // Generates a complete daily set of questions for a given grade/semester
 
+import { logAudit, clientIp } from "../../lib/audit";
+
 interface Env {
   DB: D1Database;
   ANTHROPIC_API_KEY: string;
@@ -152,6 +154,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (questionStmts.length > 0) {
       await context.env.DB.batch(questionStmts);
     }
+
+    await logAudit(context.env.DB, {
+      actorId: userId,
+      actorRole: profile.role,
+      action: 'ai_generate',
+      targetType: 'daily_set',
+      targetId: setId,
+      ip: clientIp(context.request),
+      metadata: { grade, semester, set_number: setNumber, total_questions: totalQuestions },
+    });
 
     return jsonResponse({
       set_id: setId,

@@ -6,6 +6,7 @@ import {
   hashPassword,
   createToken,
 } from "../../lib/crypto";
+import { logAudit, clientIp } from "../../lib/audit";
 
 interface Env {
   DB: D1Database;
@@ -38,18 +39,33 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       .first();
 
     if (!user) {
+      await logAudit(context.env.DB, {
+        action: "login_failed",
+        targetType: "email",
+        targetId: normalizedEmail,
+        ip: clientIp(context.request),
+        metadata: { reason: "unknown_user" },
+      });
       return jsonResponse(
         { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
         401,
       );
     }
 
-    // Verify password (supports both new SHA-256 and legacy simpleHash)
     const isValid = await verifyPassword(
       password,
       user.password_hash as string,
     );
     if (!isValid) {
+      await logAudit(context.env.DB, {
+        actorId: user.id as string,
+        actorRole: user.role as string,
+        action: "login_failed",
+        targetType: "user",
+        targetId: user.id as string,
+        ip: clientIp(context.request),
+        metadata: { reason: "wrong_password" },
+      });
       return jsonResponse(
         { message: "이메일 또는 비밀번호가 올바르지 않습니다." },
         401,
@@ -93,7 +109,16 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       context.env.AUTH_SECRET,
     );
 
-    const { password_hash, ...safeUser } = user as Record<string, unknown>;
+    await logAudit(context.env.DB, {
+      actorId: user.id as string,
+      actorRole: user.role as string,
+      action: "login_success",
+      targetType: "user",
+      targetId: user.id as string,
+      ip: clientIp(context.request),
+    });
+
+    const { password_hash: _ph, ...safeUser } = user as Record<string, unknown>;
     return jsonResponse({ user: safeUser, token });
   } catch {
     return jsonResponse(

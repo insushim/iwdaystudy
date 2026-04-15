@@ -214,3 +214,19 @@ CREATE TABLE IF NOT EXISTS rate_limits (
   window_start INTEGER NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_rate_limits_window ON rate_limits(window_start);
+
+-- Security audit log (sensitive actions only)
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id TEXT PRIMARY KEY,
+  actor_id TEXT,
+  actor_role TEXT,
+  action TEXT NOT NULL,
+  target_type TEXT,
+  target_id TEXT,
+  ip TEXT,
+  metadata TEXT,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_actor ON audit_logs(actor_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);

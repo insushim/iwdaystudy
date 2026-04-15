@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: POST /api/auth/signup
 
 import { hashPassword, createToken } from "../../lib/crypto";
+import { logAudit, clientIp } from "../../lib/audit";
 
 interface Env {
   DB: D1Database;
@@ -99,8 +100,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       approval_status: approvalStatus, created_at: now, updated_at: now,
     };
 
+    await logAudit(context.env.DB, {
+      actorId: id,
+      actorRole: role,
+      action: "signup",
+      targetType: "user",
+      targetId: id,
+      ip: clientIp(context.request),
+      metadata: { role, approval_status: approvalStatus },
+    });
+
     return jsonResponse({ user, token }, 201);
-  } catch (err: any) {
+  } catch {
     return jsonResponse(
       { message: "회원가입 처리 중 오류가 발생했습니다." },
       500,

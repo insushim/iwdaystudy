@@ -1,5 +1,5 @@
 name = "araharu"
-compatibility_date = "2024-01-01"
+compatibility_date = "2025-10-01"
 pages_build_output_dir = "out"
 
 [vars]
