@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   UserCheck,
+  School,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +50,11 @@ const sidebarLinks = [
     href: "/admin/users",
     label: "사용자 관리",
     icon: Users,
+  },
+  {
+    href: "/admin/classes",
+    label: "학급 관리",
+    icon: School,
   },
   {
     href: "/admin/analytics",
