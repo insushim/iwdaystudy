@@ -348,8 +348,49 @@ const CHAR_REPEAT_REGEX = /(.)\1{2,}/g;
 const JAMO_ONLY_REGEX = /^[ㄱ-ㅎㅏ-ㅣ]+$/;
 const NUMBER_ONLY_REGEX = /^\d+$/;
 const ALPHA_GIBBERISH_REGEX = /^[a-zA-Z]{5,}$/;
+const JAMO_ANY_REGEX = /[ㄱ-ㅎㅏ-ㅣ]/g;
+const KOREAN_SYLLABLE_REGEX = /[가-힣]/g;
+const CHAR_LONG_REPEAT_REGEX = /(.)\1{4,}/;
 
 // ── 헬퍼 함수들 ────────────────────────────────────────────────
+
+/**
+ * 하드 gibberish 감지: 명백히 장난·무의미 텍스트인지 판단
+ * 걸리면 총점 0으로 강제 확정
+ */
+function isHardGibberish(text: string): boolean {
+  const trimmed = text.trim();
+  if (trimmed.length === 0) return true;
+  const chars = trimmed.replace(/\s/g, "");
+  if (chars.length === 0) return true;
+
+  // 1) 자모(ㄱ-ㅎ, ㅏ-ㅣ) 비율이 15% 이상이면 장난
+  const jamoMatch = chars.match(JAMO_ANY_REGEX);
+  const jamoCount = jamoMatch ? jamoMatch.length : 0;
+  if (jamoCount / chars.length >= 0.15) return true;
+
+  // 2) 완성형 한글이 30% 미만이면 장난
+  const koreanMatch = chars.match(KOREAN_SYLLABLE_REGEX);
+  const koreanCount = koreanMatch ? koreanMatch.length : 0;
+  if (koreanCount / chars.length < 0.3) return true;
+
+  // 3) 같은 글자가 5회 이상 연속 반복
+  if (CHAR_LONG_REPEAT_REGEX.test(chars)) return true;
+
+  // 4) 공백 없는 긴 덩어리 (한 단어만 15자+)
+  const tokens = trimmed.split(/\s+/).filter((w) => w.length >= 1);
+  if (trimmed.length >= 15 && tokens.length < 2) return true;
+
+  // 5) 한 토큰이 전체의 70% 이상 (오늘 오늘 오늘 …)
+  if (tokens.length >= 4) {
+    const freq: Record<string, number> = {};
+    for (const tk of tokens) freq[tk] = (freq[tk] || 0) + 1;
+    const maxFreq = Math.max(...Object.values(freq));
+    if (maxFreq / tokens.length >= 0.7) return true;
+  }
+
+  return false;
+}
 
 function cleanJunkText(text: string): string {
   let cleaned = text;
@@ -488,13 +529,25 @@ function detectPatternRepetition(text: string): number {
 }
 
 /**
- * 글쓰기 평가 (총 10점) - v5 정교한 평가
+ * 글쓰기 평가 (총 10점) - v6 정교한 평가 + 하드 gibberish 감지
  */
 export function evaluateWriting(
   text: string,
   minChars: number,
 ): WritingEvalResult {
   const clean = text.trim();
+
+  // 하드 gibberish 체크: 장난 텍스트는 즉시 0점 확정
+  if (isHardGibberish(clean)) {
+    return {
+      score: 0,
+      stars: 1,
+      feedback: "의미 있는 글을 써야 점수를 받을 수 있어요!",
+      tip: "한글로 완성된 문장을 써봐요. 예: \"오늘은 학교에서 친구랑 놀았다.\"",
+      details: { length: 0, sentences: 0, variety: 0, structure: 0 },
+    };
+  }
+
   const cleaned = cleanJunkText(clean);
   const effectiveCharCount = cleaned.length;
   const sentences = splitSentences(cleaned);
@@ -645,11 +698,48 @@ export function evaluateWriting(
 
   const structureScore = Math.round(Math.min(2, Math.max(0, structureRaw)));
 
+  // ── 하드 캡 (의미 빈약한 글은 고점 차단) ───────────────────
+  let rawTotal = lengthScore + sentenceScore + varietyScore + structureScore;
+
+  // 1) 유효 단어 3개 미만이면 최대 2점 (내용 빈약)
+  if (uniqueWords.size < 3) {
+    rawTotal = Math.min(rawTotal, 2);
+  }
+
+  // 2) 쓰레기 비율 20% 이상이면 최대 3점
+  if (jRatio >= 0.2) {
+    rawTotal = Math.min(rawTotal, 3);
+  }
+
+  // 3) 의미 밀도 30% 미만이면 최대 3점 (기능어·조사만 가득)
+  const finalDensity = contentDensity(words);
+  if (words.length >= 5 && finalDensity < 0.3) {
+    rawTotal = Math.min(rawTotal, 3);
+  }
+
+  // 4) 한 토큰이 전체의 50% 이상 반복이면 최대 3점
+  if (words.length >= 5) {
+    const tokenFreq: Record<string, number> = {};
+    for (const w of words) tokenFreq[w] = (tokenFreq[w] || 0) + 1;
+    const maxTokenFreq = Math.max(...Object.values(tokenFreq));
+    if (maxTokenFreq / words.length >= 0.5) {
+      rawTotal = Math.min(rawTotal, 3);
+    }
+  }
+
+  // 5) 강한 패턴 반복(3회+)이면 최대 4점
+  const strongPatternRep = detectPatternRepetition(cleaned);
+  if (strongPatternRep >= 3) {
+    rawTotal = Math.min(rawTotal, 4);
+  }
+
+  // 6) 최소 글자 수 절반 미만이면 최대 3점
+  if (effectiveCharCount < minChars * 0.5) {
+    rawTotal = Math.min(rawTotal, 3);
+  }
+
   // ── 합산 ────────────────────────────────────────────────────
-  const total = Math.min(
-    10,
-    lengthScore + sentenceScore + varietyScore + structureScore,
-  );
+  const total = Math.max(0, Math.min(10, rawTotal));
   const stars =
     total <= 2 ? 1 : total <= 4 ? 2 : total <= 6 ? 3 : total <= 8 ? 4 : 5;
 

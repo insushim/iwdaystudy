@@ -40,6 +40,9 @@ import type {
   Question,
 } from "@/types/database";
 
+// 글쓰기 문제가 복습 큐에 들어갈 점수 기준 (10점 만점 중 이 미만이면 다시 풀게 함)
+const WRITING_REVIEW_THRESHOLD = 5;
+
 // ── Helper: evaluate a graded question answer ──
 function evaluateGradedAnswer(question: Question, answer: unknown): boolean {
   const qAnswer = question.answer;
@@ -339,7 +342,22 @@ export default function LearningSessionClient() {
 
       const originalIndex = reviewQueue[reviewIndex];
       const question = questions[originalIndex];
-      const isCorrect = evaluateGradedAnswer(question, answer);
+
+      let isCorrect = false;
+      if (question.subject === "writing") {
+        // 글쓰기는 재평가 후 기준 점수 이상이면 통과 처리
+        const minChars =
+          question.content?.min_chars || question.content?.minChars || 20;
+        const evalResult = evaluateWriting(String(answer), minChars);
+        isCorrect = evalResult.score >= WRITING_REVIEW_THRESHOLD;
+        // 재시도에서 기존 점수보다 높으면 갱신
+        const prevScore = questionStates[originalIndex]?.score ?? 0;
+        if (evalResult.score > prevScore) {
+          answerQuestion(question.id, answer, true, evalResult.score);
+        }
+      } else {
+        isCorrect = evaluateGradedAnswer(question, answer);
+      }
 
       setReviewAnswered(true);
       setReviewIsCorrect(isCorrect);
@@ -351,7 +369,11 @@ export default function LearningSessionClient() {
       } else {
         play("wrong");
         setMascotState("encourage");
-        setMascotMessage("정답을 잘 기억해둬요!");
+        setMascotMessage(
+          question.subject === "writing"
+            ? "조금 더 길고 자세하게 써봐요!"
+            : "정답을 잘 기억해둬요!",
+        );
       }
 
       setTimeout(() => {
@@ -359,7 +381,15 @@ export default function LearningSessionClient() {
         setMascotMessage("");
       }, 3000);
     },
-    [reviewAnswered, reviewQueue, reviewIndex, questions, play],
+    [
+      reviewAnswered,
+      reviewQueue,
+      reviewIndex,
+      questions,
+      questionStates,
+      answerQuestion,
+      play,
+    ],
   );
 
   // Advance to next review question
@@ -415,16 +445,22 @@ export default function LearningSessionClient() {
       addChildTimeToday(user.id, Math.ceil(timeSpent / 60));
     }
 
-    // Collect wrong answer indices (graded questions only)
+    // Collect wrong answer indices
+    // - 채점형(math, spelling, vocab, hanja, english): isCorrect=false
+    // - 글쓰기(writing): score < WRITING_REVIEW_THRESHOLD 이면 재시도
     const wrongIndices = questions
       .map((q, i) => ({ q, i, qs: states[i] }))
-      .filter(
-        ({ q, qs }) =>
-          !["emotion_check", "readiness_check"].includes(q.question_type) &&
-          !["writing", "creative"].includes(q.subject) &&
-          qs?.isAnswered &&
-          !qs?.isCorrect,
-      )
+      .filter(({ q, qs }) => {
+        if (["emotion_check", "readiness_check"].includes(q.question_type))
+          return false;
+        if (q.subject === "creative") return false;
+        if (!qs?.isAnswered) return false;
+
+        if (q.subject === "writing") {
+          return (qs.score ?? 0) < WRITING_REVIEW_THRESHOLD;
+        }
+        return !qs.isCorrect;
+      })
       .map(({ i }) => i);
 
     if (wrongIndices.length > 0) {

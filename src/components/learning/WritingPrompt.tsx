@@ -20,6 +20,7 @@ interface Props {
 const MIN_CHARS_DEFAULT = 20;
 const PASS_SCORE = 7; // 7점 초과(8점 이상)만 통과, 7점 이하는 다시 쓰기
 const MAX_RETRIES = 2; // 최대 재시도 횟수 (총 3번 기회)
+const MIN_FORCE_SUBMIT_SCORE = 3; // 이 점수 미만이면 강제 제출/재시도 소진 자동 통과도 차단
 
 const DETAIL_LABELS = [
   { key: "length" as const, label: "글자 수", max: 3, color: "#2ECC71" },
@@ -47,15 +48,50 @@ export default function WritingPrompt({
   const meetsMinimum = charCount >= minChars;
   const canRetry = retryCount < MAX_RETRIES;
 
-  // 한글 비율 체크 (의미 있는 글인지 판별)
+  // 한글 비율 체크 (의미 있는 글인지 판별) - 더이상 사용하지 않음
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getKoreanRatio = (t: string) => {
     const chars = t.replace(/\s/g, "");
     if (chars.length === 0) return 0;
     const korean = chars.replace(/[^\uAC00-\uD7A3]/g, "");
     return korean.length / chars.length;
   };
-  const koreanRatio = getKoreanRatio(text);
-  const isGibberish = text.trim().length > 0 && koreanRatio < 0.3;
+  // 장난/무의미 텍스트 감지: 자모 나열, 같은 글자 반복, 한 단어 반복 등
+  const isGibberishText = (t: string) => {
+    const trimmed = t.trim();
+    if (trimmed.length === 0) return false;
+    const chars = trimmed.replace(/\s/g, "");
+    if (chars.length === 0) return true;
+
+    // 1) 완성되지 않은 자모(ㄱ-ㅎ, ㅏ-ㅣ 등)가 15% 이상이면 장난
+    // Hangul Jamo(1100-11FF), Compatibility Jamo(3130-318F), Extended-A(A960-A97F), Extended-B(D7B0-D7FF)
+    const jamoRegex =
+      /[ᄀ-ᇿ㄰-㆏ꥠ-꥿ힰ-퟿]/g;
+    const jamoCount = (chars.match(jamoRegex) || []).length;
+    if (jamoCount / chars.length >= 0.15) return true;
+
+    // 2) 완성형 한글이 30% 미만이면 장난
+    const korean = chars.replace(/[^가-힣]/g, "");
+    if (korean.length / chars.length < 0.3) return true;
+
+    // 3) 같은 글자 5회 이상 연속 반복 (아아아아아, ㅋㅋㅋㅋㅋ)
+    if (/(.)\1{4,}/.test(chars)) return true;
+
+    // 4) 공백 기준 토큰 2개 미만 + 15자 이상 = 한 덩어리 나열
+    const tokens = trimmed.split(/\s+/).filter((w) => w.length >= 1);
+    if (trimmed.length >= 15 && tokens.length < 2) return true;
+
+    // 5) 같은 토큰이 전체의 70% 이상 차지 (오늘 오늘 오늘 오늘 …)
+    if (tokens.length >= 4) {
+      const freq: Record<string, number> = {};
+      for (const tk of tokens) freq[tk] = (freq[tk] || 0) + 1;
+      const maxFreq = Math.max(...Object.values(freq));
+      if (maxFreq / tokens.length >= 0.7) return true;
+    }
+
+    return false;
+  };
+  const isGibberish = isGibberishText(text);
 
   const handleSubmit = () => {
     if (!text.trim()) return;
@@ -87,12 +123,16 @@ export default function WritingPrompt({
     setPrevScore(adjustedScore);
     setEvalResult(result);
 
-    if (result.score > PASS_SCORE || !canRetry) {
-      // 통과했거나 재시도 횟수 초과 → 최종 제출
+    if (result.score > PASS_SCORE) {
+      // 통과 → 최종 제출
+      setSubmitted(true);
+      onAnswer(text.trim());
+    } else if (!canRetry && result.score >= MIN_FORCE_SUBMIT_SCORE) {
+      // 재시도 소진 + 최소 점수는 넘음 → 자동 제출
       setSubmitted(true);
       onAnswer(text.trim());
     } else {
-      // 70점 이하 + 재시도 가능 → 미리보기 모드
+      // 70점 이하(+재시도 가능) 또는 재시도 소진했지만 점수 너무 낮음 → 미리보기
       setPreviewMode(true);
     }
   };
@@ -105,13 +145,16 @@ export default function WritingPrompt({
   };
 
   const handleForceSubmit = () => {
-    // 점수 낮아도 강제 제출 (gibberish 재검증)
+    // 점수 낮아도 강제 제출 (단, 최소 점수 미만이거나 gibberish이면 차단)
     const currentText = text.trim();
     if (!currentText) return;
-    const ratio = getKoreanRatio(currentText);
-    if (ratio < 0.3) {
-      // previewMode에서 텍스트가 변조된 경우 차단
+    if (isGibberishText(currentText)) {
+      // previewMode에서 텍스트가 변조되어 장난이 된 경우 차단
       setPreviewMode(false);
+      return;
+    }
+    if (evalResult && evalResult.score < MIN_FORCE_SUBMIT_SCORE) {
+      // 점수가 너무 낮으면 강제 제출 차단 → 다시 쓰기 유도
       return;
     }
     setSubmitted(true);
@@ -225,13 +268,17 @@ export default function WritingPrompt({
               className="w-full rounded-xl bg-amber-50 border-2 border-amber-200 p-4"
             >
               <p className="text-base font-bold text-amber-800 text-center mb-1">
-                조금만 더 노력해볼까요?
+                {evalResult.score < MIN_FORCE_SUBMIT_SCORE
+                  ? "의미 있는 문장을 써야 넘어갈 수 있어요"
+                  : "조금만 더 노력해볼까요?"}
               </p>
               <p className="text-sm text-amber-700 text-center">
                 {evalResult.score * 10}점이에요. 80점 이상이면 통과!
-                {canRetry
-                  ? ` (다시쓰기 ${MAX_RETRIES - retryCount}번 남음)`
-                  : " (마지막 기회였어요)"}
+                {evalResult.score < MIN_FORCE_SUBMIT_SCORE
+                  ? ` (최소 ${MIN_FORCE_SUBMIT_SCORE * 10}점 이상 필요)`
+                  : canRetry
+                    ? ` (다시쓰기 ${MAX_RETRIES - retryCount}번 남음)`
+                    : " (마지막 기회였어요)"}
               </p>
             </motion.div>
 
@@ -292,10 +339,13 @@ export default function WritingPrompt({
               <Button
                 variant="outline"
                 onClick={handleForceSubmit}
-                className="flex-1 h-12 rounded-xl font-bold gap-2"
+                disabled={evalResult.score < MIN_FORCE_SUBMIT_SCORE}
+                className="flex-1 h-12 rounded-xl font-bold gap-2 disabled:opacity-50"
               >
                 <ArrowRight className="h-4 w-4" />
-                이대로 제출
+                {evalResult.score < MIN_FORCE_SUBMIT_SCORE
+                  ? "더 써야 해요"
+                  : "이대로 제출"}
               </Button>
               <Button
                 onClick={handleRetry}
