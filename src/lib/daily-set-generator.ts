@@ -1841,7 +1841,7 @@ export function generateDailySet(
     set_number: setNumber,
     title: `${grade}학년 ${semester}학기 #${setNumber}`,
     description: "오늘의 아침학습",
-    estimated_minutes: 30,
+    estimated_minutes: Math.round(composition.totalQuestions * 2),
     total_questions: composition.totalQuestions,
     total_points: composition.totalQuestions * 10,
     is_published: true,
