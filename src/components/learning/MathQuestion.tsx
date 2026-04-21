@@ -32,7 +32,9 @@ export default function MathQuestion({
   // Type guard for content
   const mathContent = content as any;
   const variant = mathContent?.variant || "choice";
-  const expression = mathContent?.expression || "";
+  const rawExpression: string = mathContent?.expression || "";
+  // 제너레이터가 "a + b = ?" 형태로 넣는 경우가 많음 → UI가 다시 "= ?" 붙이지 않도록 정규화
+  const expression = rawExpression.replace(/\s*=\s*\?\s*$/, "").trim();
   const correctAnswer = String(
     (answer as any)?.correct ??
       (answer as any)?.answer ??
@@ -41,13 +43,16 @@ export default function MathQuestion({
   );
   const choices: string[] = mathContent?.choices || [];
   const steps: string[] = (answer as any)?.steps || [];
-  const operator = expression.match(/[+\-]/)?.[0] || "";
-  const operands = expression
-    .split(/\s*[+\-]\s*/)
-    .map((item: string) => item.trim());
-  const isVerticalLayout =
-    (expression.includes("+") || expression.includes("-")) &&
-    operands.length === 2;
+
+  // 세로셈 판정: 순수 "숫자 연산자 숫자" 형태일 때만 (문장형 식은 제외)
+  const verticalMatch = expression.match(
+    /^\s*(\d+(?:\.\d+)?)\s*([+\-×÷])\s*(\d+(?:\.\d+)?)\s*$/,
+  );
+  const operator = verticalMatch?.[2] || "";
+  const operands = verticalMatch
+    ? [verticalMatch[1], verticalMatch[3]]
+    : [];
+  const isVerticalLayout = !!verticalMatch && variant !== "reverse";
 
   const handleSelect = (choice: string) => {
     if (showResult) return;
@@ -77,8 +82,13 @@ export default function MathQuestion({
         <div className="text-4xl sm:text-5xl font-black tracking-wide text-foreground select-none text-center leading-relaxed">
           {variant === "reverse" ? (
             <>
-              {expression} = {String(content.result ?? "")}
+              {expression}
+              {expression.endsWith("?") ? " " : " = "}
+              {String(content.result ?? "")}
             </>
+          ) : expression.endsWith("?") ? (
+            // 문장형 질문 ("…는 몇 개?")은 이미 물음표로 끝남 → 그대로 출력
+            <>{expression}</>
           ) : (
             <>
               {expression} = <span className="text-muted-foreground/50">?</span>
@@ -94,14 +104,17 @@ export default function MathQuestion({
           transition={{ delay: 0.2 }}
           className="rounded-2xl border-2 border-dashed border-[#FF6B35]/30 bg-[#FF6B35]/5 p-6 font-mono"
         >
-          <div className="flex flex-col items-end gap-1 text-3xl font-bold">
-            <div className="pr-2">{operands[0]}</div>
-            <div className="flex items-center gap-2 border-b-2 border-foreground pb-1">
-              <span className="text-[#FF6B35]">{operator}</span>
-              <span>{operands[1]}</span>
-            </div>
-            <div className="pr-2 pt-1 text-muted-foreground/40">
-              {showResult && !(hideCorrectAnswer && !isCorrect) ? correctAnswer : "?"}
+          <div className="inline-grid grid-cols-[auto_1fr] gap-x-3 text-3xl font-bold tabular-nums">
+            <div />
+            <div className="text-right">{operands[0]}</div>
+            <div className="text-[#FF6B35]">{operator}</div>
+            <div className="text-right">{operands[1]}</div>
+            <div className="col-span-2 border-b-2 border-foreground mt-1" />
+            <div />
+            <div className="text-right pt-1 text-muted-foreground/40">
+              {showResult && !(hideCorrectAnswer && !isCorrect)
+                ? correctAnswer
+                : "?"}
             </div>
           </div>
         </motion.div>
