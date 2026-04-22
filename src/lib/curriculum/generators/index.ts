@@ -16,3 +16,4 @@ export {
   generateSciencePool,
   generateSocialPool,
 } from "./science-social-generator";
+export { generateReadingPool } from "./reading-generator";

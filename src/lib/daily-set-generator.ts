@@ -64,6 +64,7 @@ import {
   generateSciencePool,
   generateSocialPool,
 } from "@/lib/curriculum/generators/science-social-generator";
+import { generateReadingPool } from "@/lib/curriculum/generators/reading-generator";
 
 import {
   grade1SpellingData,
@@ -607,6 +608,13 @@ function getGradeData(
     generateSocialPool(coreSocialGrade, expandedDayOfYearBonus, socialDiff),
   );
 
+  // ---- 독해(국어 지문) 풀 ----
+  const generatedReading = generateReadingPool(grade, dayOfYear);
+  const generatedReadingExtra = generateReadingPool(grade, expandedDayOfYear);
+  const generatedReadingBonus = takeExpandedPortion(
+    generateReadingPool(grade, expandedDayOfYearBonus),
+  );
+
   // ---- 주지과목 단원 진도 필터링 (전 학년 기준) ----
   const filtMath = filterMathByProgress(
     [...generatedMath, ...generatedMathExtra, ...generatedMathBonus],
@@ -680,7 +688,12 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade1CreativeData || []),
           ...generatedCreative,
@@ -730,7 +743,12 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade2CreativeData || []),
           ...generatedCreative,
@@ -784,7 +802,12 @@ function getGradeData(
         ],
         english: [...staticEnglishData, ...filtEnglish],
         korean: [...staticKoreanData],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade3CreativeData || []),
           ...generatedCreative,
@@ -836,7 +859,12 @@ function getGradeData(
         ],
         english: [...staticEnglishData, ...filtEnglish],
         korean: [...staticKoreanData],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade4CreativeData || []),
           ...generatedCreative,
@@ -888,7 +916,12 @@ function getGradeData(
         ],
         english: [...staticEnglishData, ...filtEnglish],
         korean: [...staticKoreanData],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade5CreativeData || []),
           ...generatedCreative,
@@ -949,7 +982,12 @@ function getGradeData(
         ],
         english: [...staticEnglishData, ...filtEnglish],
         korean: [...staticKoreanData],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade6CreativeData || []),
           ...generatedCreative,
@@ -1008,7 +1046,12 @@ function getGradeData(
           ...generatedCreativeExtra,
           ...generatedCreativeBonus,
         ],
-        koreanReading: [...staticKoreanReadingData],
+        koreanReading: [
+          ...staticKoreanReadingData,
+          ...generatedReading,
+          ...generatedReadingExtra,
+          ...generatedReadingBonus,
+        ],
         creative: [
           ...(grade1CreativeData || []),
           ...generatedCreative,
