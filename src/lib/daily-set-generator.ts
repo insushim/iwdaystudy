@@ -183,6 +183,21 @@ const DISTRACTOR_BANKS: string[][] = [
   ["봄", "여름", "가을", "겨울"],
   // 바다
   ["동해", "서해", "남해", "황해", "태평양", "대서양", "인도양"],
+  // 측정 단위(길이·무게·부피 — "무엇을 재는 단위?"에 교차차원 오답)
+  ["미터", "센티미터", "킬로미터", "밀리미터", "그램", "킬로그램", "리터", "밀리리터"],
+  // 평면도형
+  ["삼각형", "사각형", "오각형", "육각형", "직사각형", "정사각형",
+   "마름모", "사다리꼴", "평행사변형"],
+  // 입체도형
+  ["직육면체", "정육면체", "원기둥", "원뿔", "각기둥", "각뿔"],
+  // 한국사 나라·시대
+  ["고조선", "고구려", "백제", "신라", "가야", "발해", "고려", "조선"],
+  // 강
+  ["한강", "낙동강", "금강", "영산강", "섬진강", "대동강", "압록강", "두만강"],
+  // 산
+  ["백두산", "한라산", "지리산", "설악산", "금강산", "북한산", "태백산"],
+  // 품사
+  ["명사", "동사", "형용사", "부사", "관형사", "대명사", "감탄사", "수사"],
 ];
 function bankFor(answer: string): string[] | null {
   for (const b of DISTRACTOR_BANKS) if (b.includes(answer)) return b;
@@ -194,8 +209,56 @@ function isNumericAnswer(s: string): boolean {
 // 정답과 형식(숫자/한글단어)·길이가 비슷한 오답인가
 function sameFormat(correct: string, cand: string): boolean {
   if (isNumericAnswer(correct) !== isNumericAnswer(cand)) return false;
-  const tol = Math.max(2, Math.ceil(correct.length * 0.6));
+  // 숫자는 자릿수(정수부 길이)가 비슷해야 "딱 봐도 답"을 막음
+  if (isNumericAnswer(correct)) {
+    const di = (s: string) => s.replace(/[,.\-]/g, "").length;
+    return Math.abs(di(correct) - di(cand)) <= 1;
+  }
+  const tol = Math.max(2, Math.ceil(correct.length * 0.5));
   return Math.abs(correct.length - cand.length) <= tol;
+}
+// 비교용 정규화(공백·문장부호 제거) — "정답" vs "정답." 같은 사실상 중복 방지
+function normForDup(s: string): string {
+  return s.replace(/[\s.,!?·]/g, "");
+}
+// 정답과 길이가 가까운 순으로 정렬(동일 거리 내 셔플 유지). 정답만 길이가
+// 튀어 한눈에 보이는 것을 막아 추측 난이도를 높인다. (V8 sort는 stable)
+function rankByCloseLength(
+  cands: string[],
+  correctLen: number,
+  random: () => number,
+): string[] {
+  const arr = [...cands];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  arr.sort(
+    (a, b) =>
+      Math.abs(a.length - correctLen) - Math.abs(b.length - correctLen),
+  );
+  return arr;
+}
+// 스케일·포맷(콤마·소수) 인지 숫자 오답. 큰 수는 자리수에 맞춘 오프셋을,
+// 소수는 소수 단위 오프셋을 쓰고, 콤마/소수자리 포맷을 정답과 동일하게 맞춘다.
+function numericOffsets(n: number, decimals: number): number[] {
+  if (decimals > 0) {
+    const u = Math.pow(10, -decimals);
+    return [u, 2 * u, 3 * u, 5 * u, 10 * u];
+  }
+  const abs = Math.abs(n);
+  if (abs < 20) return [1, 2, 3, 4, 5];
+  if (abs < 100) return [1, 2, 3, 5, 10];
+  const digits = Math.floor(Math.log10(abs)) + 1;
+  const u = Math.pow(10, digits - 2); // 50000(5자리)→1000
+  return [u, 2 * u, 3 * u, 5 * u, 10 * u];
+}
+function formatNum(n: number, hadComma: boolean, decimals: number): string {
+  const fixed = decimals > 0 ? n.toFixed(decimals) : String(n);
+  if (!hadComma) return fixed;
+  const [int, dec] = fixed.split(".");
+  const withComma = Number(int).toLocaleString("en-US");
+  return dec ? `${withComma}.${dec}` : withComma;
 }
 
 /**
@@ -213,36 +276,42 @@ function generateChoices<T>(
   const correctStr = String(correct);
   const distractors: string[] = [];
   const used = new Set<string>([correctStr]);
+  const normCorrect = normForDup(correctStr);
   const isBad = (a: string): boolean =>
     !a ||
     used.has(a) ||
     a === correctStr ||
     (correctStr.length >= 2 && a.includes(correctStr)) ||
-    (a.length >= 2 && correctStr.includes(a));
+    (a.length >= 2 && correctStr.includes(a)) ||
+    (normCorrect !== "" && normForDup(a) === normCorrect); // 사실상 중복
+  // 길이 근접 순으로 추가(정답만 길이가 튀어 보이는 것을 방지)
   const tryAdd = (cands: string[]): void => {
-    const arr = [...new Set(cands)].filter((a) => !isBad(a));
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
+    const arr = rankByCloseLength(
+      [...new Set(cands)].filter((a) => !isBad(a)),
+      correctStr.length,
+      random,
+    );
     for (const a of arr) {
       if (distractors.length >= 3) break;
+      if (isBad(a)) continue;
       distractors.push(a);
       used.add(a);
     }
   };
 
+  const numeric = isNumericAnswer(correctStr);
+
   // 0) 큐레이션 뱅크 (나라·행성·도시 등)
   const bank = bankFor(correctStr);
   if (bank) tryAdd(bank);
 
-  // 1) 같은 category + 형식 일치 → 같은 category(형식 무관)
+  // 1) 같은 category + 형식 일치
+  let same: string[] = [];
   if (distractors.length < 3 && category && extractCategory) {
-    const same = pool
+    same = pool
       .filter((it) => extractCategory(it) === category)
       .map(extractAnswer);
     tryAdd(same.filter((a) => sameFormat(correctStr, a)));
-    if (distractors.length < 3) tryAdd(same);
   }
 
   // 2) 전체 풀에서 형식 일치
@@ -250,16 +319,21 @@ function generateChoices<T>(
     tryAdd(pool.map(extractAnswer).filter((a) => sameFormat(correctStr, a)));
   }
 
-  // 3) 전체 풀 (최후)
-  if (distractors.length < 3) tryAdd(pool.map(extractAnswer));
-
-  // 4) 숫자 정답이면 근접 숫자 생성
-  if (distractors.length < 3 && isNumericAnswer(correctStr)) {
-    const n = Number(correctStr.replace(/,/g, ""));
-    for (const d of [1, 2, 3, 5, 10, 20]) {
+  // 3) 숫자 정답이면 형식 무관 fallback 전에 근접 숫자 생성(단어 오답 혼입 방지)
+  if (distractors.length < 3 && numeric) {
+    const raw = correctStr.replace(/,/g, "");
+    const n = Number(raw);
+    const hadComma = correctStr.includes(",");
+    const dot = raw.indexOf(".");
+    const decimals = dot >= 0 ? raw.length - dot - 1 : 0;
+    // 자연수(정답 2 이상)면 0·음수 오답을 피해 소거법을 막음
+    const floor = decimals === 0 && n >= 2 ? 1 : 0;
+    for (const d of numericOffsets(n, decimals)) {
       for (const s of [1, -1]) {
-        const c = String(n + d * s);
-        if (!used.has(c) && n + d * s >= 0) {
+        const v = Number((n + d * s).toFixed(decimals));
+        if (v < floor) continue;
+        const c = formatNum(v, hadComma, decimals);
+        if (!used.has(c) && c !== correctStr) {
           distractors.push(c);
           used.add(c);
         }
@@ -268,6 +342,10 @@ function generateChoices<T>(
       if (distractors.length >= 3) break;
     }
   }
+
+  // 4) 비숫자: 형식 무관 fallback (같은 category 원형 → 전체 풀 원형)
+  if (distractors.length < 3 && !numeric && same.length) tryAdd(same);
+  if (distractors.length < 3 && !numeric) tryAdd(pool.map(extractAnswer));
 
   // 5) 정말 부족하면 패딩(거의 발생 안 함)
   let pad = 1;
@@ -342,13 +420,22 @@ function pickTfWrong(
 }
 
 function generateMathChoices(correct: number, random: () => number): string[] {
+  // 비정상 값 가드(무한루프·NaN 보기 방지)
+  if (!Number.isFinite(correct)) correct = 0;
   const distractors = new Set<string>();
-  const offsets = shuffleChoices([1, 2, 5, 10], random);
+  // 소수 정답이면 같은 소수 단위로 오답 생성(0.2→0.1/0.3, 1.2/5.2 같은 스케일 tell 방지)
+  const decimals = Number.isInteger(correct)
+    ? 0
+    : String(correct).split(".")[1]?.length || 0;
+  const unit = decimals > 0 ? Math.pow(10, -decimals) : 1;
+  const offsets = shuffleChoices(numericOffsets(correct, decimals), random);
+  // 정답이 2 이상인 자연수면 0 오답을 피해 소거법을 막음
+  const floor = decimals === 0 && correct >= 2 ? 1 : 0;
 
   for (const offset of offsets) {
     const sign = random() > 0.5 ? 1 : -1;
-    const candidate = correct + offset * sign;
-    if (candidate >= 0 && candidate !== correct) {
+    const candidate = Number((correct + offset * sign).toFixed(decimals));
+    if (candidate >= floor && candidate !== correct) {
       distractors.add(String(candidate));
     }
     if (distractors.size === 3) break;
@@ -356,7 +443,7 @@ function generateMathChoices(correct: number, random: () => number): string[] {
 
   let step = 1;
   while (distractors.size < 3) {
-    const candidate = correct + step;
+    const candidate = Number((correct + step * unit).toFixed(decimals));
     if (candidate !== correct) {
       distractors.add(String(candidate));
     }
@@ -391,6 +478,27 @@ function perturbSyllable(word: string): string | null {
     );
   }
   return null;
+}
+// 어절의 받침을 여러 후보로 바꿔 서로 다른 오표기 변형을 충분히 생성
+// (짧은 문장에서도 맞춤법 보기 3개를 확보)
+function spellPerturbations(part: string): string[] {
+  const cands = [0, 1, 4, 8, 16, 17, 19, 20, 21]; // 없음/ㄱ/ㄴ/ㄹ/ㅁ/ㅂ/ㅅ/ㅆ/ㅇ
+  const out: string[] = [];
+  for (let i = part.length - 1; i >= 0; i--) {
+    const code = part.charCodeAt(i);
+    if (code < 0xac00 || code > 0xd7a3) continue;
+    const base = code - 0xac00;
+    const jong = base % 28;
+    for (const nj of cands) {
+      if (nj === jong) continue;
+      const v =
+        part.slice(0, i) +
+        String.fromCharCode(0xac00 + (base - jong) + nj) +
+        part.slice(i + 1);
+      if (v !== part && !out.includes(v)) out.push(v);
+    }
+  }
+  return out;
 }
 function diffSpellingPart(
   correctSentence: string,
@@ -429,18 +537,61 @@ function spellingVariantDistractors(
   const p = perturbSyllable(correctPart);
   if (p && !exclude.has(p) && !variantParts.includes(p)) variantParts.push(p);
 
-  const sentences = new Set<string>([wrongSentence]);
+  const sentences = new Set<string>();
+  // 원래 오답 문장 우선(단, 정답과 같으면 제외)
+  if (wrongSentence && wrongSentence !== correctSentence)
+    sentences.add(wrongSentence);
   for (const v of variantParts) {
     if (sentences.size >= 3) break;
-    sentences.add(correctSentence.replace(correctPart, v));
+    const s = correctSentence.replace(correctPart, v);
+    if (s !== correctSentence) sentences.add(s); // 정답 문장 절대 미포함
   }
   let guard = 0;
-  while (sentences.size < 3 && guard++ < 6) {
+  while (sentences.size < 3 && guard++ < 8) {
     const p2 = perturbSyllable(guard % 2 ? wrongPart : correctPart);
     if (!p2) break;
-    sentences.add(correctSentence.replace(correctPart, p2));
+    const s = correctSentence.replace(correctPart, p2);
+    if (s !== correctSentence) sentences.add(s);
   }
   return shuffleChoices([...sentences], rng).slice(0, 3);
+}
+
+// 맞춤법 sentence/correct variant 공용: 정답 + 서로 다른 오표기 변형 3개(중복·정답중복 0)
+function buildSpellingSentenceChoices(
+  correctSentence: string,
+  wrongSentence: string,
+  rng: () => number,
+): string[] {
+  const { correctPart, wrongPart } = diffSpellingPart(
+    correctSentence,
+    wrongSentence,
+  );
+  const distinct = new Set<string>();
+  for (const d of spellingVariantDistractors(
+    correctSentence,
+    wrongSentence,
+    correctPart,
+    wrongPart,
+    rng,
+  )) {
+    if (distinct.size >= 3) break;
+    if (d && d !== correctSentence) distinct.add(d);
+  }
+  // 짧은 문장도 보기 3개 확보: ① correctPart 받침 다중 변형 → ② 문장 전체 음절 변형
+  if (distinct.size < 3) {
+    for (const pv of spellPerturbations(correctPart)) {
+      if (distinct.size >= 3) break;
+      const cand = correctSentence.replace(correctPart, pv);
+      if (cand !== correctSentence) distinct.add(cand);
+    }
+  }
+  if (distinct.size < 3) {
+    for (const cand of spellPerturbations(correctSentence)) {
+      if (distinct.size >= 3) break;
+      if (cand !== correctSentence) distinct.add(cand);
+    }
+  }
+  return shuffleChoices([correctSentence, ...[...distinct].slice(0, 3)], rng);
 }
 
 function generateSpellingChoices(
@@ -1402,19 +1553,36 @@ function buildSpellingQuestion(
         break;
       }
     }
-    const wrongPart = wrongWords[diffIndex] || wrongWords[0];
-    const correctPart = correctWords[diffIndex] || correctWords[0];
-
-    // Build word-level choices: the wrong part + 3 other parts from the sentence
-    const otherParts = wrongWords
-      .filter((_, i) => i !== diffIndex && _.length > 1)
-      .slice(0, 3);
-    while (otherParts.length < 3) {
-      otherParts.push(correctPart);
+    // 어절에 붙은 문장부호 제거(.,!? 등) — "사과"/"사과," 같은 유사중복 방지
+    const stripPunc = (w: string) =>
+      w.replace(
+        /^[^가-힣A-Za-z0-9]+|[^가-힣A-Za-z0-9]+$/g,
+        "",
+      );
+    const wrongPart = stripPunc(wrongWords[diffIndex] || wrongWords[0]);
+    const correctPart = stripPunc(correctWords[diffIndex] || correctWords[0]);
+    const rng = random || Math.random;
+    // 보기: 정답(틀린 어절) + 같은 문장의 다른 올바른 어절 — 중복·부분중복 제거,
+    // 길이 근접 정렬로 정답만 길이가 튀어 보이는 것 방지
+    const isDupPart = (w: string) =>
+      !w ||
+      w === wrongPart ||
+      (w.length >= 2 && (w.includes(wrongPart) || wrongPart.includes(w)));
+    const others = [
+      ...new Set(
+        correctWords
+          .filter((_, i) => i !== diffIndex)
+          .map(stripPunc)
+          .filter((w) => w.length > 1 && !isDupPart(w)),
+      ),
+    ];
+    const parts = rankByCloseLength(others, wrongPart.length, rng).slice(0, 3);
+    const fillers = ["우리", "오늘", "정말", "다시", "함께", "조금", "그리고"];
+    for (const f of fillers) {
+      if (parts.length >= 3) break;
+      if (!parts.includes(f) && !isDupPart(f)) parts.push(f);
     }
-    const wordChoices = random
-      ? shuffleChoices([wrongPart, ...otherParts.slice(0, 3)], random)
-      : [wrongPart, ...otherParts.slice(0, 3)];
+    const wordChoices = shuffleChoices([wrongPart, ...parts.slice(0, 3)], rng);
 
     return {
       id: `q-${setId}-${orderIndex}`,
@@ -1444,23 +1612,11 @@ function buildSpellingQuestion(
   }
 
   if (variant === "correct") {
-    // 오답은 같은 문장의 그럴듯한 오표기 변형으로 (무관한 다른 문장 X)
-    const rng = random || Math.random;
-    const { correctPart, wrongPart } = diffSpellingPart(
+    // 오답은 같은 문장의 그럴듯한 오표기 변형으로 (무관한 다른 문장 X, 중복 0)
+    const correctChoices = buildSpellingSentenceChoices(
       correctSentence,
       wrongSentence,
-    );
-    const distractors = spellingVariantDistractors(
-      correctSentence,
-      wrongSentence,
-      correctPart,
-      wrongPart,
-      rng,
-    );
-    while (distractors.length < 3) distractors.push(wrongSentence);
-    const correctChoices = shuffleChoices(
-      [correctSentence, ...distractors.slice(0, 3)],
-      rng,
+      random || Math.random,
     );
 
     return {
@@ -1489,7 +1645,13 @@ function buildSpellingQuestion(
     };
   }
 
-  // Default: 'sentence' variant (existing behavior)
+  // Default: 'sentence' variant — 같은 문장의 오표기 변형으로 보기 구성
+  // (무관한 다른 문장을 보기로 쓰면 맞춤법을 몰라도 정답이 한눈에 보임)
+  const sentenceChoices = buildSpellingSentenceChoices(
+    correctSentence,
+    wrongSentence,
+    random || Math.random,
+  );
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
@@ -1501,7 +1663,7 @@ function buildSpellingQuestion(
     content: {
       variant: "sentence",
       text: "다음 중 맞춤법이 올바른 문장을 고르세요.",
-      options: choices,
+      options: sentenceChoices,
     },
     answer: {
       correct: correctSentence,
@@ -1726,6 +1888,14 @@ function buildWritingQuestion(
 // Build a hanja question with variant types
 type HanjaVariant = "reading" | "meaning" | "character" | "word" | "writing";
 
+// 한자 뜻(훈) 정규화: "쇠 철"(meaning) + reading"철" → "쇠"
+// (음 맞추기/뜻 맞추기에서 답이 노출되던 문제 + 정답/보기 형식 불일치 차단)
+function cleanHanjaMeaning(meaning: string, reading: string): string {
+  return (
+    meaning.replace(new RegExp("\\s*" + reading + "\\s*$"), "").trim() || meaning
+  );
+}
+
 function buildHanjaQuestion(
   setId: string,
   orderIndex: number,
@@ -1734,12 +1904,8 @@ function buildHanjaQuestion(
   choices: string[],
   variant: HanjaVariant = "reading",
 ): Question {
-  // 뜻(훈) 필드에 음이 섞여 들어간 데이터 정규화: "쇠 철"(meaning) + "철"(reading) → "쇠"
-  // (음 맞추기/뜻 맞추기에서 답이 노출되던 문제 차단)
-  const cleanMeaning =
-    entry.meaning.replace(new RegExp("\\s*" + entry.reading + "\\s*$"), "").trim() ||
-    entry.meaning;
-  entry = { ...entry, meaning: cleanMeaning };
+  // 뜻(훈) 필드에 음이 섞여 들어간 데이터 정규화 (보기 풀도 호출부에서 동일 정규화)
+  entry = { ...entry, meaning: cleanHanjaMeaning(entry.meaning, entry.reading) };
 
   const base = {
     id: `q-${setId}-${orderIndex}`,
@@ -2211,8 +2377,13 @@ export function generateDailySet(
             .filter((_, i) => i !== idx)
             .map((p) => (random() > 0.5 ? p.word1 : p.word2))
             .filter((w) => w !== answerWord);
-          shuffleArrayInPlace(wrongChoices, random);
-          const choices = [answerWord, ...wrongChoices.slice(0, 3)];
+          const choices = [
+            answerWord,
+            ...rankByCloseLength(wrongChoices, answerWord.length, random).slice(
+              0,
+              3,
+            ),
+          ];
           shuffleArrayInPlace(choices, random);
           questions.push(
             buildVocabQuestion(
@@ -2244,8 +2415,13 @@ export function generateDailySet(
             .filter((_, i) => i !== idx)
             .map((p) => (random() > 0.5 ? p.word1 : p.word2))
             .filter((w) => w !== answerWord);
-          shuffleArrayInPlace(wrongChoices, random);
-          const choices = [answerWord, ...wrongChoices.slice(0, 3)];
+          const choices = [
+            answerWord,
+            ...rankByCloseLength(wrongChoices, answerWord.length, random).slice(
+              0,
+              3,
+            ),
+          ];
           shuffleArrayInPlace(choices, random);
           questions.push(
             buildVocabQuestion(
@@ -2270,8 +2446,14 @@ export function generateDailySet(
           const wrongChoices = data.idioms
             .filter((_, i) => i !== idx)
             .map((id) => id.meaning);
-          shuffleArrayInPlace(wrongChoices, random);
-          const choices = [idiom.meaning, ...wrongChoices.slice(0, 3)];
+          const choices = [
+            idiom.meaning,
+            ...rankByCloseLength(
+              wrongChoices,
+              idiom.meaning.length,
+              random,
+            ).slice(0, 3),
+          ];
           shuffleArrayInPlace(choices, random);
           questions.push(
             buildVocabQuestion(
@@ -2299,8 +2481,13 @@ export function generateDailySet(
           const wrongChoices = data.vocab
             .map((v) => v.answer)
             .filter((w) => w !== mmw.word);
-          shuffleArrayInPlace(wrongChoices, random);
-          const choices = [mmw.word, ...wrongChoices.slice(0, 3)];
+          const choices = [
+            mmw.word,
+            ...rankByCloseLength(wrongChoices, mmw.word.length, random).slice(
+              0,
+              3,
+            ),
+          ];
           shuffleArrayInPlace(choices, random);
           questions.push(
             buildVocabQuestion(
@@ -2328,8 +2515,13 @@ export function generateDailySet(
           const wrongChoices = data.vocab
             .map((v) => v.answer)
             .filter((w) => w !== puzzle.word);
-          shuffleArrayInPlace(wrongChoices, random);
-          const choices = [puzzle.word, ...wrongChoices.slice(0, 3)];
+          const choices = [
+            puzzle.word,
+            ...rankByCloseLength(wrongChoices, puzzle.word.length, random).slice(
+              0,
+              3,
+            ),
+          ];
           shuffleArrayInPlace(choices, random);
           questions.push(
             buildVocabQuestion(
@@ -2445,10 +2637,12 @@ export function generateDailySet(
         const hvariant = hvariants[Math.floor(random() * hvariants.length)];
         let hchoices: string[];
         if (hvariant === "meaning") {
+          // 정답·보기 모두 동일 정규화(훈만) → 정답이 보기에 반드시 포함되고
+          // "있을 유" 같은 음 노출도 차단
           hchoices = generateChoices(
-            entry.meaning,
+            cleanHanjaMeaning(entry.meaning, entry.reading),
             data.hanja,
-            (h) => h.meaning,
+            (h) => cleanHanjaMeaning(h.meaning, h.reading),
             random,
           );
         } else if (hvariant === "character") {

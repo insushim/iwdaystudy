@@ -4,6 +4,33 @@
  * Supports multiple variant types: 맞춤법, 받아쓰기, 띄어쓰기교정, 문장부호, 존댓말/반말, 맞춤법규칙
  */
 import type { SpellingEntry } from "@/types/curriculum";
+import { hasBatchim } from "@/lib/korean-josa";
+
+// 템플릿 빈칸(___)에 단어를 넣되, 빈칸 바로 뒤 조사(이/가·을/를·은/는·와/과)를
+// 삽입 단어의 받침에 맞춰 교정. "오늘 ___이 좋아요." + "날씨" → "오늘 날씨가 좋아요."
+const JOSA_PAIRS: Record<string, [string, string]> = {
+  // [받침 있을 때, 받침 없을 때]
+  이: ["이", "가"],
+  가: ["이", "가"],
+  을: ["을", "를"],
+  를: ["을", "를"],
+  은: ["은", "는"],
+  는: ["은", "는"],
+  와: ["과", "와"],
+  과: ["과", "와"],
+};
+function fillBlankWithJosa(template: string, word: string): string {
+  const idx = template.indexOf("___");
+  if (idx < 0) return template.replace("___", word);
+  const prefix = template.slice(0, idx);
+  let after = template.slice(idx + 3);
+  const first = after[0];
+  if (first && JOSA_PAIRS[first]) {
+    const bat = hasBatchim(word.slice(-1));
+    after = (bat ? JOSA_PAIRS[first][0] : JOSA_PAIRS[first][1]) + after.slice(1);
+  }
+  return prefix + word + after;
+}
 
 function seededRandom(seed: number) {
   let s = seed;
@@ -3289,12 +3316,12 @@ function generateDictationEntry(
   const pattern = pickOne(rng, eligible);
   const answerIsFirst = rng() > 0.5;
 
-  const q1 = pattern.sentence.replace(
-    "___",
+  const q1 = fillBlankWithJosa(
+    pattern.sentence,
     answerIsFirst ? pattern.correct : pattern.wrong,
   );
-  const q2 = pattern.sentence.replace(
-    "___",
+  const q2 = fillBlankWithJosa(
+    pattern.sentence,
     answerIsFirst ? pattern.wrong : pattern.correct,
   );
 
@@ -3370,12 +3397,12 @@ function generateRuleEntry(
   const pattern = pickOne(rng, eligible);
   const answerIsFirst = rng() > 0.5;
 
-  const q1 = pattern.sentence.replace(
-    "___",
+  const q1 = fillBlankWithJosa(
+    pattern.sentence,
     answerIsFirst ? pattern.correct : pattern.wrong,
   );
-  const q2 = pattern.sentence.replace(
-    "___",
+  const q2 = fillBlankWithJosa(
+    pattern.sentence,
     answerIsFirst ? pattern.wrong : pattern.correct,
   );
 
