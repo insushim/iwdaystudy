@@ -33,8 +33,8 @@ function shuffle<T>(arr: T[], random: () => number): T[] {
 const GRADE_1_2: KnowledgeEntry[] = [
   // === 동물 (35) ===
   {
-    text: "강아지의 새끼를 ___라고 부른다.",
-    answer: "새끼 강아지",
+    text: "소의 새끼는 ___라고 부른다.",
+    answer: "송아지",
     category: "동물",
   },
   {

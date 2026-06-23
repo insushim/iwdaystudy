@@ -5420,7 +5420,7 @@ export const grade6ScienceData: KnowledgeEntry[] = [
   },
   {
     text: "퇴적암 중에서 진흙이 굳어서 만들어진 것은 ___이다.",
-    answer: "셰일",
+    answer: "이암",
     category: "지구과학",
   },
   {

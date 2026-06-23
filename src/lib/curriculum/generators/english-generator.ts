@@ -5,6 +5,14 @@
  * Combined with seeded PRNG, this provides reproducible yet varied content.
  */
 import type { EnglishEntry } from "@/types/curriculum";
+import { naturalizeKorean } from "@/lib/korean-josa";
+import {
+  verbAttributive,
+  verbPropositive,
+  verbWantTo,
+  isVerb,
+} from "@/lib/korean-conjugate";
+import { ADJ_PRED } from "./adj-predicative";
 
 // Seeded PRNG for reproducible generation
 function seededRandom(seed: number) {
@@ -3821,18 +3829,11 @@ const HOBBY_TEMPLATES: Tmpl[] = [
   },
 ];
 
+// 날씨 명사용(형용사 날씨 단어는 ADJ_DESC_TEMPLATES로 자동 라우팅됨)
 const WEATHER_TEMPLATES: Tmpl[] = [
-  { s: (w) => `It is ${w} today.`, t: (k) => `오늘은 ${k} 날씨예요.` },
-  { s: (w) => `The weather is ${w}.`, t: (k) => `날씨가 ${k}.` },
-  {
-    s: (w) => `It will be ${w} tomorrow.`,
-    t: (k) => `내일은 ${k} 날씨일 거예요.`,
-  },
-  {
-    s: (w) => `I don't like ${w} weather.`,
-    t: (k) => `나는 ${k} 날씨를 좋아하지 않아요.`,
-  },
-  { s: (w) => `Is it ${w} outside?`, t: (k) => `밖이 ${k}?` },
+  { s: (w) => `Look at the ${w}!`, t: (k) => `${k}을(를) 봐요!` },
+  { s: (w) => `There is ${w} today.`, t: (k) => `오늘은 ${k}이(가) 있어요.` },
+  { s: (w) => `I like the ${w}.`, t: (k) => `나는 ${k}을(를) 좋아해요.` },
 ];
 
 const JOB_TEMPLATES: Tmpl[] = [
@@ -5040,13 +5041,87 @@ const FIXED_CAN: EnglishEntry[] = [
 function makeEntry(word: W, tmpl: Tmpl, unit?: string): EnglishEntry {
   const entry: EnglishEntry = {
     sentence: tmpl.s(word.w),
-    translation: tmpl.t(word.k),
+    translation: naturalizeKorean(tmpl.t(word.k)),
     word: word.w,
     pronunciation: word.p,
     practice: word.pr,
   };
   if (unit) entry.unit = unit;
   return entry;
+}
+
+// ============================================================
+// POS-aware template routing
+// 단어 글로스의 품사에 따라 자동으로 알맞은 템플릿 풀을 고른다.
+// 형용사(관형사형 글로스)를 명사 슬롯에 넣어 "큰을(를) 봐요"가 되거나
+// 동사 사전형을 그대로 써 "밀다 것을"이 되던 비문을 근본 차단한다.
+// 분류 규칙: k가 "다"로 끝나면 동사, ADJ_PRED에 있으면 형용사(감정/서술),
+// 그 외는 명사 → 호출부가 넘긴 templates(명사용)를 그대로 사용.
+// ============================================================
+
+function adjPred(k: string): string {
+  return ADJ_PRED[k]?.p ?? k;
+}
+
+type POS = "verb" | "person" | "thing" | "weather" | "noun";
+
+function classifyPOS(k: string): POS {
+  if (isVerb(k)) return "verb";
+  const a = ADJ_PRED[k];
+  if (a) return a.cat;
+  return "noun";
+}
+
+// 동사: 안전 활용형(청유 ~자 / 관형사형 ~는 / 희망 ~고 싶어요)만 사용 → 불규칙 회피
+const VERB_TEMPLATES: Tmpl[] = [
+  { s: (w) => `Let's ${w}!`, t: (k) => `같이 ${verbPropositive(k)}!` },
+  {
+    s: (w) => `I like to ${w}.`,
+    t: (k) => `나는 ${verbAttributive(k)} 것을 좋아해요.`,
+  },
+  {
+    s: (w) => `Do you like to ${w}?`,
+    t: (k) => `${verbAttributive(k)} 것을 좋아해요?`,
+  },
+  { s: (w) => `I want to ${w}.`, t: (k) => `나는 ${verbWantTo(k)}.` },
+];
+
+// 서술 형용사(사물 주어): 해요체 술어
+const ADJ_DESC_TEMPLATES: Tmpl[] = [
+  { s: (w) => `It is ${w}.`, t: (k) => `그것은 ${adjPred(k)}.` },
+  { s: (w) => `This is very ${w}.`, t: (k) => `이것은 정말 ${adjPred(k)}.` },
+  { s: (w) => `It is so ${w}!`, t: (k) => `정말 ${adjPred(k)}!` },
+  { s: (w) => `Is it ${w}?`, t: (k) => `그것은 ${adjPred(k)}?` },
+];
+
+// 감정/성격/신체상태(사람 주어): 해요체 술어
+const ADJ_EMO_TEMPLATES: Tmpl[] = [
+  { s: (w) => `I am ${w}.`, t: (k) => `나는 ${adjPred(k)}.` },
+  { s: (w) => `I feel ${w} today.`, t: (k) => `나는 오늘 ${adjPred(k)}.` },
+  { s: (w) => `My friend is ${w}.`, t: (k) => `내 친구는 ${adjPred(k)}.` },
+  { s: (w) => `Are you ${w}?`, t: (k) => `${adjPred(k)}?` },
+];
+
+// 날씨(사물 주어 없이 "오늘은/밖에" 프레임) — 절기성 술어(비가 와요)도 자연스럽게
+const ADJ_WEATHER_TEMPLATES: Tmpl[] = [
+  { s: (w) => `It is ${w} today.`, t: (k) => `오늘은 ${adjPred(k)}.` },
+  { s: (w) => `It is so ${w}!`, t: (k) => `정말 ${adjPred(k)}!` },
+  { s: (w) => `Is it ${w} outside?`, t: (k) => `밖에 ${adjPred(k)}?` },
+];
+
+function poolFor(pos: POS, fallback: Tmpl[]): Tmpl[] {
+  switch (pos) {
+    case "verb":
+      return VERB_TEMPLATES;
+    case "person":
+      return ADJ_EMO_TEMPLATES;
+    case "thing":
+      return ADJ_DESC_TEMPLATES;
+    case "weather":
+      return ADJ_WEATHER_TEMPLATES;
+    default:
+      return fallback;
+  }
 }
 
 function generateFromBank(
@@ -5058,14 +5133,15 @@ function generateFromBank(
 ): EnglishEntry[] {
   const entries: EnglishEntry[] = [];
   for (const word of words) {
+    const pool = poolFor(classifyPOS(word.k), templates);
     const used = new Set<number>();
-    for (let i = 0; i < entriesPerWord && i < templates.length; i++) {
+    for (let i = 0; i < entriesPerWord && i < pool.length; i++) {
       let idx: number;
       do {
-        idx = Math.floor(rng() * templates.length);
-      } while (used.has(idx) && used.size < templates.length);
+        idx = Math.floor(rng() * pool.length);
+      } while (used.has(idx) && used.size < pool.length);
       used.add(idx);
-      entries.push(makeEntry(word, templates[idx], unit));
+      entries.push(makeEntry(word, pool[idx], unit));
     }
   }
   return entries;

@@ -95,7 +95,6 @@ import {
   grade3KnowledgeData,
   grade3SafetyData,
   grade3WritingPrompts,
-  grade3HanjaData,
   grade3EnglishData,
   grade3CreativeData,
 } from "@/lib/curriculum/grade3";
@@ -111,7 +110,6 @@ import {
   grade4KnowledgeData,
   grade4SafetyData,
   grade4WritingPrompts,
-  grade4HanjaData,
   grade4EnglishData,
   grade4CreativeData,
 } from "@/lib/curriculum/grade4";
@@ -123,7 +121,6 @@ import {
   grade5KnowledgeData,
   grade5SafetyData,
   grade5WritingPrompts,
-  grade5HanjaData,
   grade5EnglishData,
   grade5CreativeData,
   grade5ScienceData,
@@ -137,7 +134,6 @@ import {
   grade6KnowledgeData,
   grade6SafetyData,
   grade6WritingPrompts,
-  grade6HanjaData,
   grade6EnglishData,
   grade6CreativeData,
   grade6ScienceData,
@@ -795,7 +791,7 @@ function getGradeData(
           ...generatedWritingBonus,
         ],
         hanja: [
-          ...(grade3HanjaData || []),
+          // grade3HanjaData 제거: 예시단어/획수/예문 결함(한자 날치환) → 제너레이터 단일 양질 소스 사용
           ...generatedHanja,
           ...generatedHanjaExtra,
           ...generatedHanjaBonus,
@@ -852,7 +848,6 @@ function getGradeData(
           ...generatedWritingBonus,
         ],
         hanja: [
-          ...(grade4HanjaData || []),
           ...generatedHanja,
           ...generatedHanjaExtra,
           ...generatedHanjaBonus,
@@ -909,7 +904,6 @@ function getGradeData(
           ...generatedWritingBonus,
         ],
         hanja: [
-          ...(grade5HanjaData || []),
           ...generatedHanja,
           ...generatedHanjaExtra,
           ...generatedHanjaBonus,
@@ -975,7 +969,6 @@ function getGradeData(
           ...generatedWritingBonus,
         ],
         hanja: [
-          ...(grade6HanjaData || []),
           ...generatedHanja,
           ...generatedHanjaExtra,
           ...generatedHanjaBonus,

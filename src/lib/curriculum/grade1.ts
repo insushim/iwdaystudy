@@ -2650,7 +2650,7 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
   { text: "물을 얼리면 ___이 된다.", answer: "얼음", category: "과학" },
   { text: "바나나의 색깔은 ___색이다.", answer: "노란", category: "상식" },
   { text: "눈은 ___색이다.", answer: "하얀", category: "자연" },
-  { text: "강아지의 새끼를 ___라고 한다.", answer: "강아지", category: "동물" },
+  { text: "강아지가 다 자라면 ___가 된다.", answer: "개", category: "동물" },
   { text: "고양이는 '___'하고 울어요.", answer: "야옹", category: "동물" },
   { text: "개구리는 '___'하고 울어요.", answer: "개굴", category: "동물" },
   { text: "하루는 ___시간이다.", answer: "24", category: "수학" },

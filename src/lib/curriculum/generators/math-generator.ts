@@ -4,6 +4,7 @@
  * Combined with static data, this provides effectively unlimited math content.
  */
 import type { MathEntry } from "@/types/curriculum";
+import { naturalizeKorean } from "@/lib/korean-josa";
 
 // Seeded PRNG for reproducible generation
 function seededRandom(seed: number) {
@@ -2668,7 +2669,10 @@ export function generateMathProblems(
   };
 
   for (let i = 0; i < count; i++) {
-    problems.push(gen(rng));
+    const p = gen(rng);
+    if (p.expression) p.expression = naturalizeKorean(p.expression);
+    if (p.steps) p.steps = p.steps.map(naturalizeKorean);
+    problems.push(p);
   }
 
   return problems;
