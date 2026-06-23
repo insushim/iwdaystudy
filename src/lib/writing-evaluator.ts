@@ -318,14 +318,112 @@ const FUNCTION_WORDS = [
   "참",
 ];
 
+// ── 조사 (어절 끝 분리용 - 경량 형태 전처리) ───────────────────
+// 형태소 분석기 없이(오프라인·프라이버시 유지) 어절 끝 조사를 규칙으로 떼어
+// 내용어 판별·주제 관련성 매칭·prose 판정에 사용한다.
+const JOSA_MULTI = [
+  "으로부터", "에서는", "에게서", "으로서", "으로써", "에게는", "이라고",
+  "이라는", "에서", "에게", "한테", "께서", "으로", "처럼", "보다", "까지",
+  "부터", "조차", "마다", "밖에", "라고", "라는", "이랑", "이나",
+];
+const JOSA_SINGLE = [
+  "은", "는", "이", "가", "을", "를", "에", "와", "과", "의", "도", "만",
+  "로", "랑",
+];
+
+// 내용 매칭용: 짧은 명사 보호(2자 이하는 단일 조사 분리 안 함)
+function stripJosa(word: string): string {
+  for (const j of JOSA_MULTI) {
+    if (word.length > j.length && word.endsWith(j)) return word.slice(0, -j.length);
+  }
+  if (word.length >= 3) {
+    for (const j of JOSA_SINGLE) {
+      if (word.endsWith(j)) return word.slice(0, -1);
+    }
+  }
+  return word;
+}
+
+// prose 판정용: 어절이 조사로 끝나는지(짧은 어절도 적극 인정 - 오탐은 안전한 방향)
+function endsWithJosa(word: string): boolean {
+  for (const j of JOSA_MULTI) {
+    if (word.length > j.length && word.endsWith(j)) return true;
+  }
+  for (const j of JOSA_SINGLE) {
+    if (word.length > j.length && word.endsWith(j)) return true;
+  }
+  return false;
+}
+
+// 조사 부착 비율(prose-ness): 키워드 나열(조사 없는 단어 나열) 탐지용
+function josaRatio(words: string[]): number {
+  if (words.length === 0) return 0;
+  return words.filter(endsWithJosa).length / words.length;
+}
+
+// ── 대명사·지시어·접속부사 어간 (의미 밀도 계산용) ─────────────
+const FUNCTION_STEMS = new Set([
+  ...FUNCTION_WORDS,
+  "그것", "이것", "저것", "여기", "거기", "저기", "그곳", "이곳", "무엇",
+  "누구", "어디", "언제", "그리고", "그래서", "그러나", "하지만", "그런데",
+  "그러므로", "따라서", "또한", "그러면", "그리하여",
+]);
+
+// ── 흔한 이모티콘 자모 (gibberish 오탐 방지: ㅋㅋ·ㅎㅎ·ㅠㅠ 등) ──
+function stripEmoticons(text: string): string {
+  return text
+    .replace(/[ㅋㅎㅠㅜ]+/g, " ")
+    .replace(/[ㅗㅡ]{2,}/g, " ");
+}
+
+// ── 학년대 (minChars로 추정: 20=저, 50=중, 100=고) ─────────────
+type GradeBand = "low" | "mid" | "high";
+function gradeBandFromMinChars(minChars: number): GradeBand {
+  if (minChars <= 25) return "low";
+  if (minChars <= 70) return "mid";
+  return "high";
+}
+
+// ── 주제(프롬프트) 키워드 추출 + 본문 관련성 ───────────────────
+const PROMPT_STOPWORDS = new Set([
+  "자유", "자유롭게", "대해", "대한", "대하여", "관해", "관한", "무엇",
+  "어떤", "생각", "느낀", "느낌", "오늘", "이야기", "문장", "적어",
+  "적어보", "글쓰기", "주제", "써보", "보세요", "하세요", "해보", "쓰기",
+  "내용", "여러분", "우리", "나의", "너의", "자신", "경험",
+]);
+function extractPromptKeywords(prompt: string): string[] {
+  const ws = extractWords(prompt)
+    .map(stripJosa)
+    .filter((w) => w.length >= 2 && !PROMPT_STOPWORDS.has(w));
+  return [...new Set(ws)];
+}
+// 본문 어간이 프롬프트 키워드를 얼마나 다루는지 (0~1 coverage)
+function topicRelevance(essayStems: Set<string>, keywords: string[]): number {
+  if (keywords.length < 2) return 1; // 자유주제/짧은 프롬프트 → 관련성 평가 안 함
+  let hit = 0;
+  for (const k of keywords) {
+    for (const s of essayStems) {
+      if (s === k || (s.length >= 2 && k.includes(s)) || s.includes(k)) {
+        hit++;
+        break;
+      }
+    }
+  }
+  return hit / keywords.length;
+}
+
 // ── 흔한 어미 패턴 (다양성 측정용) ─────────────────────────────
+// 구체(긴) 패턴을 앞에 두어 일반 /다/·/요/에 의한 섀도잉을 방지한다.
 const ENDING_SUFFIXES = [
-  /다[.\s!?~]*$/,
-  /요[.\s!?~]*$/,
+  /거든요[.\s!?~]*$/,
+  /잖아요[.\s!?~]*$/,
+  /답니다[.\s!?~]*$/,
   /습니다[.\s!?~]*$/,
+  /ㅂ니다[.\s!?~]*$/,
   /었다[.\s!?~]*$/,
-  /했다[.\s!?~]*$/,
+  /았다[.\s!?~]*$/,
   /였다[.\s!?~]*$/,
+  /했다[.\s!?~]*$/,
   /ㄴ다[.\s!?~]*$/,
   /네요[.\s!?~]*$/,
   /어요[.\s!?~]*$/,
@@ -333,13 +431,11 @@ const ENDING_SUFFIXES = [
   /래요[.\s!?~]*$/,
   /데요[.\s!?~]*$/,
   /지요[.\s!?~]*$/,
-  /죠[.\s!?~]*$/,
-  /거든요[.\s!?~]*$/,
-  /잖아요[.\s!?~]*$/,
-  /답니다[.\s!?~]*$/,
-  /ㅂ니다[.\s!?~]*$/,
   /세요[.\s!?~]*$/,
   /까요[.\s!?~]*$/,
+  /죠[.\s!?~]*$/,
+  /요[.\s!?~]*$/,
+  /다[.\s!?~]*$/,
 ];
 
 // ── 쓰레기 텍스트 패턴 ────────────────────────────────────────
@@ -361,8 +457,10 @@ const CHAR_LONG_REPEAT_REGEX = /(.)\1{4,}/;
 function isHardGibberish(text: string): boolean {
   const trimmed = text.trim();
   if (trimmed.length === 0) return true;
-  const chars = trimmed.replace(/\s/g, "");
-  if (chars.length === 0) return true;
+  // 흔한 이모티콘(ㅋㅋ·ㅎㅎ·ㅠㅠ)은 비율 판정에서 제외 → 정상 아동글 오탐 방지
+  const deEmo = stripEmoticons(trimmed);
+  const chars = deEmo.replace(/\s/g, "");
+  if (chars.length === 0) return true; // 이모티콘/공백만 있으면 장난
 
   // 1) 자모(ㄱ-ㅎ, ㅏ-ㅣ) 비율이 15% 이상이면 장난
   const jamoMatch = chars.match(JAMO_ANY_REGEX);
@@ -377,9 +475,16 @@ function isHardGibberish(text: string): boolean {
   // 3) 같은 글자가 5회 이상 연속 반복
   if (CHAR_LONG_REPEAT_REGEX.test(chars)) return true;
 
-  // 4) 공백 없는 긴 덩어리 (한 단어만 15자+)
+  // 4) 공백 없는 긴 덩어리 (한 단어만 15자+) — 단, 정상 한글 문장의
+  //    띄어쓰기 누락은 장난이 아니므로 완성형 한글 비율이 낮을 때만 차단
   const tokens = trimmed.split(/\s+/).filter((w) => w.length >= 1);
-  if (trimmed.length >= 15 && tokens.length < 2) return true;
+  if (
+    trimmed.length >= 15 &&
+    tokens.length < 2 &&
+    koreanCount / chars.length < 0.6
+  ) {
+    return true;
+  }
 
   // 5) 한 토큰이 전체의 70% 이상 (오늘 오늘 오늘 …)
   if (tokens.length >= 4) {
@@ -495,19 +600,31 @@ function measureEndingVariety(sentences: string[]): number {
   return Math.min(1, endingTypes.size / Math.min(sentences.length, 5));
 }
 
-// 문장 평균 길이 점수 (너무 짧으면 감점)
-function avgSentenceLengthScore(sentences: string[]): number {
+// 문장 평균 길이 점수 (너무 짧으면 감점, 학년대별 기준)
+function avgSentenceLengthScore(
+  sentences: string[],
+  band: GradeBand,
+): number {
   if (sentences.length === 0) return 0;
   const avgLen =
     sentences.reduce((sum, s) => sum + s.length, 0) / sentences.length;
-  // 평균 5자 미만 = 0, 8자 = 0.5, 15자 이상 = 1
-  return smoothScore(avgLen, 4, 15, 1);
+  // 저학년은 짧은 문장에 관대, 고학년은 더 긴 문장 기대
+  const [lo, hi] =
+    band === "low" ? [3, 9] : band === "mid" ? [4, 13] : [5, 16];
+  return smoothScore(avgLen, lo, hi, 1);
 }
 
-// 의미 밀도 (기능어 제외한 내용어 비율)
+// 의미 밀도 (기능어·조사·지시어·접속부사 제외한 내용어 비율)
 function contentDensity(words: string[]): number {
   if (words.length === 0) return 0;
-  const contentWords = words.filter((w) => !FUNCTION_WORDS.includes(w));
+  const contentWords = words.filter((w) => {
+    const stem = stripJosa(w);
+    return (
+      stem.length >= 1 &&
+      !FUNCTION_WORDS.includes(w) &&
+      !FUNCTION_STEMS.has(stem)
+    );
+  });
   return contentWords.length / words.length;
 }
 
@@ -534,6 +651,7 @@ function detectPatternRepetition(text: string): number {
 export function evaluateWriting(
   text: string,
   minChars: number,
+  options?: { prompt?: string },
 ): WritingEvalResult {
   const clean = text.trim();
 
@@ -554,6 +672,25 @@ export function evaluateWriting(
   const words = extractWords(cleaned);
   const uniqueWords = new Set(words);
   const jRatio = junkRatio(clean, cleaned);
+
+  // 학년대(저/중/고) — minChars로 추정
+  const band = gradeBandFromMinChars(minChars);
+
+  // 키워드 스터핑 게이트: 조사 없는 단어 나열(prose-ness 낮음) 탐지.
+  // 단, 구두점/줄바꿈이 있는 글(시·구어체 포함)은 제외해 오탐 방지.
+  const prose = josaRatio(words);
+  const punctCount = (cleaned.match(/[.!?\n]/g) || []).length;
+  const isWordList = words.length >= 8 && prose < 0.15 && punctCount < 2;
+
+  // 주제 관련성: 프롬프트가 구체적(키워드 2개+)일 때만 평가
+  const promptKeywords = options?.prompt
+    ? extractPromptKeywords(options.prompt)
+    : [];
+  const essayStems = new Set(
+    words.map(stripJosa).filter((w) => w.length >= 2),
+  );
+  const relevanceCoverage =
+    promptKeywords.length >= 2 ? topicRelevance(essayStems, promptKeywords) : 1;
 
   // ── A. 글자 수 (0~3점) ────────────────────────────────────────
   let lengthScore: number;
@@ -595,8 +732,8 @@ export function evaluateWriting(
 
   let sentenceScore = smoothScore(effectiveSentenceCount, 0, 4, 2);
 
-  // 문장 평균 길이 보정 (너무 짧은 문장 나열 시 감점)
-  const avgLenFactor = avgSentenceLengthScore(validSentences);
+  // 문장 평균 길이 보정 (너무 짧은 문장 나열 시 감점, 학년대 반영)
+  const avgLenFactor = avgSentenceLengthScore(validSentences, band);
   sentenceScore = sentenceScore * (0.5 + avgLenFactor * 0.5);
 
   // 어미 다양성 보정 (같은 어미만 반복 시 감점)
@@ -634,8 +771,9 @@ export function evaluateWriting(
     const hasTimeExpr = TIME_EXPRESSIONS.some((t) => cleaned.includes(t));
     const hasPlaceExpr = PLACE_WORDS.some((p) => cleaned.includes(p));
 
-    // 기본 점수: 고유 단어 수 기반
-    varietyScore = smoothScore(uniqueWords.size, 3, 18, 3);
+    // 기본 점수: 고유 단어 수 기반 (학년대별 — 저학년은 적은 어휘에 관대)
+    const varietyCap = band === "low" ? 11 : band === "mid" ? 15 : 18;
+    varietyScore = smoothScore(uniqueWords.size, 3, varietyCap, 3);
 
     // 보너스: 감정어, 묘사어, 시간/장소 (최대 +0.6)
     let bonus = 0;
@@ -645,6 +783,10 @@ export function evaluateWriting(
     if (descriptiveCount >= 2) bonus += 0.1;
     if (hasTimeExpr) bonus += 0.05;
     if (hasPlaceExpr) bonus += 0.05;
+    // 스터핑 방어: 키워드 보너스는 실제 문장에 담겼을 때만(문장 수 비례) 인정,
+    // 조사 없는 단어 나열(word-list)이면 보너스 0
+    bonus = Math.min(bonus, effectiveSentenceCount * 0.2);
+    if (isWordList) bonus = 0;
     varietyScore = Math.min(3, varietyScore + bonus);
 
     // 과도 반복 패널티
@@ -701,6 +843,11 @@ export function evaluateWriting(
   // ── 하드 캡 (의미 빈약한 글은 고점 차단) ───────────────────
   let rawTotal = lengthScore + sentenceScore + varietyScore + structureScore;
 
+  // 0) 키워드 나열(조사 없는 단어 나열)이면 최대 2점 — 스터핑 차단
+  if (isWordList) {
+    rawTotal = Math.min(rawTotal, 2);
+  }
+
   // 1) 유효 단어 3개 미만이면 최대 2점 (내용 빈약)
   if (uniqueWords.size < 3) {
     rawTotal = Math.min(rawTotal, 2);
@@ -738,6 +885,13 @@ export function evaluateWriting(
     rawTotal = Math.min(rawTotal, 3);
   }
 
+  // 주제 이탈 완만 감점 (구체 프롬프트일 때만, coverage 0→×0.75 / ≥0.2→×1.0)
+  if (promptKeywords.length >= 2 && words.length >= 6) {
+    const relevanceFactor =
+      relevanceCoverage >= 0.2 ? 1 : 0.75 + relevanceCoverage;
+    rawTotal = rawTotal * relevanceFactor;
+  }
+
   // ── 합산 ────────────────────────────────────────────────────
   const total = Math.max(0, Math.min(10, rawTotal));
   const stars =
@@ -757,6 +911,20 @@ export function evaluateWriting(
 
   // ── 개선 팁 ──────────────────────────────────────────────────
   const tips: { ratio: number; tip: string }[] = [];
+
+  // 단어 나열·주제 이탈 경고 최우선
+  if (isWordList) {
+    tips.push({
+      ratio: -3,
+      tip: "낱말만 늘어놓지 말고, 문장으로 이어서 써봐요!",
+    });
+  }
+  if (promptKeywords.length >= 2 && words.length >= 6 && relevanceCoverage < 0.2) {
+    tips.push({
+      ratio: -2.5,
+      tip: "글감(주제)에 어울리는 내용을 더 써봐요!",
+    });
+  }
 
   // 쓰레기/복붙 경고 최우선
   if (jRatio >= 0.3) {
@@ -792,12 +960,13 @@ export function evaluateWriting(
     }
   }
 
-  // 문장 길이 경고
+  // 문장 길이 경고 (학년대별 기준 — 저학년은 짧은 문장 허용)
   if (validSentences.length >= 2) {
     const avgLen =
       validSentences.reduce((s, sent) => s + sent.length, 0) /
       validSentences.length;
-    if (avgLen < 8) {
+    const shortThreshold = band === "low" ? 6 : band === "mid" ? 8 : 10;
+    if (avgLen < shortThreshold) {
       tips.push({
         ratio: -0.5,
         tip: '문장이 너무 짧아요. 하나의 문장에 "누가, 무엇을, 어떻게" 넣어봐요!',

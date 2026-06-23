@@ -96,7 +96,7 @@ export default function WritingPrompt({
   const handleSubmit = () => {
     if (!text.trim()) return;
     if (isGibberish) return; // 한글이 30% 미만이면 제출 차단
-    const rawResult = evaluateWriting(text.trim(), minChars);
+    const rawResult = evaluateWriting(text.trim(), minChars, { prompt });
     const currentLen = text.trim().length;
     // 다시 쓰기 시: 글이 줄지 않았고 raw 점수가 이전보다 낮으면 이전 점수 유지
     // 글을 지웠으면 (10% 이상 줄었으면) 그대로 재평가

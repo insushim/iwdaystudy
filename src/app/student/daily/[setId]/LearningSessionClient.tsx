@@ -282,7 +282,10 @@ export default function LearningSessionClient() {
           currentQuestion.content?.min_chars ||
           currentQuestion.content?.minChars ||
           20;
-        const evalResult = evaluateWriting(String(answer), minChars);
+        const evalResult = evaluateWriting(String(answer), minChars, {
+          prompt:
+            currentQuestion.content?.prompt || currentQuestion.content?.text,
+        });
         isCorrect = true;
         score = evalResult.score;
         // 마스코트 메시지에 별점 반영
@@ -348,7 +351,9 @@ export default function LearningSessionClient() {
         // 글쓰기는 재평가 후 기준 점수 이상이면 통과 처리
         const minChars =
           question.content?.min_chars || question.content?.minChars || 20;
-        const evalResult = evaluateWriting(String(answer), minChars);
+        const evalResult = evaluateWriting(String(answer), minChars, {
+          prompt: question.content?.prompt || question.content?.text,
+        });
         isCorrect = evalResult.score >= WRITING_REVIEW_THRESHOLD;
         // 재시도에서 기존 점수보다 높으면 갱신
         const prevScore = questionStates[originalIndex]?.score ?? 0;
