@@ -13,7 +13,8 @@ import {
 } from "@/lib/local-storage";
 
 // Bump this version when daily set structure changes to invalidate cached sets
-const SET_VERSION = 2;
+// v3: 4-way 콘텐츠 감사(한자 예문·영어 품사·과학) + 조사 교정 반영 → 기존 캐시 세트 무효화
+const SET_VERSION = 3;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {
