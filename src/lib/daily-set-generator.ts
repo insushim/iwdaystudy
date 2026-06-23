@@ -162,31 +162,124 @@ function seededRandom(seed: number) {
   };
 }
 
+// ── 큐레이션 distractor 뱅크 (고빈도 타입) ──────────────────────
+// 정답이 어느 뱅크의 원소이면, 같은 뱅크에서 그럴듯한 오답을 채운다.
+// (category 필터로 대부분 해결되나, "가장 큰 나라=러시아" 같은 케이스 보강)
+const DISTRACTOR_BANKS: string[][] = [
+  // 나라
+  ["러시아", "캐나다", "미국", "중국", "브라질", "인도", "호주", "독일",
+   "프랑스", "일본", "영국", "이집트", "멕시코", "이탈리아", "스페인", "튀르키예"],
+  // 대륙
+  ["아시아", "유럽", "아프리카", "아메리카", "오세아니아",
+   "북아메리카", "남아메리카"],
+  // 우리나라 주요 도시·지명
+  ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "제주",
+   "경주", "수원", "춘천", "전주"],
+  // 행성
+  ["수성", "금성", "지구", "화성", "목성", "토성", "천왕성", "해왕성"],
+  // 방위
+  ["동쪽", "서쪽", "남쪽", "북쪽", "동", "서", "남", "북"],
+  // 계절
+  ["봄", "여름", "가을", "겨울"],
+  // 바다
+  ["동해", "서해", "남해", "황해", "태평양", "대서양", "인도양"],
+];
+function bankFor(answer: string): string[] | null {
+  for (const b of DISTRACTOR_BANKS) if (b.includes(answer)) return b;
+  return null;
+}
+function isNumericAnswer(s: string): boolean {
+  return s.trim() !== "" && !isNaN(Number(s.replace(/,/g, "")));
+}
+// 정답과 형식(숫자/한글단어)·길이가 비슷한 오답인가
+function sameFormat(correct: string, cand: string): boolean {
+  if (isNumericAnswer(correct) !== isNumericAnswer(cand)) return false;
+  const tol = Math.max(2, Math.ceil(correct.length * 0.6));
+  return Math.abs(correct.length - cand.length) <= tol;
+}
+
 /**
- * Generate 4 choices (including the correct answer) by picking distractors
- * from the same pool of entries and shuffling them.
+ * 4지선다 보기 생성. 오답(distractor)을 같은 category·형식에서 우선 추출해
+ * 정답만 빈칸에 맞는 "터무니없는 보기" 문제를 방지한다.
  */
 function generateChoices<T>(
   correct: string,
   pool: T[],
   extractAnswer: (item: T) => string,
   random: () => number,
+  category?: string,
+  extractCategory?: (item: T) => string,
 ): string[] {
-  const others = pool.map(extractAnswer).filter((a) => a !== correct);
-  // Deduplicate
-  const unique = [...new Set(others)];
-  // Shuffle and pick 3
-  for (let i = unique.length - 1; i > 0; i--) {
-    const j = Math.floor(random() * (i + 1));
-    [unique[i], unique[j]] = [unique[j], unique[i]];
+  const correctStr = String(correct);
+  const distractors: string[] = [];
+  const used = new Set<string>([correctStr]);
+  const isBad = (a: string): boolean =>
+    !a ||
+    used.has(a) ||
+    a === correctStr ||
+    (correctStr.length >= 2 && a.includes(correctStr)) ||
+    (a.length >= 2 && correctStr.includes(a));
+  const tryAdd = (cands: string[]): void => {
+    const arr = [...new Set(cands)].filter((a) => !isBad(a));
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    for (const a of arr) {
+      if (distractors.length >= 3) break;
+      distractors.push(a);
+      used.add(a);
+    }
+  };
+
+  // 0) 큐레이션 뱅크 (나라·행성·도시 등)
+  const bank = bankFor(correctStr);
+  if (bank) tryAdd(bank);
+
+  // 1) 같은 category + 형식 일치 → 같은 category(형식 무관)
+  if (distractors.length < 3 && category && extractCategory) {
+    const same = pool
+      .filter((it) => extractCategory(it) === category)
+      .map(extractAnswer);
+    tryAdd(same.filter((a) => sameFormat(correctStr, a)));
+    if (distractors.length < 3) tryAdd(same);
   }
-  const distractors = unique.slice(0, 3);
-  // If not enough distractors, pad with variations
+
+  // 2) 전체 풀에서 형식 일치
+  if (distractors.length < 3) {
+    tryAdd(pool.map(extractAnswer).filter((a) => sameFormat(correctStr, a)));
+  }
+
+  // 3) 전체 풀 (최후)
+  if (distractors.length < 3) tryAdd(pool.map(extractAnswer));
+
+  // 4) 숫자 정답이면 근접 숫자 생성
+  if (distractors.length < 3 && isNumericAnswer(correctStr)) {
+    const n = Number(correctStr.replace(/,/g, ""));
+    for (const d of [1, 2, 3, 5, 10, 20]) {
+      for (const s of [1, -1]) {
+        const c = String(n + d * s);
+        if (!used.has(c) && n + d * s >= 0) {
+          distractors.push(c);
+          used.add(c);
+        }
+        if (distractors.length >= 3) break;
+      }
+      if (distractors.length >= 3) break;
+    }
+  }
+
+  // 5) 정말 부족하면 패딩(거의 발생 안 함)
+  let pad = 1;
   while (distractors.length < 3) {
-    distractors.push(`${correct}(아님)`);
+    const c = `보기 ${pad++}`;
+    if (!used.has(c)) {
+      distractors.push(c);
+      used.add(c);
+    }
   }
-  const choices = [correct, ...distractors];
-  // Shuffle choices
+
+  const choices = [correctStr, ...distractors.slice(0, 3)];
   for (let i = choices.length - 1; i > 0; i--) {
     const j = Math.floor(random() * (i + 1));
     [choices[i], choices[j]] = [choices[j], choices[i]];
@@ -208,6 +301,44 @@ function shuffleArrayInPlace<T>(arr: T[], random: () => number): void {
     const j = Math.floor(random() * (i + 1));
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
+}
+
+// ── 초등 교육과정 초과(중등 개념) 문항 필터 ──────────────────────
+// 뉴턴·관성·원소기호·화학식·pH·원자핵·유전자·옴의법칙 등은 중학 과정.
+// 분명한 마커만 골라 제거(고기압·볼트(나사) 등 초등 어휘 오제거 방지).
+const ABOVE_GRADE_PHRASES = [
+  "힘의 단위", "힘의 크기를 나타내는 단위", "뉴턴의 법칙", "만유인력",
+  "작용과 반작용", "작용반작용", "관성", "가속도", "원소 기호", "원소기호",
+  "화학식", "주기율표", "멘델레예프", "멘델", "전기분해", "중화 반응", "중화반응",
+  "질량 보존", "질량은", "촉매", "과산화수소", "이산화망간", "이산화 망가니즈",
+  "pH", "양성자", "중성자", "원자핵", "아원자", "원자의 중심", "원자보다",
+  "유전자", "유전 물질", "세포 분열", "세포분열", "DNA", "미토콘드리아",
+  "역학적 에너지", "역학적에너지", "옴의 법칙", "전압의 단위", "전류의 단위",
+  "저항의 단위", "허파꽈리", "도플러", "BTB", "이산화황", "자기장",
+];
+const ABOVE_GRADE_ANSWERS = new Set([
+  "뉴턴", "뉴턴(N)", "H₂O", "CO₂", "NaCl", "원자핵", "양성자", "중성자",
+  "아원자", "유전자", "미토콘드리아", "멘델레예프", "이산화황", "역학적",
+]);
+function isAboveGrade(text: string, answer: string): boolean {
+  const a = (answer || "").trim();
+  if (ABOVE_GRADE_ANSWERS.has(a)) return true;
+  const blob = `${text || ""} ${a}`;
+  return ABOVE_GRADE_PHRASES.some((p) => blob.includes(p));
+}
+
+// OX(true_false) false문용 오답: 정답과 길이·형식이 가장 비슷한 보기를 우선 선택해
+// "농촌에는 넓은 낮이 있다" 같은 비문을 줄인다. (choices는 이미 category 일치)
+function pickTfWrong(
+  answer: string,
+  choices: string[],
+  rng: () => number,
+): string {
+  const wrong = choices.filter((c) => c !== answer);
+  if (wrong.length === 0) return answer;
+  const similar = wrong.filter((c) => sameFormat(answer, c));
+  const usePool = similar.length > 0 ? similar : wrong;
+  return usePool[Math.floor(rng() * usePool.length)];
 }
 
 function generateMathChoices(correct: number, random: () => number): string[] {
@@ -233,6 +364,83 @@ function generateMathChoices(correct: number, random: () => number): string[] {
   }
 
   return shuffleChoices([String(correct), ...distractors], random);
+}
+
+// ── 맞춤법 "고치기" 보기: 같은 문장의 그럴듯한 오표기 변형 ──────────
+// 무관한 다른 문장을 오답으로 쓰면 정답이 한눈에 보이므로, 타깃 어절을
+// 흔한 맞춤법 혼동으로 바꿔 4지를 모두 같은 문장 변형으로 만든다.
+const SPELL_CONFUSION: [string, string][] = [
+  ["로서", "로써"], ["되", "돼"], ["안", "않"], ["낫", "낮"], ["낮", "낳"],
+  ["며칠", "몇일"], ["왠", "웬"], ["예요", "에요"], ["이에요", "이예요"],
+  ["깨끗이", "깨끗히"], ["곰곰이", "곰곰히"], ["오랜만", "오랫만"], ["역할", "역활"],
+  ["설거지", "설겆이"], ["같", "갖"], ["빛", "빗"], ["붙", "붓"], ["맞", "맏"],
+  ["든지", "던지"], ["바라", "바래"], ["할게", "할께"], ["거예요", "거에요"],
+];
+// 마지막 한글 음절의 받침을 살짝 바꿔 오타처럼 보이게 (폴백)
+function perturbSyllable(word: string): string | null {
+  for (let i = word.length - 1; i >= 0; i--) {
+    const code = word.charCodeAt(i);
+    if (code < 0xac00 || code > 0xd7a3) continue;
+    const base = code - 0xac00;
+    const jong = base % 28;
+    const newJong = jong === 0 ? 19 : jong === 19 ? 20 : 0; // 받침 추가/ㅅ↔ㅆ/제거
+    return (
+      word.slice(0, i) +
+      String.fromCharCode(0xac00 + (base - jong) + newJong) +
+      word.slice(i + 1)
+    );
+  }
+  return null;
+}
+function diffSpellingPart(
+  correctSentence: string,
+  wrongSentence: string,
+): { correctPart: string; wrongPart: string } {
+  const cw = correctSentence.split(/\s+/);
+  const ww = wrongSentence.split(/\s+/);
+  for (let i = 0; i < ww.length; i++) {
+    if (i >= cw.length || ww[i] !== cw[i]) {
+      return { correctPart: cw[i] || cw[0], wrongPart: ww[i] || ww[0] };
+    }
+  }
+  return { correctPart: cw[0], wrongPart: ww[0] };
+}
+// 정답 문장 기준, 같은 문장의 오표기 변형 3개 생성
+function spellingVariantDistractors(
+  correctSentence: string,
+  wrongSentence: string,
+  correctPart: string,
+  wrongPart: string,
+  rng: () => number,
+): string[] {
+  const exclude = new Set([correctPart, wrongPart]);
+  const variantParts: string[] = [];
+  for (const [a, b] of SPELL_CONFUSION) {
+    for (const [from, to] of [
+      [a, b],
+      [b, a],
+    ] as [string, string][]) {
+      if (correctPart.includes(from)) {
+        const v = correctPart.replace(from, to);
+        if (!exclude.has(v) && !variantParts.includes(v)) variantParts.push(v);
+      }
+    }
+  }
+  const p = perturbSyllable(correctPart);
+  if (p && !exclude.has(p) && !variantParts.includes(p)) variantParts.push(p);
+
+  const sentences = new Set<string>([wrongSentence]);
+  for (const v of variantParts) {
+    if (sentences.size >= 3) break;
+    sentences.add(correctSentence.replace(correctPart, v));
+  }
+  let guard = 0;
+  while (sentences.size < 3 && guard++ < 6) {
+    const p2 = perturbSyllable(guard % 2 ? wrongPart : correctPart);
+    if (!p2) break;
+    sentences.add(correctSentence.replace(correctPart, p2));
+  }
+  return shuffleChoices([...sentences], rng).slice(0, 3);
 }
 
 function generateSpellingChoices(
@@ -1236,21 +1444,22 @@ function buildSpellingQuestion(
   }
 
   if (variant === "correct") {
-    // Show wrong sentence, pick correct sentence as answer, distractors from other correct sentences
+    // 오답은 같은 문장의 그럴듯한 오표기 변형으로 (무관한 다른 문장 X)
     const rng = random || Math.random;
-    const otherCorrects = (pool || [])
-      .filter((item) => item !== entry)
-      .map((item) => (item.answer === 1 ? item.q1 : item.q2))
-      .filter((s) => s !== correctSentence);
-    const distractors = shuffleChoices([...new Set(otherCorrects)], rng).slice(
-      0,
-      3,
+    const { correctPart, wrongPart } = diffSpellingPart(
+      correctSentence,
+      wrongSentence,
     );
-    while (distractors.length < 3) {
-      distractors.push(wrongSentence);
-    }
+    const distractors = spellingVariantDistractors(
+      correctSentence,
+      wrongSentence,
+      correctPart,
+      wrongPart,
+      rng,
+    );
+    while (distractors.length < 3) distractors.push(wrongSentence);
     const correctChoices = shuffleChoices(
-      [correctSentence, ...distractors],
+      [correctSentence, ...distractors.slice(0, 3)],
       rng,
     );
 
@@ -1376,11 +1585,7 @@ function buildKnowledgeQuestion(
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
-      const wrongChoices = choices.filter((c) => c !== entry.answer);
-      const wrongAnswer =
-        wrongChoices.length > 0
-          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
-          : entry.answer;
+      const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
       displayText = entry.text.replace("___", wrongAnswer);
     }
     return {
@@ -1442,11 +1647,7 @@ function buildSafetyQuestion(
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
-      const wrongChoices = choices.filter((c) => c !== entry.answer);
-      const wrongAnswer =
-        wrongChoices.length > 0
-          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
-          : entry.answer;
+      const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
       displayText = entry.text.replace("___", wrongAnswer);
     }
     return {
@@ -1533,6 +1734,13 @@ function buildHanjaQuestion(
   choices: string[],
   variant: HanjaVariant = "reading",
 ): Question {
+  // 뜻(훈) 필드에 음이 섞여 들어간 데이터 정규화: "쇠 철"(meaning) + "철"(reading) → "쇠"
+  // (음 맞추기/뜻 맞추기에서 답이 노출되던 문제 차단)
+  const cleanMeaning =
+    entry.meaning.replace(new RegExp("\\s*" + entry.reading + "\\s*$"), "").trim() ||
+    entry.meaning;
+  entry = { ...entry, meaning: cleanMeaning };
+
   const base = {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
@@ -1682,6 +1890,7 @@ function buildEnglishQuestion(
       sentence: entry.sentence,
       word: entry.word,
       translation: entry.translation,
+      targetKo: entry.targetKo,
       pronunciation: entry.pronunciation,
       practice: entry.practice,
       choices,
@@ -1747,11 +1956,7 @@ function buildSubjectQuestion(
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
-      const wrongChoices = choices.filter((c) => c !== entry.answer);
-      const wrongAnswer =
-        wrongChoices.length > 0
-          ? wrongChoices[Math.floor(rng() * wrongChoices.length)]
-          : entry.answer;
+      const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
       displayText = entry.text.replace("___", wrongAnswer);
     }
     return {
@@ -1860,6 +2065,14 @@ export function generateDailySet(
   const gradeGroup = getGradeGroup(grade);
   const composition = GRADE_SET_COMPOSITION[gradeGroup];
   const data = getGradeData(grade, semester, finalSeed, subjectAccuracy);
+
+  // 초등 교육과정 초과(중등) 개념 문항 제거 — 모든 학년 적용(저학년엔 해당 없음)
+  const dropAboveGrade = (e: { text: string; answer: string }) =>
+    !isAboveGrade(e.text, e.answer);
+  if (data.science) data.science = data.science.filter(dropAboveGrade);
+  if (data.social) data.social = data.social.filter(dropAboveGrade);
+  if (data.creative) data.creative = data.creative.filter(dropAboveGrade);
+  data.knowledge = data.knowledge.filter(dropAboveGrade);
 
   // Attach new vocab variant pools
   data.synonymPairs = getSynonymPairs(grade, finalSeed);
@@ -2041,7 +2254,8 @@ export function generateDailySet(
               section.title,
               {
                 meanings: [
-                  askWord1 ? pair.meaning1 : pair.meaning2,
+                  // 정답어(answerWord)의 뜻을 보여야 함 (질문어 뜻이 아니라)
+                  askWord1 ? pair.meaning2 : pair.meaning1,
                   `"${questionWord}"의 반대말`,
                 ],
                 answer: answerWord,
@@ -2135,7 +2349,7 @@ export function generateDailySet(
           );
         } else {
           // Fallback to existing variants
-          const fallbackVv = ["clue", "reverse", "input"][
+          const fallbackVv = ["clue", "clue", "reverse"][
             Math.floor(random() * 3)
           ];
           const entry = pickUnused(data.vocab, "vocab");
@@ -2170,17 +2384,16 @@ export function generateDailySet(
         }
       } else if (subject === "general_knowledge") {
         const entry = pickUnused(data.knowledge, "knowledge");
-        const kvariants = ["fill", "fill", "tf", "input"];
+        const kvariants = ["fill", "fill", "fill", "tf"];
         const kv = kvariants[Math.floor(random() * kvariants.length)];
-        const choices =
-          kv === "input"
-            ? []
-            : generateChoices(
-                entry.answer,
-                data.knowledge,
-                (k) => k.answer,
-                random,
-              );
+        const choices = generateChoices(
+          entry.answer,
+          data.knowledge,
+          (k) => k.answer,
+          random,
+          entry.category,
+          (k) => k.category,
+        );
         questions.push(
           buildKnowledgeQuestion(
             setId,
@@ -2194,17 +2407,16 @@ export function generateDailySet(
         );
       } else if (subject === "safety") {
         const entry = pickUnused(data.safety, "safety");
-        const svariants = ["fill", "fill", "tf", "input"];
+        const svariants = ["fill", "fill", "fill", "tf"];
         const sv = svariants[Math.floor(random() * svariants.length)];
-        const choices =
-          sv === "input"
-            ? []
-            : generateChoices(
-                entry.answer,
-                data.safety,
-                (s) => s.answer,
-                random,
-              );
+        const choices = generateChoices(
+          entry.answer,
+          data.safety,
+          (s) => s.answer,
+          random,
+          entry.category,
+          (s) => s.category,
+        );
         questions.push(
           buildSafetyQuestion(
             setId,
@@ -2293,26 +2505,14 @@ export function generateDailySet(
         data.english.length > 0
       ) {
         const entry = pickUnused(data.english, "english");
-        const evariants = ["word", "word", "meaning", "input"];
+        const evariants = ["word", "word", "word", "meaning"];
         const ev = evariants[Math.floor(random() * evariants.length)];
-        let choices: string[];
-        if (ev === "meaning") {
-          choices = generateChoices(
-            entry.word,
-            data.english,
-            (e) => e.word,
-            random,
-          );
-        } else if (ev === "input") {
-          choices = [];
-        } else {
-          choices = generateChoices(
-            entry.word,
-            data.english,
-            (e) => e.word,
-            random,
-          );
-        }
+        const choices = generateChoices(
+          entry.word,
+          data.english,
+          (e) => e.word,
+          random,
+        );
         questions.push(
           buildEnglishQuestion(
             setId,
@@ -2352,12 +2552,14 @@ export function generateDailySet(
         } else if (hasKorean) {
           const entry = pickUnused(data.korean!, "korean");
           const pool = data.korean!;
-          const fallbackVar = ["fill", "fill", "tf", "input"];
+          const fallbackVar = ["fill", "fill", "fill", "tf"];
           const fv = fallbackVar[Math.floor(random() * fallbackVar.length)];
-          const choices =
-            fv === "input"
-              ? []
-              : generateChoices(entry.answer, pool, (k) => k.answer, random);
+          const choices = generateChoices(
+            entry.answer,
+            pool,
+            (k) => k.answer,
+            random,
+          );
           questions.push(
             buildSubjectQuestion(
               setId,
@@ -2396,12 +2598,16 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.creative, "creative");
         const pool = data.creative!;
-        const skv = ["fill", "fill", "tf", "input"];
+        const skv = ["fill", "fill", "fill", "tf"];
         const skvar = skv[Math.floor(random() * skv.length)];
-        const choices =
-          skvar === "input"
-            ? []
-            : generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+          entry.category,
+          (k) => k.category,
+        );
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -2422,12 +2628,16 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.science, "science");
         const pool = data.science!;
-        const skv = ["fill", "fill", "tf", "input"];
+        const skv = ["fill", "fill", "fill", "tf"];
         const skvar = skv[Math.floor(random() * skv.length)];
-        const choices =
-          skvar === "input"
-            ? []
-            : generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+          entry.category,
+          (k) => k.category,
+        );
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -2448,12 +2658,16 @@ export function generateDailySet(
       ) {
         const entry = pickUnused(data.social, "social");
         const pool = data.social!;
-        const skv = ["fill", "fill", "tf", "input"];
+        const skv = ["fill", "fill", "fill", "tf"];
         const skvar = skv[Math.floor(random() * skv.length)];
-        const choices =
-          skvar === "input"
-            ? []
-            : generateChoices(entry.answer, pool, (k) => k.answer, random);
+        const choices = generateChoices(
+          entry.answer,
+          pool,
+          (k) => k.answer,
+          random,
+          entry.category,
+          (k) => k.category,
+        );
         questions.push(
           buildSubjectQuestion(
             setId,
@@ -2470,17 +2684,16 @@ export function generateDailySet(
       } else {
         // Fallback: use knowledge data as generic question
         const entry = pickUnused(data.knowledge, "knowledge_fallback");
-        const skv = ["fill", "fill", "tf", "input"];
+        const skv = ["fill", "fill", "fill", "tf"];
         const skvar = skv[Math.floor(random() * skv.length)];
-        const choices =
-          skvar === "input"
-            ? []
-            : generateChoices(
-                entry.answer,
-                data.knowledge,
-                (k) => k.answer,
-                random,
-              );
+        const choices = generateChoices(
+          entry.answer,
+          data.knowledge,
+          (k) => k.answer,
+          random,
+          entry.category,
+          (k) => k.category,
+        );
         questions.push(
           buildSubjectQuestion(
             setId,

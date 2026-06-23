@@ -63,6 +63,8 @@ export interface EnglishEntry {
   pronunciation: string;
   practice?: string[];
   unit?: string;
+  /** 한국어 타깃 글로스(예: "모자") — 뜻→단어 문제에서 강조 표시용 */
+  targetKo?: string;
 }
 
 export interface MathEntry {

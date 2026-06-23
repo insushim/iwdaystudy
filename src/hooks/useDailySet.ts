@@ -14,7 +14,8 @@ import {
 
 // Bump this version when daily set structure changes to invalidate cached sets
 // v3: 4-way 콘텐츠 감사(한자 예문·영어 품사·과학) + 조사 교정 반영 → 기존 캐시 세트 무효화
-const SET_VERSION = 3;
+// v4: 문제 품질 전면 재설계(distractor 범주매칭·답노출 차단·OX·고대힌트·맞춤법·학년초과 제거·지문 2배·TTS·레이아웃)
+const SET_VERSION = 4;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {

@@ -5045,6 +5045,7 @@ function makeEntry(word: W, tmpl: Tmpl, unit?: string): EnglishEntry {
     word: word.w,
     pronunciation: word.p,
     practice: word.pr,
+    targetKo: word.k,
   };
   if (unit) entry.unit = unit;
   return entry;

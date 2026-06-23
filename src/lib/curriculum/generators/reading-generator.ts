@@ -820,11 +820,24 @@ function genGrade34Reading(seed: number): ReadingEntry[] {
   const out: ReadingEntry[] = [];
   const topics = shuffle(TOPICS_34, random);
 
+  // 3-4학년 수준: 도입·연결·정리 문장을 더해 지문을 약 2배로 확장
+  const INTRO_34 = [
+    (s: string) => `여러분, ${s}${을를(s)} 아시나요?`,
+    (s: string) => `오늘은 ${s}에 대해 알아볼게요.`,
+    (s: string) => `${s}에 대해 함께 살펴봐요.`,
+  ];
+  const CLOSE_34 = [
+    "이렇게 여러 가지 특징을 알고 나면 더 잘 이해할 수 있어요.",
+    "우리 생활과 밀접하게 관련되어 있으니 잘 기억해 두면 좋아요.",
+    "앞으로 더 자세히 살펴보면 새로운 점도 발견할 수 있어요.",
+  ];
   const build34 = (t: Topic34, variant: number) => {
-    const body = `${t.features[0]}. ${t.features[1]}. ${t.features[2]}.`;
-    if (variant % 3 === 1) return `여러분, ${t.subject}${을를(t.subject)} 아시나요? ${t.subject}${은는(t.subject)} ${t.definition}. ${body}`;
-    if (variant % 3 === 2) return `${t.subject}${을를(t.subject)} 설명해 볼게요. ${t.definition}. ${body}`;
-    return `${t.subject}${은는(t.subject)} ${t.definition}. ${body} 우리 생활과 밀접하게 관련되어 있어요.`;
+    const intro = INTRO_34[variant % INTRO_34.length](t.subject);
+    const close = CLOSE_34[(variant + 1) % CLOSE_34.length];
+    const body = `먼저, ${t.features[0]}. 그리고 ${t.features[1]}. 또한 ${t.features[2]}.`;
+    // 도입문이 이미 주제를 제시하므로 "주어는"을 다시 붙이지 않는다
+    // (definition이 자체 주어를 가진 경우 "운동의 필요성은 운동은~" 이중주어 비문 방지)
+    return `${intro} ${t.definition}. ${body} ${close}`;
   };
 
   // 유형 A: 주제·정의 묻기 (정의 문장이 정답)
@@ -1909,11 +1922,28 @@ function genGrade56Reading(seed: number): ReadingEntry[] {
   const out: ReadingEntry[] = [];
   const topics = shuffle(TOPICS_56, random);
 
+  // 5-6학년 수준: 도입·연결·정리 문장을 더해 지문을 약 2배로 확장
+  const INTRO_56 = [
+    (s: string) => `오늘은 '${s}'에 대해 자세히 알아볼까요?`,
+    (s: string) => `'${s}'은(는) 우리 생활과 깊이 관련되어 있어요.`,
+    (s: string) => `'${s}'에 대해 함께 차근차근 생각해 봐요.`,
+  ];
+  const BRIDGE_56 = [
+    "이를 이해하기 위해 다음 내용을 하나씩 살펴봐요.",
+    "구체적으로 살펴보면 다음과 같은 점들을 알 수 있어요.",
+    "왜 그런지 아래 내용을 통해 알아봐요.",
+  ];
+  const CLOSING_56 = [
+    "이처럼 여러 가지를 함께 살펴보면 그 의미를 더 깊이 이해할 수 있어요.",
+    "이런 내용을 바탕으로 우리 생활 속 모습을 한번 떠올려 보면 좋겠어요.",
+    "앞으로 이런 점들을 기억한다면 더 넓게 생각하는 데 도움이 될 거예요.",
+  ];
   const buildPassage = (t: Topic56, variant: number) => {
-    const body = `${t.evidence[0]}. ${t.evidence[1]}. ${t.evidence[2]}. ${t.conclusion}.`;
-    if (variant % 3 === 1) return `'${t.subject}'에 대해 함께 생각해 봐요. ${t.lead}. ${body}`;
-    if (variant % 3 === 2) return `${t.lead}. 이와 관련해 다음과 같은 점을 살펴볼 필요가 있어요. ${body}`;
-    return `${t.lead}. ${body}`;
+    const intro = INTRO_56[variant % INTRO_56.length](t.subject);
+    const bridge = BRIDGE_56[(variant + 1) % BRIDGE_56.length];
+    const closing = CLOSING_56[(variant + 2) % CLOSING_56.length];
+    const body = `먼저, ${t.evidence[0]}. 또한 ${t.evidence[1]}. 그리고 ${t.evidence[2]}.`;
+    return `${intro} ${t.lead}. ${bridge} ${body} 이러한 점에서 ${t.conclusion}. ${closing}`;
   };
 
   // 유형 A: 중심 생각 / 주제

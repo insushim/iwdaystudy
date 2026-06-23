@@ -885,8 +885,8 @@ export default function LearningSessionClient() {
         </div>
       </div>
 
-      {/* Mobile bottom navigation */}
-      <div className="lg:hidden sticky bottom-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
+      {/* Mobile bottom navigation (fixed: 해설이 길어져도 다음 버튼이 항상 보이도록) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-t px-4 py-3">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <NavButtons showMascot />
         </div>

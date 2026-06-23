@@ -261,8 +261,9 @@ export default function HanjaQuestion({
             이 한자의 음(소리)을 골라보세요
           </p>
         </div>
-        {sentence && <SentenceBlock text={sentence} />}
-        <WordBadges words={words} />
+        {/* 예문·단어는 음(철)을 노출하므로 정답 후에만 공개 */}
+        {showResult && sentence && <SentenceBlock text={sentence} />}
+        {showResult && <WordBadges words={words} />}
         <ChoiceGrid
           items={choices}
           correct={correctAnswer}
@@ -430,7 +431,8 @@ export default function HanjaQuestion({
           </p>
         </div>
 
-        {sentence && <SentenceBlock text={sentence} />}
+        {/* 예문은 음을 노출하므로 정답 후에만 공개 */}
+        {showResult && sentence && <SentenceBlock text={sentence} />}
 
         {!showResult && (
           <motion.div
