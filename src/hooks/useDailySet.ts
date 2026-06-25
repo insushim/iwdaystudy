@@ -16,7 +16,8 @@ import {
 // v3: 4-way 콘텐츠 감사(한자 예문·영어 품사·과학) + 조사 교정 반영 → 기존 캐시 세트 무효화
 // v4: 문제 품질 전면 재설계(distractor 범주매칭·답노출 차단·OX·고대힌트·맞춤법·학년초과 제거·지문 2배·TTS·레이아웃)
 // v5: distractor 2차 강화(맞춤법 sentence 동일문장변형·숫자 스케일/콤마·길이근접 랭킹·뱅크7종 추가·vocab 특수variant 랭킹·0오답 가드)
-const SET_VERSION = 5;
+// v6: 수학 reverse 정답무결성 — 첫 수가 결과로 유일 복원되는 식만 reverse 허용(몫/나머지·소수·문장형 폴백), 정답이 보기에 없거나 오답이 정답으로 표기되던 결함 제거
+const SET_VERSION = 6;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {

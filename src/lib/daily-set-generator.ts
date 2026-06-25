@@ -1471,6 +1471,55 @@ function buildReadinessQuestion(
 }
 
 // Build a math question from real curriculum data
+// ── reverse(빈칸 역산) 안전성 검증 ────────────────────────────────
+// 식의 첫 수를 ?로 가리고 결과(result)를 보여주는 변형. 단, 그 첫 수가
+// 결과로부터 '유일하게' 복원되는 식만 허용한다. 몫/나머지(여러 피제수가
+// 같은 몫)·소수(자리 깨짐)·다항·문장형은 제외하고 choice로 폴백한다.
+// 허용 시 검증된 첫 수(문자열)를, 불가하면 null을 돌려준다.
+function reverseFirstOperand(expr: string, answerNum: number): string | null {
+  if (!expr || !Number.isFinite(answerNum)) return null;
+  if (/몫|나머지/.test(expr)) return null; // 몫: 피제수가 유일하지 않음
+  if (/\d\.\d/.test(expr)) return null; // 소수: 정수부만 잘려 식·정답이 깨짐
+  const head = expr.match(/^\s*(\d+)/);
+  if (!head) return null;
+  const a = Number(head[1]);
+  if (!Number.isInteger(a) || a < 0) return null;
+
+  // ① 이진 등식 "a op b" — 결과로 a를 재계산해 첫 수와 일치할 때만 허용
+  const bin = expr.match(/^\s*(\d+)\s*([+\-×x*÷/])\s*(\d+)/);
+  if (bin) {
+    const op = bin[2];
+    const b = Number(bin[3]);
+    let rec: number;
+    if (op === "+") rec = answerNum - b;
+    else if (op === "-") rec = answerNum + b;
+    else if (op === "×" || op === "x" || op === "*")
+      rec = b !== 0 ? answerNum / b : NaN;
+    else {
+      if (b === 0) return null; // 0으로 나누기 방어(0÷0 등 비정의 식 차단)
+      rec = answerNum * b; // ÷ (몫/나머지는 위에서 제외 → 나누어떨어지는 경우만)
+    }
+    return Number.isInteger(rec) && rec >= 0 && rec === a ? String(a) : null;
+  }
+
+  // ② 뛰어 세기 "X부터 N씩 K번 뛰어 세면?" — 시작값 = 결과 − N×K
+  const skip = expr.match(/^\s*(\d+)부터\s*(\d+)씩\s*(\d+)번/);
+  if (skip) {
+    const start = answerNum - Number(skip[2]) * Number(skip[3]);
+    return start === a && start >= 0 ? String(a) : null;
+  }
+
+  // ③ "X의 N배는?" — 기준값 = 결과 ÷ N
+  const mul = expr.match(/^\s*(\d+)의\s*(\d+)배/);
+  if (mul) {
+    const m = Number(mul[2]);
+    const base = m !== 0 ? answerNum / m : NaN;
+    return Number.isInteger(base) && base === a && base >= 0 ? String(a) : null;
+  }
+
+  return null; // 그 외 문장형(비교·분수·약수·시각 등)은 reverse 비허용
+}
+
 function buildMathQuestion(
   setId: string,
   orderIndex: number,
@@ -1480,8 +1529,11 @@ function buildMathQuestion(
   variant: "choice" | "input" | "reverse" = "choice",
 ): Question {
   const expr = entry.expression || "";
-  const firstOperand = expr.match(/^\s*(\d+)/)?.[1] || "";
-  const isReverse = variant === "reverse" && firstOperand;
+  const reverseAnswer =
+    variant === "reverse"
+      ? reverseFirstOperand(expr, Number(entry.answer))
+      : null;
+  const isReverse = reverseAnswer != null;
   const reverseExpression = isReverse ? expr.replace(/^\s*\d+/, "?") : expr;
 
   return {
@@ -1506,13 +1558,13 @@ function buildMathQuestion(
       ...(isReverse ? { result: entry.answer } : {}),
     },
     answer: {
-      correct: isReverse ? firstOperand : String(entry.answer),
-      text: isReverse ? firstOperand : String(entry.answer),
+      correct: reverseAnswer ?? String(entry.answer),
+      text: reverseAnswer ?? String(entry.answer),
       steps: entry.steps || [],
     },
     explanation: entry.steps
       ? entry.steps.join(" -> ")
-      : `정답: ${isReverse ? firstOperand : entry.answer}`,
+      : `정답: ${reverseAnswer ?? entry.answer}`,
     points: 10,
     hint: entry.unit.includes("곱셈")
       ? "곱셈구구를 떠올려 보세요!"
@@ -2306,13 +2358,21 @@ export function generateDailySet(
           "reverse",
         ];
         const mv = mathVariants[Math.floor(random() * mathVariants.length)];
-        // For reverse variant, choices are based on the first operand instead of the answer
         const expr = entry.expression || "";
-        const firstOp = expr.match(/^\s*(\d+)/)?.[1] || "";
+        // reverse는 첫 수가 결과로부터 유일하게 복원되는 식만 허용(몫/나머지·소수·문장형 제외).
+        // 불가하면 choice로 폴백 → 정답이 보기에 없거나 다른 수가 정답으로 표기되는 결함 방지.
+        const revFirst =
+          mv === "reverse"
+            ? reverseFirstOperand(expr, Number(entry.answer))
+            : null;
+        const effVariant: "choice" | "input" | "reverse" =
+          mv === "reverse" && revFirst == null ? "choice" : mv;
         const choiceBase =
-          mv === "reverse" && firstOp ? Number(firstOp) : Number(entry.answer);
+          effVariant === "reverse" && revFirst
+            ? Number(revFirst)
+            : Number(entry.answer);
         const choices =
-          mv === "input" ? [] : generateMathChoices(choiceBase, random);
+          effVariant === "input" ? [] : generateMathChoices(choiceBase, random);
         questions.push(
           buildMathQuestion(
             setId,
@@ -2320,7 +2380,7 @@ export function generateDailySet(
             section.title,
             entry,
             choices,
-            mv,
+            effVariant,
           ),
         );
       } else if (subject === "spelling") {
