@@ -17,6 +17,26 @@ interface Props {
 
 const OPTION_LABELS = ["1", "2", "3", "4"];
 
+// "a/b"를 실제 분수꼴(분자 위·분모 아래·가로선)로 렌더링.
+// 한국어 식은 나눗셈에 ÷를 쓰므로 "/"는 분수로만 등장 → 안전하게 변환.
+function Frac({ n, d }: { n: string; d: string }) {
+  return (
+    <span className="mx-0.5 inline-flex flex-col items-center justify-center align-middle leading-none">
+      <span className="px-1 pb-0.5">{n}</span>
+      <span className="block w-full border-t-2 border-current" />
+      <span className="px-1 pt-0.5">{d}</span>
+    </span>
+  );
+}
+function renderMath(text: string): React.ReactNode {
+  if (!text) return text;
+  const parts = text.split(/(\d+\/\d+)/g);
+  return parts.map((p, i) => {
+    const m = p.match(/^(\d+)\/(\d+)$/);
+    return m ? <Frac key={i} n={m[1]} d={m[2]} /> : <span key={i}>{p}</span>;
+  });
+}
+
 export default function MathQuestion({
   content,
   answer,
@@ -82,16 +102,17 @@ export default function MathQuestion({
         <div className="text-4xl sm:text-5xl font-black tracking-wide text-foreground select-none text-center leading-relaxed">
           {variant === "reverse" ? (
             <>
-              {expression}
+              {renderMath(expression)}
               {expression.endsWith("?") ? " " : " = "}
               {String(content.result ?? "")}
             </>
           ) : expression.endsWith("?") ? (
             // 문장형 질문 ("…는 몇 개?")은 이미 물음표로 끝남 → 그대로 출력
-            <>{expression}</>
+            <>{renderMath(expression)}</>
           ) : (
             <>
-              {expression} = <span className="text-muted-foreground/50">?</span>
+              {renderMath(expression)} ={" "}
+              <span className="text-muted-foreground/50">?</span>
             </>
           )}
         </div>
@@ -168,7 +189,7 @@ export default function MathQuestion({
                 <span className="mr-2 text-sm text-muted-foreground">
                   {OPTION_LABELS[index]}
                 </span>
-                {choice}
+                {renderMath(choice)}
               </Button>
             </motion.div>
           ))}
@@ -221,7 +242,7 @@ export default function MathQuestion({
                     <span className="mr-2 text-sm text-muted-foreground">
                       {OPTION_LABELS[index]}
                     </span>
-                    {choice}
+                    {renderMath(choice)}
                   </div>
                 ))}
               </div>
@@ -255,7 +276,7 @@ export default function MathQuestion({
                             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FF6B35]/10 text-xs font-bold text-[#FF6B35]">
                               {index + 1}
                             </span>
-                            <span className="pt-0.5">{step}</span>
+                            <span className="pt-0.5">{renderMath(step)}</span>
                           </div>
                         ))}
                       </div>

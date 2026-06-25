@@ -17,7 +17,8 @@ import {
 // v4: 문제 품질 전면 재설계(distractor 범주매칭·답노출 차단·OX·고대힌트·맞춤법·학년초과 제거·지문 2배·TTS·레이아웃)
 // v5: distractor 2차 강화(맞춤법 sentence 동일문장변형·숫자 스케일/콤마·길이근접 랭킹·뱅크7종 추가·vocab 특수variant 랭킹·0오답 가드)
 // v6: 수학 reverse 정답무결성 — 첫 수가 결과로 유일 복원되는 식만 reverse 허용(몫/나머지·소수·문장형 폴백), 정답이 보기에 없거나 오답이 정답으로 표기되던 결함 제거
-const SET_VERSION = 6;
+// v7: 수학 UX — 시각 보기 'H시 M분' 라벨(인코딩 300 비표시), 번호범례→실제 라벨 보기(무의미 3·4 제거), 분수 분수꼴 렌더, 이름 조사(연필이) 교정
+const SET_VERSION = 7;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {

@@ -4,7 +4,10 @@
  * Combined with static data, this provides effectively unlimited math content.
  */
 import type { MathEntry } from "@/types/curriculum";
-import { naturalizeKorean } from "@/lib/korean-josa";
+import { naturalizeKorean, hasBatchim } from "@/lib/korean-josa";
+
+// 이름 뒤 주격조사 이/가를 받침 기준으로(연필이·사과가·상자가) — 하드코딩 "가"/"이" 비문 방지
+const iGa = (w: string) => `${w}${hasBatchim(w.slice(-1)) ? "이" : "가"}`;
 
 // Seeded PRNG for reproducible generation
 function seededRandom(seed: number) {
@@ -73,7 +76,7 @@ function generateGrade1Math(
       const items = pickOne(rng, ["사과", "구슬", "연필", "딸기", "공"]);
       return {
         type: "addition",
-        expression: `${items}가 ${a}개 있었는데 ${bClamped}개를 더 받았습니다. 모두 몇 개?`,
+        expression: `${iGa(items)} ${a}개 있었는데 ${bClamped}개를 더 받았습니다. 모두 몇 개?`,
         answer: a + bClamped,
         steps: [
           `${a}와 ${bClamped}를 더합니다`,
@@ -104,7 +107,7 @@ function generateGrade1Math(
       const items = pickOne(rng, ["사과", "구슬", "연필", "딸기", "공"]);
       return {
         type: "subtraction",
-        expression: `${items}가 ${a}개 있었는데 ${b}개를 먹었습니다. 남은 것은?`,
+        expression: `${iGa(items)} ${a}개 있었는데 ${b}개를 먹었습니다. 남은 것은?`,
         answer: a - b,
         steps: [`${a}에서 ${b}를 뺍니다`, `${a} - ${b} = ${a - b}`],
         unit: "한 자리 뺄셈",
@@ -171,12 +174,12 @@ function generateGrade1Math(
     const items = pickOne(rng, ["사과", "구슬", "연필", "딸기", "공"]);
     return {
       type: "comparison",
-      expression: `${items}가 ${a}개, 귤이 ${b}개 있습니다. 더 많은 것은? (1: ${items}, 2: 귤, 0: 같음)`,
+      expression: `${iGa(items)} ${a}개, 귤이 ${b}개 있습니다. 더 많은 것은? (1: ${items}, 2: 귤, 0: 같음)`,
       answer: answerNum,
       steps: [
         `${a} ${symbol} ${b}`,
         answerNum === 1
-          ? `${items}가 더 많습니다`
+          ? `${iGa(items)} 더 많습니다`
           : answerNum === 2
             ? `귤이 더 많습니다`
             : `같습니다`,
@@ -323,11 +326,11 @@ function generateGrade1Math(
     const itemB = pickOne(rng, ["파란 공", "작은 상자", "짧은 연필"]);
     return {
       type: "comparison",
-      expression: `${itemA}이 ${a}개, ${itemB}이 ${b}개 있습니다. 몇 개 더 많은가요?`,
+      expression: `${iGa(itemA)} ${a}개, ${iGa(itemB)} ${b}개 있습니다. 몇 개 더 많은가요?`,
       answer: diff,
       steps: [
         a > b
-          ? `${itemA}이 더 많습니다`
+          ? `${iGa(itemA)} 더 많습니다`
           : a < b
             ? `${itemB}이 더 많습니다`
             : `같습니다`,

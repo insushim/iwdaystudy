@@ -1520,6 +1520,74 @@ function reverseFirstOperand(expr: string, answerNum: number): string | null {
   return null; // 그 외 문장형(비교·분수·약수·시각 등)은 reverse 비허용
 }
 
+// ── 시각(H시 M분) 보기: 12시간 순환으로 유효한 시각만 생성 ──────────
+// time 문항의 answer는 H*100+M로 인코딩됨(예: 300=3시 0분). "300"처럼
+// 보이지 않게 보기·정답을 'H시 M분' 라벨로 만들고, 60분 넘는 비정상 시각을 배제.
+function clockLabel(totalMin: number): string {
+  const t = ((totalMin % 720) + 720) % 720; // 12시간 = 720분 순환
+  const m = t % 60;
+  const h = Math.floor(t / 60) || 12;
+  return `${h}시 ${m}분`;
+}
+function timeMathChoices(
+  answerEncoded: number,
+  random: () => number,
+): { choices: string[]; correct: string } {
+  const correctTotal =
+    Math.floor(answerEncoded / 100) * 60 + (answerEncoded % 100);
+  const correct = clockLabel(correctTotal);
+  const seen = new Set<string>([correct]);
+  const distractors: string[] = [];
+  const offsets = shuffleChoices(
+    [5, 10, 15, 20, 30, 45, 60, -5, -10, -15, -20, -30],
+    random,
+  );
+  for (const off of offsets) {
+    if (distractors.length === 3) break;
+    const label = clockLabel(correctTotal + off);
+    if (!seen.has(label)) {
+      seen.add(label);
+      distractors.push(label);
+    }
+  }
+  let k = 1;
+  while (distractors.length < 3) {
+    const label = clockLabel(correctTotal + 65 * k);
+    if (!seen.has(label)) {
+      seen.add(label);
+      distractors.push(label);
+    }
+    k++;
+  }
+  return { choices: shuffleChoices([correct, ...distractors], random), correct };
+}
+
+// ── 번호 범례 "(1: 연필, 2: 귤, 0: 같음)" → 실제 라벨 보기로 ─────────
+// 답이 번호(1/2/0)라 generateMathChoices가 3·4 같은 무의미 보기를 섞던 문제.
+// 범례를 파싱해 보기를 라벨로, 정답을 해당 라벨로 바꾸고 식에서 범례를 제거.
+function parseLegendChoices(
+  expr: string,
+  answerNum: number,
+): { choices: string[]; correct: string; expression: string } | null {
+  const m = expr.match(/\s*\(([^()]*?\d+\s*:[^()]*?)\)\s*[?.]?\s*$/);
+  if (!m) return null;
+  const pairs = m[1]
+    .split(/\s*,\s*/)
+    .map((p) => p.match(/^(-?\d+)\s*:\s*(.+?)\s*$/))
+    .filter((x): x is RegExpMatchArray => x != null);
+  if (pairs.length < 2) return null;
+  const byIndex: Record<string, string> = {};
+  const labels: string[] = [];
+  for (const p of pairs) {
+    byIndex[p[1]] = p[2];
+    labels.push(p[2]);
+  }
+  const correct = byIndex[String(answerNum)];
+  if (correct == null) return null;
+  const expression = expr.slice(0, expr.length - m[0].length).trim();
+  return { choices: labels, correct, expression };
+}
+
 function buildMathQuestion(
   setId: string,
   orderIndex: number,
@@ -1527,14 +1595,17 @@ function buildMathQuestion(
   entry: MathEntry,
   choices: string[],
   variant: "choice" | "input" | "reverse" = "choice",
+  override?: { expression?: string; correct?: string },
 ): Question {
-  const expr = entry.expression || "";
+  const expr = override?.expression ?? entry.expression ?? "";
   const reverseAnswer =
-    variant === "reverse"
+    !override && variant === "reverse"
       ? reverseFirstOperand(expr, Number(entry.answer))
       : null;
   const isReverse = reverseAnswer != null;
   const reverseExpression = isReverse ? expr.replace(/^\s*\d+/, "?") : expr;
+  const correctAnswer =
+    override?.correct ?? reverseAnswer ?? String(entry.answer);
 
   return {
     id: `q-${setId}-${orderIndex}`,
@@ -1547,8 +1618,9 @@ function buildMathQuestion(
     order_index: orderIndex,
     title,
     content: {
-      text:
-        variant === "reverse"
+      text: override
+        ? "알맞은 답을 고르세요."
+        : variant === "reverse"
           ? "빈칸에 들어갈 수를 구하세요."
           : "다음을 계산하세요.",
       expression: isReverse ? reverseExpression : expr,
@@ -1558,13 +1630,13 @@ function buildMathQuestion(
       ...(isReverse ? { result: entry.answer } : {}),
     },
     answer: {
-      correct: reverseAnswer ?? String(entry.answer),
-      text: reverseAnswer ?? String(entry.answer),
+      correct: correctAnswer,
+      text: correctAnswer,
       steps: entry.steps || [],
     },
     explanation: entry.steps
       ? entry.steps.join(" -> ")
-      : `정답: ${reverseAnswer ?? entry.answer}`,
+      : `정답: ${correctAnswer}`,
     points: 10,
     hint: entry.unit.includes("곱셈")
       ? "곱셈구구를 떠올려 보세요!"
@@ -2351,38 +2423,67 @@ export function generateDailySet(
         );
       } else if (subject === "math") {
         const entry = pickUnused(data.math, "math");
-        const mathVariants: Array<"choice" | "choice" | "input" | "reverse"> = [
-          "choice",
-          "choice",
-          "input",
-          "reverse",
-        ];
-        const mv = mathVariants[Math.floor(random() * mathVariants.length)];
-        const expr = entry.expression || "";
-        // reverse는 첫 수가 결과로부터 유일하게 복원되는 식만 허용(몫/나머지·소수·문장형 제외).
-        // 불가하면 choice로 폴백 → 정답이 보기에 없거나 다른 수가 정답으로 표기되는 결함 방지.
-        const revFirst =
-          mv === "reverse"
-            ? reverseFirstOperand(expr, Number(entry.answer))
-            : null;
-        const effVariant: "choice" | "input" | "reverse" =
-          mv === "reverse" && revFirst == null ? "choice" : mv;
-        const choiceBase =
-          effVariant === "reverse" && revFirst
-            ? Number(revFirst)
-            : Number(entry.answer);
-        const choices =
-          effVariant === "input" ? [] : generateMathChoices(choiceBase, random);
-        questions.push(
-          buildMathQuestion(
-            setId,
-            orderIndex,
-            section.title,
-            entry,
-            choices,
-            effVariant,
-          ),
-        );
+        const rawExpr = entry.expression || "";
+        const legend = parseLegendChoices(rawExpr, Number(entry.answer));
+        if (entry.type === "time") {
+          // 시각: 보기·정답을 'H시 M분' 라벨로("300" 인코딩 비표시·비정상 시각 차단)
+          const t = timeMathChoices(Number(entry.answer), random);
+          questions.push(
+            buildMathQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              entry,
+              t.choices,
+              "choice",
+              { correct: t.correct },
+            ),
+          );
+        } else if (legend) {
+          // 번호 범례 "(1: 연필, 2: 귤)" → 실제 라벨 보기(무의미 번호 보기 제거)
+          questions.push(
+            buildMathQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              entry,
+              legend.choices,
+              "choice",
+              { correct: legend.correct, expression: legend.expression },
+            ),
+          );
+        } else {
+          const mathVariants: Array<
+            "choice" | "choice" | "input" | "reverse"
+          > = ["choice", "choice", "input", "reverse"];
+          const mv = mathVariants[Math.floor(random() * mathVariants.length)];
+          // reverse는 첫 수가 결과로부터 유일하게 복원되는 식만 허용(몫/나머지·소수·문장형 제외).
+          // 불가하면 choice로 폴백 → 정답이 보기에 없거나 다른 수가 정답으로 표기되는 결함 방지.
+          const revFirst =
+            mv === "reverse"
+              ? reverseFirstOperand(rawExpr, Number(entry.answer))
+              : null;
+          const effVariant: "choice" | "input" | "reverse" =
+            mv === "reverse" && revFirst == null ? "choice" : mv;
+          const choiceBase =
+            effVariant === "reverse" && revFirst
+              ? Number(revFirst)
+              : Number(entry.answer);
+          const choices =
+            effVariant === "input"
+              ? []
+              : generateMathChoices(choiceBase, random);
+          questions.push(
+            buildMathQuestion(
+              setId,
+              orderIndex,
+              section.title,
+              entry,
+              choices,
+              effVariant,
+            ),
+          );
+        }
       } else if (subject === "spelling") {
         const entry = pickUnused(data.spelling, "spelling");
         const spellingVariants: Array<"sentence" | "word" | "correct"> = [
