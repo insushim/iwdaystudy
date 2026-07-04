@@ -836,11 +836,13 @@ function getGradeData(
   const scienceDiff = diff("science");
   const socialDiff = diff("social");
 
-  // 선행학습법: 주지과목은 현재 학년 - 1의 내용 사용 (학년 변경 없음)
-  const coreMathGrade = Math.max(1, grade - 1);
-  const coreEnglishGrade = Math.max(3, grade - 1);
-  const coreScienceGrade = Math.max(5, grade - 1);
-  const coreSocialGrade = Math.max(5, grade - 1);
+  // 주지과목도 현재 학년 기준으로 배정 (2026-07-04: 기존 grade-1 매핑 제거 —
+  // 상한 없는 grade-1이라 6학년이 항상 5학년 콘텐츠만 받고 grade6 데이터가 도달 불가능한
+  // dead code가 되던 버그 수정. 이제 각 학년이 자기 학년 콘텐츠를 받는다.)
+  const coreMathGrade = grade;
+  const coreEnglishGrade = grade;
+  const coreScienceGrade = grade;
+  const coreSocialGrade = grade;
 
   // ---- 주지과목 풀 생성 (전 학년 기준 + 난이도 적용) ----
   const generatedMath = generateMathPool(
@@ -1037,12 +1039,10 @@ function getGradeData(
           ...generatedWritingExtra,
           ...generatedWritingBonus,
         ],
-        korean: [
-          ...staticKoreanData,
-          ...generatedCreative,
-          ...generatedCreativeExtra,
-          ...generatedCreativeBonus,
-        ],
+        // 독해 퀴즈용 국어 풀. 창의(creative) 풀과 공유하지 않는다 —
+        // 공유하면 pickUnused가 korean/creative 인덱스를 독립 추적해
+        // 같은 문항이 한 세트의 독해·창의 양쪽에 중복 노출됨(2026-07-04 수정).
+        korean: [...staticKoreanData],
         koreanReading: [
           ...staticKoreanReadingData,
           ...generatedReading,
@@ -1092,12 +1092,10 @@ function getGradeData(
           ...generatedWritingExtra,
           ...generatedWritingBonus,
         ],
-        korean: [
-          ...staticKoreanData,
-          ...generatedCreative,
-          ...generatedCreativeExtra,
-          ...generatedCreativeBonus,
-        ],
+        // 독해 퀴즈용 국어 풀. 창의(creative) 풀과 공유하지 않는다 —
+        // 공유하면 pickUnused가 korean/creative 인덱스를 독립 추적해
+        // 같은 문항이 한 세트의 독해·창의 양쪽에 중복 노출됨(2026-07-04 수정).
+        korean: [...staticKoreanData],
         koreanReading: [
           ...staticKoreanReadingData,
           ...generatedReading,
@@ -1392,12 +1390,10 @@ function getGradeData(
           ...generatedWritingExtra,
           ...generatedWritingBonus,
         ],
-        korean: [
-          ...staticKoreanData,
-          ...generatedCreative,
-          ...generatedCreativeExtra,
-          ...generatedCreativeBonus,
-        ],
+        // 독해 퀴즈용 국어 풀. 창의(creative) 풀과 공유하지 않는다 —
+        // 공유하면 pickUnused가 korean/creative 인덱스를 독립 추적해
+        // 같은 문항이 한 세트의 독해·창의 양쪽에 중복 노출됨(2026-07-04 수정).
+        korean: [...staticKoreanData],
         koreanReading: [
           ...staticKoreanReadingData,
           ...generatedReading,
