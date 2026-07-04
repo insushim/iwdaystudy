@@ -46,81 +46,91 @@ export const MATH_UNIT_SEQUENCE: Record<
       { unit: "길이 재기", startWeek: 13 },
     ],
   },
+  // 2022 개정 3학년: 3-1=덧셈과 뺄셈·평면도형·나눗셈·곱셈·길이와 시간·분수와 소수 /
+  //   3-2=곱셈·나눗셈·원·분수·들이와 무게·자료의 정리.
+  //   (혼합 계산은 5학년 단원이라 3학년 SEQUENCE에서 제외)
   3: {
     1: [
       { unit: "세 자리 덧셈", startWeek: 1 },
       { unit: "세 자리 뺄셈", startWeek: 3 },
-      { unit: "곱셈구구", startWeek: 6 },
-      { unit: "나눗셈", startWeek: 9 },
-      { unit: "길이 계산", startWeek: 11 },
-      { unit: "시간 계산", startWeek: 11 },
-      { unit: "분수의 기초", startWeek: 13 },
+      { unit: "도형", startWeek: 5 },
+      { unit: "나눗셈", startWeek: 7 },
+      { unit: "곱셈", startWeek: 9 },
+      { unit: "길이 계산", startWeek: 12 },
+      { unit: "시간 계산", startWeek: 12 },
+      { unit: "분수의 기초", startWeek: 15 },
+      { unit: "분수 크기 비교", startWeek: 15 },
     ],
     2: [
-      { unit: "곱셈구구", startWeek: 1 },
-      { unit: "나눗셈", startWeek: 3 },
-      { unit: "세 자리 덧셈", startWeek: 7 },
-      { unit: "세 자리 뺄셈", startWeek: 9 },
-      { unit: "들이 계산", startWeek: 10 },
+      { unit: "곱셈", startWeek: 1 },
+      { unit: "곱셈 응용", startWeek: 3 },
+      { unit: "나눗셈", startWeek: 5 },
+      { unit: "들이 계산", startWeek: 9 },
       { unit: "무게 계산", startWeek: 10 },
-      { unit: "분수의 기초", startWeek: 12 },
+      { unit: "자료 정리", startWeek: 13 },
     ],
   },
+  // 2022 개정 4학년: 4-1=큰 수·각도·곱셈과 나눗셈·평면도형의 이동·막대그래프·규칙 찾기 /
+  //   4-2=분수의 덧셈과 뺄셈·삼각형·소수의 덧셈과 뺄셈·사각형·꺾은선그래프·다각형.
+  //   (혼합 계산은 5학년 단원이라 4학년 SEQUENCE에서 제외 → 4학년 세트에 노출 안 됨)
   4: {
     1: [
       { unit: "네 자리 덧셈", startWeek: 1 },
-      { unit: "네 자리 뺄셈", startWeek: 4 },
-      { unit: "두 자리 × 한 자리 곱셈", startWeek: 6 },
-      { unit: "나머지가 있는 나눗셈", startWeek: 9 },
-      { unit: "각도", startWeek: 12 },
-      { unit: "동분모 분수 덧셈", startWeek: 15 },
-      { unit: "동분모 분수 뺄셈", startWeek: 15 },
-      { unit: "소수 덧셈", startWeek: 16 },
-      { unit: "소수 뺄셈", startWeek: 16 },
+      { unit: "네 자리 뺄셈", startWeek: 3 },
+      { unit: "각도", startWeek: 6 },
+      { unit: "곱셈", startWeek: 9 },
+      { unit: "나눗셈", startWeek: 12 },
+      { unit: "나머지가 있는 나눗셈", startWeek: 14 },
     ],
     2: [
       { unit: "동분모 분수 덧셈", startWeek: 1 },
-      { unit: "동분모 분수 뺄셈", startWeek: 1 },
-      { unit: "두 자리 × 한 자리 곱셈", startWeek: 4 },
-      { unit: "나머지가 있는 나눗셈", startWeek: 6 },
-      { unit: "혼합 계산", startWeek: 8 },
-      { unit: "각도", startWeek: 9 },
-      { unit: "소수 덧셈", startWeek: 11 },
-      { unit: "소수 뺄셈", startWeek: 11 },
-      { unit: "네 자리 덧셈", startWeek: 13 },
-      { unit: "네 자리 뺄셈", startWeek: 14 },
+      { unit: "동분모 분수 뺄셈", startWeek: 2 },
+      { unit: "소수 덧셈", startWeek: 6 },
+      { unit: "소수 뺄셈", startWeek: 7 },
     ],
   },
+  // 2022 개정 5학년: 5-1=자연수의 혼합 계산·약수와 배수·규칙과 대응·약분과 통분·
+  //   분수의 덧셈과 뺄셈·다각형의 둘레와 넓이 / 5-2=수의 범위와 어림하기·분수의 곱셈·
+  //   합동과 대칭·소수의 곱셈·직육면체·평균과 가능성.
+  //   (기존엔 '넓이'가 5-2에 있었으나 다각형의 둘레와 넓이는 5-1, '약분과 통분' 5-1 누락)
   5: {
     1: [
       { unit: "혼합 계산", startWeek: 1 },
-      { unit: "약수와 배수", startWeek: 4 },
-      { unit: "최대공약수", startWeek: 5 },
-      { unit: "최소공배수", startWeek: 5 },
-      { unit: "분수의 덧셈", startWeek: 7 },
-      { unit: "분수의 뺄셈", startWeek: 7 },
+      { unit: "약수와 배수", startWeek: 3 },
+      { unit: "최대공약수", startWeek: 4 },
+      { unit: "최소공배수", startWeek: 4 },
+      { unit: "약분과 통분", startWeek: 7 },
+      { unit: "분수의 덧셈", startWeek: 9 },
+      { unit: "분수의 뺄셈", startWeek: 9 },
+      { unit: "넓이", startWeek: 13 },
     ],
     2: [
       { unit: "분수의 곱셈", startWeek: 1 },
-      { unit: "소수의 덧셈", startWeek: 5 },
-      { unit: "소수의 곱셈", startWeek: 7 },
-      { unit: "넓이", startWeek: 10 },
+      { unit: "합동과 대칭", startWeek: 5 },
+      { unit: "소수의 곱셈", startWeek: 8 },
       { unit: "평균", startWeek: 13 },
     ],
   },
+  // 2026-07-04: 2022 개정 교육과정에 맞게 재배치.
+  //   6-1: 분수의 나눗셈·각기둥과 각뿔·소수의 나눗셈·비와 비율·여러 가지 그래프·직육면체의 부피와 겉넓이
+  //   6-2: 분수의 나눗셈·소수의 나눗셈·공간과 입체·비례식과 비례배분·원의 둘레와 넓이·원기둥·원뿔·구
+  //   (기존엔 비례식[6-2]이 6-1에 있어 학기 초과, 분수의 나눗셈[6-1 핵심]이 누락됐음)
+  //   unit 명칭은 문제 데이터(grade6MathData)의 값과 일치시켜야 필터가 동작한다.
   6: {
     1: [
-      { unit: "비와 비율", startWeek: 1 },
-      { unit: "백분율", startWeek: 3 },
-      { unit: "비례식", startWeek: 7 },
-      { unit: "직육면체의 부피", startWeek: 11 },
+      { unit: "분수의 나눗셈", startWeek: 1 },
+      { unit: "소수의 나눗셈", startWeek: 5 },
+      { unit: "비와 비율", startWeek: 9 },
+      { unit: "백분율", startWeek: 11 },
+      { unit: "직육면체의 부피", startWeek: 14 },
     ],
     2: [
-      { unit: "비와 비율", startWeek: 1 },
-      { unit: "백분율", startWeek: 2 },
-      { unit: "원의 넓이", startWeek: 4 },
-      { unit: "비례식", startWeek: 8 },
-      { unit: "경우의 수", startWeek: 11 },
+      { unit: "분수의 나눗셈", startWeek: 1 },
+      { unit: "소수의 나눗셈", startWeek: 3 },
+      { unit: "비례식", startWeek: 6 },
+      { unit: "원의 넓이", startWeek: 9 },
+      // '넓이'(사다리꼴·삼각형·마름모)는 5-1 '다각형의 둘레와 넓이' 내용이라
+      // 6학년 세트에서 제외한다. 해당 문제데이터는 grade6MathData에 잘못 들어가 있음(내용검증 대상).
     ],
   },
 };
