@@ -209,29 +209,29 @@ export const SOCIAL_UNIT_SEQUENCE: Record<
   number,
   Record<number, UnitSchedule[]>
 > = {
+  // 2026-07-04: 현행 교과서 편제에 맞게 정정.
+  //   5-1=국토와 우리 생활·인권 존중 / 5-2=옛사람들의 삶과 문화·사회 변화
+  //   6-1=우리나라의 정치 발전·경제 발전 / 6-2=세계 여러 나라·통일 한국의 미래
+  //   (기존엔 세계[6-2]가 6-1에, 정치·경제[6-1]가 6-2에 중복돼 학기 초과. 경제생활은
+  //    초등 5학년 단원이 아니므로 5학년에서 제외 — 경제는 6학년.)
   5: {
     1: [
       { unit: "국토와 자연환경", startWeek: 1 },
-      { unit: "민주주의와 인권", startWeek: 6 },
-      { unit: "경제생활과 합리적 선택", startWeek: 12 },
+      { unit: "민주주의와 인권", startWeek: 8 },
     ],
     2: [
       { unit: "옛사람들의 삶과 문화", startWeek: 1 },
-      { unit: "사회 변화와 문화 다양성", startWeek: 7 },
-      { unit: "경제생활과 합리적 선택", startWeek: 12 },
+      { unit: "사회 변화와 문화 다양성", startWeek: 9 },
     ],
   },
   6: {
     1: [
       { unit: "우리나라의 정치 발전", startWeek: 1 },
-      { unit: "우리나라의 경제 발전", startWeek: 7 },
-      { unit: "세계 여러 나라의 자연과 문화", startWeek: 12 },
+      { unit: "우리나라의 경제 발전", startWeek: 9 },
     ],
     2: [
       { unit: "세계 여러 나라의 자연과 문화", startWeek: 1 },
-      { unit: "통일과 한반도의 미래", startWeek: 7 },
-      { unit: "우리나라의 정치 발전", startWeek: 10 },
-      { unit: "우리나라의 경제 발전", startWeek: 13 },
+      { unit: "통일과 한반도의 미래", startWeek: 9 },
     ],
   },
 };

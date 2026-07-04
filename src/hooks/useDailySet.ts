@@ -21,7 +21,8 @@ import {
 // v8: 학년 매핑 수정(주지과목 grade-1 복습→현재 학년, 6학년 grade6 콘텐츠 사장 버그 해소) + 전체 문항 약 2배 증량(15→30, 20→39, 21→42) + 1~2학년 독해/창의 중복문항 제거
 // v9: 전 학년 문항 42로 통일(5학년 기준) + 과학·사회 단원 매핑 커버리지 확장(assignScienceUnit/assignSocialUnit — 학기 진도 필터 정확도↑, 6학년 특화 콘텐츠 노출↑)
 // v10: 수학 진도표(MATH_UNIT_SEQUENCE) 전 학년 2022 개정 정합 재작성 — 기존엔 6-1에 비례식(6-2 단원) 노출·분수의 나눗셈(6-1 핵심) 누락 등 학기 오배치 다수. 학기 초과 해소 + 부적합 단원(3~4학년 혼합계산, 6학년 다각형 넓이) 제외
-const SET_VERSION = 10;
+// v11: 사회 진도표(SOCIAL_UNIT_SEQUENCE) 현행 교과서 정합 정정 — 6-1에 세계(6-2 단원)·6-2에 정치/경제(6-1 단원)가 중복돼 학기 초과이던 것 스왑. 경제생활(초등 6학년 단원)을 5학년에서 제외. (과학 진도표는 2022 개정과 이미 정확, 영어는 주제 배치가 교과서 자율이라 유지)
+const SET_VERSION = 11;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {
