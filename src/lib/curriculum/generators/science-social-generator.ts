@@ -3011,6 +3011,7 @@ function buildPool(
         text: item.text,
         answer: item.answer,
         category: item.category,
+        gradeGroup: item.gradeGroup,
       };
       if ((item as ScienceItem).unit) entry.unit = (item as ScienceItem).unit;
       pool.push(entry);
@@ -6637,8 +6638,92 @@ function assignScienceUnit(entry: KnowledgeEntry): string | undefined {
   }
 
   // 인체 mappings
-  if (cat === "인체") {
-    return "우리 몸의 구조와 기능";
+  if (cat === "인체" || cat === "몸") {
+    return "우리 몸의 구조와 기능"; // 6학년
+  }
+
+  // ── category명 기반 보조 매핑 (기존 규칙이 못 잡은 category). ──
+  // gradeGroup(lower=3~4, upper=5~6)으로 학년대를 강제해 학년대 오배치를 막는다.
+  // 단원명은 SCIENCE_UNIT_SEQUENCE와 정확히 일치해야 filter*ByProgress가 동작한다.
+  const upper = entry.gradeGroup === "upper"; // 5~6학년
+
+  // 우주/천체 — 태양계와 별(5학년), 지구와 달의 운동(6학년)
+  if (cat === "우주" || cat === "천체") {
+    if (
+      text.includes("달") &&
+      (text.includes("공전") ||
+        text.includes("자전") ||
+        text.includes("위상") ||
+        text.includes("모양"))
+    )
+      return "지구와 달의 운동";
+    return "태양계와 별";
+  }
+  // 날씨 — 날씨와 우리 생활(5학년)
+  if (cat === "날씨") return "날씨와 우리 생활";
+  // 전기/자석 — 자석의 이용(3학년) / 전기의 작용(6학년)
+  if (cat === "전기" || cat === "자석") {
+    if (
+      text.includes("자석") ||
+      text.includes("나침반") ||
+      text.includes("자기")
+    )
+      return "자석의 이용";
+    return "전기의 작용";
+  }
+  // 환경/생태 — 생물과 환경(5학년)
+  if (cat === "환경" || cat === "생태") return "생물과 환경";
+  // 빛과 소리 — 소리의 성질(3) / 그림자와 거울(4) / 빛과 렌즈(6)
+  if (cat === "빛과소리" || cat === "빛" || cat === "소리") {
+    if (
+      text.includes("소리") ||
+      text.includes("진동") ||
+      text.includes("메아리")
+    )
+      return "소리의 성질";
+    if (
+      text.includes("렌즈") ||
+      text.includes("굴절") ||
+      text.includes("볼록") ||
+      text.includes("오목")
+    )
+      return "빛과 렌즈";
+    if (
+      text.includes("그림자") ||
+      text.includes("거울") ||
+      text.includes("반사")
+    )
+      return "그림자와 거울";
+    return upper ? "빛과 렌즈" : "그림자와 거울";
+  }
+  // 힘과 운동 — 물체의 무게(4) / 물체의 운동(5)
+  if (cat === "힘과운동" || cat === "힘" || cat === "운동") {
+    if (
+      text.includes("무게") ||
+      text.includes("저울") ||
+      text.includes("수평")
+    )
+      return "물체의 무게";
+    return upper ? "물체의 운동" : "물체의 무게";
+  }
+  // 물질 — 물의 상태 변화·혼합물의 분리(4) / 물질의 성질(3)
+  if (cat === "물질") {
+    if (
+      text.includes("상태") ||
+      text.includes("수증기") ||
+      text.includes("얼음") ||
+      text.includes("증발") ||
+      text.includes("응결") ||
+      text.includes("끓")
+    )
+      return "물의 상태 변화";
+    if (
+      text.includes("혼합") ||
+      text.includes("분리") ||
+      text.includes("거르")
+    )
+      return "혼합물의 분리";
+    return "물질의 성질";
   }
 
   return undefined;
@@ -6673,18 +6758,43 @@ function assignSocialUnit(
   grade: number,
 ): string | undefined {
   const cat = entry.category;
+  // grade 인자로 학년이 확정되므로 category만으로 해당 학년의 단원에 안전히 매핑한다.
+  // (단원명은 SOCIAL_UNIT_SEQUENCE와 정확히 일치해야 filterSocialByProgress가 동작)
   if (grade === 5) {
-    if (cat === "지리") return "국토와 자연환경";
-    if (cat === "정치" || cat === "법") return "민주주의와 인권";
-    if (cat === "경제") return "경제생활과 합리적 선택";
-    if (cat === "역사" || cat === "문화") return "옛사람들의 삶과 문화";
+    if (cat === "지리" || cat === "환경") return "국토와 자연환경";
+    if (cat === "정치" || cat === "법" || cat === "민주주의" || cat === "인권")
+      return "민주주의와 인권";
+    if (cat === "경제" || cat === "직업") return "경제생활과 합리적 선택";
+    if (
+      cat === "역사" ||
+      cat === "문화" ||
+      cat === "전통문화" ||
+      cat === "한국사"
+    )
+      return "옛사람들의 삶과 문화";
+    if (cat === "사회문제" || cat === "세계")
+      return "사회 변화와 문화 다양성";
   } else if (grade === 6) {
-    if (cat === "정치" || cat === "법") return "우리나라의 정치 발전";
-    if (cat === "경제") return "우리나라의 경제 발전";
-    if (cat === "지리" || cat === "문화") return "세계 여러 나라의 자연과 문화";
-    if (cat === "역사") return "통일과 한반도의 미래";
+    if (
+      cat === "정치" ||
+      cat === "법" ||
+      cat === "민주주의" ||
+      cat === "인권" ||
+      cat === "사회문제"
+    )
+      return "우리나라의 정치 발전";
+    if (cat === "경제" || cat === "직업") return "우리나라의 경제 발전";
+    if (
+      cat === "지리" ||
+      cat === "문화" ||
+      cat === "세계" ||
+      cat === "환경" ||
+      cat === "전통문화"
+    )
+      return "세계 여러 나라의 자연과 문화";
+    if (cat === "역사" || cat === "한국사") return "통일과 한반도의 미래";
   }
-  return undefined; // 지역사회 등 나머지는 항상 표시
+  return undefined; // 지역사회(3~4학년 개념) 등은 gradeGroup 필터로 걸러지므로 보류
 }
 
 export function generateSocialPool(

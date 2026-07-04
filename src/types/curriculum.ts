@@ -40,6 +40,8 @@ export interface KnowledgeEntry {
   answer: string;
   category: string;
   unit?: string;
+  // 학년대 힌트(lower=3~4, upper=5~6, both=공통). 단원(unit) 매핑 시 학년 구분에 사용.
+  gradeGroup?: "lower" | "upper" | "both";
 }
 
 export interface ReadingEntry {

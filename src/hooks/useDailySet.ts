@@ -19,7 +19,8 @@ import {
 // v6: 수학 reverse 정답무결성 — 첫 수가 결과로 유일 복원되는 식만 reverse 허용(몫/나머지·소수·문장형 폴백), 정답이 보기에 없거나 오답이 정답으로 표기되던 결함 제거
 // v7: 수학 UX — 시각 보기 'H시 M분' 라벨(인코딩 300 비표시), 번호범례→실제 라벨 보기(무의미 3·4 제거), 분수 분수꼴 렌더, 이름 조사(연필이) 교정
 // v8: 학년 매핑 수정(주지과목 grade-1 복습→현재 학년, 6학년 grade6 콘텐츠 사장 버그 해소) + 전체 문항 약 2배 증량(15→30, 20→39, 21→42) + 1~2학년 독해/창의 중복문항 제거
-const SET_VERSION = 8;
+// v9: 전 학년 문항 42로 통일(5학년 기준) + 과학·사회 단원 매핑 커버리지 확장(assignScienceUnit/assignSocialUnit — 학기 진도 필터 정확도↑, 6학년 특화 콘텐츠 노출↑)
+const SET_VERSION = 9;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string): string {
