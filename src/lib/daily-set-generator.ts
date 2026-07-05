@@ -1,4 +1,5 @@
 import { getDayOfYear, getGradeGroup } from "@/lib/utils";
+import { lookupStandardCode } from "@/lib/curriculum/standard-mapping";
 import {
   GRADE_SET_COMPOSITION,
   DEFAULT_READINESS_ITEMS,
@@ -1592,6 +1593,7 @@ function buildMathQuestion(
   choices: string[],
   variant: "choice" | "input" | "reverse" = "choice",
   override?: { expression?: string; correct?: string },
+  grade?: number,
 ): Question {
   const expr = override?.expression ?? entry.expression ?? "";
   const reverseAnswer =
@@ -1606,7 +1608,8 @@ function buildMathQuestion(
   return {
     id: `q-${setId}-${orderIndex}`,
     daily_set_id: setId,
-    curriculum_standard_id: null,
+    curriculum_standard_id:
+      grade != null ? lookupStandardCode("math", grade, entry.unit) : null,
     subject: "math" as SubjectType,
     question_type: (variant === "input"
       ? "short_answer"
@@ -2433,6 +2436,7 @@ export function generateDailySet(
               t.choices,
               "choice",
               { correct: t.correct },
+              grade,
             ),
           );
         } else if (legend) {
@@ -2446,6 +2450,7 @@ export function generateDailySet(
               legend.choices,
               "choice",
               { correct: legend.correct, expression: legend.expression },
+              grade,
             ),
           );
         } else {
@@ -2477,6 +2482,8 @@ export function generateDailySet(
               entry,
               choices,
               effVariant,
+              undefined,
+              grade,
             ),
           );
         }
