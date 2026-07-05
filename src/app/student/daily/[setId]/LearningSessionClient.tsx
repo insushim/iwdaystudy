@@ -259,7 +259,7 @@ export default function LearningSessionClient() {
     questions.reduce((acc, q) => acc + q.points, 0);
 
   const handleAnswer = useCallback(
-    (answer: unknown) => {
+    (answer: unknown, evalScore?: number) => {
       if (!currentQuestion || currentState?.isAnswered) return;
 
       let isCorrect = false;
@@ -278,6 +278,8 @@ export default function LearningSessionClient() {
         score = currentQuestion.points;
       } else if (subject === "writing") {
         // 코드 기반 글쓰기 평가 (API 없음, 외부 전송 없음)
+        // WritingPrompt가 화면에 보여준 최종 점수(monotonic 보정 포함)를 우선 사용
+        // — 여기서 재평가하면 보정 이력이 사라져 표시 점수와 저장 점수가 어긋난다.
         const minChars =
           currentQuestion.content?.min_chars ||
           currentQuestion.content?.minChars ||
@@ -287,14 +289,12 @@ export default function LearningSessionClient() {
             currentQuestion.content?.prompt || currentQuestion.content?.text,
         });
         isCorrect = true;
-        score = evalResult.score;
-        // 마스코트 메시지에 별점 반영
+        score = typeof evalScore === "number" ? evalScore : evalResult.score;
+        // 마스코트 메시지에 별점 반영 (저장 점수 기준)
+        const mascotStars =
+          score <= 2 ? 1 : score <= 4 ? 2 : score <= 6 ? 3 : score <= 8 ? 4 : 5;
         setMascotState(
-          evalResult.stars >= 4
-            ? "correct"
-            : evalResult.stars >= 3
-              ? "happy"
-              : "encourage",
+          mascotStars >= 4 ? "correct" : mascotStars >= 3 ? "happy" : "encourage",
         );
         setMascotMessage(evalResult.feedback);
         setTimeout(() => {
@@ -340,7 +340,7 @@ export default function LearningSessionClient() {
 
   // ── Review answer handler ──
   const handleReviewAnswer = useCallback(
-    (answer: unknown) => {
+    (answer: unknown, evalScore?: number) => {
       if (reviewAnswered) return;
 
       const originalIndex = reviewQueue[reviewIndex];
@@ -348,17 +348,20 @@ export default function LearningSessionClient() {
 
       let isCorrect = false;
       if (question.subject === "writing") {
-        // 글쓰기는 재평가 후 기준 점수 이상이면 통과 처리
+        // 글쓰기는 WritingPrompt가 보여준 최종 점수(monotonic 보정 포함) 우선 사용
         const minChars =
           question.content?.min_chars || question.content?.minChars || 20;
-        const evalResult = evaluateWriting(String(answer), minChars, {
-          prompt: question.content?.prompt || question.content?.text,
-        });
-        isCorrect = evalResult.score >= WRITING_REVIEW_THRESHOLD;
+        const score =
+          typeof evalScore === "number"
+            ? evalScore
+            : evaluateWriting(String(answer), minChars, {
+                prompt: question.content?.prompt || question.content?.text,
+              }).score;
+        isCorrect = score >= WRITING_REVIEW_THRESHOLD;
         // 재시도에서 기존 점수보다 높으면 갱신
         const prevScore = questionStates[originalIndex]?.score ?? 0;
-        if (evalResult.score > prevScore) {
-          answerQuestion(question.id, answer, true, evalResult.score);
+        if (score > prevScore) {
+          answerQuestion(question.id, answer, true, score);
         }
       } else {
         isCorrect = evaluateGradedAnswer(question, answer);

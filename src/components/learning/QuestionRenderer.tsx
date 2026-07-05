@@ -22,7 +22,8 @@ import SafetyQuiz from "./SafetyQuiz";
 
 interface Props {
   question: Question;
-  onAnswer: (answer: unknown) => void;
+  // evalScore: 글쓰기(WritingPrompt)가 화면에 보여준 최종 점수를 그대로 전달(선택)
+  onAnswer: (answer: unknown, evalScore?: number) => void;
   showResult: boolean;
   isCorrect: boolean | null;
   hideCorrectAnswer?: boolean;

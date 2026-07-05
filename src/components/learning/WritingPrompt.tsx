@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Star, RotateCcw, ArrowRight } from "lucide-react";
 import {
   evaluateWriting,
+  isHardGibberish,
   type WritingEvalResult,
 } from "@/lib/writing-evaluator";
 
 interface Props {
   content: any;
-  onAnswer: (answer: string) => void;
+  // score: 화면에 보여준 최종 점수(monotonic 보정 포함)를 부모가 그대로 저장하도록 전달
+  // — 부모가 재평가하면 보정 이력이 소실되어 표시 점수와 저장 점수가 어긋난다.
+  onAnswer: (answer: string, score?: number) => void;
   showResult: boolean;
   isCorrect: boolean | null;
 }
@@ -48,49 +51,10 @@ export default function WritingPrompt({
   const meetsMinimum = charCount >= minChars;
   const canRetry = retryCount < MAX_RETRIES;
 
-  // 한글 비율 체크 (의미 있는 글인지 판별) - 더이상 사용하지 않음
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const getKoreanRatio = (t: string) => {
-    const chars = t.replace(/\s/g, "");
-    if (chars.length === 0) return 0;
-    const korean = chars.replace(/[^\uAC00-\uD7A3]/g, "");
-    return korean.length / chars.length;
-  };
-  // 장난/무의미 텍스트 감지: 자모 나열, 같은 글자 반복, 한 단어 반복 등
-  const isGibberishText = (t: string) => {
-    const trimmed = t.trim();
-    if (trimmed.length === 0) return false;
-    const chars = trimmed.replace(/\s/g, "");
-    if (chars.length === 0) return true;
-
-    // 1) 완성되지 않은 자모(ㄱ-ㅎ, ㅏ-ㅣ 등)가 15% 이상이면 장난
-    // Hangul Jamo(1100-11FF), Compatibility Jamo(3130-318F), Extended-A(A960-A97F), Extended-B(D7B0-D7FF)
-    const jamoRegex =
-      /[ᄀ-ᇿ㄰-㆏ꥠ-꥿ힰ-퟿]/g;
-    const jamoCount = (chars.match(jamoRegex) || []).length;
-    if (jamoCount / chars.length >= 0.15) return true;
-
-    // 2) 완성형 한글이 30% 미만이면 장난
-    const korean = chars.replace(/[^가-힣]/g, "");
-    if (korean.length / chars.length < 0.3) return true;
-
-    // 3) 같은 글자 5회 이상 연속 반복 (아아아아아, ㅋㅋㅋㅋㅋ)
-    if (/(.)\1{4,}/.test(chars)) return true;
-
-    // 4) 공백 기준 토큰 2개 미만 + 15자 이상 = 한 덩어리 나열
-    const tokens = trimmed.split(/\s+/).filter((w) => w.length >= 1);
-    if (trimmed.length >= 15 && tokens.length < 2) return true;
-
-    // 5) 같은 토큰이 전체의 70% 이상 차지 (오늘 오늘 오늘 오늘 …)
-    if (tokens.length >= 4) {
-      const freq: Record<string, number> = {};
-      for (const tk of tokens) freq[tk] = (freq[tk] || 0) + 1;
-      const maxFreq = Math.max(...Object.values(freq));
-      if (maxFreq / tokens.length >= 0.7) return true;
-    }
-
-    return false;
-  };
+  // 장난/무의미 텍스트 감지 — 평가 엔진과 동일 판정으로 단일화 (v7)
+  // (사본 유지 시 엔진만 업데이트되는 드리프트가 생겨 제거. 빈 입력은 차단 아님)
+  const isGibberishText = (t: string) =>
+    t.trim().length > 0 && isHardGibberish(t);
   const isGibberish = isGibberishText(text);
 
   const handleSubmit = () => {
@@ -126,11 +90,11 @@ export default function WritingPrompt({
     if (result.score > PASS_SCORE) {
       // 통과 → 최종 제출
       setSubmitted(true);
-      onAnswer(text.trim());
+      onAnswer(text.trim(), result.score);
     } else if (!canRetry && result.score >= MIN_FORCE_SUBMIT_SCORE) {
       // 재시도 소진 + 최소 점수는 넘음 → 자동 제출
       setSubmitted(true);
-      onAnswer(text.trim());
+      onAnswer(text.trim(), result.score);
     } else {
       // 70점 이하(+재시도 가능) 또는 재시도 소진했지만 점수 너무 낮음 → 미리보기
       setPreviewMode(true);
@@ -159,7 +123,7 @@ export default function WritingPrompt({
     }
     setSubmitted(true);
     setPreviewMode(false);
-    onAnswer(currentText);
+    onAnswer(currentText, evalResult?.score);
   };
 
   const isShowingResult = (showResult || submitted) && !previewMode;

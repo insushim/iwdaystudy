@@ -1,14 +1,20 @@
 /**
- * 순수 코드 기반 글쓰기 평가 엔진 v5 (API 없음, 외부 전송 없음)
+ * 순수 코드 기반 글쓰기 평가 엔진 v7 (API 없음, 외부 전송 없음)
  * 초등학생 개인정보 보호 준수
  *
- * v5 변경사항:
- * - 연속적(continuous) 점수 → 부드러운 점수 변화
- * - 문장 평균 길이 평가 (너무 짧은 문장 나열 감점)
- * - 어미 다양성 평가 (~다, ~요, ~습니다 등 반복 감점)
- * - 주제 관련성 평가 (프롬프트와 무관한 내용 감점)
- * - 의미 밀도 (content words / total words ratio)
- * - 쓰레기 텍스트/복붙 감지 강화
+ * v7 변경사항 (전부 오프라인·결정론):
+ * - 음절 통계 게이트: 번들 교육과정 코퍼스(71만 음절)에서 추출한 상용 음절표로
+ *   "무의미 한글 나열"(자모·반복이 아닌 진짜 아무말) 감지 — 소프트 캡 + 극단 차단
+ * - 프롬프트 복붙 방어: 글감 문장을 그대로 배껴 글자수를 채우면 평가에서 제외
+ * - 마침표 없는 글 문장 분리: 종결어미(+공백) 기준 보조 분리
+ * - 맞춤법 흔한 오류 감지(안전한 확정 패턴만): 팁 제공 + 2개 이상이면 경미 감점
+ * - 구체성 신호 보너스: 대화문(따옴표)·수량 표현·의성어/의태어·비유(처럼/마치/듯)
+ * - 구간 TTR(windowed type-token ratio): 긴 글에서 같은 낱말 재활용 감지
+ * - 어미 다양성 패턴 확장(군요/구나/거예요/게요/는데/니까/반말 어미)
+ * - 2개 토큰 교대 반복("재밌다 좋다 재밌다 좋다 …") gibberish 차단
+ *
+ * v5~v6: 연속 점수, 문장 평균 길이, 어미 다양성, 주제 관련성, 의미 밀도,
+ *        키워드 스터핑 게이트, 하드 gibberish 감지
  */
 
 export interface WritingEvalResult {
@@ -369,6 +375,81 @@ const FUNCTION_STEMS = new Set([
   "그러므로", "따라서", "또한", "그러면", "그리하여",
 ]);
 
+// ── 상용 음절표 (v7) ───────────────────────────────────────────
+// 앱에 번들된 1~6학년 교육과정 코퍼스(총 713,921음절)에서 3회 이상 등장한
+// 음절 1,268개. 초등 어휘의 99%+를 커버한다. 이 표에 없는 음절이 비정상적으로
+// 많으면 "아무 글자나 조합한 한글 나열"로 판단한다. (고유명사·게임 이름 등이
+// 일부 섞이는 정상 글은 임계값 아래에 안전하게 머문다 — 소프트 신호로만 사용)
+const COMMON_SYLLABLES: Set<string> = new Set("이다는요에을가어의은기하해한지를서사리고수로전물나자있것아라인도과면시안보학으문대구동화주세니장소정상만생식바게일우무비스교야성위명설제개들부유모내용여운국적거음계와람미때원입분할산공연그중오경재었방려른예마표간관글통력선양독올약체신했치발르날반조강건진말실호알되역달드추두래터단먹활러차태심놀회피레색법감등험좋작불속된써민울배각형름행습많결합질트점현년없술더않늘맞영환종변타받줄파온노금절셈새품곳열히권친져매크복직저쓰악림았란폭워빛집엇난루필평까논처초씨살번석겨남따높후너확판목책린존길백같든토뜻디편록눈잘돌천데끼키버프당류함근큰육네별견쪽능향임포빠침업코담북머손꽃순풍극움읽증께본출랑누몸님충월준빨외청며돼특답벌걸곱넓갔료느급얼족삼론규창던광왕접넣풀못넷카플싶렸긴힘격칙투축찰참병탄먼잡맛막밤잠최깨균뜨철떤갈메떨밀항졌채징폐베효농탈염언엄박암볼잎옷뛰녀립돈쟁슬커땅럼혼낮락율줘검므뺄패응액켜밥붙깊콤황덧웠귀쳐뒤앞왔익칠봄숨둥혁굴될군퍼뉴즈착김릴찬셨끗흐털떡찾허량례짓끄갑런죽브테꼭씁덕망념닌궁쓴승녹쥐였택꿀꾸싸났팔련흡눗넘뿌티끝혀봉즐십억옛쓸깔탕둘골애쉬꿈짜턴탐럽측밖떻씩틀곤벽짝놓협숲령웃페옥블째낙압앗쁜씻완혈짧믿봐섬빈띄섯뼈떠곡괴취밝뇌춘핵몇총범칭득얻햇꺼헌슴닥쌓콘빌획롭흙찍홍잃춤숙틱낸슷센송끌촌콩희컴클밭좌훈윤렌칼또듯션튼케흔듣혜랐퓨빵닷곰왜멈릿냄앉겠죄슨욕톤층빗뭇겼얀섞빼옳맺뻐킨팽엽삶폰멸흘벼헤멀꾼쳤픈탑엔츠뀌횡젖껴멍붕맥뽑낌륙녁벗흥맑텐푸듬릅첫흑밑딱끓쇠쁘됩겉숫껍퇴닫똑객잔앙썼솔척엘숭빙뚜휘겁볶닭벨냉덜큼널끈쉽늬휴닦끊랫엉셔왼탁픽낳맡쾌헬짐냈낼쌀켓퀴쇄렀싹꼬핑핀옮덩냥켰졸낀잇뱀춰섭혹값힌멋돕닐즘삭컵펼칸됐랜펜봇팀씀률웨캐빅룡찌펴깃납닿딪묶릇즉흰챙몽뢰촉뿐몰맨웅뻤윗옆덮딸꿔픔렇귄콜캠뒷펭깥킹템갖묘걱링렁갯램곧낫귤겹융깜녕컨싱폴뷰팥늑캔멧긍겸햄랍넉삐봅롱댁킬윷뀐꺾틴쿠첨깎꽂뿔뜬몬눌묵릉좁걷봤굳젊끔팬둔묻눕렵줍쏘쌍릎낭뉘얗셋엌늦뭄홀붓돋랙슈굽쁨텃잤텔깡젠녘낄렬빔뿜싫뭉팅갓셀벤붉맹깍싼룬튜컬혔캥옴겪멜뱅샀잊낱얇닝덟홉샤썰딜뭐덤궐솜꼼땀짹롤튕줬웰웬앵윈폼잉딧밸넌짤갛뉜뺍팠엣큐걀밍딩튀댓랗킵볍렷뚱톡꼴룩샘벚옹밟짭찮썹촛덥앱왠껏맵럭뱃쿨렛뮤펠탔쉴둠둡쿄꽥짱뚝뚤풋팩젤솟엿낯얽쏟촬뾰팡빚갇뻔쫓찡훌륭굿럿럴룸핫힐셜셰섰괄눠큽킥빡갱쭉챔짠븐펫샌홈렉릭젓좀땠냇렴씹슘둑꽹댐콕녔쭈펑넛킷렐낚펄흩떼긋틈쪼띠춥톱칫델껑찜쇼땡쉰턱룰톨캡틸앨뻗볕략굵첩뚫듭뽀뵙쉼엠괜즌팝콥숟랭믹칩탱횟랄뱉뜯몫썩쩍닮됬꽉됨꼈펀밴싯텍씬헨왓닛켈짙댔꿨즙끽컹킁얘꿇쪄꿋셧쾅쯤첼떴퉁펌옵삽냐뭘뫼늙꿰뜰틔멩꼽늄싣탭궜갉훨쫄밋넥벅깐갤퓰벳닉윙탬롯륨쁠폈갚읍콧튤긁륜닙뤄짚찢쏠욱흉씌찻맴뜩륵밌맣쩔꽁쫀괭냅겔헉쿤캣샐잼핸텅댄헝콰엑젝궤핏깝짖깼췄찔똥믐뛴넬둬혐엎뜀솥옇핥컸쌩솝셴뒀윔쿡캘숏딥탉캄덴팟퀘돗텀슐펙곽귈쌈땄멘괘뀔툼얕훼딤멕겆맙룻굣띔쿵푹꿩놈눔깁롬랏랬듦쬐벙볏궂앤썸탠랩웜켄툴쉐톰툰겐쟀쌌뜸쑥뇽컷잰웹넨씽헹딘뼉귓옫넋툇엾헷섣쭙뺨렘펐랴엮및겄썻벘젔닢핬쏴낡봣넜얹쳇찧");
+
+// 상용 음절표 밖 음절 비율 (10음절 미만이면 판정 보류 = 0)
+function rareSyllableRatio(text: string): number {
+  const syl = text.match(/[가-힣]/g);
+  if (!syl || syl.length < 10) return 0;
+  let rare = 0;
+  for (const s of syl) {
+    if (!COMMON_SYLLABLES.has(s)) rare++;
+  }
+  return rare / syl.length;
+}
+
+// ── 의성어·의태어 (구체성 보너스용) ────────────────────────────
+const ONOMATOPOEIA = [
+  "깡충깡충", "반짝반짝", "살금살금", "두근두근", "콩닥콩닥", "데굴데굴",
+  "빙글빙글", "씽씽", "쌩쌩", "펄쩍", "폴짝", "살랑살랑", "솔솔",
+  "주룩주룩", "쨍쨍", "후다닥", "허겁지겁", "룰루랄라", "방긋", "활짝",
+  "깔깔", "엉엉", "훌쩍", "꼬르륵", "꿀꺽", "냠냠", "아삭아삭",
+  "바삭바삭", "몽글몽글", "보들보들", "푹신푹신", "미끌미끌", "첨벙첨벙",
+  "찰랑찰랑", "뭉게뭉게", "터벅터벅", "성큼성큼", "살며시", "슬금슬금",
+  "우당탕", "쿵쾅쿵쾅", "부릉부릉", "딩동", "똑딱", "짹짹", "멍멍",
+  "야옹", "꽥꽥", "삐약", "꿀꿀", "덜덜", "덜컹", "출렁", "파닥",
+  "번쩍", "휙", "쓱쓱", "슥슥", "졸졸", "보글보글", "부글부글",
+];
+
+// ── 맞춤법 흔한 오류 (안전한 확정 패턴만 — 문맥 무관하게 항상 틀린 표기) ──
+const SPELLING_ERRORS: [wrong: string, right: string][] = [
+  ["됬", "됐"],
+  ["되요", "돼요"],
+  ["되서", "돼서"],
+  ["몇일", "며칠"],
+  ["웬지", "왠지"],
+  ["왠만", "웬만"],
+  ["할께", "할게"],
+  ["갈께", "갈게"],
+  ["줄께", "줄게"],
+  ["할꺼", "할 거"],
+  ["어떻해", "어떡해"],
+  ["오랫만", "오랜만"],
+  ["곰곰히", "곰곰이"],
+  ["희안", "희한"],
+  ["역활", "역할"],
+  ["설레임", "설렘"],
+  ["않되", "안 되"],
+  ["않돼", "안 돼"],
+  ["않했", "안 했"],
+];
+
+// 어절 시작에서만 매칭해야 하는 패턴 (복합어 경계 오탐 방지: "지역활동"의 "역활" 등)
+const SPELLING_WORD_START = new Set(["역활", "희안"]);
+
+function findSpellingErrors(text: string): [string, string][] {
+  const found: [string, string][] = [];
+  const tokens = text.split(/\s+/);
+  for (const [wrong, right] of SPELLING_ERRORS) {
+    const hit = SPELLING_WORD_START.has(wrong)
+      ? tokens.some((t) => t.startsWith(wrong))
+      : text.includes(wrong);
+    if (hit) found.push([wrong, right]);
+  }
+  return found;
+}
+
+// ── 구체성 신호 (대화문·수량·비유) ─────────────────────────────
+const DIALOGUE_REGEX = /["'“‘][^"'“”‘’\n]{2,30}["'”’]/;
+const NUMBER_UNIT_REGEX =
+  /(\d+|[한두세네]|다섯|여섯|일곱|여덟|아홉|열)\s?(개|명|번|살|분|마리|권|송이|그루|켤레|판|장|병|잔|조각|층|배|시간|바퀴)/;
+const SIMILE_REGEX = /(처럼|마치\s|듯이|듯한|듯했)/;
+
 // ── 흔한 이모티콘 자모 (gibberish 오탐 방지: ㅋㅋ·ㅎㅎ·ㅠㅠ 등) ──
 function stripEmoticons(text: string): string {
   return text
@@ -390,12 +471,34 @@ const PROMPT_STOPWORDS = new Set([
   "어떤", "생각", "느낀", "느낌", "오늘", "이야기", "문장", "적어",
   "적어보", "글쓰기", "주제", "써보", "보세요", "하세요", "해보", "쓰기",
   "내용", "여러분", "우리", "나의", "너의", "자신", "경험",
+  // (v7) 글감의 뼈대일 뿐 본문에 그대로 안 나와도 되는 범용어 확장
+  "가장", "제일", "이유", "소개", "함께", "하루", "최근", "요즘",
+  "어떻게", "어디", "누구", "언제", "무슨", "기억", "인상", "특별",
+  "있었던", "겪었던", "내가", "제가",
 ]);
+// (v7) 명령형·청유형 어미로 끝나는 어절은 글감 지시어라 키워드가 아님
+const PROMPT_VERB_ENDING =
+  /(세요|보세요|주세요|봅시다|볼까요|할까요|인가요|일까요|나요|까요|해요|어요|아요)$/;
+// 프롬프트 키워드 추출: 명령형 어미 어절 제외 + 조사 분리(2글자 명사 보호 —
+// "가을"→"가" 같은 주제어 소실 방지. 분리 못 한 범용어가 남아도 coverage
+// 임계 0.2가 낮아 정상 글에 벌점을 주지 않는다)
 function extractPromptKeywords(prompt: string): string[] {
   const ws = extractWords(prompt)
+    .filter((w) => !PROMPT_VERB_ENDING.test(w))
     .map(stripJosa)
     .filter((w) => w.length >= 2 && !PROMPT_STOPWORDS.has(w));
   return [...new Set(ws)];
+}
+// (v7) 어형 변화 허용 매칭: "속상했던"↔"속상했다", "재미있었던"↔"재미있었다"처럼
+// 같은 어간의 다른 활용형을 인정한다 — 공통 접두가 2자 이상이고
+// 짧은 쪽 길이-1 이상이면 같은 낱말로 본다 (학교/학원처럼 1자 공통은 불인정).
+function stemsMatch(a: string, b: string): boolean {
+  if (a === b) return true;
+  if (a.includes(b) || b.includes(a)) return true;
+  let shared = 0;
+  const n = Math.min(a.length, b.length);
+  while (shared < n && a[shared] === b[shared]) shared++;
+  return shared >= Math.max(2, n - 1);
 }
 // 본문 어간이 프롬프트 키워드를 얼마나 다루는지 (0~1 coverage)
 function topicRelevance(essayStems: Set<string>, keywords: string[]): number {
@@ -403,13 +506,27 @@ function topicRelevance(essayStems: Set<string>, keywords: string[]): number {
   let hit = 0;
   for (const k of keywords) {
     for (const s of essayStems) {
-      if (s === k || (s.length >= 2 && k.includes(s)) || s.includes(k)) {
+      if (s.length >= 2 && stemsMatch(s, k)) {
         hit++;
         break;
       }
     }
   }
   return hit / keywords.length;
+}
+
+// ── 프롬프트 복붙 방어 (v7) ────────────────────────────────────
+// 글감 문장을 통째로 배껴 글자수를 채우는 꼼수 차단: 본문에서 프롬프트
+// 전체 문자열(끝 구두점 차이 허용)을 제거한 뒤 평가한다.
+// 프롬프트 일부 표현을 자연스럽게 빌려 쓰는 것은 그대로 인정된다.
+function stripPromptEcho(text: string, prompt?: string): string {
+  if (!prompt) return text;
+  const p = prompt.trim();
+  if (p.length < 8) return text;
+  let out = text.split(p).join(" ");
+  const pCore = p.replace(/[?.!~\s]+$/g, "");
+  if (pCore.length >= 8) out = out.split(pCore).join(" ");
+  return out.replace(/\s{2,}/g, " ").trim();
 }
 
 // ── 흔한 어미 패턴 (다양성 측정용) ─────────────────────────────
@@ -420,6 +537,12 @@ const ENDING_SUFFIXES = [
   /답니다[.\s!?~]*$/,
   /습니다[.\s!?~]*$/,
   /ㅂ니다[.\s!?~]*$/,
+  /거예요[.\s!?~]*$/,
+  /게요[.\s!?~]*$/,
+  /군요[.\s!?~]*$/,
+  /구나[.\s!?~]*$/,
+  /는데[.\s!?~]*$/,
+  /니까[.\s!?~]*$/,
   /었다[.\s!?~]*$/,
   /았다[.\s!?~]*$/,
   /였다[.\s!?~]*$/,
@@ -434,6 +557,12 @@ const ENDING_SUFFIXES = [
   /세요[.\s!?~]*$/,
   /까요[.\s!?~]*$/,
   /죠[.\s!?~]*$/,
+  /했어[.\s!?~]*$/,
+  /었어[.\s!?~]*$/,
+  /았어[.\s!?~]*$/,
+  /지[.\s!?~]*$/,
+  /야[.\s!?~]*$/,
+  /해[.\s!?~]*$/,
   /요[.\s!?~]*$/,
   /다[.\s!?~]*$/,
 ];
@@ -453,8 +582,10 @@ const CHAR_LONG_REPEAT_REGEX = /(.)\1{4,}/;
 /**
  * 하드 gibberish 감지: 명백히 장난·무의미 텍스트인지 판단
  * 걸리면 총점 0으로 강제 확정
+ * (v7) export: UI(WritingPrompt)의 제출 차단도 같은 판정을 쓰도록 단일화 —
+ * 두 파일에 사본을 두면 한쪽만 업데이트되는 드리프트가 생긴다.
  */
-function isHardGibberish(text: string): boolean {
+export function isHardGibberish(text: string): boolean {
   const trimmed = text.trim();
   if (trimmed.length === 0) return true;
   // 흔한 이모티콘(ㅋㅋ·ㅎㅎ·ㅠㅠ)은 비율 판정에서 제외 → 정상 아동글 오탐 방지
@@ -494,6 +625,12 @@ function isHardGibberish(text: string): boolean {
     if (maxFreq / tokens.length >= 0.7) return true;
   }
 
+  // 6) (v7) 토큰 6개 이상인데 고유 토큰이 2개 이하 (두 단어 교대 반복)
+  if (tokens.length >= 6 && new Set(tokens).size <= 2) return true;
+
+  // 7) (v7) 상용 음절표 밖 음절이 55% 이상 (아무 글자 조합 한글 나열)
+  if (rareSyllableRatio(chars) >= 0.55) return true;
+
   return false;
 }
 
@@ -506,25 +643,44 @@ function cleanJunkText(text: string): string {
 }
 
 function extractWords(text: string): string[] {
-  return text
-    .replace(/[^\uAC00-\uD7A3\u1100-\u11FF\u3130-\u318Fa-zA-Z0-9\s]/g, " ")
-    .split(/\s+/)
-    .filter((w) => w.length >= 2)
-    .filter((w) => !JAMO_ONLY_REGEX.test(w))
-    .filter((w) => !NUMBER_ONLY_REGEX.test(w))
-    .filter((w) => !ALPHA_GIBBERISH_REGEX.test(w));
+  return (
+    text
+      .replace(/[^가-힣ᄀ-ᇿ㄰-㆏a-zA-Z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 2)
+      .filter((w) => !JAMO_ONLY_REGEX.test(w))
+      .filter((w) => !NUMBER_ONLY_REGEX.test(w))
+      .filter((w) => !ALPHA_GIBBERISH_REGEX.test(w))
+      // (v7.1) 숫자 제거 정규화: "가가0은/가가1은"처럼 숫자만 바꿔 고유 단어를
+      // 불리는 우회 차단. "3개"→"개"(1자)는 탈락하지만 수량 보너스는
+      // NUMBER_UNIT_REGEX가 원문에서 따로 인정하므로 손실 없음.
+      .map((w) => w.replace(/\d+/g, ""))
+      .filter((w) => w.length >= 2)
+  );
 }
+
+// (v7) 마침표 없이 이어 쓴 글 보조 분리: 확실한 종결어미 + 공백 + 한글 시작.
+// lookbehind는 구형 브라우저 파싱 오류 위험이 있어 lookahead + 마커 삽입 방식 사용.
+const SOFT_SENTENCE_END =
+  /(습니다|었다|았다|였다|했다|네요|지요|세요|어요|아요|거든요|답니다|군요|는다)\s+(?=[가-힣"'“‘])/g;
 
 function splitSentences(text: string): string[] {
-  return text
-    .split(/[.!?~]+|\n+/)
-    .map((s) => s.trim())
-    .filter((s) => s.length >= 3);
+  const hard = text.split(/[.!?~]+|\n+/);
+  const out: string[] = [];
+  for (const piece of hard) {
+    const t = piece.trim();
+    if (t.length === 0) continue;
+    if (t.length >= 25) {
+      // 긴 덩어리만 보조 분리 (짧은 문장은 오분리 위험 > 이득)
+      out.push(...t.replace(SOFT_SENTENCE_END, "$1\u0000").split("\u0000"));
+    } else {
+      out.push(t);
+    }
+  }
+  return out.map((s) => s.trim()).filter((s) => s.length >= 3);
 }
 
-function sentenceSimilarity(a: string, b: string): number {
-  const wordsA = new Set(extractWords(a));
-  const wordsB = new Set(extractWords(b));
+function setOverlapRatio(wordsA: Set<string>, wordsB: Set<string>): number {
   if (wordsA.size === 0 && wordsB.size === 0) return 1;
   if (wordsA.size === 0 || wordsB.size === 0) return 0;
   let overlap = 0;
@@ -534,15 +690,17 @@ function sentenceSimilarity(a: string, b: string): number {
   return overlap / Math.max(wordsA.size, wordsB.size);
 }
 
+// (v7.1) 성능: 문장별 단어 집합을 1회만 추출해 쌍별 재파싱 제거(기존 O(s²)회
+// extractWords → O(s)회). 비교 문장 수도 상한(120)으로 캡.
+const DUP_CHECK_MAX_SENTENCES = 120;
 function detectDuplicateSentences(sentences: string[]): number {
   if (sentences.length <= 1) return 0;
+  const capped = sentences.slice(0, DUP_CHECK_MAX_SENTENCES);
+  const sets = capped.map((s) => new Set(extractWords(s)));
   let duplicates = 0;
-  for (let i = 0; i < sentences.length; i++) {
-    for (let j = i + 1; j < sentences.length; j++) {
-      if (
-        sentences[i] === sentences[j] ||
-        sentenceSimilarity(sentences[i], sentences[j]) >= 0.8
-      ) {
+  for (let i = 0; i < capped.length; i++) {
+    for (let j = i + 1; j < capped.length; j++) {
+      if (capped[i] === capped[j] || setOverlapRatio(sets[i], sets[j]) >= 0.8) {
         duplicates++;
       }
     }
@@ -628,10 +786,25 @@ function contentDensity(words: string[]): number {
   return contentWords.length / words.length;
 }
 
+// (v7) 구간 TTR: 10어절 창을 5어절씩 밀며 창 안 고유 어간 비율 평균.
+// 긴 글에서 같은 낱말을 재활용해 길이만 늘리는 패턴을 잡는다 (25어절+만 적용).
+function windowedTTR(stems: string[]): number {
+  const W = 10;
+  if (stems.length < 25) return 1;
+  let sum = 0;
+  let n = 0;
+  for (let i = 0; i + W <= stems.length; i += 5) {
+    const win = stems.slice(i, i + W);
+    sum += new Set(win).size / W;
+    n++;
+  }
+  return n > 0 ? sum / n : 1;
+}
+
 // 단순 반복 감지 (같은 2-3 단어 패턴이 반복되는지)
 function detectPatternRepetition(text: string): number {
-  // 2어절 이상 연속 패턴 반복 감지
-  const words = text.split(/\s+/);
+  // 2어절 이상 연속 패턴 반복 감지 (v7.1: O(n²)류라 검사 어절 상한 400)
+  const words = text.split(/\s+/).slice(0, 400);
   if (words.length < 6) return 0;
   let repeats = 0;
   for (let len = 2; len <= 4; len++) {
@@ -646,14 +819,16 @@ function detectPatternRepetition(text: string): number {
 }
 
 /**
- * 글쓰기 평가 (총 10점) - v6 정교한 평가 + 하드 gibberish 감지
+ * 글쓰기 평가 (총 10점) - v7 정교한 평가 + 하드 gibberish 감지
  */
 export function evaluateWriting(
   text: string,
   minChars: number,
   options?: { prompt?: string },
 ): WritingEvalResult {
-  const clean = text.trim();
+  // (v7.1) 평가 입력 상한 4000자: 초등 채점에 충분하고, 그 이상은 반복 검사
+  // 성능(저사양 크롬북 UI 프리즈)만 해친다. 복붙 장문 방어 겸용.
+  const clean = text.trim().slice(0, 4000);
 
   // 하드 gibberish 체크: 장난 텍스트는 즉시 0점 확정
   if (isHardGibberish(clean)) {
@@ -666,12 +841,17 @@ export function evaluateWriting(
     };
   }
 
-  const cleaned = cleanJunkText(clean);
+  // 장난 문자 제거 → junk 비율은 프롬프트 복붙 제거 "전" 기준으로 계산
+  // (복붙 제거분까지 junk로 치면 이중 감점이라 분리)
+  const cleanedJunk = cleanJunkText(clean);
+  const jRatio = junkRatio(clean, cleanedJunk);
+
+  // (v7) 프롬프트 복붙 제거 → 이후 모든 지표는 "자기 글"만으로 계산
+  const cleaned = stripPromptEcho(cleanedJunk, options?.prompt);
   const effectiveCharCount = cleaned.length;
   const sentences = splitSentences(cleaned);
   const words = extractWords(cleaned);
   const uniqueWords = new Set(words);
-  const jRatio = junkRatio(clean, cleaned);
 
   // 학년대(저/중/고) — minChars로 추정
   const band = gradeBandFromMinChars(minChars);
@@ -680,17 +860,35 @@ export function evaluateWriting(
   // 단, 구두점/줄바꿈이 있는 글(시·구어체 포함)은 제외해 오탐 방지.
   const prose = josaRatio(words);
   const punctCount = (cleaned.match(/[.!?\n]/g) || []).length;
-  const isWordList = words.length >= 8 && prose < 0.15 && punctCount < 2;
+  // (v7.1) 서술어(~다/~요/~해 등)로 끝나는 어절이 하나도 없으면 "사과는 바다는
+  // 학교는…"처럼 조사만 붙인 낱말 나열 — 문장이 아니므로 word-list로 취급
+  const predicateTokens = cleaned
+    .split(/\s+/)
+    .filter((t) => /(다|요|죠|자|네|까|어|해|함|음)[.!?~"'”’]*$/.test(t)).length;
+  const isWordList =
+    words.length >= 8 &&
+    ((prose < 0.15 && punctCount < 2) || predicateTokens === 0);
 
   // 주제 관련성: 프롬프트가 구체적(키워드 2개+)일 때만 평가
   const promptKeywords = options?.prompt
     ? extractPromptKeywords(options.prompt)
     : [];
-  const essayStems = new Set(
-    words.map(stripJosa).filter((w) => w.length >= 2),
-  );
+  const stemsSeq = words.map(stripJosa).filter((w) => w.length >= 2);
+  const essayStems = new Set(stemsSeq);
   const relevanceCoverage =
     promptKeywords.length >= 2 ? topicRelevance(essayStems, promptKeywords) : 1;
+
+  // (v7) 새 신호들 — 구체성·맞춤법·음절 통계·구간 TTR
+  const spellingFound = findSpellingErrors(cleaned);
+  const hasDialogue = DIALOGUE_REGEX.test(cleaned);
+  const hasNumberUnit = NUMBER_UNIT_REGEX.test(cleaned);
+  const onomatopoeiaCount = ONOMATOPOEIA.filter((o) =>
+    cleaned.includes(o),
+  ).length;
+  const hasSimile = SIMILE_REGEX.test(cleaned);
+  const rareRatio = rareSyllableRatio(cleaned);
+  const ttr = windowedTTR(stemsSeq);
+  const patternRep = detectPatternRepetition(cleaned); // 1회 계산 재사용
 
   // ── A. 글자 수 (0~3점) ────────────────────────────────────────
   let lengthScore: number;
@@ -775,7 +973,7 @@ export function evaluateWriting(
     const varietyCap = band === "low" ? 11 : band === "mid" ? 15 : 18;
     varietyScore = smoothScore(uniqueWords.size, 3, varietyCap, 3);
 
-    // 보너스: 감정어, 묘사어, 시간/장소 (최대 +0.6)
+    // 보너스: 감정어, 묘사어, 시간/장소 + (v7) 의성어·의태어, 수량, 비유
     let bonus = 0;
     if (emotionCount >= 1) bonus += 0.15;
     if (emotionCount >= 2) bonus += 0.1;
@@ -783,6 +981,10 @@ export function evaluateWriting(
     if (descriptiveCount >= 2) bonus += 0.1;
     if (hasTimeExpr) bonus += 0.05;
     if (hasPlaceExpr) bonus += 0.05;
+    if (onomatopoeiaCount >= 1) bonus += 0.15;
+    if (onomatopoeiaCount >= 2) bonus += 0.1;
+    if (hasNumberUnit) bonus += 0.1;
+    if (hasSimile) bonus += 0.15;
     // 스터핑 방어: 키워드 보너스는 실제 문장에 담겼을 때만(문장 수 비례) 인정,
     // 조사 없는 단어 나열(word-list)이면 보너스 0
     bonus = Math.min(bonus, effectiveSentenceCount * 0.2);
@@ -795,9 +997,13 @@ export function evaluateWriting(
     }
 
     // 패턴 반복 감지 (같은 구절이 반복)
-    const patternRep = detectPatternRepetition(cleaned);
     if (patternRep >= 2) {
       varietyScore = varietyScore * Math.max(0.4, 1 - patternRep * 0.15);
+    }
+
+    // (v7) 구간 TTR 낮음 = 같은 낱말 재활용으로 길이 불리기
+    if (stemsSeq.length >= 25 && ttr < 0.55) {
+      varietyScore = varietyScore * 0.7;
     }
   }
 
@@ -829,6 +1035,7 @@ export function evaluateWriting(
   if (paragraphs >= 2) structureRaw += 0.2;
   if (effectiveSentenceCount >= 3) structureRaw += 0.3;
   if (effectiveSentenceCount >= 5) structureRaw += 0.2;
+  if (hasDialogue) structureRaw += 0.3; // (v7) 대화문 = 장면을 살리는 구조 신호
 
   // 중복 문장이 많으면 구조 감점
   if (
@@ -859,8 +1066,7 @@ export function evaluateWriting(
   }
 
   // 3) 의미 밀도 30% 미만이면 최대 3점 (기능어·조사만 가득)
-  const finalDensity = contentDensity(words);
-  if (words.length >= 5 && finalDensity < 0.3) {
+  if (words.length >= 5 && density < 0.3) {
     rawTotal = Math.min(rawTotal, 3);
   }
 
@@ -875,8 +1081,7 @@ export function evaluateWriting(
   }
 
   // 5) 강한 패턴 반복(3회+)이면 최대 4점
-  const strongPatternRep = detectPatternRepetition(cleaned);
-  if (strongPatternRep >= 3) {
+  if (patternRep >= 3) {
     rawTotal = Math.min(rawTotal, 4);
   }
 
@@ -885,15 +1090,66 @@ export function evaluateWriting(
     rawTotal = Math.min(rawTotal, 3);
   }
 
-  // 주제 이탈 완만 감점 (구체 프롬프트일 때만, coverage 0→×0.75 / ≥0.2→×1.0)
-  if (promptKeywords.length >= 2 && words.length >= 6) {
+  // 7) (v7) 상용 음절표 밖 음절 30%+ = 아무 글자 조합 의심 → 최대 4점
+  //    (게임 이름·고유명사 몇 개가 섞인 정상 글은 30%에 한참 못 미친다)
+  if (rareRatio >= 0.3) {
+    rawTotal = Math.min(rawTotal, 4);
+  }
+
+  // 8) (v7.1) 프롬프트 트라이그램 반복 = 변형 복붙(문장부호·띄어쓰기 삽입으로
+  //    stripPromptEcho의 정확 매칭을 피한 경우) → 최대 2점.
+  //    본문 한글 3글자 연쇄의 60%+가 프롬프트에서 온 것이면 자기 글이 아니다.
+  //    (정상 글은 프롬프트 표현을 일부 빌려도 자기 문장이 대부분이라 60%에 못 미침)
+  if (options?.prompt) {
+    const pH = (options.prompt.match(/[가-힣]/g) || []).join("");
+    const eH = (cleanedJunk.match(/[가-힣]/g) || []).join("");
+    if (pH.length >= 8 && eH.length >= 20) {
+      const promptTrigrams = new Set<string>();
+      for (let i = 0; i + 3 <= pH.length; i++) {
+        promptTrigrams.add(pH.slice(i, i + 3));
+      }
+      let echoHits = 0;
+      for (let i = 0; i + 3 <= eH.length; i++) {
+        if (promptTrigrams.has(eH.slice(i, i + 3))) echoHits++;
+      }
+      if (echoHits / (eH.length - 2) >= 0.6) {
+        rawTotal = Math.min(rawTotal, 2);
+      }
+    }
+  }
+
+  // 9) (v7) 상위 2개 어간이 전체의 55%+ = 같은 낱말 재활용 길이 불리기 → 최대 5점
+  if (stemsSeq.length >= 12) {
+    const stemFreq: Record<string, number> = {};
+    for (const s of stemsSeq) stemFreq[s] = (stemFreq[s] || 0) + 1;
+    const top2 = Object.values(stemFreq)
+      .sort((a, b) => b - a)
+      .slice(0, 2)
+      .reduce((a, b) => a + b, 0);
+    if (top2 / stemsSeq.length >= 0.55) {
+      rawTotal = Math.min(rawTotal, 5);
+    }
+  }
+
+  // (v7) 맞춤법 확정 오류 감점: 1개=팁만, 2개=-1, 3개+=-1.5
+  // (반올림에 소실되지 않으면서 처벌보다 학습 신호가 되는 수준)
+  if (spellingFound.length >= 2) {
+    rawTotal = Math.max(0, rawTotal - Math.min(1.5, 0.5 * spellingFound.length));
+  }
+
+  // 주제 이탈 완만 감점 (구체 프롬프트일 때만, coverage 0→×0.85 / ≥0.2→×1.0)
+  // (v7) 벌점 완화 0.75→0.85: 키워드 매칭은 어형 변화까지만 알고 의미(여름=계절,
+  // "학교에서 있었던 일"=과학실험 이야기)는 모르므로, 정상 글 오탐 피해를
+  // 통과선(8점)이 안 흔들리는 수준으로 제한. 9점급(rawTotal≥9) 글은 구조·어휘가
+  // 이미 탄탄한 진짜 글이라 블라인드 키워드 체크로 깎지 않는다.
+  if (promptKeywords.length >= 2 && words.length >= 6 && rawTotal < 9) {
     const relevanceFactor =
-      relevanceCoverage >= 0.2 ? 1 : 0.75 + relevanceCoverage;
+      relevanceCoverage >= 0.2 ? 1 : 0.85 + relevanceCoverage * 0.75;
     rawTotal = rawTotal * relevanceFactor;
   }
 
-  // ── 합산 ────────────────────────────────────────────────────
-  const total = Math.max(0, Math.min(10, rawTotal));
+  // ── 합산 (v7: 정수 반올림 — 소수점 점수 표시 방지) ───────────
+  const total = Math.max(0, Math.min(10, Math.round(rawTotal)));
   const stars =
     total <= 2 ? 1 : total <= 4 ? 2 : total <= 6 ? 3 : total <= 8 ? 4 : 5;
 
@@ -912,6 +1168,22 @@ export function evaluateWriting(
   // ── 개선 팁 ──────────────────────────────────────────────────
   const tips: { ratio: number; tip: string }[] = [];
 
+  // (v7) 아무 글자 조합 의심 경고 최우선
+  if (rareRatio >= 0.3) {
+    tips.push({
+      ratio: -3.5,
+      tip: "뜻이 통하는 낱말로 문장을 만들어봐요!",
+    });
+  }
+
+  // (v7) 프롬프트 복붙이 상당량 제거됐으면 이유를 설명 (UI 글자수와 다른 이유)
+  if (cleanedJunk.length - cleaned.length >= minChars * 0.3) {
+    tips.push({
+      ratio: -2.2,
+      tip: "글감 문장을 그대로 옮긴 부분은 글자 수에 들어가지 않아요. 내 생각을 내 말로 써봐요!",
+    });
+  }
+
   // 단어 나열·주제 이탈 경고 최우선
   if (isWordList) {
     tips.push({
@@ -919,7 +1191,14 @@ export function evaluateWriting(
       tip: "낱말만 늘어놓지 말고, 문장으로 이어서 써봐요!",
     });
   }
-  if (promptKeywords.length >= 2 && words.length >= 6 && relevanceCoverage < 0.2) {
+  // 관련성 팁은 점수가 낮을 때만 (우수 글에 "주제 어긋남" 잔소리 방지 — 키워드
+  // 매칭은 의미를 모르므로 고득점 글에서는 오탐 확률이 더 높다)
+  if (
+    promptKeywords.length >= 2 &&
+    words.length >= 6 &&
+    relevanceCoverage < 0.2 &&
+    total < 8
+  ) {
     tips.push({
       ratio: -2.5,
       tip: "글감(주제)에 어울리는 내용을 더 써봐요!",
@@ -941,11 +1220,19 @@ export function evaluateWriting(
   }
 
   // 패턴 반복 경고
-  const patternRep = detectPatternRepetition(cleaned);
   if (patternRep >= 2) {
     tips.push({
       ratio: -1.5,
       tip: "같은 표현이 계속 반복돼요. 다른 방식으로 써봐요!",
+    });
+  }
+
+  // (v7) 맞춤법 팁 — 찾은 오류 중 첫 번째를 구체적으로 알려줌
+  if (spellingFound.length >= 1) {
+    const [wrong, right] = spellingFound[0];
+    tips.push({
+      ratio: -1.2,
+      tip: `맞춤법을 확인해봐요: "${wrong}" → "${right}"가 바른 표기예요!`,
     });
   }
 
@@ -1009,6 +1296,11 @@ export function evaluateWriting(
         ratio: varietyScore / 3,
         tip: "색깔, 크기, 느낌 같은 묘사 단어를 써봐요!",
       });
+    } else if (onomatopoeiaCount === 0 && band !== "low") {
+      tips.push({
+        ratio: varietyScore / 3,
+        tip: '"반짝반짝", "두근두근" 같은 흉내 내는 말을 넣으면 생생해져요!',
+      });
     } else {
       tips.push({
         ratio: varietyScore / 3,
@@ -1026,6 +1318,11 @@ export function evaluateWriting(
       tips.push({
         ratio: structureScore / 2,
         tip: '"그래서", "왜냐하면", "하지만" 같은 연결어를 넣어봐요!',
+      });
+    } else if (!hasDialogue && band !== "low") {
+      tips.push({
+        ratio: structureScore / 2,
+        tip: "따옴표로 대화나 생각을 넣어보면 글이 생생해져요!",
       });
     } else {
       tips.push({
