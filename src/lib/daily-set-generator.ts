@@ -1585,6 +1585,47 @@ function parseLegendChoices(
   return { choices: labels, correct, expression };
 }
 
+// ── 수학 힌트: 단원별 풀이 전략 ─────────────────────────────────
+// "차근차근 계산해 보세요!" 같은 무의미한 범용 힌트 대신 단원에 맞는
+// 실제 풀이 전략을 알려준다. 정답 자체는 노출하지 않는다.
+function mathHintForUnit(unit: string): string {
+  const rules: Array<[RegExp, string]> = [
+    [/약분|통분/, "분모와 분자를 같은 수(최대공약수)로 나누어 보세요!"],
+    [/동분모/, "분모가 같으면 분자끼리만 계산해요!"],
+    [/분수의 덧셈|분수의 뺄셈/, "먼저 두 분모의 최소공배수로 통분한 다음, 분자끼리 계산해요!"],
+    [/분수의 곱셈/, "분자끼리, 분모끼리 곱한 다음 약분해요!"],
+    [/분수의 나눗셈/, "나누는 분수를 뒤집어서(역수) 곱하면 돼요!"],
+    [/분수/, "분모(아래)와 분자(위)가 무엇을 뜻하는지 떠올려 보세요!"],
+    [/서술형 소수|소수/, "소수점 자리를 잘 맞추는 게 핵심이에요!"],
+    [/혼합 계산/, "괄호 → 곱셈·나눗셈 → 덧셈·뺄셈 순서로 계산해요!"],
+    [/최대공약수|최소공배수|약수와 배수/, "곱해서 그 수가 되는 수의 짝을 차례로 찾아보세요!"],
+    [/곱셈구구|곱셈/, "곱셈구구를 떠올려 보세요!"],
+    [/나눗셈/, "나누는 수의 곱셈구구를 거꾸로 생각해 보세요!"],
+    [/뺄셈/, "큰 수에서 작은 수를 자리별로 빼요. 받아내림에 주의!"],
+    [/덧셈/, "일의 자리부터 차례로 더해요. 받아올림에 주의!"],
+    [/백분율/, "(부분 ÷ 전체) × 100으로 구해요!"],
+    [/비와 비율|비례식|서술형 비율/, "비의 두 수를 같은 수로 나누거나 곱해도 비는 같아요!"],
+    [/원의 넓이/, "원의 넓이 = 반지름 × 반지름 × 3.14, 둘레 = 지름 × 3.14예요!"],
+    [/원기둥/, "원기둥 부피 = 밑면(원)의 넓이 × 높이예요!"],
+    [/겉넓이/, "여섯 면의 넓이를 모두 더해요. 마주 보는 면은 넓이가 같아요!"],
+    [/부피/, "직육면체 부피 = 가로 × 세로 × 높이예요!"],
+    [/사다리꼴/, "사다리꼴 넓이 = (윗변 + 아랫변) × 높이 ÷ 2예요!"],
+    [/평행사변형/, "평행사변형 넓이 = 밑변 × 높이예요!"],
+    [/넓이/, "직사각형 넓이 = 가로 × 세로예요!"],
+    [/둘레/, "둘레는 모든 변의 길이를 더한 거예요!"],
+    [/평균/, "모두 더한 값을 개수로 나누면 평균이에요!"],
+    [/시각과 시간|시간 계산/, "60분이 되면 1시간으로 바꾸어 계산해요!"],
+    [/각도/, "직선은 180°, 직각은 90°라는 걸 이용해요!"],
+    [/규칙/, "이웃한 수끼리 얼마나 커지는지(작아지는지) 살펴보세요!"],
+    [/단위변환/, "단위 사이의 관계(1m=100cm 등)를 먼저 떠올려 보세요!"],
+    [/크기 ?비교|순서/, "같은 기준으로 만든 다음(통분·자릿수 맞추기) 비교해요!"],
+    [/대칭/, "반으로 접었을 때 완전히 겹치는 선을 찾아보세요!"],
+    [/경우의 수/, "빠뜨리거나 겹치지 않게 차례대로 세어 보세요!"],
+  ];
+  for (const [re, hint] of rules) if (re.test(unit)) return hint;
+  return "식을 작은 단계로 나누어 하나씩 계산해 보세요!";
+}
+
 function buildMathQuestion(
   setId: string,
   orderIndex: number,
@@ -1637,11 +1678,7 @@ function buildMathQuestion(
       ? entry.steps.join(" -> ")
       : `정답: ${correctAnswer}`,
     points: 10,
-    hint: entry.unit.includes("곱셈")
-      ? "곱셈구구를 떠올려 보세요!"
-      : entry.unit.includes("뺄셈")
-        ? "큰 수에서 작은 수를 빼세요!"
-        : "차근차근 계산해 보세요!",
+    hint: mathHintForUnit(entry.unit),
     metadata: {
       unit: entry.unit,
       hasCarry: entry.hasCarry,
@@ -1728,7 +1765,8 @@ function buildSpellingQuestion(
       },
       explanation: entry.explanation,
       points: 10,
-      hint: `"${correctPart}"이(가) 올바른 표현이에요.`,
+      // correctPart를 힌트로 주면 비슷하게 생긴 보기(=정답)가 바로 드러난다 → 전략 힌트로
+      hint: "문장을 소리 내어 읽으며 평소 쓰던 표현과 다른 곳을 찾아보세요!",
       metadata: null,
       created_at: new Date().toISOString(),
     };
@@ -1848,10 +1886,24 @@ function buildVocabQuestion(
     },
     explanation: `정답은 "${entry.answer}"입니다. ${entry.meanings.join(", ")}`,
     points: 10,
-    hint: `${entry.meanings[0]}`,
+    // 힌트가 정답·이미 보이는 뜻풀이를 그대로 반복하지 않도록 variant별 구성.
+    // (기존엔 meanings[0]를 그대로 써서 reverse에선 정답이 힌트로 노출됐음)
+    hint: vocabHint(variant, String(entry.answer ?? "")),
     metadata: null,
     created_at: new Date().toISOString(),
   };
+}
+
+function vocabHint(variant: string, answerWord: string): string {
+  if (variant === "reverse")
+    return "이 낱말을 넣어 짧은 문장을 만들어 보면 뜻이 떠올라요!";
+  if (variant === "idiom")
+    return "예문의 상황을 떠올려 보면 뜻을 짐작할 수 있어요!";
+  if (variant === "word_puzzle")
+    return "글자 수와 첫·끝 글자 힌트를 다시 살펴보세요!";
+  if (answerWord.length > 0)
+    return `첫 글자는 '${answerWord[0]}', 모두 ${answerWord.length}글자예요.`;
+  return "뜻풀이를 다시 한번 천천히 읽어 보세요!";
 }
 
 // Build a knowledge question from real curriculum data
@@ -2062,7 +2114,8 @@ function buildHanjaQuestion(
         },
         answer: { correct: entry.reading, text: entry.reading },
         explanation,
-        hint: `'${entry.meaning}'에서 힌트를 찾아보세요.`,
+        // 뜻은 문제에 이미 표시됨 → 예시 낱말로 음을 유추하게 한다
+        hint: `'${entry.words[0]}'라는 낱말에 이 한자가 들어가요.`,
       };
 
     case "meaning": // 뜻 맞추기 (4지선다)
@@ -2081,7 +2134,7 @@ function buildHanjaQuestion(
         },
         answer: { correct: entry.meaning, text: entry.meaning },
         explanation,
-        hint: `${entry.words[0]}에서 힌트를 찾아보세요.`,
+        hint: `'${entry.words[0]}'라는 낱말에 쓰이는 한자예요. 낱말의 뜻을 떠올려 보세요.`,
       };
 
     case "character": // 한자 맞추기 (4지선다)
@@ -2143,7 +2196,8 @@ function buildHanjaQuestion(
         },
         answer: { correct: entry.reading, text: entry.reading },
         explanation,
-        hint: `${entry.words[0]}에서 '${entry.reading}'을 찾아보세요.`,
+        // 기존 힌트는 정답 음('안' 등)을 그대로 노출했음 → 낱말 힌트로 교체
+        hint: `'${entry.words[0]}'라는 낱말에 이 한자의 음이 들어 있어요.`,
       };
   }
 }
@@ -2187,7 +2241,12 @@ function buildEnglishQuestion(
     answer: { correct: entry.word, text: entry.word },
     explanation: `"${entry.sentence}" → ${entry.translation}`,
     points: 10,
-    hint: `[${entry.pronunciation}]로 발음해요.`,
+    // 발음 힌트는 화면에 이미 표시되거나(word/input) 정답 단어를 사실상
+    // 읽어주는 것(meaning)이라 변형별로 다르게 준다.
+    hint:
+      variant === "word"
+        ? `문장의 뜻: ${entry.translation}`
+        : `'${entry.word[0]}'(으)로 시작하는 단어예요.`,
     metadata: { word: entry.word },
     created_at: new Date().toISOString(),
   };

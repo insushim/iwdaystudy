@@ -53,8 +53,17 @@ export default function MathQuestion({
   const mathContent = content as any;
   const variant = mathContent?.variant || "choice";
   const rawExpression: string = mathContent?.expression || "";
+  // 답 형식 안내 주석 "(분자만 입력, 분모=6)" "(원주율 3.14)" 등은 식에서 분리해
+  // 작은 안내줄로 보여준다. (기존엔 "… = ? (분자만 입력) = ?"처럼 깨져 보였음)
+  let noteText: string | null = null;
+  let baseExpression = rawExpression;
+  const noteMatch = rawExpression.match(/\(([^()]*(?:입력|원주율|분모|기약)[^()]*)\)\s*$/);
+  if (noteMatch) {
+    noteText = noteMatch[1];
+    baseExpression = rawExpression.slice(0, noteMatch.index).trim();
+  }
   // 제너레이터가 "a + b = ?" 형태로 넣는 경우가 많음 → UI가 다시 "= ?" 붙이지 않도록 정규화
-  const expression = rawExpression.replace(/\s*=\s*\?\s*$/, "").trim();
+  const expression = baseExpression.replace(/\s*=\s*\?\s*$/, "").trim();
   const correctAnswer = String(
     (answer as any)?.correct ??
       (answer as any)?.answer ??
@@ -117,6 +126,12 @@ export default function MathQuestion({
           )}
         </div>
       </motion.div>
+
+      {noteText && (
+        <span className="inline-flex items-center rounded-full bg-muted px-3 py-1 text-sm font-medium text-muted-foreground -mt-3">
+          ✍️ {noteText}
+        </span>
+      )}
 
       {isVerticalLayout && variant !== "reverse" && (
         <motion.div

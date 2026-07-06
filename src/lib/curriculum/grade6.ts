@@ -1404,7 +1404,7 @@ export const grade6MathData: MathEntry[] = [
   // 분수의 나눗셈
   {
     type: "calculation",
-    expression: "3/4 ÷ 1/2",
+    expression: "3/4 ÷ 1/2 = ? (기약분수의 분자만 입력)",
     answer: 3,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1416,7 +1416,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/3 ÷ 4/9",
+    expression: "2/3 ÷ 4/9 = ? (기약분수의 분자만 입력)",
     answer: 3,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1428,7 +1428,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/6 ÷ 2/3",
+    expression: "5/6 ÷ 2/3 = ? (기약분수의 분자만 입력)",
     answer: 5,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1561,7 +1561,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "15 : 20을 가장 간단한 정수의 비로",
+    expression: "15 : 20을 가장 간단한 정수의 비로 나타내면? (첫째 수 입력)",
     answer: 3,
     steps: [
       "15와 20의 최대공약수: 5",
@@ -1594,7 +1594,7 @@ export const grade6MathData: MathEntry[] = [
   // 분수의 나눗셈 추가
   {
     type: "calculation",
-    expression: "7/8 ÷ 3/4",
+    expression: "7/8 ÷ 3/4 = ? (기약분수의 분자만 입력)",
     answer: 7,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1630,7 +1630,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/9 ÷ 5/6",
+    expression: "5/9 ÷ 5/6 = ? (기약분수의 분자만 입력)",
     answer: 2,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1642,7 +1642,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "1/2 ÷ 3/8",
+    expression: "1/2 ÷ 3/8 = ? (기약분수의 분자만 입력)",
     answer: 4,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1654,7 +1654,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "9/10 ÷ 3/5",
+    expression: "9/10 ÷ 3/5 = ? (기약분수의 분자만 입력)",
     answer: 3,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",
@@ -1666,7 +1666,7 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/7 ÷ 4/21",
+    expression: "2/7 ÷ 4/21 = ? (기약분수의 분자만 입력)",
     answer: 3,
     steps: [
       "나누는 분수를 뒤집어 곱합니다",

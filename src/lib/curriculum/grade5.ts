@@ -1270,7 +1270,7 @@ export const grade5MathData: MathEntry[] = [
   // 분모가 다른 분수 덧셈/뺄셈
   {
     type: "calculation",
-    expression: "1/3 + 1/4",
+    expression: "1/3 + 1/4 = ? (분자만 입력, 분모=12)",
     answer: 7,
     steps: ["통분: 4/12 + 3/12", "분자끼리 더하기: 4 + 3 = 7", "답: 7/12"],
     unit: "분수의 덧셈",
@@ -1278,7 +1278,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/5 + 1/3",
+    expression: "2/5 + 1/3 = ? (분자만 입력, 분모=15)",
     answer: 11,
     steps: ["통분: 6/15 + 5/15", "분자끼리 더하기: 6 + 5 = 11", "답: 11/15"],
     unit: "분수의 덧셈",
@@ -1286,7 +1286,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/4 - 1/6",
+    expression: "3/4 - 1/6 = ? (분자만 입력, 분모=12)",
     answer: 7,
     steps: ["통분: 9/12 - 2/12", "분자끼리 빼기: 9 - 2 = 7", "답: 7/12"],
     unit: "분수의 뺄셈",
@@ -1294,7 +1294,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/6 - 2/9",
+    expression: "5/6 - 2/9 = ? (분자만 입력, 분모=18)",
     answer: 11,
     steps: ["통분: 15/18 - 4/18", "분자끼리 빼기: 15 - 4 = 11", "답: 11/18"],
     unit: "분수의 뺄셈",
@@ -1303,8 +1303,8 @@ export const grade5MathData: MathEntry[] = [
   // 분수의 곱셈
   {
     type: "calculation",
-    expression: "2/3 × 3/4",
-    answer: 6,
+    expression: "2/3 × 3/4 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 2 × 3 = 6",
       "분모끼리 곱하기: 3 × 4 = 12",
@@ -1316,8 +1316,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4/5 × 5/8",
-    answer: 20,
+    expression: "4/5 × 5/8 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 4 × 5 = 20",
       "분모끼리 곱하기: 5 × 8 = 40",
@@ -1328,7 +1328,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3 × 2/5",
+    expression: "3 × 2/5 = ? (기약분수의 분자만 입력)",
     answer: 6,
     steps: [
       "3/1 × 2/5",
@@ -1492,7 +1492,7 @@ export const grade5MathData: MathEntry[] = [
   // 분수 덧셈/뺄셈 추가
   {
     type: "calculation",
-    expression: "1/2 + 1/5",
+    expression: "1/2 + 1/5 = ? (분자만 입력, 분모=10)",
     answer: 7,
     steps: ["통분: 5/10 + 2/10", "분자끼리 더하기: 5 + 2 = 7", "답: 7/10"],
     unit: "분수의 덧셈",
@@ -1500,7 +1500,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/8 + 1/4",
+    expression: "3/8 + 1/4 = ? (분자만 입력, 분모=8)",
     answer: 5,
     steps: ["통분: 3/8 + 2/8", "분자끼리 더하기: 3 + 2 = 5", "답: 5/8"],
     unit: "분수의 덧셈",
@@ -1508,7 +1508,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/3 + 3/5",
+    expression: "2/3 + 3/5 = ? (분자만 입력, 분모=15)",
     answer: 19,
     steps: [
       "통분: 10/15 + 9/15",
@@ -1520,7 +1520,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/8 - 1/3",
+    expression: "5/8 - 1/3 = ? (분자만 입력, 분모=24)",
     answer: 7,
     steps: ["통분: 15/24 - 8/24", "분자끼리 빼기: 15 - 8 = 7", "답: 7/24"],
     unit: "분수의 뺄셈",
@@ -1528,7 +1528,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "7/10 - 2/5",
+    expression: "7/10 - 2/5 = ? (분자만 입력, 분모=10)",
     answer: 3,
     steps: ["통분: 7/10 - 4/10", "분자끼리 빼기: 7 - 4 = 3", "답: 3/10"],
     unit: "분수의 뺄셈",
@@ -1536,7 +1536,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4/7 + 2/3",
+    expression: "4/7 + 2/3 = ? (분자만 입력, 분모=21)",
     answer: 26,
     steps: [
       "통분: 12/21 + 14/21",
@@ -1548,7 +1548,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "11/12 - 3/4",
+    expression: "11/12 - 3/4 = ? (분자만 입력, 분모=12)",
     answer: 2,
     steps: [
       "통분: 11/12 - 9/12",
@@ -1560,7 +1560,7 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "1/6 + 3/8",
+    expression: "1/6 + 3/8 = ? (분자만 입력, 분모=24)",
     answer: 13,
     steps: ["통분: 4/24 + 9/24", "분자끼리 더하기: 4 + 9 = 13", "답: 13/24"],
     unit: "분수의 덧셈",
@@ -1570,8 +1570,8 @@ export const grade5MathData: MathEntry[] = [
   // 분수의 곱셈 추가
   {
     type: "calculation",
-    expression: "1/4 × 2/3",
-    answer: 2,
+    expression: "1/4 × 2/3 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 1 × 2 = 2",
       "분모끼리 곱하기: 4 × 3 = 12",
@@ -1582,8 +1582,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/6 × 3/10",
-    answer: 15,
+    expression: "5/6 × 3/10 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 5 × 3 = 15",
       "분모끼리 곱하기: 6 × 10 = 60",
@@ -1594,8 +1594,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "7 × 3/14",
-    answer: 21,
+    expression: "7 × 3/14 = ? (기약분수의 분자만 입력)",
+    answer: 3,
     steps: [
       "7/1 × 3/14",
       "분자끼리 곱하기: 7 × 3 = 21",
@@ -1607,8 +1607,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/9 × 3/4",
-    answer: 6,
+    expression: "2/9 × 3/4 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 2 × 3 = 6",
       "분모끼리 곱하기: 9 × 4 = 36",
@@ -1619,8 +1619,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5 × 4/15",
-    answer: 20,
+    expression: "5 × 4/15 = ? (기약분수의 분자만 입력)",
+    answer: 4,
     steps: [
       "5/1 × 4/15",
       "분자끼리 곱하기: 5 × 4 = 20",
@@ -1632,8 +1632,8 @@ export const grade5MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/7 × 7/9",
-    answer: 21,
+    expression: "3/7 × 7/9 = ? (기약분수의 분자만 입력)",
+    answer: 1,
     steps: [
       "분자끼리 곱하기: 3 × 7 = 21",
       "분모끼리 곱하기: 7 × 9 = 63",
@@ -1941,11 +1941,12 @@ export const grade5MathData: MathEntry[] = [
     unit: "합동과 대칭",
   },
   // 추가 1개 (80개 달성)
+  // (기존 '원의 대칭축의 수'는 정답이 무한개라 수치로 답할 수 없는 문항 → 교체)
   {
     type: "calculation",
-    expression: "원의 대칭축의 수",
-    answer: 0,
-    steps: ["원은 대칭축이 무수히 많다", "셀 수 없이 많으므로 무한개"],
+    expression: "정팔각형의 대칭축의 수",
+    answer: 8,
+    steps: ["정n각형의 대칭축의 수 = n", "정팔각형: 8개"],
     unit: "합동과 대칭",
   },
 ];
@@ -3554,7 +3555,7 @@ export const grade5WritingPrompts: string[] = [
   "내가 만약 다른 나라에서 태어났다면 어떤 삶을 살았을까요?",
   "학교에서 배운 것 중 가장 유익한 내용과 그 이유를 써 보세요.",
   "나의 강점과 약점을 분석하고 발전 계획을 써 보세요.",
-  "가족의 의미에 대해 에세이를 써 보세요.",
+  "우정의 의미에 대해 에세이를 써 보세요.",
   "내가 만약 1일 대통령이 된다면 무엇을 할까요?",
   "시(詩) 한 편을 읽고 감상문을 써 보세요.",
   "내가 살고 싶은 미래 도시를 상상하여 묘사해 보세요.",
@@ -3564,7 +3565,7 @@ export const grade5WritingPrompts: string[] = [
   "나만의 시간 관리 방법을 소개하는 글을 써 보세요.",
   // 추가 40개 (총 60개)
   "내가 좋아하는 계절과 그 이유를 설명하는 글을 써 보세요.",
-  "반려동물을 키우면서 배운 점에 대해 써 보세요.",
+  "우리 반에서 식물을 기른다면 어떻게 돌볼지 계획을 써 보세요.",
   "우리 동네에서 가장 좋아하는 장소를 소개하는 글을 써 보세요.",
   "10년 후의 나에게 편지를 써 보세요.",
   "내가 만약 발명가라면 어떤 것을 발명하고 싶은지 써 보세요.",
@@ -3580,7 +3581,7 @@ export const grade5WritingPrompts: string[] = [
   "다른 문화권의 음식을 체험한 경험을 써 보세요.",
   "우리 반을 더 좋은 반으로 만들기 위한 제안서를 써 보세요.",
   "새 학기 첫날의 감정을 일기로 써 보세요.",
-  "내가 존경하는 가족에 대해 소개하는 글을 써 보세요.",
+  "내 주변에서 본받고 싶은 사람에 대해 소개하는 글을 써 보세요.",
   "절약의 중요성에 대해 설득하는 글을 써 보세요.",
   "꿈을 이루기 위해 지금 할 수 있는 일에 대해 써 보세요.",
   "비 오는 날의 풍경을 묘사하는 글을 써 보세요.",
@@ -3595,7 +3596,7 @@ export const grade5WritingPrompts: string[] = [
   "음식물 쓰레기를 줄이는 방법에 대해 써 보세요.",
   "내가 가장 행복했던 순간을 글로 써 보세요.",
   "학교 도서관을 더 좋게 만들기 위한 아이디어를 써 보세요.",
-  "우리 가족만의 특별한 전통에 대해 소개하는 글을 써 보세요.",
+  "우리나라의 자랑스러운 전통문화 하나를 소개하는 글을 써 보세요.",
   "내가 만약 우주를 여행한다면 어떤 경험을 하고 싶은지 써 보세요.",
   "양보와 배려가 중요한 이유에 대해 써 보세요.",
   "내가 좋아하는 스포츠를 소개하고 그 매력을 설명해 보세요.",

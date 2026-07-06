@@ -21,14 +21,17 @@ import { LoadingSpinner } from "@/components/common/LoadingSpinner";
 
 export default function StudentDashboard() {
   const { user } = useAuthStore();
-  const { dailySet, isLoading, error } = useDailySet();
+  const { dailySet, isLoading, error, setIndex, completedCount, maxSets, allDone } =
+    useDailySet();
   const [streak, setStreak] = useState(0);
   const [points, setPoints] = useState(0);
   const [badgeCount, setBadgeCount] = useState(0);
-  const [todayCompleted, setTodayCompleted] = useState(false);
   const [todayScore, setTodayScore] = useState<number | undefined>();
   const [completedDays, setCompletedDays] = useState(0);
   const [completedDates, setCompletedDates] = useState<string[]>([]);
+
+  // 오늘의 세트(하루 최대 maxSets개)를 모두 마쳤는지
+  const todayCompleted = allDone;
 
   useEffect(() => {
     if (!user) return;
@@ -39,14 +42,11 @@ export default function StudentDashboard() {
     setCompletedDates(dates);
     setCompletedDays(dates.length);
 
-    if (dailySet) {
+    if (dailySet && allDone) {
       const record = getRecordForSet(user.id, dailySet.set.id);
-      if (record?.is_completed) {
-        setTodayCompleted(true);
-        setTodayScore(record.total_score);
-      }
+      if (record?.is_completed) setTodayScore(record.total_score);
     }
-  }, [user, dailySet]);
+  }, [user, dailySet, allDone]);
 
   if (isLoading) {
     return (
@@ -96,6 +96,25 @@ export default function StudentDashboard() {
           <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
             오늘의 학습
+            <span className="ml-auto flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+              {Array.from({ length: maxSets }, (_, i) => (
+                <span
+                  key={i}
+                  className={`inline-block h-2.5 w-2.5 rounded-full ${
+                    i < completedCount
+                      ? "bg-green-500"
+                      : i === completedCount && !todayCompleted
+                        ? "bg-primary"
+                        : "bg-muted-foreground/20"
+                  }`}
+                />
+              ))}
+              <span className="ml-1">
+                {todayCompleted
+                  ? `오늘 ${maxSets}세트 모두 완료!`
+                  : `${setIndex}번째 세트`}
+              </span>
+            </span>
           </h2>
           {dailySet ? (
             <DailySetCard
@@ -121,8 +140,8 @@ export default function StudentDashboard() {
           )}
         </motion.div>
 
-        {/* Completion message */}
-        {todayCompleted && (
+        {/* Completion / progress message */}
+        {(todayCompleted || completedCount > 0) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -133,7 +152,9 @@ export default function StudentDashboard() {
                 <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
                   <TrendingUp className="w-5 h-5" />
                   <span className="font-medium">
-                    오늘 학습을 완료했어요! 대단해요!
+                    {todayCompleted
+                      ? `오늘 ${maxSets}세트를 모두 완료했어요! 정말 대단해요!`
+                      : `${completedCount}세트 완료! 더 하고 싶으면 다음 세트에 도전해 보세요!`}
                   </span>
                 </div>
               </CardContent>

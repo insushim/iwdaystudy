@@ -525,7 +525,7 @@ export default function LearningSessionClient() {
           <Mascot state="happy" message="오늘도 최고야!" size={100} />
           <h2 className="text-2xl font-bold mt-4 mb-2">오늘 학습 완료!</h2>
           <p className="text-muted-foreground mb-6">
-            내일 새로운 학습이 기다리고 있어요.
+            오늘 세트를 모두 마쳤어요. 내일 새로운 학습이 기다리고 있어요.
           </p>
           <Button
             onClick={() => router.push("/student/")}

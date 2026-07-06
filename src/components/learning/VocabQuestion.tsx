@@ -27,6 +27,9 @@ export default function VocabQuestion({
   // Support both formats
   const meanings: string[] = content?.meanings || content?.clues || [];
   const correctAnswer = answer?.answer || answer?.correct || answer?.text || "";
+  // reverse(낱말→뜻)에서 문제로 보여줄 것은 '낱말'(answer.text)이다.
+  // correctAnswer(= 정답 뜻풀이)를 보여주면 보기 중 정답이 그대로 노출된다.
+  const promptWord = answer?.text || "";
   const choices: string[] = content?.choices || [];
 
   const handleSelect = (choice: string) => {
@@ -53,7 +56,7 @@ export default function VocabQuestion({
           transition={{ type: "spring", stiffness: 200, damping: 15 }}
           className="text-5xl font-black text-foreground"
         >
-          {correctAnswer}
+          {promptWord}
         </motion.div>
       )}
 

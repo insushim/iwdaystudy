@@ -466,14 +466,15 @@ function generateGrade2Math(
     const b = randInt(rng, 1, a);
     const hasBorrow = a % 10 < b % 10;
     if (difficulty === 3) {
-      const context = pickOne(rng, [
-        "학교에 학생이",
-        "바구니에 귤이",
-        "연못에 물고기가",
+      // 대상별 단위(명/개/마리)를 맞춰 출제 ("학생이 316개" 같은 비문 방지)
+      const ctx = pickOne(rng, [
+        { where: "학교에 학생이", counter: "명", gone: "전학을 갔습니다" },
+        { where: "바구니에 귤이", counter: "개", gone: "없어졌습니다" },
+        { where: "연못에 물고기가", counter: "마리", gone: "없어졌습니다" },
       ]);
       return {
         type: "subtraction",
-        expression: `${context} ${a}개 있었는데 ${b}개가 없어졌습니다. 남은 것은?`,
+        expression: `${ctx.where} ${a}${ctx.counter} 있었는데 ${iGa(`${b}${ctx.counter}`)} ${ctx.gone}. 남은 것은 몇 ${ctx.counter}?`,
         answer: a - b,
         steps: [`${a}에서 ${b}를 뺍니다`, `${a} - ${b} = ${a - b}`],
         unit: "두 자리 뺄셈",
@@ -608,7 +609,10 @@ function generateGrade2Math(
     if (askDirection) {
       return {
         type: "comparison",
-        expression: `${totalCm}cm는 몇 m 몇 cm?`,
+        expression:
+          extraCm === 0
+            ? `${totalCm}cm는 몇 m?`
+            : `${totalCm}cm는 몇 m 몇 cm? (m 부분의 수만 입력)`,
         answer: meters,
         steps: [`100cm = 1m`, `${totalCm}cm = ${meters}m ${extraCm}cm`],
         unit: "단위변환",
@@ -943,26 +947,21 @@ function generateGrade3Math(
     const divisor = randInt(rng, 2, difficulty === 1 ? 5 : 9);
     const quotient = randInt(rng, 2, divMaxQ);
     const dividend = divisor * quotient;
+    // 문장이 자연스럽도록 시나리오별 완성 문장 사용 ("2명에 학생들에게" 비문 방지)
     const scenario = pickOne(rng, [
       {
-        item: "색종이",
-        action: "학생들에게 똑같이 나누어 주려고 합니다",
-        who: `${divisor}명`,
+        sentence: `색종이 ${dividend}장을 학생 ${divisor}명에게 똑같이 나누어 주려고 합니다. 한 명에 몇 장씩?`,
       },
       {
-        item: "쿠키",
-        action: "접시에 똑같이 담으려고 합니다",
-        who: `${divisor}개의 접시`,
+        sentence: `쿠키 ${dividend}개를 접시 ${divisor}개에 똑같이 담으려고 합니다. 한 접시에 몇 개씩?`,
       },
       {
-        item: "연필",
-        action: "필통에 똑같이 넣으려고 합니다",
-        who: `${divisor}개의 필통`,
+        sentence: `연필 ${dividend}자루를 필통 ${divisor}개에 똑같이 넣으려고 합니다. 한 필통에 몇 자루씩?`,
       },
     ]);
     return {
       type: "division",
-      expression: `${scenario.item} ${dividend}개를 ${scenario.who}에 ${scenario.action}. 하나에 몇 개씩?`,
+      expression: scenario.sentence,
       answer: quotient,
       steps: [
         `${dividend} ÷ ${divisor} = ${quotient}`,
@@ -1046,7 +1045,10 @@ function generateGrade3Math(
     if (askDirection) {
       return {
         type: "comparison",
-        expression: `${totalM}m는 몇 km 몇 m?`,
+        expression:
+          extraM === 0
+            ? `${totalM}m는 몇 km?`
+            : `${totalM}m는 몇 km 몇 m? (km 부분의 수만 입력)`,
         answer: km,
         steps: [`1000m = 1km`, `${totalM}m = ${km}km ${extraM}m`],
         unit: "단위변환",
@@ -1142,9 +1144,9 @@ function generateGrade3Math(
     const numer = randInt(rng, 1, denom - 1);
     return {
       type: "fraction",
-      expression: `피자를 ${denom}조각으로 나누었습니다. ${numer}조각을 먹으면 분수로?`,
+      expression: `피자를 똑같이 ${denom}조각으로 나누어 ${numer}조각을 먹었습니다. 먹은 양은 ?/${denom}입니다. ?에 알맞은 수는?`,
       answer: numer,
-      steps: [`${numer}/${denom}`],
+      steps: [`전체 ${denom}조각 중 ${numer}조각`, `먹은 양 = ${numer}/${denom}`],
       unit: "분수의 기초",
       numbers: [numer, denom],
     };
@@ -1442,7 +1444,10 @@ function generateGrade4Math(
     if (askDirection) {
       return {
         type: "comparison",
-        expression: `${totalG}g은 몇 kg 몇 g?`,
+        expression:
+          extraG === 0
+            ? `${totalG}g은 몇 kg?`
+            : `${totalG}g은 몇 kg 몇 g? (kg 부분의 수만 입력)`,
         answer: kg,
         steps: [`1000g = 1kg`, `${totalG}g = ${kg}kg ${extraG}g`],
         unit: "단위변환",
@@ -1550,9 +1555,11 @@ function generateGrade4Math(
     const rounded = Math.round(num / place) * place;
     return {
       type: "comparison",
-      expression: `${num}을 ${placeNames[place]}에서 반올림하면?`,
+      // "천의 자리에서 반올림"은 천의 자리 숫자를 보고 만의 자리로 어림한다는
+      // 뜻이 되어 정답(천의 자리까지 나타내기)과 어긋난다 → 표준 표현으로
+      expression: `${num}을 반올림하여 ${placeNames[place]}까지 나타내면?`,
       answer: rounded,
-      steps: [`${placeNames[place]}에서 반올림합니다`, `${num} → ${rounded}`],
+      steps: [`반올림하여 ${placeNames[place]}까지 나타냅니다`, `${num} → ${rounded}`],
       unit: "어림하기",
       numbers: [num, place],
     };
@@ -1599,7 +1606,7 @@ function generateGrade4Math(
       const result = a + b - c;
       return {
         type: "fraction",
-        expression: `${a}/${denom} + ${b}/${denom} - ${c}/${denom} = ? (분자만 입력)`,
+        expression: `${a}/${denom} + ${b}/${denom} - ${c}/${denom} = ? (분자만 입력, 분모=${denom})`,
         answer: result,
         steps: [
           `분모가 같으므로 분자끼리 계산합니다`,
@@ -1612,7 +1619,7 @@ function generateGrade4Math(
     }
     return {
       type: "fraction",
-      expression: `${a}/${denom} + ${b}/${denom} = ?`,
+      expression: `${a}/${denom} + ${b}/${denom} = ? (분자만 입력, 분모=${denom})`,
       answer: a + b,
       steps: [
         `분모가 같으므로 분자끼리 더합니다`,
@@ -1856,35 +1863,40 @@ function generateGrade5Math(
       }
       op = "-";
     }
+    // 표시 순서 기준 통분 분자 (뺄셈에서 앞뒤가 바뀌었을 수 있으므로 final* 기준으로 계산)
+    const finalN1c = finalN1 * (lcm / finalD1);
+    const finalN2c = finalN2 * (lcm / finalD2);
     if (difficulty === 3) {
-      // Mixed operation: add then subtract a third fraction
-      const n3 = randInt(
-        rng,
-        1,
-        Math.max(1, Math.min(finalD1 - 1, resultNum - 1)),
-      );
-      const n3c = n3 * (lcm / finalD1);
-      const finalResult = Math.max(0, resultNum - n3c); // Ensure non-negative
-      return {
-        type: "fraction",
-        expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} - ${n3}/${finalD1} = ? (분자만 입력, 분모=${lcm})`,
-        answer: finalResult,
-        steps: [
-          `공통분모: ${lcm}`,
-          `${n1c}/${lcm} ${op} ${n2c}/${lcm} = ${resultNum}/${lcm}`,
-          `${resultNum}/${lcm} - ${n3c}/${lcm} = ${finalResult}/${lcm}`,
-        ],
-        unit: "분수의 덧셈",
-        numbers: [finalN1, finalD1, finalN2, finalD2, n3],
-      };
+      // Mixed operation: add then subtract a third fraction.
+      // 세 번째 분수를 빼도 결과가 음수가 되지 않는 경우에만 3항식 출제.
+      const step3 = lcm / finalD1;
+      const n3Max = Math.min(finalD1 - 1, Math.floor((resultNum - 1) / step3));
+      if (n3Max >= 1) {
+        const n3 = randInt(rng, 1, n3Max);
+        const n3c = n3 * step3;
+        const finalResult = resultNum - n3c;
+        return {
+          type: "fraction",
+          expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} - ${n3}/${finalD1} = ? (분자만 입력, 분모=${lcm})`,
+          answer: finalResult,
+          steps: [
+            `공통분모: ${lcm}`,
+            `${finalN1c}/${lcm} ${op} ${finalN2c}/${lcm} = ${resultNum}/${lcm}`,
+            `${resultNum}/${lcm} - ${n3c}/${lcm} = ${finalResult}/${lcm}`,
+          ],
+          unit: "분수의 덧셈",
+          numbers: [finalN1, finalD1, finalN2, finalD2, n3],
+        };
+      }
+      // 안전한 3항식을 만들 수 없으면 2항식으로 폴백
     }
     return {
       type: "fraction",
-      expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} = ? (분자만 입력)`,
+      expression: `${finalN1}/${finalD1} ${op} ${finalN2}/${finalD2} = ? (분자만 입력, 분모=${lcm})`,
       answer: resultNum,
       steps: [
         `공통분모: ${lcm}`,
-        `${finalN1 * (lcm / finalD1)}/${lcm} ${op} ${finalN2 * (lcm / finalD2)}/${lcm} = ${resultNum}/${lcm}`,
+        `${finalN1c}/${lcm} ${op} ${finalN2c}/${lcm} = ${resultNum}/${lcm}`,
       ],
       unit: isAdd ? "분수의 덧셈" : "분수의 뺄셈",
       numbers: [finalN1, finalD1, finalN2, finalD2],
@@ -1901,7 +1913,7 @@ function generateGrade5Math(
     const resultD = (d1 * d2) / gcdN;
     return {
       type: "fraction",
-      expression: `${n1}/${d1} × ${n2}/${d2} = ? (분자만 입력)`,
+      expression: `${n1}/${d1} × ${n2}/${d2} = ? (기약분수의 분자만 입력)`,
       answer: resultN,
       steps: [
         `분자끼리: ${n1} × ${n2} = ${n1 * n2}`,
@@ -1918,23 +1930,28 @@ function generateGrade5Math(
         : difficulty === 3
           ? pickOne(rng, [3, 4, 5, 6, 7, 8])
           : pickOne(rng, [2, 3, 4, 5, 6]);
-    const n = randInt(rng, 1, difficulty === 1 ? 3 : 5);
-    const d = randInt(
+    let n = randInt(rng, 1, difficulty === 1 ? 3 : 5);
+    let d = randInt(
       rng,
       n + 1,
       difficulty === 1 ? 5 : difficulty === 3 ? 12 : 8,
     );
+    // n/d가 이미 기약이어야 factor가 곧 최대공약수가 된다.
+    // (기존엔 2/4×4=8/16의 답을 2로 내는 오답 버그 — 기약 분자는 1)
+    const g0 = gcdCalc(n, d);
+    n /= g0;
+    d /= g0;
     const numer = n * factor;
     const denom = d * factor;
     return {
       type: "fraction",
-      expression: `${numer}/${denom}을 약분하면? (분자만 입력)`,
+      expression: `${numer}/${denom}을 기약분수로 나타내면? (분자만 입력)`,
       answer: n,
       steps: [
-        `${numer}과 ${denom}의 공약수 ${factor}로 나눕니다`,
+        `${numer}과 ${denom}의 최대공약수 ${factor}로 분자와 분모를 나눕니다`,
         `${numer}/${denom} = ${n}/${d}`,
       ],
-      unit: "약수와 배수",
+      unit: "약분과 통분",
       numbers: [numer, denom],
     };
   } else if (type === "decimal_multiply2") {
@@ -1980,14 +1997,14 @@ function generateGrade5Math(
       numbers: [w, h],
     };
   } else if (type === "word_problem_fraction") {
-    // 서술형 분수
+    // 서술형 분수 (합이 1을 넘지 않도록 n1+n2 < denom 보장)
     const denom = pickOne(rng, [3, 4, 5, 6, 8]);
     const n1 = randInt(rng, 1, denom - 2);
-    const n2 = randInt(rng, 1, denom - n1);
+    const n2 = randInt(rng, 1, denom - n1 - 1);
     const item = pickOne(rng, ["피자", "케이크", "수박", "초콜릿"]);
     return {
       type: "fraction",
-      expression: `${item}의 ${n1}/${denom}을 먹고, ${n2}/${denom}을 더 먹었습니다. 모두 얼마나 먹었나요? (분자만 입력)`,
+      expression: `${item}의 ${n1}/${denom}을 먹고, ${n2}/${denom}을 더 먹었습니다. 모두 얼마나 먹었나요? (분자만 입력, 분모=${denom})`,
       answer: n1 + n2,
       steps: [
         `분모가 같으므로 분자끼리 더합니다`,
@@ -2002,7 +2019,9 @@ function generateGrade5Math(
     const d1 = pickOne(rng, [2, 3, 4]);
     const d2 = pickOne(rng, [3, 4, 6]);
     const n1 = randInt(rng, 1, d1 - 1);
-    const n2 = randInt(rng, 1, d2 - 1);
+    let n2 = randInt(rng, 1, d2 - 1);
+    // 같은 분수 두 개를 비교하는 무의미한 문항 방지 (1/2 vs 2/4 같은 동치 비교는 허용)
+    if (d1 === d2 && n1 === n2) n2 = n2 === d2 - 1 ? Math.max(1, n2 - 1) : n2 + 1;
     const val1 = n1 / d1;
     const val2 = n2 / d2;
     const bigger = val1 > val2 ? 1 : val1 < val2 ? 2 : 0;
@@ -2056,11 +2075,11 @@ function generateGrade5Math(
       numbers: [...seq, answer],
     };
   } else if (type === "comparison_fractions") {
-    // 크기비교 - 분수와 소수
+    // 크기비교 - 분수와 소수. 분모 2/4/5/10은 소수 둘째 자리 안에서
+    // 정확히 떨어진다 — 반올림 금지(기존 1/4→0.3 오답 버그).
     const denom = pickOne(rng, [2, 4, 5, 10]);
     const numer = randInt(rng, 1, denom - 1);
-    const fracVal = numer / denom;
-    const decimal = Math.round(fracVal * 10) / 10;
+    const decimal = Math.round((numer / denom) * 100) / 100;
     return {
       type: "fraction",
       expression: `${numer}/${denom}을 소수로 나타내면?`,
@@ -2158,7 +2177,11 @@ function generateGrade5Math(
     const totalMl = liters * 1000 + extraMl;
     return {
       type: "comparison",
-      expression: `${totalMl}mL는 몇 L 몇 mL?`,
+      // "몇 L 몇 mL?"에 답이 L 수 하나뿐이면 모호 → 무엇을 입력할지 명시
+      expression:
+        extraMl === 0
+          ? `${totalMl}mL는 몇 L?`
+          : `${totalMl}mL는 몇 L 몇 mL? (L 부분의 수만 입력)`,
       answer: liters,
       steps: [`1000mL = 1L`, `${totalMl}mL = ${liters}L ${extraMl}mL`],
       unit: "단위변환",
@@ -2276,7 +2299,7 @@ function generateGrade6Math(
     }
     return {
       type: "ratio",
-      expression: `${a} : ${b}를 가장 간단한 자연수의 비로 나타내면?`,
+      expression: `${a} : ${b}를 가장 간단한 자연수의 비로 나타내면? (첫째 수 입력)`,
       answer: a / g,
       steps: [`최대공약수 ${g}로 나눕니다`, `${a / g} : ${b / g}`],
       unit: "비와 비율",
@@ -2294,8 +2317,10 @@ function generateGrade6Math(
           ? hardTotals
           : normalTotals,
     );
-    const part = randInt(rng, 1, total);
-    const pct = Math.round((part / total) * 100);
+    // 백분율이 정수로 떨어지는 part만 출제(반올림 근사치를 정답으로 내던 버그 방지)
+    const partStep = total / gcdCalc(total, 100);
+    const part = partStep * randInt(rng, 1, total / partStep);
+    const pct = (part / total) * 100;
     if (difficulty === 3) {
       // Multi-step: find percentage then calculate amount
       const total2 = pickOne(rng, [200, 300, 500, 800]);
@@ -2377,9 +2402,13 @@ function generateGrade6Math(
       // Multi-step word problem
       const pricePerItem = b * 10;
       const totalItems = a * multiplier;
-      const discount = pickOne(rng, [10, 15, 20, 25]);
       const totalPrice = pricePerItem * multiplier;
-      const discounted = Math.round((totalPrice * (100 - discount)) / 100);
+      // 할인가가 정수(원)로 떨어지는 할인율만 출제 (10%는 항상 유효)
+      const validDiscounts = [10, 15, 20, 25].filter(
+        (dc) => (totalPrice * (100 - dc)) % 100 === 0,
+      );
+      const discount = pickOne(rng, validDiscounts);
+      const discounted = (totalPrice * (100 - discount)) / 100;
       return {
         type: "proportion",
         expression: `사탕 ${a}개에 ${pricePerItem}원입니다. ${totalItems}개를 사고 ${discount}% 할인 받으면 얼마?`,
@@ -2459,15 +2488,19 @@ function generateGrade6Math(
     // Ensure total is divisible by ratioSum
     const adjustedTotal = Math.floor(total / ratioSum) * ratioSum;
     const partA = (adjustedTotal / ratioSum) * ratioA;
-    const nameA = pickOne(rng, ["남학생", "빨간 공", "사과"]);
-    const nameB = pickOne(rng, ["여학생", "파란 공", "배"]);
+    // 짝이 맞는 대상끼리 + 단위(명/개)도 함께 (남학생·파란 공 같은 어긋난 짝 방지)
+    const pair = pickOne(rng, [
+      { a: "남학생", b: "여학생", counter: "명" },
+      { a: "빨간 공", b: "파란 공", counter: "개" },
+      { a: "사과", b: "배", counter: "개" },
+    ]);
     return {
       type: "ratio",
-      expression: `${nameA}과 ${nameB}의 비가 ${ratioA}:${ratioB}이고 전체가 ${adjustedTotal}명일 때 ${nameA}은 몇 명?`,
+      expression: `${pair.a}과 ${pair.b}의 비가 ${ratioA}:${ratioB}이고 전체가 ${adjustedTotal}${pair.counter}일 때 ${pair.a}은 몇 ${pair.counter}?`,
       answer: partA,
       steps: [
         `전체 비: ${ratioA} + ${ratioB} = ${ratioSum}`,
-        `${nameA}: ${adjustedTotal} × ${ratioA}/${ratioSum} = ${partA}명`,
+        `${pair.a}: ${adjustedTotal} × ${ratioA}/${ratioSum} = ${partA}${pair.counter}`,
       ],
       unit: "서술형 비율",
       numbers: [ratioA, ratioB, adjustedTotal],
@@ -2539,7 +2572,7 @@ function generateGrade6Math(
     const simplifiedD = resultD / g;
     return {
       type: "fraction",
-      expression: `${n1}/${d1} ÷ ${n2}/${d2} = ? (분자만 입력, 약분 후)`,
+      expression: `${n1}/${d1} ÷ ${n2}/${d2} = ? (기약분수의 분자만 입력)`,
       answer: simplifiedN,
       steps: [
         `나누기는 역수를 곱합니다`,
@@ -2572,9 +2605,9 @@ function generateGrade6Math(
     const count = difficulty === 1 ? 3 : difficulty === 3 ? 6 : 4;
     const values = Array.from({ length: count }, () => randInt(rng, 50, 100));
     const sum = values.reduce((a, b) => a + b, 0);
-    // Ensure clean average
+    // Ensure clean average (점수가 100점을 넘지 않도록 빼는 방향으로 보정)
     const remainder = sum % count;
-    if (remainder !== 0) values[0] += count - remainder;
+    if (remainder !== 0) values[0] -= remainder;
     const adjustedSum = values.reduce((a, b) => a + b, 0);
     const avg = adjustedSum / count;
     return {

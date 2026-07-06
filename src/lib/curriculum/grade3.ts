@@ -1282,7 +1282,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "17 ÷ 5",
+    expression: "17 ÷ 5의 몫은?",
     answer: 3,
     steps: ["17 안에 5가 3번 들어가고 2가 남음", "5 × 3 = 15, 나머지 2"],
     unit: "나눗셈",
@@ -1293,7 +1293,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "23 ÷ 4",
+    expression: "23 ÷ 4의 몫은?",
     answer: 5,
     steps: ["23 안에 4가 5번 들어가고 3이 남음", "4 × 5 = 20, 나머지 3"],
     unit: "나눗셈",
@@ -1304,7 +1304,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "1/4 + 1/4",
+    expression: "1/4 + 1/4 = ? (분자만 입력, 분모=4)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 더합니다", "1 + 1 = 2", "답: 2/4"],
     unit: "분수의 기초",
@@ -1312,7 +1312,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/5 - 1/5",
+    expression: "3/5 - 1/5 = ? (분자만 입력, 분모=5)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "3 - 1 = 2", "답: 2/5"],
     unit: "분수의 기초",
@@ -1760,7 +1760,7 @@ export const grade3MathData: MathEntry[] = [
   // 나머지 있는 나눗셈 추가
   {
     type: "calculation",
-    expression: "19 ÷ 4",
+    expression: "19 ÷ 4의 몫은?",
     answer: 4,
     steps: ["19 안에 4가 4번 들어가고 3이 남음", "4 × 4 = 16, 나머지 3"],
     unit: "나눗셈",
@@ -1771,7 +1771,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "26 ÷ 3",
+    expression: "26 ÷ 3의 몫은?",
     answer: 8,
     steps: ["26 안에 3이 8번 들어가고 2가 남음", "3 × 8 = 24, 나머지 2"],
     unit: "나눗셈",
@@ -1782,7 +1782,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "37 ÷ 6",
+    expression: "37 ÷ 6의 몫은?",
     answer: 6,
     steps: ["37 안에 6이 6번 들어가고 1이 남음", "6 × 6 = 36, 나머지 1"],
     unit: "나눗셈",
@@ -1793,7 +1793,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "29 ÷ 8",
+    expression: "29 ÷ 8의 몫은?",
     answer: 3,
     steps: ["29 안에 8이 3번 들어가고 5가 남음", "8 × 3 = 24, 나머지 5"],
     unit: "나눗셈",
@@ -1804,7 +1804,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "50 ÷ 7",
+    expression: "50 ÷ 7의 몫은?",
     answer: 7,
     steps: ["50 안에 7이 7번 들어가고 1이 남음", "7 × 7 = 49, 나머지 1"],
     unit: "나눗셈",
@@ -1815,7 +1815,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "33 ÷ 4",
+    expression: "33 ÷ 4의 몫은?",
     answer: 8,
     steps: ["33 안에 4가 8번 들어가고 1이 남음", "4 × 8 = 32, 나머지 1"],
     unit: "나눗셈",
@@ -1826,7 +1826,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "47 ÷ 9",
+    expression: "47 ÷ 9의 몫은?",
     answer: 5,
     steps: ["47 안에 9가 5번 들어가고 2가 남음", "9 × 5 = 45, 나머지 2"],
     unit: "나눗셈",
@@ -1837,7 +1837,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "58 ÷ 7",
+    expression: "58 ÷ 7의 몫은?",
     answer: 8,
     steps: ["58 안에 7이 8번 들어가고 2가 남음", "7 × 8 = 56, 나머지 2"],
     unit: "나눗셈",
@@ -1849,7 +1849,7 @@ export const grade3MathData: MathEntry[] = [
   // 분수 추가
   {
     type: "calculation",
-    expression: "2/5 + 1/5",
+    expression: "2/5 + 1/5 = ? (분자만 입력, 분모=5)",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 더합니다", "2 + 1 = 3", "답: 3/5"],
     unit: "분수의 기초",
@@ -1857,7 +1857,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4/6 - 2/6",
+    expression: "4/6 - 2/6 = ? (분자만 입력, 분모=6)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "4 - 2 = 2", "답: 2/6"],
     unit: "분수의 기초",
@@ -1865,7 +1865,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/8 + 2/8",
+    expression: "3/8 + 2/8 = ? (분자만 입력, 분모=8)",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 더합니다", "3 + 2 = 5", "답: 5/8"],
     unit: "분수의 기초",
@@ -1873,7 +1873,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/7 - 3/7",
+    expression: "5/7 - 3/7 = ? (분자만 입력, 분모=7)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "5 - 3 = 2", "답: 2/7"],
     unit: "분수의 기초",
@@ -1881,7 +1881,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "1/3 + 1/3",
+    expression: "1/3 + 1/3 = ? (분자만 입력, 분모=3)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 더합니다", "1 + 1 = 2", "답: 2/3"],
     unit: "분수의 기초",
@@ -1889,7 +1889,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "6/9 - 4/9",
+    expression: "6/9 - 4/9 = ? (분자만 입력, 분모=9)",
     answer: 2,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "6 - 4 = 2", "답: 2/9"],
     unit: "분수의 기초",
@@ -2050,7 +2050,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "31 ÷ 6",
+    expression: "31 ÷ 6의 몫은?",
     answer: 5,
     steps: ["31 안에 6이 5번 들어가고 1이 남음", "6 × 5 = 30, 나머지 1"],
     unit: "나눗셈",
@@ -2292,7 +2292,7 @@ export const grade3MathData: MathEntry[] = [
   // 나머지 있는 나눗셈 추가
   {
     type: "calculation",
-    expression: "22 ÷ 5",
+    expression: "22 ÷ 5의 몫은?",
     answer: 4,
     steps: ["22 안에 5가 4번 들어가고 2가 남음", "5 × 4 = 20, 나머지 2"],
     unit: "나눗셈",
@@ -2303,7 +2303,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "43 ÷ 6",
+    expression: "43 ÷ 6의 몫은?",
     answer: 7,
     steps: ["43 안에 6이 7번 들어가고 1이 남음", "6 × 7 = 42, 나머지 1"],
     unit: "나눗셈",
@@ -2314,7 +2314,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "55 ÷ 8",
+    expression: "55 ÷ 8의 몫은?",
     answer: 6,
     steps: ["55 안에 8이 6번 들어가고 7이 남음", "8 × 6 = 48, 나머지 7"],
     unit: "나눗셈",
@@ -2325,7 +2325,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "38 ÷ 5",
+    expression: "38 ÷ 5의 몫은?",
     answer: 7,
     steps: ["38 안에 5가 7번 들어가고 3이 남음", "5 × 7 = 35, 나머지 3"],
     unit: "나눗셈",
@@ -2336,7 +2336,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "61 ÷ 9",
+    expression: "61 ÷ 9의 몫은?",
     answer: 6,
     steps: ["61 안에 9가 6번 들어가고 7이 남음", "9 × 6 = 54, 나머지 7"],
     unit: "나눗셈",
@@ -2348,7 +2348,7 @@ export const grade3MathData: MathEntry[] = [
   // 분수 추가
   {
     type: "calculation",
-    expression: "1/6 + 2/6",
+    expression: "1/6 + 2/6 = ? (분자만 입력, 분모=6)",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 더합니다", "1 + 2 = 3", "답: 3/6"],
     unit: "분수의 기초",
@@ -2356,7 +2356,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4/7 - 1/7",
+    expression: "4/7 - 1/7 = ? (분자만 입력, 분모=7)",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "4 - 1 = 3", "답: 3/7"],
     unit: "분수의 기초",
@@ -2364,7 +2364,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2/8 + 3/8",
+    expression: "2/8 + 3/8 = ? (분자만 입력, 분모=8)",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 더합니다", "2 + 3 = 5", "답: 5/8"],
     unit: "분수의 기초",
@@ -2372,7 +2372,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "7/10 - 3/10",
+    expression: "7/10 - 3/10 = ? (분자만 입력, 분모=10)",
     answer: 4,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "7 - 3 = 4", "답: 4/10"],
     unit: "분수의 기초",
@@ -2380,7 +2380,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/9 + 4/9",
+    expression: "3/9 + 4/9 = ? (분자만 입력, 분모=9)",
     answer: 7,
     steps: ["분모가 같으므로 분자끼리 더합니다", "3 + 4 = 7", "답: 7/9"],
     unit: "분수의 기초",
@@ -5331,7 +5331,7 @@ export const grade3WritingPrompts: string[] = [
   // 기존 20개
   "우리 학교를 자세히 소개하는 글을 써 보세요.",
   "내가 가장 좋아하는 과목과 그 이유를 설명해 보세요.",
-  "가족 여행에서 있었던 일을 순서대로 써 보세요.",
+  "현장체험학습에서 있었던 일을 순서대로 써 보세요.",
   "내가 존경하는 사람에 대해 써 보세요.",
   "우리 마을(동네)의 좋은 점을 소개해 보세요.",
   "내가 읽은 책에서 가장 기억에 남는 장면을 써 보세요.",
@@ -5340,7 +5340,7 @@ export const grade3WritingPrompts: string[] = [
   "운동회에서 있었던 재미있는 일을 써 보세요.",
   "내가 만약 시간 여행을 할 수 있다면 어디로 갈까요?",
   "친구와 다투었다가 화해한 경험을 써 보세요.",
-  "내가 직접 요리해 본 경험을 써 보세요.",
+  "무엇인가를 스스로 해낸 경험을 써 보세요.",
   "자연에서 가장 신기한 것은 무엇인지 써 보세요.",
   "내가 가고 싶은 나라와 그 이유를 써 보세요.",
   "생일에 받고 싶은 선물과 그 이유를 써 보세요.",
@@ -5350,7 +5350,7 @@ export const grade3WritingPrompts: string[] = [
   "내가 발명하고 싶은 물건은 무엇인지 상상해서 써 보세요.",
   "환경을 보호하기 위해 내가 할 수 있는 일을 써 보세요.",
   // 신규 40개 (총 60개)
-  "방학 동안 가장 재미있었던 일을 써 보세요.",
+  "이번 학기에 가장 재미있었던 일을 써 보세요.",
   "내가 가장 좋아하는 음식과 그 이유를 설명해 보세요.",
   "내가 키우고 싶은 동물과 그 이유를 써 보세요.",
   "학교에서 가장 좋았던 경험을 써 보세요.",
@@ -5361,14 +5361,14 @@ export const grade3WritingPrompts: string[] = [
   "만약 하늘을 날 수 있다면 어디에 가고 싶은지 써 보세요.",
   "가장 재미있는 놀이와 놀이 방법을 설명해 보세요.",
   "내가 도움을 받았던 경험과 느낌을 써 보세요.",
-  "우리 가족의 주말 이야기를 써 보세요.",
+  "우리 반의 하루 이야기를 써 보세요.",
   "좋아하는 만화 영화(애니메이션)를 소개해 보세요.",
   "봄에 볼 수 있는 자연의 변화를 관찰하여 써 보세요.",
   "겨울에 눈이 오면 하고 싶은 일을 써 보세요.",
   "내가 만약 선생님이 된다면 어떻게 가르칠지 써 보세요.",
   "도서관에서 있었던 경험을 써 보세요.",
   "내가 잘하는 것과 노력하고 싶은 것을 써 보세요.",
-  "가장 기억에 남는 생일 파티에 대해 써 보세요.",
+  "가장 기억에 남는 학교 행사에 대해 써 보세요.",
   "시골과 도시의 차이점에 대해 써 보세요.",
   "물을 아끼는 방법에 대해 제안하는 글을 써 보세요.",
   "우리 동네에서 가장 좋아하는 장소를 소개해 보세요.",
@@ -5377,14 +5377,14 @@ export const grade3WritingPrompts: string[] = [
   "체험학습에서 배운 것을 정리하여 써 보세요.",
   "가장 무서웠던 경험을 이야기해 보세요.",
   "나만의 비밀 장소에 대해 소개해 보세요.",
-  "우리 가족만의 특별한 행사에 대해 써 보세요.",
+  "우리 반만의 특별한 활동에 대해 써 보세요.",
   "좋아하는 운동을 소개하고, 그 규칙을 설명해 보세요.",
   "만약 투명 인간이 된다면 무엇을 하고 싶은지 써 보세요.",
   "우리 반에서 일어난 재미있는 에피소드를 써 보세요.",
-  "편의점(또는 슈퍼)에서 겪은 일을 써 보세요.",
+  "쉬는 시간에 겪은 재미있는 일을 써 보세요.",
   "내가 만든 작품(그림, 만들기 등)을 소개하는 글을 써 보세요.",
   "미래의 학교는 어떤 모습일지 상상해서 써 보세요.",
-  "동생이나 형(언니)에게 하고 싶은 말을 편지로 써 보세요.",
+  "다른 학년 친구에게 하고 싶은 말을 편지로 써 보세요.",
   "새 학년이 되면 하고 싶은 일을 써 보세요.",
   "내가 본 가장 아름다운 풍경을 묘사해 보세요.",
   "우리 학교 급식 중 가장 좋아하는 메뉴를 소개해 보세요.",

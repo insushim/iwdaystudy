@@ -1357,7 +1357,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "89 ÷ 7",
+    expression: "89 ÷ 7의 몫은?",
     answer: 12,
     steps: ["7 × 12 = 84", "89 - 84 = 5", "89 ÷ 7 = 12 나머지 5"],
     unit: "나머지가 있는 나눗셈",
@@ -1368,7 +1368,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/8 + 2/8",
+    expression: "3/8 + 2/8 = ? (분자만 입력, 분모=8)",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 더합니다", "3 + 2 = 5", "답: 5/8"],
     unit: "동분모 분수 덧셈",
@@ -1376,7 +1376,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/6 - 2/6",
+    expression: "5/6 - 2/6 = ? (분자만 입력, 분모=6)",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "5 - 2 = 3", "답: 3/6 = 1/2"],
     unit: "동분모 분수 뺄셈",
@@ -1384,7 +1384,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "7/10 + 4/10",
+    expression: "7/10 + 4/10 = ? (분자만 입력, 분모=10)",
     answer: 11,
     steps: [
       "분모가 같으므로 분자끼리 더합니다",
@@ -1667,7 +1667,7 @@ export const grade4MathData: MathEntry[] = [
   // 나머지 있는 나눗셈 추가
   {
     type: "calculation",
-    expression: "100 ÷ 13",
+    expression: "100 ÷ 13의 몫은?",
     answer: 7,
     steps: ["13 × 7 = 91", "100 - 91 = 9", "100 ÷ 13 = 7 나머지 9"],
     unit: "나머지가 있는 나눗셈",
@@ -1678,7 +1678,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "200 ÷ 17",
+    expression: "200 ÷ 17의 몫은?",
     answer: 11,
     steps: ["17 × 11 = 187", "200 - 187 = 13", "200 ÷ 17 = 11 나머지 13"],
     unit: "나머지가 있는 나눗셈",
@@ -1689,7 +1689,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "150 ÷ 11",
+    expression: "150 ÷ 11의 몫은?",
     answer: 13,
     steps: ["11 × 13 = 143", "150 - 143 = 7", "150 ÷ 11 = 13 나머지 7"],
     unit: "나머지가 있는 나눗셈",
@@ -1700,7 +1700,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "250 ÷ 16",
+    expression: "250 ÷ 16의 몫은?",
     answer: 15,
     steps: ["16 × 15 = 240", "250 - 240 = 10", "250 ÷ 16 = 15 나머지 10"],
     unit: "나머지가 있는 나눗셈",
@@ -1711,7 +1711,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "300 ÷ 23",
+    expression: "300 ÷ 23의 몫은?",
     answer: 13,
     steps: ["23 × 13 = 299", "300 - 299 = 1", "300 ÷ 23 = 13 나머지 1"],
     unit: "나머지가 있는 나눗셈",
@@ -1723,7 +1723,7 @@ export const grade4MathData: MathEntry[] = [
   // 분수 추가
   {
     type: "calculation",
-    expression: "4/9 + 3/9",
+    expression: "4/9 + 3/9 = ? (분자만 입력, 분모=9)",
     answer: 7,
     steps: ["분모가 같으므로 분자끼리 더합니다", "4 + 3 = 7", "답: 7/9"],
     unit: "동분모 분수 덧셈",
@@ -1731,7 +1731,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "8/12 - 5/12",
+    expression: "8/12 - 5/12 = ? (분자만 입력, 분모=12)",
     answer: 3,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "8 - 5 = 3", "답: 3/12 = 1/4"],
     unit: "동분모 분수 뺄셈",
@@ -1739,7 +1739,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5/7 + 4/7",
+    expression: "5/7 + 4/7 = ? (분자만 입력, 분모=7)",
     answer: 9,
     steps: [
       "분모가 같으므로 분자끼리 더합니다",
@@ -1751,7 +1751,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "9/10 - 3/10",
+    expression: "9/10 - 3/10 = ? (분자만 입력, 분모=10)",
     answer: 6,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "9 - 3 = 6", "답: 6/10 = 3/5"],
     unit: "동분모 분수 뺄셈",
@@ -1759,7 +1759,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "6/8 + 5/8",
+    expression: "6/8 + 5/8 = ? (분자만 입력, 분모=8)",
     answer: 11,
     steps: [
       "분모가 같으므로 분자끼리 더합니다",
@@ -1771,7 +1771,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "7/11 - 2/11",
+    expression: "7/11 - 2/11 = ? (분자만 입력, 분모=11)",
     answer: 5,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "7 - 2 = 5", "답: 5/11"],
     unit: "동분모 분수 뺄셈",
@@ -1779,7 +1779,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3/5 + 4/5",
+    expression: "3/5 + 4/5 = ? (분자만 입력, 분모=5)",
     answer: 7,
     steps: [
       "분모가 같으므로 분자끼리 더합니다",
@@ -1791,7 +1791,7 @@ export const grade4MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "11/15 - 4/15",
+    expression: "11/15 - 4/15 = ? (분자만 입력, 분모=15)",
     answer: 7,
     steps: ["분모가 같으므로 분자끼리 뺍니다", "11 - 4 = 7", "답: 7/15"],
     unit: "동분모 분수 뺄셈",
@@ -4839,7 +4839,7 @@ export const grade4WritingPrompts: string[] = [
   "인터넷을 안전하게 사용하는 방법을 설명하는 글을 써 보세요.",
   "내가 만약 마법을 쓸 수 있다면 무엇을 하고 싶은지 써 보세요.",
   "가장 인상 깊었던 체험학습에 대해 써 보세요.",
-  "우리 가족만의 특별한 규칙이나 전통을 소개해 보세요.",
+  "우리 학교만의 특별한 행사나 전통을 소개해 보세요.",
   "지구 온난화가 우리 생활에 미치는 영향에 대해 써 보세요.",
   "내가 좋아하는 운동 선수와 그 이유를 써 보세요.",
   "학교 도서관에서 가장 좋아하는 책을 소개해 보세요.",
@@ -4847,17 +4847,17 @@ export const grade4WritingPrompts: string[] = [
   "만약 외계인을 만난다면 어떤 이야기를 하고 싶은지 써 보세요.",
   "내가 경험한 봉사 활동에 대해 써 보세요.",
   "우리나라의 자랑거리를 외국인 친구에게 소개하는 글을 써 보세요.",
-  "일기 예보를 듣고 주말 계획을 세우는 글을 써 보세요.",
-  "가장 재미있었던 방학 경험을 써 보세요.",
+  "내일 날씨를 예상하고 하루 계획을 세우는 글을 써 보세요.",
+  "가장 재미있었던 학교 행사 경험을 써 보세요.",
   "만약 슈퍼 히어로가 된다면 어떤 능력을 갖고 싶은지 써 보세요.",
   "옛날과 오늘날의 학교를 비교하는 글을 써 보세요.",
-  "내가 만든 요리 레시피를 설명하는 글을 써 보세요.",
+  "종이접기나 만들기의 순서를 설명하는 글을 써 보세요.",
   "학급 신문에 실을 기사를 써 보세요.",
   "감동적인 영화나 드라마를 소개하는 글을 써 보세요.",
   "우리 동네의 문제점과 해결 방안을 제안해 보세요.",
   "가장 갖고 싶은 직업과 그 이유를 설명해 보세요.",
   "사계절의 특징을 비교하여 설명하는 글을 써 보세요.",
-  "반려동물과의 에피소드를 재미있게 써 보세요.",
+  "친구와의 에피소드를 재미있게 써 보세요.",
   "내가 대통령이라면 어떤 정책을 펼지 써 보세요.",
   "공정한 것이란 무엇인지 자신의 생각을 써 보세요.",
   "전통 시장과 대형 마트의 장단점을 비교해 보세요.",
