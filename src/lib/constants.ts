@@ -8,11 +8,11 @@ export const APP_URL =
 export const GRADES = [1, 2, 3, 4, 5, 6] as const;
 export const SEMESTERS = [1, 2] as const;
 
-// 2026-07-06: 세트당 문항 수를 원래(15/20/21)로 되돌림.
-//   하루 학습량을 늘리는 방식은 '세트 비대화(42문항)'가 아니라 '하루 최대 3세트'로
-//   제공한다(MAX_DAILY_SETS). 한 세트 = 한 호흡(약 30분)을 유지.
+// 2026-07-06: 하루 1세트(15/20/21문항)가 기본. 한 세트 = 한 호흡(약 30분).
+//   하루 학습량을 늘려야 하면 세트 비대화가 아니라 이 값(하루 세트 수)으로 조절한다.
+//   useDailySet이 슬롯 구조로 이 값을 그대로 따르므로 숫자만 바꾸면 된다.
 // 각 그룹 sections count 합 == totalQuestions 를 반드시 유지할 것.
-export const MAX_DAILY_SETS = 3;
+export const MAX_DAILY_SETS = 1;
 
 export const GRADE_SET_COMPOSITION = {
   "1-2": {

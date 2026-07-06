@@ -96,25 +96,27 @@ export default function StudentDashboard() {
           <h2 className="text-lg font-bold mb-3 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-primary" />
             오늘의 학습
-            <span className="ml-auto flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
-              {Array.from({ length: maxSets }, (_, i) => (
-                <span
-                  key={i}
-                  className={`inline-block h-2.5 w-2.5 rounded-full ${
-                    i < completedCount
-                      ? "bg-green-500"
-                      : i === completedCount && !todayCompleted
-                        ? "bg-primary"
-                        : "bg-muted-foreground/20"
-                  }`}
-                />
-              ))}
-              <span className="ml-1">
-                {todayCompleted
-                  ? `오늘 ${maxSets}세트 모두 완료!`
-                  : `${setIndex}번째 세트`}
+            {maxSets > 1 && (
+              <span className="ml-auto flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                {Array.from({ length: maxSets }, (_, i) => (
+                  <span
+                    key={i}
+                    className={`inline-block h-2.5 w-2.5 rounded-full ${
+                      i < completedCount
+                        ? "bg-green-500"
+                        : i === completedCount && !todayCompleted
+                          ? "bg-primary"
+                          : "bg-muted-foreground/20"
+                    }`}
+                  />
+                ))}
+                <span className="ml-1">
+                  {todayCompleted
+                    ? `오늘 ${maxSets}세트 모두 완료!`
+                    : `${setIndex}번째 세트`}
+                </span>
               </span>
-            </span>
+            )}
           </h2>
           {dailySet ? (
             <DailySetCard
@@ -153,7 +155,9 @@ export default function StudentDashboard() {
                   <TrendingUp className="w-5 h-5" />
                   <span className="font-medium">
                     {todayCompleted
-                      ? `오늘 ${maxSets}세트를 모두 완료했어요! 정말 대단해요!`
+                      ? maxSets > 1
+                        ? `오늘 ${maxSets}세트를 모두 완료했어요! 정말 대단해요!`
+                        : "오늘 학습을 모두 완료했어요! 정말 대단해요!"
                       : `${completedCount}세트 완료! 더 하고 싶으면 다음 세트에 도전해 보세요!`}
                   </span>
                 </div>
