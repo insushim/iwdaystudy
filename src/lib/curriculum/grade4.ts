@@ -298,12 +298,6 @@ export const grade4SpellingData: SpellingEntry[] = [
     answer: 1,
     explanation: "'시다'가 올바른 표기입니다.",
   },
-  {
-    q1: "얼마큼 왔을까?",
-    q2: "얼마만큼 왔을까?",
-    answer: 2,
-    explanation: "'얼마만큼'이 올바른 표기입니다.",
-  },
   // 신규 40개 (총 60개)
   {
     q1: "과연 그럴까?",
@@ -312,22 +306,10 @@ export const grade4SpellingData: SpellingEntry[] = [
     explanation: "'그럴까'가 올바른 표기입니다. 의문형 어미 '-ㄹ까'를 씁니다.",
   },
   {
-    q1: "뜻밖에 좋은 소식이 왔다.",
-    q2: "뜻밖의 좋은 소식이 왔다.",
-    answer: 2,
-    explanation: "'뜻밖의'가 올바른 표기입니다. '의'가 맞는 관형격 조사입니다.",
-  },
-  {
     q1: "사글세를 내다.",
     q2: "삭월세를 내다.",
-    answer: 2,
-    explanation: "'삭월세'가 올바른 표기입니다.",
-  },
-  {
-    q1: "윗사람에게 예의를 갖추다.",
-    q2: "윗사람에게 예의를 갖추다.",
     answer: 1,
-    explanation: "'윗사람'은 사이시옷이 들어가는 올바른 표기입니다.",
+    explanation: "'사글세'가 올바른 표기입니다. '삭월세'는 틀린 표기입니다.",
   },
   {
     q1: "아무튼 열심히 하자.",
@@ -404,8 +386,8 @@ export const grade4SpellingData: SpellingEntry[] = [
   {
     q1: "이번 시험은 쉬었다.",
     q2: "이번 시험은 쉬웠다.",
-    answer: 1,
-    explanation: "'쉬었다'(쉽다의 과거형)가 올바른 표기입니다.",
+    answer: 2,
+    explanation: "'쉬웠다'가 올바른 표기입니다. '쉽다'의 활용형입니다.",
   },
   {
     q1: "역활을 나누었다.",
@@ -483,8 +465,8 @@ export const grade4SpellingData: SpellingEntry[] = [
   {
     q1: "안절부절 못했다.",
     q2: "안절부절못했다.",
-    answer: 1,
-    explanation: "'안절부절'과 '못했다'는 띄어 씁니다.",
+    answer: 2,
+    explanation: "'안절부절못하다'는 한 단어이므로 붙여 씁니다.",
   },
   {
     q1: "하마트면 늦을 뻔했다.",
@@ -635,8 +617,8 @@ export const grade4SpellingData: SpellingEntry[] = [
   {
     q1: "생각건대 옳은 일이다.",
     q2: "생각컨대 옳은 일이다.",
-    answer: 2,
-    explanation: "'생각컨대'가 올바른 표기입니다.",
+    answer: 1,
+    explanation: "'생각건대'가 올바른 표기입니다. 안울림소리 받침 뒤에서는 '-건대'로 줄입니다.",
   },
   {
     q1: "해돋이를 보러 갔다.",
@@ -828,8 +810,8 @@ export const grade4SpellingData: SpellingEntry[] = [
   {
     q1: "갈가마귀가 울었다.",
     q2: "갈까마귀가 울었다.",
-    answer: 1,
-    explanation: "'갈가마귀'가 올바른 표기입니다.",
+    answer: 2,
+    explanation: "'갈까마귀'가 올바른 표기입니다.",
   },
   {
     q1: "아름다운 노을이 졌다.",

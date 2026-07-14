@@ -208,9 +208,8 @@ export const grade2SpellingData: SpellingEntry[] = [
   {
     q1: "오랜만에 만났다.",
     q2: "오랫만에 만났다.",
-    answer: 2,
-    explanation:
-      "'오랫만에'가 아니라 '오랜만에'가 올바른 표기입니다. (주의: 둘 다 틀린 표현이지만, 여기서는 '오랜만에'가 더 가까운 표현)",
+    answer: 1,
+    explanation: "'오랜만에'가 올바른 표기입니다. '오랫만에'는 틀린 표기입니다.",
   },
   {
     q1: "웃어른께 인사했다.",
@@ -298,22 +297,10 @@ export const grade2SpellingData: SpellingEntry[] = [
     explanation: "'빗'은 머리를 빗는 도구이고, '빛'은 불빛입니다.",
   },
   {
-    q1: "낱말을 외우었다.",
-    q2: "낱말을 외웠다.",
-    answer: 2,
-    explanation: "'외웠다'가 올바른 줄임 표현입니다.",
-  },
-  {
     q1: "오늘은 날씨가 흐리다.",
     q2: "오늘은 날시가 흐리다.",
     answer: 1,
     explanation: "'날씨'는 된소리로 씁니다.",
-  },
-  {
-    q1: "고구마를 구었다.",
-    q2: "고구마를 구웠다.",
-    answer: 2,
-    explanation: "'구웠다'가 올바른 표기입니다.",
   },
   {
     q1: "줄넘기를 잘한다.",
@@ -364,12 +351,6 @@ export const grade2SpellingData: SpellingEntry[] = [
     explanation: "'봤다'가 올바른 표기입니다.",
   },
   {
-    q1: "화분에 물을 주었다.",
-    q2: "화분에 물을 줬다.",
-    answer: 2,
-    explanation: "'줬다'도 '주었다'의 줄임으로 올바른 표현입니다.",
-  },
-  {
     q1: "조용히 해 주세요.",
     q2: "조용이 해 주세요.",
     answer: 1,
@@ -392,12 +373,6 @@ export const grade2SpellingData: SpellingEntry[] = [
     q2: "특별이 잘했어요.",
     answer: 1,
     explanation: "'특별히'는 부사로 'ㅎ'이 들어갑니다.",
-  },
-  {
-    q1: "정확하게 말해 주세요.",
-    q2: "정확히 말해 주세요.",
-    answer: 2,
-    explanation: "'정확히'도 올바른 표현입니다.",
   },
   {
     q1: "반듯하게 앉으세요.",
@@ -623,12 +598,6 @@ export const grade2SpellingData: SpellingEntry[] = [
     explanation: "'집었다'가 올바른 표기입니다.",
   },
   {
-    q1: "비가 그쳤다.",
-    q2: "비가 그치었다.",
-    answer: 1,
-    explanation: "'그쳤다'가 올바른 줄임 표현입니다.",
-  },
-  {
     q1: "보슬보슬 비가 왔다.",
     q2: "보실보실 비가 왔다.",
     answer: 1,
@@ -645,18 +614,6 @@ export const grade2SpellingData: SpellingEntry[] = [
     q2: "가까히 와 봐.",
     answer: 1,
     explanation: "'가까이'가 올바른 부사입니다.",
-  },
-  {
-    q1: "이야기를 들려줬다.",
-    q2: "이야기를 들려주었다.",
-    answer: 2,
-    explanation: "'들려주었다'가 올바른 표기입니다. '들려줬다'도 허용됩니다.",
-  },
-  {
-    q1: "서로 도와줬다.",
-    q2: "서로 도와주었다.",
-    answer: 2,
-    explanation: "'도와주었다'가 올바른 표기입니다. '도와줬다'도 허용됩니다.",
   },
   {
     q1: "구름이 잔뜩 끼었다.",
@@ -725,28 +682,10 @@ export const grade2SpellingData: SpellingEntry[] = [
     explanation: "'싶다'가 올바른 표기입니다.",
   },
   {
-    q1: "구경을 다니었다.",
-    q2: "구경을 다녔다.",
-    answer: 2,
-    explanation: "'다녔다'가 올바른 줄임 표현입니다.",
-  },
-  {
     q1: "잠이 안 온다.",
     q2: "잠이 안 온따.",
     answer: 1,
     explanation: "'온다'에서 종결어미는 '-다'입니다.",
-  },
-  {
-    q1: "시원한 물을 마셨다.",
-    q2: "시원한 물을 마시었다.",
-    answer: 1,
-    explanation: "'마셨다'가 올바른 줄임 표현입니다.",
-  },
-  {
-    q1: "떡을 쪘다.",
-    q2: "떡을 찌었다.",
-    answer: 2,
-    explanation: "'찌었다'가 올바른 표기입니다. '쪘다'도 허용됩니다.",
   },
   {
     q1: "우산을 쓰었다.",
@@ -759,12 +698,6 @@ export const grade2SpellingData: SpellingEntry[] = [
     q2: "상자를 싸았다.",
     answer: 1,
     explanation: "'쌓았다'가 올바른 표기입니다.",
-  },
-  {
-    q1: "줄을 맸다.",
-    q2: "줄을 매었다.",
-    answer: 2,
-    explanation: "'매었다'가 올바른 표기입니다. '맸다'도 허용됩니다.",
   },
   {
     q1: "장난감을 고쳤다.",

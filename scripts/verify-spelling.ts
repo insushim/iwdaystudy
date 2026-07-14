@@ -13,6 +13,12 @@ import {
   SPELLING_RULE_PATTERNS,
 } from "../src/lib/curriculum/generators/spelling-generator";
 import { hasBatchim } from "../src/lib/korean-josa";
+import { grade1SpellingData } from "../src/lib/curriculum/grade1";
+import { grade2SpellingData } from "../src/lib/curriculum/grade2";
+import { grade3SpellingData } from "../src/lib/curriculum/grade3";
+import { grade4SpellingData } from "../src/lib/curriculum/grade4";
+import { grade5SpellingData } from "../src/lib/curriculum/grade5";
+import { grade6SpellingData } from "../src/lib/curriculum/grade6";
 
 const defects: string[] = [];
 
@@ -54,6 +60,17 @@ interface Entry {
   explanation: string;
 }
 const seen = new Map<string, Entry>();
+// 정적 맞춤법 데이터(grade1~6)도 생성 풀과 함께 실제 출제된다.
+for (const set of [
+  grade1SpellingData,
+  grade2SpellingData,
+  grade3SpellingData,
+  grade4SpellingData,
+  grade5SpellingData,
+  grade6SpellingData,
+]) {
+  for (const p of set) seen.set(`${p.q1}|||${p.q2}`, p);
+}
 for (const grade of [1, 2, 3, 4, 5, 6]) {
   for (const diff of [1, 2, 3] as const) {
     for (let seed = 1; seed <= 120; seed++) {
@@ -78,8 +95,8 @@ for (const e of seen.values()) {
   if (e.q1 === e.q2) flag(e, "정답과 오답이 동일");
   if (/\.\.|\.\?|\s{2,}|\s[.,?!]/.test(e.q1 + e.q2))
     flag(e, "문장부호·공백 오류");
-  // 목록형(준비물: …)은 종결 부호가 없는 것이 정상
-  if (!/[.?!"'”’]$/.test(correct) && !correct.includes(":"))
+  // 목록형(준비물: …)과 뜻풀이 주석("결재를 받다. (승인)")은 예외
+  if (!/[.?!"'”’)]$/.test(correct) && !correct.includes(":"))
     flag(e, "정답 문장이 종결되지 않음");
 }
 

@@ -26,7 +26,7 @@ import {
 // v12: 세트 구조 개편 — 세트당 문항 42→원래(15/20/21) 복귀 + 하루 최대 3세트 순차 제공.
 //      수학 전수검수 반영(약분 기약분수 오답, 분수 답형식 모호, 분수→소수 반올림 오답,
 //      백분율/할인가 비정수, 음수 결과, 단위혼합 답 모호 등) + 힌트 전면 교체(답노출 제거).
-const SET_VERSION = 13;
+const SET_VERSION = 14;
 const TODAY_SET_PREFIX = "araharu_today_set_";
 
 function getTodayKey(userId: string, slot: number): string {

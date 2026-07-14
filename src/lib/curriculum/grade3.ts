@@ -354,8 +354,8 @@ export const grade3SpellingData: SpellingEntry[] = [
     explanation: "'이따가'가 올바른 표기입니다. '조금 뒤에'라는 뜻입니다.",
   },
   {
-    q1: "사이좋은 친구",
-    q2: "사이조은 친구",
+    q1: "우리는 사이좋은 친구다.",
+    q2: "우리는 사이조은 친구다.",
     answer: 1,
     explanation: "'좋은'이 올바른 표기입니다. 'ㅎ' 받침을 살려 씁니다.",
   },
@@ -516,13 +516,6 @@ export const grade3SpellingData: SpellingEntry[] = [
     explanation: "'짧은'이 올바른 표기입니다. 겹받침 'ㄼ'입니다.",
   },
   {
-    q1: "건전지를 바꿨다.",
-    q2: "건전지를 바꾸었다.",
-    answer: 2,
-    explanation:
-      "'바꾸었다'가 올바른 표기입니다. '바꿨다'도 허용되나 정식은 '바꾸었다'입니다.",
-  },
-  {
     q1: "일요일마다 교회에 간다.",
     q2: "일요일마다 교회에 간따.",
     answer: 1,
@@ -552,13 +545,6 @@ export const grade3SpellingData: SpellingEntry[] = [
     q2: "널비를 구했다.",
     answer: 1,
     explanation: "'넓이'가 올바른 표기입니다.",
-  },
-  {
-    q1: "답을 맞혔다.",
-    q2: "답을 맞추었다.",
-    answer: 2,
-    explanation:
-      "'맞추었다'가 올바른 표기입니다. (사역: 맞추다 / 피동: 맞히다)",
   },
   {
     q1: "소나무가 울창하다.",
@@ -591,22 +577,10 @@ export const grade3SpellingData: SpellingEntry[] = [
     explanation: "'-게'가 올바른 부사형 어미입니다.",
   },
   {
-    q1: "소리가 들렸다.",
-    q2: "소리가 들리었다.",
-    answer: 1,
-    explanation: "'들렸다'가 올바른 줄임 표현입니다.",
-  },
-  {
     q1: "풀이를 적었다.",
     q2: "풀이를 적엇다.",
     answer: 1,
     explanation: "'적었다'가 올바른 표기입니다.",
-  },
-  {
-    q1: "온도를 재었다.",
-    q2: "온도를 쟀다.",
-    answer: 2,
-    explanation: "'쟀다'가 올바른 줄임 표현입니다.",
   },
   {
     q1: "한껏 노력했다.",
@@ -751,18 +725,6 @@ export const grade3SpellingData: SpellingEntry[] = [
     q2: "삼춘에게 편지를 썼다.",
     answer: 1,
     explanation: "'삼촌'이 올바른 표기입니다.",
-  },
-  {
-    q1: "덩어리를 으깼다.",
-    q2: "덩어리를 으깨었다.",
-    answer: 1,
-    explanation: "'으깼다'가 올바른 줄임 표현입니다.",
-  },
-  {
-    q1: "통째로 삼켰다.",
-    q2: "통째로 삼키었다.",
-    answer: 1,
-    explanation: "'삼켰다'가 올바른 줄임 표현입니다.",
   },
   {
     q1: "겉으로 보기에 멀쩡하다.",

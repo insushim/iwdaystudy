@@ -163,22 +163,10 @@ export const grade1SpellingData: SpellingEntry[] = [
     explanation: "'-요'가 맞는 종결어미입니다.",
   },
   {
-    q1: "예쁜 꽃이 피었다.",
-    q2: "이쁜 꽃이 피었다.",
-    answer: 1,
-    explanation: "'예쁜'이 표준어입니다.",
-  },
-  {
     q1: "나는 잘할 수 있어.",
     q2: "나는 잘 할수 있어.",
     answer: 1,
     explanation: "'할 수'처럼 의존명사 '수'는 띄어 씁니다.",
-  },
-  {
-    q1: "물을 마셨어요.",
-    q2: "물을 마시었어요.",
-    answer: 1,
-    explanation: "'마셨어요'가 자연스러운 줄임 표현입니다.",
   },
   {
     q1: "엄마가 좋아요.",
@@ -270,12 +258,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     q2: "하늘이 말가요.",
     answer: 1,
     explanation: "'맑아요'에서 받침 'ㄺ'을 빠뜨리면 안 됩니다.",
-  },
-  {
-    q1: "꽃이 활짝 피었다.",
-    q2: "꽃이 활짝 피었다.",
-    answer: 1,
-    explanation: "두 문장 모두 같지만, '활짝'이 올바른 표현입니다.",
   },
   {
     q1: "토끼가 깡충 뛰어요.",
@@ -452,12 +434,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     explanation: "'와요'가 올바른 표현입니다.",
   },
   {
-    q1: "빨간 장미가 예뻐요.",
-    q2: "빨간 장미가 이뻐요.",
-    answer: 1,
-    explanation: "'예뻐요'가 표준어입니다.",
-  },
-  {
     q1: "도서관에서 책을 빌렸다.",
     q2: "도서관에서 책을 빌렸따.",
     answer: 1,
@@ -517,12 +493,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     q2: "풍선이 날아갓어요.",
     answer: 1,
     explanation: "'갔어요'가 올바른 표기입니다.",
-  },
-  {
-    q1: "꽃이 예쁘게 피었어요.",
-    q2: "꽃이 이쁘게 피었어요.",
-    answer: 1,
-    explanation: "'예쁘게'가 표준어 표현입니다.",
   },
   {
     q1: "머리를 빗었어요.",
@@ -619,12 +589,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     q2: "고구마가 마시썻어요.",
     answer: 1,
     explanation: "'맛있었어요'가 올바른 표기입니다.",
-  },
-  {
-    q1: "친구에게 선물을 줬어요.",
-    q2: "친구에게 선물을 주었어요.",
-    answer: 2,
-    explanation: "'주었어요'가 올바른 표기입니다. '줬어요'도 허용됩니다.",
   },
   {
     q1: "나비가 꽃에 앉았어요.",
@@ -759,12 +723,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     explanation: "'탔어요'가 올바른 표기입니다.",
   },
   {
-    q1: "꿈을 꿨어요.",
-    q2: "꿈을 꾸었어요.",
-    answer: 2,
-    explanation: "'꾸었어요'가 올바른 표기입니다. '꿨어요'도 허용됩니다.",
-  },
-  {
     q1: "친구가 이사를 갔어요.",
     q2: "친구가 이사를 갓어요.",
     answer: 1,
@@ -853,12 +811,6 @@ export const grade1SpellingData: SpellingEntry[] = [
     q2: "선풍기를 트렀어요.",
     answer: 1,
     explanation: "'틀었어요'가 올바른 표기입니다.",
-  },
-  {
-    q1: "무지개가 예뻐요.",
-    q2: "무지개가 이뻐요.",
-    answer: 1,
-    explanation: "'예뻐요'가 표준어입니다.",
   },
 ];
 

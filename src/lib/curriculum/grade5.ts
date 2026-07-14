@@ -247,28 +247,10 @@ export const grade5SpellingData: SpellingEntry[] = [
     explanation: "'귀띔'이 올바른 표기입니다.",
   },
   {
-    q1: "짜장면을 먹었다.",
-    q2: "자장면을 먹었다.",
-    answer: 1,
-    explanation: "'짜장면'이 현재 표준어입니다. (2011년 복수 표준어 인정)",
-  },
-  {
-    q1: "주위 환경을 살폈다.",
-    q2: "주위 환경을 살폈다.",
-    answer: 1,
-    explanation: "'살폈다'가 올바른 표기입니다.",
-  },
-  {
     q1: "물음에 대답했다.",
     q2: "물읨에 대답했다.",
     answer: 1,
     explanation: "'물음'이 올바른 표기입니다.",
-  },
-  {
-    q1: "사달이 나다.",
-    q2: "사달이 나다.",
-    answer: 1,
-    explanation: "'사달'이 올바른 표기입니다.",
   },
   {
     q1: "한참 동안 걸었다.",
@@ -332,12 +314,6 @@ export const grade5SpellingData: SpellingEntry[] = [
     explanation: "'설거지'가 올바른 표기입니다.",
   },
   {
-    q1: "넓직한 마당이다.",
-    q2: "널직한 마당이다.",
-    answer: 1,
-    explanation: "'넓직하다'가 올바른 표기입니다. '넓다'에서 파생된 말입니다.",
-  },
-  {
     q1: "오랫동안 기다렸다.",
     q2: "오랜동안 기다렸다.",
     answer: 1,
@@ -385,18 +361,6 @@ export const grade5SpellingData: SpellingEntry[] = [
     q2: "바라건데 성공하길 빈다.",
     answer: 1,
     explanation: "'바라건대'가 올바른 표기입니다.",
-  },
-  {
-    q1: "구시렁거리다.",
-    q2: "구시렁거리다.",
-    answer: 1,
-    explanation: "'구시렁거리다'(투덜대다)가 올바른 표기입니다.",
-  },
-  {
-    q1: "흐리멍텅한 하늘이다.",
-    q2: "흐리멍텅한 하늘이다.",
-    answer: 1,
-    explanation: "'흐리멍텅하다'가 올바른 표기입니다.",
   },
   {
     q1: "예쁘장하다.",
@@ -447,12 +411,6 @@ export const grade5SpellingData: SpellingEntry[] = [
     q2: "건듯이 잠이 깼다.",
     answer: 1,
     explanation: "'건듯'이 올바른 표기입니다.",
-  },
-  {
-    q1: "움켜쥐다.",
-    q2: "움켜쥐다.",
-    answer: 1,
-    explanation: "'움켜쥐다'가 올바른 표기입니다.",
   },
   {
     q1: "통째로 삼키다.",
@@ -509,12 +467,6 @@ export const grade5SpellingData: SpellingEntry[] = [
     explanation: "'깍쟁이'가 올바른 표기입니다.",
   },
   {
-    q1: "한턱 내다.",
-    q2: "한턱 내다.",
-    answer: 1,
-    explanation: "'한턱'이 올바른 표기입니다.",
-  },
-  {
     q1: "겉잡을 수 없다.",
     q2: "걷잡을 수 없다.",
     answer: 2,
@@ -535,8 +487,8 @@ export const grade5SpellingData: SpellingEntry[] = [
   {
     q1: "당췌 모르겠다.",
     q2: "당최 모르겠다.",
-    answer: 1,
-    explanation: "'당췌'가 올바른 표기입니다.",
+    answer: 2,
+    explanation: "'당최'가 올바른 표기입니다. '당췌'는 틀린 표기입니다.",
   },
   {
     q1: "일찌기 도착했다.",
@@ -547,8 +499,8 @@ export const grade5SpellingData: SpellingEntry[] = [
   {
     q1: "객적다.",
     q2: "객쩍다.",
-    answer: 1,
-    explanation: "'객적다'(쑥스럽다)가 올바른 표기입니다.",
+    answer: 2,
+    explanation: "'객쩍다'(멋쩍고 쓸데없다)가 올바른 표기입니다.",
   },
   {
     q1: "눈쌀을 찌푸리다.",
@@ -670,24 +622,6 @@ export const grade5SpellingData: SpellingEntry[] = [
     q2: "어찌 됬든 열심히 하자.",
     answer: 1,
     explanation: "'됐든'이 올바른 표기입니다.",
-  },
-  {
-    q1: "문제를 해결해 나가다.",
-    q2: "문제를 해결해나가다.",
-    answer: 1,
-    explanation: "보조동사 '나가다'는 띄어 쓰는 것이 원칙입니다.",
-  },
-  {
-    q1: "열심히 일해 왔다.",
-    q2: "열심히 일해왔다.",
-    answer: 1,
-    explanation: "보조동사 '오다/왔다'는 띄어 쓰는 것이 원칙입니다.",
-  },
-  {
-    q1: "읽어 보다 - 책을 읽어 보았다.",
-    q2: "읽어보다 - 책을 읽어보았다.",
-    answer: 1,
-    explanation: "보조동사 '보다'는 띄어 쓰는 것이 원칙입니다.",
   },
   {
     q1: "깨끗이 청소하다.",
