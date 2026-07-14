@@ -577,6 +577,29 @@ const JAMO_ANY_REGEX = /[ㄱ-ㅎㅏ-ㅣ]/g;
 const KOREAN_SYLLABLE_REGEX = /[가-힣]/g;
 const CHAR_LONG_REPEAT_REGEX = /(.)\1{4,}/;
 
+/**
+ * 공백을 무시한 최장 저주기 반복 블록 길이.
+ * "아라아라아라…"처럼 짧은 음절 뭉치를 공백 없이 반복해 분량만 채우는 장난은
+ * 토큰이 1개라 어절 기반 검사(패턴 반복·토큰 빈도·어간 집중)를 전부 우회한다.
+ * 문자 수준에서 주기 1~6의 연속 반복 구간 최대 길이를 재 그 사각지대를 막는다.
+ * (period 1 = "ㅋㅋㅋ"류지만 그건 CHAR_LONG_REPEAT가 이미 잡음 — 여기선 2~6이 핵심)
+ */
+function maxLowPeriodRun(chars: string): number {
+  let best = 0;
+  for (let p = 1; p <= 6; p++) {
+    let matches = 0;
+    for (let i = p; i < chars.length; i++) {
+      if (chars[i] === chars[i - p]) {
+        matches++;
+        if (matches + p > best) best = matches + p;
+      } else {
+        matches = 0;
+      }
+    }
+  }
+  return best;
+}
+
 // ── 헬퍼 함수들 ────────────────────────────────────────────────
 
 /**
@@ -605,6 +628,11 @@ export function isHardGibberish(text: string): boolean {
 
   // 3) 같은 글자가 5회 이상 연속 반복
   if (CHAR_LONG_REPEAT_REGEX.test(chars)) return true;
+
+  // 3-b) 공백 없는 짧은 음절 뭉치 반복 ("아라아라아라…"로 분량 채우기).
+  //      주기 2~6의 반복 블록이 14자 이상이면(예: "아라"×7) 장난으로 본다.
+  //      정상 글에 저주기 14자 연속 반복은 사실상 없어 오탐이 나지 않는다.
+  if (maxLowPeriodRun(chars) >= 14) return true;
 
   // 4) 공백 없는 긴 덩어리 (한 단어만 15자+) — 단, 정상 한글 문장의
   //    띄어쓰기 누락은 장난이 아니므로 완성형 한글 비율이 낮을 때만 차단
