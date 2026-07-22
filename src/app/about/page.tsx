@@ -5,13 +5,11 @@ import { motion } from "framer-motion";
 import {
   BookOpen,
   Brain,
-  Users,
   Sparkles,
   Target,
   Heart,
   TrendingUp,
   GraduationCap,
-  School,
   Lightbulb,
   Clock,
   Shield,
@@ -21,10 +19,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const stats = [
-  { label: "학생 수", value: "12,400+", icon: Users, color: "text-primary" },
   { label: "학습 문제", value: "50,000+", icon: BookOpen, color: "text-blue-500" },
-  { label: "파트너 학교", value: "120+", icon: School, color: "text-purple-500" },
-  { label: "학습 완료율", value: "94%", icon: TrendingUp, color: "text-orange-500" },
+  { label: "학년 커리큘럼", value: "6개 학년", icon: GraduationCap, color: "text-primary" },
+  { label: "학습 과목", value: "12개", icon: Sparkles, color: "text-purple-500" },
+  { label: "교육과정", value: "2022 개정", icon: Target, color: "text-orange-500" },
 ];
 
 const steps = [
@@ -283,17 +281,7 @@ export default function AboutPage() {
             <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <GraduationCap className="h-4 w-4" />
-                현직 초등교사 자문
-              </span>
-              <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-              <span className="flex items-center gap-1.5">
-                <Brain className="h-4 w-4" />
-                AI/교육공학 전문가
-              </span>
-              <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-              <span className="flex items-center gap-1.5">
-                <Heart className="h-4 w-4" />
-                학부모 피드백 반영
+                현직 초등교사가 만들었어요
               </span>
             </div>
           </motion.div>
