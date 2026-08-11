@@ -34,7 +34,7 @@ interface ScienceItem {
 const SCIENCE_ITEMS: ScienceItem[] = [
   // ── 물리 (Physics) ──
   {
-    text: "용수철처럼 원래 모양으로 되돌아오려는 힘을 ___이라 한다.",
+    text: "용수철처럼 원래 모양으로 되돌아오려는 힘을 ___이라(라) 한다.",
     answer: "탄성력",
     category: "물리",
     gradeGroup: "upper",
@@ -52,19 +52,19 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "지구가 물체를 끌어당기는 힘을 ___이라 한다.",
+    text: "지구가 물체를 끌어당기는 힘을 ___이라(라) 한다.",
     answer: "중력",
     category: "물리",
     gradeGroup: "both",
   },
   {
-    text: "물체가 운동 방향과 반대로 받는 힘을 ___이라 한다.",
+    text: "물체가 운동 방향과 반대로 받는 힘을 ___이라(라) 한다.",
     answer: "마찰력",
     category: "물리",
     gradeGroup: "upper",
   },
   {
-    text: "움직이는 물체는 계속 움직이려 하고, 멈춘 물체는 계속 멈추려 하는 성질을 ___이라 한다.",
+    text: "움직이는 물체는 계속 움직이려 하고, 멈춘 물체는 계속 멈추려 하는 성질을 ___이라(라) 한다.",
     answer: "관성",
     category: "물리",
     gradeGroup: "upper",
@@ -124,7 +124,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "물체의 운동 상태를 변화시키는 원인을 ___이라 한다.",
+    text: "물체의 운동 상태를 변화시키는 원인을 ___이라(라) 한다.",
     answer: "힘",
     category: "물리",
     gradeGroup: "lower",
@@ -132,7 +132,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 화학 (Chemistry) ──
   {
-    text: "물이 끓어서 수증기로 바뀌는 현상을 ___이라 한다.",
+    text: "물이 끓어서 수증기로 바뀌는 현상을 ___이라(라) 한다.",
     answer: "끓음",
     category: "화학",
     gradeGroup: "upper",
@@ -186,13 +186,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "용해에서 녹는 물질(예: 소금)을 ___이라 한다.",
+    text: "용해에서 녹는 물질(예: 소금)을 ___이라(라) 한다.",
     answer: "용질",
     category: "화학",
     gradeGroup: "upper",
   },
   {
-    text: "용질이 용매에 녹아 만들어진 액체(예: 소금물)를 ___이라 한다.",
+    text: "용질이 용매에 녹아 만들어진 액체(예: 소금물)를 ___이라(라) 한다.",
     answer: "용액",
     category: "화학",
     gradeGroup: "upper",
@@ -234,7 +234,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "철이 공기 중의 산소와 반응하여 붉게 변하는 현상을 ___이라 한다.",
+    text: "철이 공기 중의 산소와 반응하여 붉게 변하는 현상을 ___이라(라) 한다.",
     answer: "부식",
     category: "화학",
     gradeGroup: "upper",
@@ -242,7 +242,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 생물 (Biology) ──
   {
-    text: "식물이 빛을 이용하여 양분을 만드는 과정을 ___이라 한다.",
+    text: "식물이 빛을 이용하여 양분을 만드는 과정을 ___이라(라) 한다.",
     answer: "광합성",
     category: "생물",
     gradeGroup: "upper",
@@ -278,7 +278,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "개구리처럼 올챙이에서 모습이 크게 바뀌는 것을 ___이라 한다.",
+    text: "개구리처럼 올챙이에서 모습이 크게 바뀌는 것을 ___이라(라) 한다.",
     answer: "탈바꿈",
     category: "생물",
     gradeGroup: "lower",
@@ -308,13 +308,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "동물이 겨울을 나기 위해 긴 잠을 자는 것을 ___이라 한다.",
+    text: "동물이 겨울을 나기 위해 긴 잠을 자는 것을 ___이라(라) 한다.",
     answer: "겨울잠",
     category: "생물",
     gradeGroup: "lower",
   },
   {
-    text: "생물이 살고 있는 환경에서 잘 살아남도록 생김새와 생활 방식이 알맞게 바뀌는 것을 ___이라 한다.",
+    text: "생물이 살고 있는 환경에서 잘 살아남도록 생김새와 생활 방식이 알맞게 바뀌는 것을 ___이라(라) 한다.",
     answer: "적응",
     category: "생물",
     gradeGroup: "upper",
@@ -322,19 +322,19 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 지구과학 (Earth Science) ──
   {
-    text: "지구의 표면을 이루는 딱딱한 층을 ___이라 한다.",
+    text: "지구의 표면을 이루는 딱딱한 층을 ___이라(라) 한다.",
     answer: "지각",
     category: "지구과학",
     gradeGroup: "upper",
   },
   {
-    text: "흐르는 물에 의해 바위가 깎이는 현상을 ___이라 한다.",
+    text: "흐르는 물에 의해 바위가 깎이는 현상을 ___이라(라) 한다.",
     answer: "침식",
     category: "지구과학",
     gradeGroup: "lower",
   },
   {
-    text: "깎인 돌과 흙이 다른 곳에 쌓이는 것을 ___이라 한다.",
+    text: "깎인 돌과 흙이 다른 곳에 쌓이는 것을 ___이라(라) 한다.",
     answer: "퇴적",
     category: "지구과학",
     gradeGroup: "lower",
@@ -358,7 +358,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "화산이 폭발할 때 나오는 녹은 돌을 ___이라 한다.",
+    text: "화산이 폭발할 때 나오는 녹은 돌을 ___이라(라) 한다.",
     answer: "용암",
     category: "지구과학",
     gradeGroup: "lower",
@@ -370,7 +370,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "땅이 갑자기 흔들리는 현상을 ___이라 한다.",
+    text: "땅이 갑자기 흔들리는 현상을 ___이라(라) 한다.",
     answer: "지진",
     category: "지구과학",
     gradeGroup: "lower",
@@ -382,7 +382,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "지층에서 발견되는 옛날 생물의 흔적을 ___이라 한다.",
+    text: "지층에서 발견되는 옛날 생물의 흔적을 ___이라(라) 한다.",
     answer: "화석",
     category: "지구과학",
     gradeGroup: "lower",
@@ -406,13 +406,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "바닷물이 육지 쪽으로 들어오는 것을 ___이라 한다.",
+    text: "바닷물이 육지 쪽으로 들어오는 것을 ___이라(라) 한다.",
     answer: "밀물",
     category: "지구과학",
     gradeGroup: "lower",
   },
   {
-    text: "바닷물이 빠져나가는 것을 ___이라 한다.",
+    text: "바닷물이 빠져나가는 것을 ___이라(라) 한다.",
     answer: "썰물",
     category: "지구과학",
     gradeGroup: "lower",
@@ -444,13 +444,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "먹이 관계가 사슬처럼 연결된 것을 ___이라 한다.",
+    text: "먹이 관계가 사슬처럼 연결된 것을 ___이라(라) 한다.",
     answer: "먹이사슬",
     category: "환경",
     gradeGroup: "upper",
   },
   {
-    text: "먹이사슬이 복잡하게 얽힌 것을 ___이라 한다.",
+    text: "먹이사슬이 복잡하게 얽힌 것을 ___이라(라) 한다.",
     answer: "먹이그물",
     category: "환경",
     gradeGroup: "upper",
@@ -462,7 +462,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "쓰레기를 다시 사용하는 것을 ___이라 한다.",
+    text: "쓰레기를 다시 사용하는 것을 ___이라(라) 한다.",
     answer: "재활용",
     category: "환경",
     gradeGroup: "lower",
@@ -480,13 +480,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "수도꼭지를 잘 잠그고 짧게 샤워해서 물을 아껴 쓰는 것을 ___이라 한다.",
+    text: "수도꼭지를 잘 잠그고 짧게 샤워해서 물을 아껴 쓰는 것을 ___이라(라) 한다.",
     answer: "물 절약",
     category: "환경",
     gradeGroup: "lower",
   },
   {
-    text: "동식물이 사라져 더 이상 볼 수 없게 되는 것을 ___이라 한다.",
+    text: "동식물이 사라져 더 이상 볼 수 없게 되는 것을 ___이라(라) 한다.",
     answer: "멸종",
     category: "환경",
     gradeGroup: "upper",
@@ -498,7 +498,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "환경을 보호하기 위해 에너지를 아끼는 것을 ___이라 한다.",
+    text: "환경을 보호하기 위해 에너지를 아끼는 것을 ___이라(라) 한다.",
     answer: "절약",
     category: "환경",
     gradeGroup: "lower",
@@ -578,7 +578,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "에너지는 형태가 바뀔 수 있는데 이를 에너지 ___이라 한다.",
+    text: "에너지는 형태가 바뀔 수 있는데 이를 에너지 ___이라(라) 한다.",
     answer: "전환",
     category: "에너지",
     gradeGroup: "upper",
@@ -622,19 +622,19 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "폐에서 산소와 이산화탄소를 교환하는 것을 ___이라 한다.",
+    text: "폐에서 산소와 이산화탄소를 교환하는 것을 ___이라(라) 한다.",
     answer: "호흡",
     category: "인체",
     gradeGroup: "upper",
   },
   {
-    text: "심장이 혈액을 온몸으로 보내는 것을 ___이라 한다.",
+    text: "심장이 혈액을 온몸으로 보내는 것을 ___이라(라) 한다.",
     answer: "혈액순환",
     category: "인체",
     gradeGroup: "upper",
   },
   {
-    text: "뼈와 뼈가 만나는 부분을 ___이라 한다.",
+    text: "뼈와 뼈가 만나는 부분을 ___이라(라) 한다.",
     answer: "관절",
     category: "인체",
     gradeGroup: "lower",
@@ -676,13 +676,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "들이마신 공기가 지나가는 관을 ___이라 한다.",
+    text: "들이마신 공기가 지나가는 관을 ___이라(라) 한다.",
     answer: "기관",
     category: "인체",
     gradeGroup: "upper",
   },
   {
-    text: "입에서 나오는 소화액을 ___이라 한다.",
+    text: "입에서 나오는 소화액을 ___이라(라) 한다.",
     answer: "침",
     category: "인체",
     gradeGroup: "lower",
@@ -702,7 +702,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "알을 낳아 새끼를 번식시키는 방법을 ___이라 한다.",
+    text: "알을 낳아 새끼를 번식시키는 방법을 ___이라(라) 한다.",
     answer: "난생",
     category: "동물",
     gradeGroup: "upper",
@@ -836,13 +836,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "식물이 빛이 오는 쪽으로 굽어 자라는 성질을 ___이라 한다.",
+    text: "식물이 빛이 오는 쪽으로 굽어 자라는 성질을 ___이라(라) 한다.",
     answer: "굴광성",
     category: "식물",
     gradeGroup: "upper",
   },
   {
-    text: "뿌리가 중력 방향인 아래쪽으로 자라는 성질을 ___이라 한다.",
+    text: "뿌리가 중력 방향인 아래쪽으로 자라는 성질을 ___이라(라) 한다.",
     answer: "굴중성",
     category: "식물",
     gradeGroup: "upper",
@@ -878,7 +878,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "가을에 나뭇잎이 색이 변하는 것을 ___이라 한다.",
+    text: "가을에 나뭇잎이 색이 변하는 것을 ___이라(라) 한다.",
     answer: "단풍",
     category: "식물",
     gradeGroup: "lower",
@@ -886,7 +886,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 날씨 (Weather) ──
   {
-    text: "공기 중의 수증기가 하늘에서 작은 물방울이 된 것을 ___이라 한다.",
+    text: "공기 중의 수증기가 하늘에서 작은 물방울이 된 것을 ___이라(라) 한다.",
     answer: "구름",
     category: "날씨",
     gradeGroup: "lower",
@@ -898,13 +898,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "겨울에 구름 속 물방울이 얼어서 내리는 것을 ___이라 한다.",
+    text: "겨울에 구름 속 물방울이 얼어서 내리는 것을 ___이라(라) 한다.",
     answer: "눈",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "공기가 이동하는 것을 ___이라 한다.",
+    text: "공기가 이동하는 것을 ___이라(라) 한다.",
     answer: "바람",
     category: "날씨",
     gradeGroup: "lower",
@@ -952,7 +952,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "아침에 풀잎에 맺히는 물방울을 ___이라 한다.",
+    text: "아침에 풀잎에 맺히는 물방울을 ___이라(라) 한다.",
     answer: "이슬",
     category: "날씨",
     gradeGroup: "lower",
@@ -964,7 +964,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "번개가 칠 때 나는 소리를 ___이라 한다.",
+    text: "번개가 칠 때 나는 소리를 ___이라(라) 한다.",
     answer: "천둥",
     category: "날씨",
     gradeGroup: "lower",
@@ -1026,13 +1026,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "지구가 태양 주위를 도는 것을 ___이라 한다.",
+    text: "지구가 태양 주위를 도는 것을 ___이라(라) 한다.",
     answer: "공전",
     category: "우주",
     gradeGroup: "upper",
   },
   {
-    text: "지구가 스스로 도는 것을 ___이라 한다.",
+    text: "지구가 스스로 도는 것을 ___이라(라) 한다.",
     answer: "자전",
     category: "우주",
     gradeGroup: "upper",
@@ -1082,7 +1082,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 물질 (Matter) ──
   {
-    text: "우리 주위의 모든 것을 이루고 있는 것을 ___이라 한다.",
+    text: "우리 주위의 모든 것을 이루고 있는 것을 ___이라(라) 한다.",
     answer: "물질",
     category: "물질",
     gradeGroup: "lower",
@@ -1106,7 +1106,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "자석의 양 끝을 ___이라 한다.",
+    text: "자석의 양 끝을 ___이라(라) 한다.",
     answer: "극",
     category: "물질",
     gradeGroup: "lower",
@@ -1148,7 +1148,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "여러 가지 물질이 섞여 있는 것을 ___이라 한다.",
+    text: "여러 가지 물질이 섞여 있는 것을 ___이라(라) 한다.",
     answer: "혼합물",
     category: "물질",
     gradeGroup: "upper",
@@ -1172,7 +1172,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물질이 열에 의해 부피가 커지는 현상을 ___이라 한다.",
+    text: "물질이 열에 의해 부피가 커지는 현상을 ___이라(라) 한다.",
     answer: "열팽창",
     category: "물질",
     gradeGroup: "upper",
@@ -1266,7 +1266,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 힘과운동 (Force and Motion) ──
   {
-    text: "물체의 위치가 시간에 따라 변하는 것을 ___이라 한다.",
+    text: "물체의 위치가 시간에 따라 변하는 것을 ___이라(라) 한다.",
     answer: "운동",
     category: "힘과운동",
     gradeGroup: "lower",
@@ -1290,13 +1290,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "물속에서 물체가 뜨는 힘을 ___이라 한다.",
+    text: "물속에서 물체가 뜨는 힘을 ___이라(라) 한다.",
     answer: "부력",
     category: "힘과운동",
     gradeGroup: "upper",
   },
   {
-    text: "거리를 시간으로 나눈 것을 ___이라 한다.",
+    text: "거리를 시간으로 나눈 것을 ___이라(라) 한다.",
     answer: "속력",
     category: "힘과운동",
     gradeGroup: "upper",
@@ -1370,7 +1370,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "빛이 물속으로 들어갈 때 꺾이는 현상을 ___이라 한다.",
+    text: "빛이 물속으로 들어갈 때 꺾이는 현상을 ___이라(라) 한다.",
     answer: "굴절",
     category: "빛과소리",
     gradeGroup: "upper",
@@ -1436,7 +1436,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "빛이 곧게 나아가는 성질을 빛의 ___이라 한다.",
+    text: "빛이 곧게 나아가는 성질을 빛의 ___이라(라) 한다.",
     answer: "직진",
     category: "빛과소리",
     gradeGroup: "lower",
@@ -1533,7 +1533,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "지도에서 실제 거리를 줄인 비율을 ___이라 한다.",
+    text: "지도에서 실제 거리를 줄인 비율을 ___이라(라) 한다.",
     answer: "축척",
     category: "지리",
     gradeGroup: "lower",
@@ -1681,7 +1681,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "사람들이 원하는 것에 비해 자원이 부족한 것을 ___이라 한다.",
+    text: "사람들이 원하는 것에 비해 자원이 부족한 것을 ___이라(라) 한다.",
     answer: "희소성",
     category: "경제",
     gradeGroup: "upper",
@@ -1699,55 +1699,55 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물건의 값을 ___이라 한다.",
+    text: "물건의 값을 ___이라(라) 한다.",
     answer: "가격",
     category: "경제",
     gradeGroup: "lower",
   },
   {
-    text: "나라와 나라 사이에 물건을 사고파는 것을 ___이라 한다.",
+    text: "나라와 나라 사이에 물건을 사고파는 것을 ___이라(라) 한다.",
     answer: "무역",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "다른 나라에 물건을 파는 것을 ___이라 한다.",
+    text: "다른 나라에 물건을 파는 것을 ___이라(라) 한다.",
     answer: "수출",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "다른 나라에서 물건을 사 오는 것을 ___이라 한다.",
+    text: "다른 나라에서 물건을 사 오는 것을 ___이라(라) 한다.",
     answer: "수입",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "은행에 돈을 맡기는 것을 ___이라 한다.",
+    text: "은행에 돈을 맡기는 것을 ___이라(라) 한다.",
     answer: "저축",
     category: "경제",
     gradeGroup: "lower",
   },
   {
-    text: "물건의 가격이 계속 오르는 현상을 ___이라 한다.",
+    text: "물건의 가격이 계속 오르는 현상을 ___이라(라) 한다.",
     answer: "인플레이션",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "일한 대가로 받는 돈을 ___이라 한다.",
+    text: "일한 대가로 받는 돈을 ___이라(라) 한다.",
     answer: "임금",
     category: "경제",
     gradeGroup: "lower",
   },
   {
-    text: "물건을 만드는 데 드는 돈을 ___이라 한다.",
+    text: "물건을 만드는 데 드는 돈을 ___이라(라) 한다.",
     answer: "비용",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "한정된 자원을 어디에 쓸지 결정하는 것을 경제적 ___이라 한다.",
+    text: "한정된 자원을 어디에 쓸지 결정하는 것을 경제적 ___이라(라) 한다.",
     answer: "선택",
     category: "경제",
     gradeGroup: "upper",
@@ -1759,7 +1759,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "시장에서 물건을 팔려는 양을 ___이라 한다.",
+    text: "시장에서 물건을 팔려는 양을 ___이라(라) 한다.",
     answer: "공급",
     category: "경제",
     gradeGroup: "upper",
@@ -1797,7 +1797,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "국가의 최고 법을 ___이라 한다.",
+    text: "국가의 최고 법을 ___이라(라) 한다.",
     answer: "헌법",
     category: "정치",
     gradeGroup: "upper",
@@ -1833,7 +1833,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "국민의 기본적인 권리를 ___이라 한다.",
+    text: "국민의 기본적인 권리를 ___이라(라) 한다.",
     answer: "기본권",
     category: "정치",
     gradeGroup: "upper",
@@ -1863,7 +1863,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "다수의 의견을 따르되 소수 의견도 존중하는 것을 ___이라 한다.",
+    text: "다수의 의견을 따르되 소수 의견도 존중하는 것을 ___이라(라) 한다.",
     answer: "다수결",
     category: "정치",
     gradeGroup: "lower",
@@ -1871,13 +1871,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 문화 (Culture) ──
   {
-    text: "우리나라의 전통 의복을 ___이라 한다.",
+    text: "우리나라의 전통 의복을 ___이라(라) 한다.",
     answer: "한복",
     category: "문화",
     gradeGroup: "lower",
   },
   {
-    text: "우리나라의 전통 음식을 ___이라 한다.",
+    text: "우리나라의 전통 음식을 ___이라(라) 한다.",
     answer: "한식",
     category: "문화",
     gradeGroup: "lower",
@@ -1895,13 +1895,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "우리나라 전통 집을 ___이라 한다.",
+    text: "우리나라 전통 집을 ___이라(라) 한다.",
     answer: "한옥",
     category: "문화",
     gradeGroup: "lower",
   },
   {
-    text: "한옥의 바닥 난방 방식을 ___이라 한다.",
+    text: "한옥의 바닥 난방 방식을 ___이라(라) 한다.",
     answer: "온돌",
     category: "문화",
     gradeGroup: "lower",
@@ -1919,7 +1919,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "탈을 쓰고 노래와 춤을 하는 전통 놀이를 ___이라 한다.",
+    text: "탈을 쓰고 노래와 춤을 하는 전통 놀이를 ___이라(라) 한다.",
     answer: "탈춤",
     category: "문화",
     gradeGroup: "lower",
@@ -1949,13 +1949,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "음력 1월 1일을 ___이라 한다.",
+    text: "음력 1월 1일을 ___이라(라) 한다.",
     answer: "설날",
     category: "문화",
     gradeGroup: "lower",
   },
   {
-    text: "음력 8월 15일을 ___이라 한다.",
+    text: "음력 8월 15일을 ___이라(라) 한다.",
     answer: "추석",
     category: "문화",
     gradeGroup: "lower",
@@ -1969,13 +1969,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 법 (Law) ──
   {
-    text: "사회 구성원이 지켜야 할 강제적 규칙을 ___이라 한다.",
+    text: "사회 구성원이 지켜야 할 강제적 규칙을 ___이라(라) 한다.",
     answer: "법",
     category: "법",
     gradeGroup: "upper",
   },
   {
-    text: "법을 어기면 받는 불이익을 ___이라 한다.",
+    text: "법을 어기면 받는 불이익을 ___이라(라) 한다.",
     answer: "처벌",
     category: "법",
     gradeGroup: "upper",
@@ -1993,7 +1993,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "학교에서 지켜야 할 규칙을 ___이라 한다.",
+    text: "학교에서 지켜야 할 규칙을 ___이라(라) 한다.",
     answer: "교칙",
     category: "법",
     gradeGroup: "lower",
@@ -2073,13 +2073,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "쓰레기를 줄이고 다시 쓰는 것을 ___이라 한다.",
+    text: "쓰레기를 줄이고 다시 쓰는 것을 ___이라(라) 한다.",
     answer: "재활용",
     category: "환경",
     gradeGroup: "lower",
   },
   {
-    text: "공장에서 나오는 오염 물질이 공기를 더럽히는 것을 ___이라 한다.",
+    text: "공장에서 나오는 오염 물질이 공기를 더럽히는 것을 ___이라(라) 한다.",
     answer: "대기오염",
     category: "환경",
     gradeGroup: "lower",
@@ -2103,7 +2103,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "에너지를 아껴 쓰는 것을 에너지 ___이라 한다.",
+    text: "에너지를 아껴 쓰는 것을 에너지 ___이라(라) 한다.",
     answer: "절약",
     category: "환경",
     gradeGroup: "lower",
@@ -2201,7 +2201,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "세계 여러 나라가 모인 국제기구를 ___이라 한다.",
+    text: "세계 여러 나라가 모인 국제기구를 ___이라(라) 한다.",
     answer: "유엔(UN)",
     category: "세계",
     gradeGroup: "upper",
@@ -2263,7 +2263,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 한국사 (Korean History) ──
   {
-    text: "고려 시대에 만든 금속 활자를 ___이라 한다.",
+    text: "고려 시대에 만든 금속 활자를 ___이라(라) 한다.",
     answer: "직지심체요절",
     category: "한국사",
     gradeGroup: "upper",
@@ -2341,7 +2341,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "조선 시대 학문을 연구하던 곳을 ___이라 한다.",
+    text: "조선 시대 학문을 연구하던 곳을 ___이라(라) 한다.",
     answer: "성균관",
     category: "한국사",
     gradeGroup: "upper",
@@ -2361,7 +2361,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 인권 (Human Rights) ──
   {
-    text: "사람이 태어나면서부터 가지는 권리를 ___이라 한다.",
+    text: "사람이 태어나면서부터 가지는 권리를 ___이라(라) 한다.",
     answer: "인권",
     category: "인권",
     gradeGroup: "upper",
@@ -2373,7 +2373,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "어린이의 권리를 보장하는 국제 협약을 ___이라 한다.",
+    text: "어린이의 권리를 보장하는 국제 협약을 ___이라(라) 한다.",
     answer: "아동권리협약",
     category: "인권",
     gradeGroup: "upper",
@@ -2391,7 +2391,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "다른 사람을 괴롭히는 것을 ___이라 한다.",
+    text: "다른 사람을 괴롭히는 것을 ___이라(라) 한다.",
     answer: "폭력(따돌림)",
     category: "인권",
     gradeGroup: "lower",
@@ -2433,7 +2433,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "차별 없이 모든 사람을 존중하는 것을 ___이라 한다.",
+    text: "차별 없이 모든 사람을 존중하는 것을 ___이라(라) 한다.",
     answer: "존엄",
     category: "인권",
     gradeGroup: "upper",
@@ -2445,7 +2445,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "노인을 공경하는 것을 ___이라 한다.",
+    text: "노인을 공경하는 것을 ___이라(라) 한다.",
     answer: "경로효친",
     category: "인권",
     gradeGroup: "lower",
@@ -2563,13 +2563,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "정월 대보름에 먹는 견과류를 ___이라 한다.",
+    text: "정월 대보름에 먹는 견과류를 ___이라(라) 한다.",
     answer: "부럼",
     category: "전통문화",
     gradeGroup: "lower",
   },
   {
-    text: "김치를 함께 담그는 문화를 ___이라 한다.",
+    text: "김치를 함께 담그는 문화를 ___이라(라) 한다.",
     answer: "김장",
     category: "전통문화",
     gradeGroup: "lower",
@@ -2629,7 +2629,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "판소리에서 노래를 부르는 사람을 ___이라 한다.",
+    text: "판소리에서 노래를 부르는 사람을 ___이라(라) 한다.",
     answer: "소리꾼",
     category: "전통문화",
     gradeGroup: "upper",
@@ -2673,7 +2673,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "일자리가 부족하여 일할 수 없는 상태를 ___이라 한다.",
+    text: "일자리가 부족하여 일할 수 없는 상태를 ___이라(라) 한다.",
     answer: "실업",
     category: "사회문제",
     gradeGroup: "upper",
@@ -2691,7 +2691,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "스마트폰을 지나치게 사용하는 것을 ___이라 한다.",
+    text: "스마트폰을 지나치게 사용하는 것을 ___이라(라) 한다.",
     answer: "중독",
     category: "사회문제",
     gradeGroup: "lower",
@@ -2715,7 +2715,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "사이버 공간에서의 예절을 ___이라 한다.",
+    text: "사이버 공간에서의 예절을 ___이라(라) 한다.",
     answer: "네티켓",
     category: "사회문제",
     gradeGroup: "lower",
@@ -2777,19 +2777,19 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "불을 끄고 사람을 구하는 사람을 ___이라 한다.",
+    text: "불을 끄고 사람을 구하는 사람을 ___이라(라) 한다.",
     answer: "소방관",
     category: "직업",
     gradeGroup: "lower",
   },
   {
-    text: "나라를 지키는 사람을 ___이라 한다.",
+    text: "나라를 지키는 사람을 ___이라(라) 한다.",
     answer: "군인",
     category: "직업",
     gradeGroup: "lower",
   },
   {
-    text: "범인을 잡는 사람을 ___이라 한다.",
+    text: "범인을 잡는 사람을 ___이라(라) 한다.",
     answer: "경찰",
     category: "직업",
     gradeGroup: "lower",
@@ -2851,7 +2851,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 지역사회 (Local Community) ──
   {
-    text: "우리 동네에서 주민을 대표하는 사람을 ___이라 한다.",
+    text: "우리 동네에서 주민을 대표하는 사람을 ___이라(라) 한다.",
     answer: "이장(통장)",
     category: "지역사회",
     gradeGroup: "lower",
@@ -2875,7 +2875,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물건을 사고파는 장소를 ___이라 한다.",
+    text: "물건을 사고파는 장소를 ___이라(라) 한다.",
     answer: "시장",
     category: "지역사회",
     gradeGroup: "lower",
@@ -2923,7 +2923,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "이웃끼리 서로 돕는 것을 ___이라 한다.",
+    text: "이웃끼리 서로 돕는 것을 ___이라(라) 한다.",
     answer: "이웃사촌",
     category: "지역사회",
     gradeGroup: "lower",
@@ -3041,12 +3041,12 @@ function buildPool(
 // ─── EXTRA SCIENCE (compact tuples) ──────────────────────────
 const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   [
-    "개구리의 성장 과정에서 올챙이가 모습이 크게 바뀌는 것을 ___이라 한다.",
+    "개구리의 성장 과정에서 올챙이가 모습이 크게 바뀌는 것을 ___이라(라) 한다.",
     "탈바꿈",
     "생물",
     "lower",
   ],
-  ["식물의 꽃에서 꿀을 만드는 부분을 ___이라 한다.", "꿀샘", "생물", "lower"],
+  ["식물의 꽃에서 꿀을 만드는 부분을 ___이라(라) 한다.", "꿀샘", "생물", "lower"],
   [
     "동물의 몸 온도가 주변에 따라 변하면 ___동물이라 한다.",
     "변온",
@@ -3066,8 +3066,8 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "생물",
     "upper",
   ],
-  ["식물의 꽃가루가 암술에 닿는 것을 ___이라 한다.", "수분", "생물", "lower"],
-  ["열매 안에 들어있는 것을 ___이라 한다.", "씨앗", "생물", "lower"],
+  ["식물의 꽃가루가 암술에 닿는 것을 ___이라(라) 한다.", "수분", "생물", "lower"],
+  ["열매 안에 들어있는 것을 ___이라(라) 한다.", "씨앗", "생물", "lower"],
   ["지구의 표면은 여러 개의 ___으로 나뉘어 있다.", "판", "지구", "upper"],
   ["지진의 세기를 나타내는 단위를 ___라 한다.", "규모", "지구", "upper"],
   ["화산이 폭발할 때 나오는 가스를 ___라 한다.", "화산가스", "지구", "upper"],
@@ -3081,9 +3081,9 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["태양은 스스로 빛을 내는 ___이다.", "별", "우주", "lower"],
-  ["달처럼 행성 주위를 도는 천체를 ___이라 한다.", "위성", "우주", "lower"],
+  ["달처럼 행성 주위를 도는 천체를 ___이라(라) 한다.", "위성", "우주", "lower"],
   ["혜성의 꼬리는 태양과 ___방향으로 생긴다.", "반대", "우주", "upper"],
-  ["날씨를 예보하는 기관을 ___이라 한다.", "기상청", "날씨", "lower"],
+  ["날씨를 예보하는 기관을 ___이라(라) 한다.", "기상청", "날씨", "lower"],
   ["습도가 높으면 빨래가 ___마른다.", "천천히", "날씨", "lower"],
   ["안개는 지표면 가까이에 생긴 ___이다.", "구름", "날씨", "lower"],
   ["이슬은 수증기가 ___되어 생긴다.", "응결", "날씨", "lower"],
@@ -3114,7 +3114,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["체온계의 원리는 물질의 ___팽창이다.", "열", "물리", "lower"],
   ["음식물이 상하는 것을 ___라 한다.", "부패", "생물", "lower"],
-  ["우유를 높은 온도로 가열하는 것을 ___이라 한다.", "살균", "화학", "upper"],
+  ["우유를 높은 온도로 가열하는 것을 ___이라(라) 한다.", "살균", "화학", "upper"],
   ["탄산음료에 들어있는 기체는 ___다.", "이산화탄소", "화학", "upper"],
   // ── 물리 추가 ──
   ["물체가 빠르게 움직일수록 ___에너지가 크다.", "운동", "물리", "lower"],
@@ -3124,7 +3124,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "물리",
     "lower",
   ],
-  ["물체를 밀거나 당기는 것을 ___이라 한다.", "힘", "물리", "lower"],
+  ["물체를 밀거나 당기는 것을 ___이라(라) 한다.", "힘", "물리", "lower"],
   [
     "두 물체가 접촉하면 운동을 방해하는 ___이 생긴다.",
     "마찰력",
@@ -3133,7 +3133,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["물 위에 동전이 뜨는 것은 ___장력 때문이다.", "표면", "물리", "upper"],
   [
-    "빛이 다른 물질로 들어갈 때 방향이 바뀌는 것을 ___이라 한다.",
+    "빛이 다른 물질로 들어갈 때 방향이 바뀌는 것을 ___이라(라) 한다.",
     "굴절",
     "물리",
     "upper",
@@ -3151,7 +3151,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["같은 무게라도 접촉 면적이 작으면 ___이 커진다.", "압력", "물리", "upper"],
   [
-    "고무줄을 늘렸다 놓으면 원래대로 돌아오는 힘을 ___이라 한다.",
+    "고무줄을 늘렸다 놓으면 원래대로 돌아오는 힘을 ___이라(라) 한다.",
     "튕기는 힘",
     "물리",
     "lower",
@@ -3214,7 +3214,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["기름과 물을 섞으면 서로 ___지 않는다.", "섞이", "화학", "lower"],
   ["세제를 넣으면 기름과 물이 ___게 된다.", "섞이", "화학", "lower"],
   [
-    "물에 잉크를 떨어뜨리면 퍼지는 현상을 ___이라 한다.",
+    "물에 잉크를 떨어뜨리면 퍼지는 현상을 ___이라(라) 한다.",
     "확산",
     "화학",
     "upper",
@@ -3223,16 +3223,16 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["사람의 뼈는 약 ___개이다.", "206", "생물", "upper"],
   ["사람의 이(치아)는 영구치 기준 ___개이다.", "32", "생물", "upper"],
   [
-    "식물의 뿌리 끝에서 물을 흡수하는 것을 ___이라 한다.",
+    "식물의 뿌리 끝에서 물을 흡수하는 것을 ___이라(라) 한다.",
     "뿌리털",
     "생물",
     "lower",
   ],
   ["곰팡이와 버섯은 ___류에 속한다.", "균", "생물", "upper"],
-  ["혈액이 흐르는 관을 ___이라 한다.", "혈관", "생물", "lower"],
+  ["혈액이 흐르는 관을 ___이라(라) 한다.", "혈관", "생물", "lower"],
   ["눈의 검은 부분을 ___라 한다.", "눈동자", "생물", "lower"],
   [
-    "식물이 계절에 따라 잎을 떨어뜨리는 것을 ___이라 한다.",
+    "식물이 계절에 따라 잎을 떨어뜨리는 것을 ___이라(라) 한다.",
     "낙엽",
     "생물",
     "lower",
@@ -3257,12 +3257,12 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["지구의 나이는 약 ___억 년이다.", "46", "지구", "upper"],
   ["지층은 ___에서 위로 순서대로 쌓인다.", "아래", "지구", "lower"],
   [
-    "석회암 동굴에서 천장에 매달린 것을 ___이라 한다.",
+    "석회암 동굴에서 천장에 매달린 것을 ___이라(라) 한다.",
     "종유석",
     "지구",
     "upper",
   ],
-  ["석회암 동굴에서 바닥에서 자란 것을 ___이라 한다.", "석순", "지구", "upper"],
+  ["석회암 동굴에서 바닥에서 자란 것을 ___이라(라) 한다.", "석순", "지구", "upper"],
   ["바닷물이 증발하면 ___이 남는다.", "소금", "지구", "lower"],
   [
     "강 상류에서는 바위가 깎여 V자 모양의 ___이 만들어진다.",
@@ -3285,7 +3285,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["우박은 구름 속에서 물방울이 ___된 것이다.", "얼음", "날씨", "lower"],
   ["황사는 중국과 몽골의 ___에서 날아온다.", "사막", "날씨", "both"],
   ["장마는 ___에 비가 오랫동안 내리는 현상이다.", "여름", "날씨", "lower"],
-  ["태풍의 중심을 ___이라 한다.", "눈", "날씨", "upper"],
+  ["태풍의 중심을 ___이라(라) 한다.", "눈", "날씨", "upper"],
   ["기온이 0도 이하로 내려가면 ___이 내린다.", "눈", "날씨", "lower"],
   ["해풍은 낮에 ___에서 육지로 부는 바람이다.", "바다", "날씨", "upper"],
   ["육풍은 밤에 ___에서 바다로 부는 바람이다.", "육지", "날씨", "upper"],
@@ -3301,7 +3301,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["봄에 부는 건조한 바람을 ___라 한다.", "꽃샘추위", "날씨", "lower"],
-  ["눈이 많이 내린 것을 ___이라 한다.", "폭설", "날씨", "lower"],
+  ["눈이 많이 내린 것을 ___이라(라) 한다.", "폭설", "날씨", "lower"],
   ["비가 매우 많이 오는 것을 ___라 한다.", "폭우", "날씨", "lower"],
   ["겨울철 한파가 오면 수도관이 ___할 수 있다.", "동파", "날씨", "both"],
   // ── 우주 추가 ──
@@ -3320,7 +3320,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["월식은 지구가 ___의 빛을 가릴 때 일어난다.", "달", "우주", "both"],
   ["북극성은 ___자리에 속해 있다.", "작은곰", "우주", "upper"],
   [
-    "유성이 대기에서 타며 빛을 내는 것을 ___이라 한다.",
+    "유성이 대기에서 타며 빛을 내는 것을 ___이라(라) 한다.",
     "별똥별",
     "우주",
     "lower",
@@ -3351,7 +3351,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "생물",
     "upper",
   ],
-  ["겨울에 곰이 긴 잠을 자는 것을 ___이라 한다.", "동면", "생물", "lower"],
+  ["겨울에 곰이 긴 잠을 자는 것을 ___이라(라) 한다.", "동면", "생물", "lower"],
   ["바닷물의 약 ___퍼센트가 소금이다.", "3.5", "지구", "upper"],
   ["지구에서 물이 가장 많은 곳은 ___다.", "바다", "지구", "lower"],
   [
@@ -3487,7 +3487,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "날씨",
     "lower",
   ],
-  ["바람이 세게 부는 것을 ___이라 한다.", "강풍", "날씨", "lower"],
+  ["바람이 세게 부는 것을 ___이라(라) 한다.", "강풍", "날씨", "lower"],
   ["여름에 갑자기 많이 내리는 비를 ___라 한다.", "소나기", "날씨", "lower"],
 
   // ── 물의 변화 (lower, 3-4학년) ──
@@ -3738,7 +3738,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["완두콩 줄기는 다른 물체를 ___고 올라간다.", "감", "생물", "lower"],
   ["제비꽃은 스스로 씨앗을 ___는 방법으로 퍼진다.", "튕기", "생물", "lower"],
   [
-    "붕어빵 모양처럼 부모와 자식이 닮는 것을 ___이라 한다.",
+    "붕어빵 모양처럼 부모와 자식이 닮는 것을 ___이라(라) 한다.",
     "유전",
     "생물",
     "upper",
@@ -3795,7 +3795,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["우리나라 최초의 인공위성은 ___호이다.", "우리별 1", "우주", "upper"],
   [
-    "물이 증발하여 하늘로 올라가 구름이 되고 다시 비로 내리는 것을 물의 ___이라 한다.",
+    "물이 증발하여 하늘로 올라가 구름이 되고 다시 비로 내리는 것을 물의 ___이라(라) 한다.",
     "순환",
     "지구",
     "upper",
@@ -3860,7 +3860,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   // ── 물의 순환 추가 (15) ──
   ["강물은 높은 곳에서 ___곳으로 흐른다.", "낮은", "지구", "lower"],
   ["비가 땅속으로 스며드는 것을 ___라 한다.", "침투", "지구", "upper"],
-  ["지하수가 솟아나는 곳을 ___이라 한다.", "샘", "지구", "lower"],
+  ["지하수가 솟아나는 곳을 ___이라(라) 한다.", "샘", "지구", "lower"],
   ["호수의 물이 증발하면 ___가 된다.", "수증기", "지구", "lower"],
   ["구름에서 물방울이 커지면 ___가 되어 내린다.", "비", "지구", "lower"],
   ["높은 산에서는 구름 속을 ___할 수 있다.", "걸을", "지구", "lower"],
@@ -3913,7 +3913,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["식물은 밤에도 ___을 한다.", "호흡", "생물", "upper"],
   ["나이테가 넓은 쪽은 ___이 많이 닿는 쪽이다.", "빛", "생물", "upper"],
   [
-    "식물 호르몬 중 빛 쪽으로 자라게 하는 것을 ___이라 한다.",
+    "식물 호르몬 중 빛 쪽으로 자라게 하는 것을 ___이라(라) 한다.",
     "옥신",
     "생물",
     "upper",
@@ -4160,7 +4160,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 인체 추가 (15) ──
   ["음식물이 입→식도→위→소장→___의 순서로 이동한다.", "대장", "인체", "upper"],
-  ["위에서 나오는 소화액을 ___이라 한다.", "위액", "인체", "upper"],
+  ["위에서 나오는 소화액을 ___이라(라) 한다.", "위액", "인체", "upper"],
   ["적혈구는 ___를 운반하는 역할을 한다.", "산소", "인체", "upper"],
   ["백혈구는 몸에 들어온 ___을 막는 역할을 한다.", "세균", "인체", "upper"],
   [
@@ -5004,7 +5004,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["고구려를 세운 사람은 ___이다.", "주몽", "역사", "lower"],
   ["신라의 수도는 ___였다.", "경주", "역사", "lower"],
   ["고려의 수도는 ___이었다.", "개경", "역사", "lower"],
-  ["조선 시대 양반의 집을 ___이라 했다.", "한옥", "문화", "lower"],
+  ["조선 시대 양반의 집을 ___이라(라) 했다.", "한옥", "문화", "lower"],
   [
     "우리나라 전통 무예인 ___는 올림픽 정식 종목이다.",
     "태권도",
@@ -5028,9 +5028,9 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["은행에 돈을 맡기면 받는 것을 ___라 한다.", "이자", "경제", "lower"],
-  ["물건을 외국에 파는 것을 ___이라 한다.", "수출", "경제", "upper"],
-  ["물건을 외국에서 사오는 것을 ___이라 한다.", "수입", "경제", "upper"],
-  ["나라의 살림을 기록한 것을 ___이라 한다.", "예산", "경제", "upper"],
+  ["물건을 외국에 파는 것을 ___이라(라) 한다.", "수출", "경제", "upper"],
+  ["물건을 외국에서 사오는 것을 ___이라(라) 한다.", "수입", "경제", "upper"],
+  ["나라의 살림을 기록한 것을 ___이라(라) 한다.", "예산", "경제", "upper"],
   ["세금으로 운영되는 학교를 ___학교라 한다.", "공립", "경제", "lower"],
   ["유엔(UN)은 세계 ___를 위해 만들어졌다.", "평화", "세계", "both"],
   ["올림픽의 오륜기는 ___개 대륙을 상징한다.", "5", "세계", "lower"],
@@ -5051,7 +5051,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["미세먼지를 줄이려면 대중___을 이용해야 한다.", "교통", "환경", "both"],
   ["쓰레기를 줄이는 3R은 줄이기, 재사용, ___이다.", "재활용", "환경", "both"],
   ["플라스틱이 분해되는 데 약 ___년이 걸린다.", "500", "환경", "upper"],
-  ["멸종 위기 동물을 보호하는 곳을 ___이라 한다.", "보호구역", "환경", "lower"],
+  ["멸종 위기 동물을 보호하는 곳을 ___이라(라) 한다.", "보호구역", "환경", "lower"],
   ["비무장지대(DMZ)는 남한과 ___사이에 있다.", "북한", "정치", "both"],
   ["이산가족은 남북 ___으로 헤어진 가족이다.", "분단", "정치", "upper"],
   [
@@ -5126,25 +5126,25 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["비빔밥의 뜻은 여러 재료를 ___은 밥이다.", "섞", "문화", "lower"],
   ["떡볶이의 주재료는 ___이다.", "떡", "문화", "lower"],
   ["대한민국의 화폐 단위는 ___이다.", "원", "문화", "lower"],
-  ["태극기의 가운데 무늬를 ___이라 한다.", "태극", "문화", "lower"],
+  ["태극기의 가운데 무늬를 ___이라(라) 한다.", "태극", "문화", "lower"],
   ["태극기의 네 모서리에 있는 무늬를 ___라 한다.", "건곤감리", "문화", "upper"],
   // ── 정치 추가 ──
-  ["대통령이 법률안에 거부하는 것을 ___이라 한다.", "거부권", "정치", "upper"],
+  ["대통령이 법률안에 거부하는 것을 ___이라(라) 한다.", "거부권", "정치", "upper"],
   ["국무총리는 ___이 임명한다.", "대통령", "정치", "upper"],
   ["감사원은 국가의 ___를 감사한다.", "회계", "정치", "upper"],
   ["지방자치단체의 의회를 ___의회라 한다.", "지방", "정치", "upper"],
   ["조례는 ___자치단체에서 만든 규칙이다.", "지방", "정치", "upper"],
   ["주민투표는 지역 주민이 직접 ___하는 것이다.", "결정", "정치", "both"],
-  ["국민이 법률안을 제안하는 것을 ___이라 한다.", "국민발안", "정치", "upper"],
+  ["국민이 법률안을 제안하는 것을 ___이라(라) 한다.", "국민발안", "정치", "upper"],
   ["정당은 정치적 뜻이 같은 사람들의 ___이다.", "모임", "정치", "upper"],
   // ── 경제 추가 ──
-  ["나라에서 거두는 돈을 ___이라 한다.", "세금", "경제", "lower"],
+  ["나라에서 거두는 돈을 ___이라(라) 한다.", "세금", "경제", "lower"],
   ["부가가치세는 물건을 살 때 내는 ___이다.", "세금", "경제", "upper"],
   ["월급에서 떼는 세금을 ___세라 한다.", "소득", "경제", "upper"],
   ["돈의 가치가 떨어지면 물가가 ___한다.", "상승", "경제", "upper"],
   ["환율은 다른 나라 돈과 우리나라 돈의 ___비율이다.", "교환", "경제", "upper"],
   [
-    "기업이 물건을 만들어 이익을 남기는 것을 ___이라 한다.",
+    "기업이 물건을 만들어 이익을 남기는 것을 ___이라(라) 한다.",
     "이윤",
     "경제",
     "upper",
@@ -5234,7 +5234,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["우리나라 전통 음료인 ___는 쌀로 만든다.", "식혜", "문화", "lower"],
-  ["전통 떡 중 무지개 색의 떡을 ___이라 한다.", "무지개떡", "문화", "lower"],
+  ["전통 떡 중 무지개 색의 떡을 ___이라(라) 한다.", "무지개떡", "문화", "lower"],
   ["국민의 의무에는 국방, 납세, 교육, ___가 있다.", "근로", "정치", "upper"],
   ["대한민국 국회는 ___원제이다.", "단", "정치", "upper"],
   [
@@ -5327,7 +5327,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "문화",
     "lower",
   ],
-  ["옛날에는 편지를 전하는 사람을 ___이라 했다.", "파발", "문화", "lower"],
+  ["옛날에는 편지를 전하는 사람을 ___이라(라) 했다.", "파발", "문화", "lower"],
   ["전화기를 발명한 사람은 ___이다.", "벨", "문화", "upper"],
   [
     "인터넷이 발달하면서 ___으로 편지를 보낼 수 있게 되었다.",
@@ -5345,7 +5345,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["한식은 ___에 찬 음식을 먹는 명절이다.", "봄", "문화", "lower"],
   ["동지에 먹는 음식은 ___이다.", "팥죽", "문화", "lower"],
   ["정월 대보름에는 ___을 돌리는 풍습이 있다.", "쥐불", "문화", "lower"],
-  ["초복, 중복, 말복을 ___이라 한다.", "삼복", "문화", "lower"],
+  ["초복, 중복, 말복을 ___이라(라) 한다.", "삼복", "문화", "lower"],
   ["대보름에는 보름달을 보며 ___을 빈다.", "소원", "문화", "lower"],
   ["제기차기는 ___으로 제기를 차는 놀이이다.", "발", "문화", "lower"],
   ["연날리기는 ___을 이용해 연을 날리는 놀이이다.", "바람", "문화", "lower"],
@@ -5390,7 +5390,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["용돈을 받으면 ___을 세워 쓰는 것이 좋다.", "계획", "경제", "lower"],
   ["꼭 필요한 물건인지 생각한 후 ___하는 것이 좋다.", "구매", "경제", "lower"],
   ["물건을 바꾸어 쓰는 것을 ___시장이라 한다.", "벼룩", "경제", "lower"],
-  ["저금통에 동전을 모으는 것을 ___이라 한다.", "저축", "경제", "lower"],
+  ["저금통에 동전을 모으는 것을 ___이라(라) 한다.", "저축", "경제", "lower"],
   ["물건의 가격표를 보고 ___을 비교한다.", "값", "경제", "lower"],
   [
     "광고를 보고 무조건 사지 않고 ___을 따져 봐야 한다.",
@@ -5526,10 +5526,10 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "경제",
     "upper",
   ],
-  ["소비자 보호를 위한 기관을 ___이라 한다.", "소비자원", "경제", "upper"],
+  ["소비자 보호를 위한 기관을 ___이라(라) 한다.", "소비자원", "경제", "upper"],
   ["광고는 물건의 ___을 알리기 위해 만든다.", "장점", "경제", "lower"],
   ["독도에는 다양한 ___이 살고 있다.", "해양 생물", "지리", "both"],
-  ["한라산 꼭대기에는 ___이라는 호수가 있다.", "백록담", "지리", "lower"],
+  ["한라산 꼭대기에는 ___이라는(라는) 호수가 있다.", "백록담", "지리", "lower"],
   ["우리나라는 사계절이 ___한 나라이다.", "뚜렷", "지리", "lower"],
   ["세계의 3대 종교는 기독교, 이슬람교, ___다.", "불교", "세계", "upper"],
   [
@@ -5595,13 +5595,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "모든 국민이 법 앞에 동등한 대우를 받는 것을 ___이라 한다.",
+    "모든 국민이 법 앞에 동등한 대우를 받는 것을 ___이라(라) 한다.",
     "평등",
     "민주주의",
     "lower",
   ],
   [
-    "국민의 자유를 보장하는 권리를 ___이라 한다.",
+    "국민의 자유를 보장하는 권리를 ___이라(라) 한다.",
     "자유권",
     "민주주의",
     "upper",
@@ -5649,7 +5649,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "회의에서 찬성과 반대 의견을 모두 듣는 것을 ___이라 한다.",
+    "회의에서 찬성과 반대 의견을 모두 듣는 것을 ___이라(라) 한다.",
     "토론",
     "민주주의",
     "lower",
@@ -5681,13 +5681,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 경제 기초 추가 (15) ──
   [
-    "사람들이 생활에 필요한 것을 만드는 활동을 ___이라 한다.",
+    "사람들이 생활에 필요한 것을 만드는 활동을 ___이라(라) 한다.",
     "생산",
     "경제",
     "lower",
   ],
   ["물건을 사서 사용하는 것을 ___라 한다.", "소비", "경제", "lower"],
-  ["돈을 벌어서 쓰고 남은 것을 ___이라 한다.", "저축", "경제", "lower"],
+  ["돈을 벌어서 쓰고 남은 것을 ___이라(라) 한다.", "저축", "경제", "lower"],
   ["물건의 가격은 ___와 공급에 의해 결정된다.", "수요", "경제", "upper"],
   ["물건이 부족하면 가격이 ___한다.", "상승", "경제", "upper"],
   ["물건이 넘치면 가격이 ___한다.", "하락", "경제", "upper"],
@@ -5748,7 +5748,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["태국에서는 머리를 만지는 것이 ___다.", "실례", "세계", "upper"],
   ["프랑스의 유명한 미술관은 ___다.", "루브르", "세계", "upper"],
   ["미국의 유명한 자유의 여신상은 ___에 있다.", "뉴욕", "세계", "upper"],
-  ["중국의 새해를 ___이라 한다.", "춘절", "세계", "upper"],
+  ["중국의 새해를 ___이라(라) 한다.", "춘절", "세계", "upper"],
   ["러시아의 전통 인형은 ___다.", "마트료시카", "세계", "upper"],
   ["영국의 유명한 시계탑은 ___이다.", "빅벤", "세계", "upper"],
   ["호주에 사는 대표적인 동물은 ___다.", "캥거루", "세계", "lower"],
@@ -5877,15 +5877,15 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["돌을 갈아서 만든 도구를 ___석기라 한다.", "간", "역사", "lower"],
-  ["옛날에 나라를 다스리는 사람을 ___이라 했다.", "왕", "역사", "lower"],
+  ["옛날에 나라를 다스리는 사람을 ___이라(라) 했다.", "왕", "역사", "lower"],
   [
     "옛날 사람들은 농사를 짓기 위해 ___가에 모여 살았다.",
     "강",
     "역사",
     "lower",
   ],
-  ["경주에 있는 큰 무덤을 ___이라 한다.", "고분(왕릉)", "역사", "lower"],
-  ["석굴암 안에 있는 큰 불상을 ___이라 한다.", "본존불", "역사", "lower"],
+  ["경주에 있는 큰 무덤을 ___이라(라) 한다.", "고분(왕릉)", "역사", "lower"],
+  ["석굴암 안에 있는 큰 불상을 ___이라(라) 한다.", "본존불", "역사", "lower"],
 
   // ── 역사 추가 (upper) ──
   ["갑오개혁으로 ___제도가 폐지되었다.", "신분", "역사", "upper"],
@@ -6009,7 +6009,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
 
   // ── 경제 추가 (lower) ──
-  ["시장에서 물건의 가격을 깎는 것을 ___이라 한다.", "흥정", "경제", "lower"],
+  ["시장에서 물건의 가격을 깎는 것을 ___이라(라) 한다.", "흥정", "경제", "lower"],
   ["같은 물건이라도 장소에 따라 ___이 다르다.", "가격", "경제", "lower"],
   ["전통 시장에서 물건을 사면 ___이 싸다.", "가격", "경제", "lower"],
   [
@@ -6196,8 +6196,8 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["세계 지도에서 적도 위쪽을 ___반구라 한다.", "북", "세계", "upper"],
   ["세계 지도에서 적도 아래쪽을 ___반구라 한다.", "남", "세계", "upper"],
   ["본초 자오선 기준 오른쪽을 ___반구라 한다.", "동", "세계", "upper"],
-  ["지구본에서 가로선을 ___이라 한다.", "위선", "세계", "upper"],
-  ["지구본에서 세로선을 ___이라 한다.", "경선", "세계", "upper"],
+  ["지구본에서 가로선을 ___이라(라) 한다.", "위선", "세계", "upper"],
+  ["지구본에서 세로선을 ___이라(라) 한다.", "경선", "세계", "upper"],
   ["적도에 가까울수록 기온이 ___다.", "높", "세계", "upper"],
   ["극지방에 가까울수록 기온이 ___다.", "낮", "세계", "upper"],
 
@@ -6410,7 +6410,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["배를 운전하는 사람을 ___라 한다.", "선장(항해사)", "직업", "lower"],
   ["동물을 치료하는 의사를 ___의사라 한다.", "수", "직업", "lower"],
   ["그림을 그리는 사람을 ___라 한다.", "화가", "직업", "lower"],
-  ["영화를 만드는 사람을 ___이라 한다.", "감독", "직업", "lower"],
+  ["영화를 만드는 사람을 ___이라(라) 한다.", "감독", "직업", "lower"],
   [
     "노래를 부르는 것을 직업으로 하는 사람을 ___라 한다.",
     "가수",
@@ -6429,10 +6429,10 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "전통문화",
     "upper",
   ],
-  ["전통 혼례에서 신랑이 타는 것을 ___이라 한다.", "말", "전통문화", "lower"],
+  ["전통 혼례에서 신랑이 타는 것을 ___이라(라) 한다.", "말", "전통문화", "lower"],
   ["한옥의 지붕에 올리는 것을 ___라 한다.", "기와", "전통문화", "lower"],
   ["전통 장례에서 고인을 모시는 것을 ___라 한다.", "상여", "전통문화", "upper"],
-  ["우리나라 전통 염색 기법을 ___이라 한다.", "쪽염색", "전통문화", "upper"],
+  ["우리나라 전통 염색 기법을 ___이라(라) 한다.", "쪽염색", "전통문화", "upper"],
   ["한지를 이용해 만든 공예품을 ___공예라 한다.", "한지", "전통문화", "lower"],
   ["매듭을 짓는 전통 공예를 ___매듭이라 한다.", "전통", "전통문화", "lower"],
   [

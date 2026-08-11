@@ -64,7 +64,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "물갈퀴",
     category: "동물",
   },
-  { text: "사자는 동물의 ___이라고 불린다.", answer: "왕", category: "동물" },
+  { text: "사자는 동물의 ___이라고(라고) 불린다.", answer: "왕", category: "동물" },
   { text: "기린의 ___은 매우 길다.", answer: "목", category: "동물" },
   { text: "코끼리는 긴 ___로 물을 마신다.", answer: "코", category: "동물" },
   { text: "펭귄은 날지 못하는 ___다.", answer: "새", category: "동물" },
@@ -119,7 +119,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "하늘에서 내리는 하얀 결정을 ___이라고 한다.",
+    text: "하늘에서 내리는 하얀 결정을 ___이라고(라고) 한다.",
     answer: "눈",
     category: "자연",
   },
@@ -129,7 +129,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "나무에서 떨어지는 것을 ___이라고 한다.",
+    text: "나무에서 떨어지는 것을 ___이라고(라고) 한다.",
     answer: "낙엽",
     category: "자연",
   },
@@ -141,7 +141,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "바다의 물은 ___맛이 난다.", answer: "짠", category: "자연" },
   {
-    text: "하루 중 해가 뜨는 때를 ___이라 한다.",
+    text: "하루 중 해가 뜨는 때를 ___이라(라) 한다.",
     answer: "아침",
     category: "자연",
   },
@@ -176,7 +176,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "꽃에서 좋은 ___가 난다.", answer: "향기", category: "자연" },
   { text: "연못에는 ___가 살고 있다.", answer: "물고기", category: "자연" },
   {
-    text: "흙 위에 자라는 초록색 식물을 ___이라 한다.",
+    text: "흙 위에 자라는 초록색 식물을 ___이라(라) 한다.",
     answer: "풀",
     category: "자연",
   },
@@ -201,7 +201,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "산꼭대기에서 흘러내리는 물줄기를 ___이라 한다.",
+    text: "산꼭대기에서 흘러내리는 물줄기를 ___이라(라) 한다.",
     answer: "계곡",
     category: "자연",
   },
@@ -367,7 +367,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // === 날씨 (30) ===
   {
-    text: "하늘에 떠있는 흰 것을 ___이라 한다.",
+    text: "하늘에 떠있는 흰 것을 ___이라(라) 한다.",
     answer: "구름",
     category: "날씨",
   },
@@ -421,7 +421,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "맑은 날 하늘은 ___색이다.", answer: "파란", category: "날씨" },
   {
-    text: "빗방울이 얼어서 떨어지는 것을 ___이라 한다.",
+    text: "빗방울이 얼어서 떨어지는 것을 ___이라(라) 한다.",
     answer: "우박",
     category: "날씨",
   },
@@ -448,7 +448,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "겨울에 눈이 많이 내리면 ___이라 부른다.",
+    text: "겨울에 눈이 많이 내리면 ___이라(라) 부른다.",
     answer: "폭설",
     category: "날씨",
   },
@@ -513,12 +513,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "교통 신호등의 빨간불은 ___이라는 뜻이다.",
+    text: "교통 신호등의 빨간불은 ___이라는(라는) 뜻이다.",
     answer: "멈춤",
     category: "생활상식",
   },
   {
-    text: "교통 신호등의 초록불은 ___이라는 뜻이다.",
+    text: "교통 신호등의 초록불은 ___이라는(라는) 뜻이다.",
     answer: "건너감",
     category: "생활상식",
   },
@@ -641,17 +641,17 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "어린이날은 ___월 5일이다.", answer: "5", category: "문화" },
   { text: "크리스마스는 ___월 25일이다.", answer: "12", category: "문화" },
   {
-    text: "우리나라 전통 옷을 ___이라 한다.",
+    text: "우리나라 전통 옷을 ___이라(라) 한다.",
     answer: "한복",
     category: "문화",
   },
   {
-    text: "우리나라 전통 집을 ___이라 한다.",
+    text: "우리나라 전통 집을 ___이라(라) 한다.",
     answer: "한옥",
     category: "문화",
   },
   {
-    text: "우리나라 전통 음식을 ___이라 한다.",
+    text: "우리나라 전통 음식을 ___이라(라) 한다.",
     answer: "한식",
     category: "문화",
   },
@@ -728,7 +728,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   // === 우주 (기초, 15) ===
   { text: "지구는 ___양 주위를 돈다.", answer: "태", category: "우주" },
   {
-    text: "밤하늘에 빛나는 것을 ___이라 한다.",
+    text: "밤하늘에 빛나는 것을 ___이라(라) 한다.",
     answer: "별",
     category: "우주",
   },
@@ -748,7 +748,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "하늘에서 별이 떨어지는 것처럼 보이는 것을 ___이라 한다.",
+    text: "하늘에서 별이 떨어지는 것처럼 보이는 것을 ___이라(라) 한다.",
     answer: "별똥별",
     category: "우주",
   },
@@ -778,12 +778,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식물이 햇빛을 받아 양분을 만드는 것을 ___이라 한다.",
+    text: "식물이 햇빛을 받아 양분을 만드는 것을 ___이라(라) 한다.",
     answer: "광합성",
     category: "과학",
   },
   {
-    text: "화산에서 나오는 뜨거운 액체를 ___이라고 한다.",
+    text: "화산에서 나오는 뜨거운 액체를 ___이라고(라고) 한다.",
     answer: "용암",
     category: "과학",
   },
@@ -841,12 +841,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 과학 상식 (25) ────
   {
-    text: "지구는 태양 주위를 도는데 이것을 ___이라 한다.",
+    text: "지구는 태양 주위를 도는데 이것을 ___이라(라) 한다.",
     answer: "공전",
     category: "과학",
   },
   {
-    text: "지구가 스스로 도는 것을 ___이라 한다.",
+    text: "지구가 스스로 도는 것을 ___이라(라) 한다.",
     answer: "자전",
     category: "과학",
   },
@@ -1030,7 +1030,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "지구의 모양은 둥근 ___다.", answer: "구", category: "자연" },
   {
-    text: "산에서 흐르는 물을 ___이라 한다.",
+    text: "산에서 흐르는 물을 ___이라(라) 한다.",
     answer: "시냇물",
     category: "자연",
   },
@@ -1039,7 +1039,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "식물은 낮에 ___를 내뿜는다.", answer: "산소", category: "자연" },
   { text: "호수에 사는 식물은 ___이다.", answer: "연꽃", category: "자연" },
   {
-    text: "동굴 안에 매달려 있는 돌기둥을 ___이라 한다.",
+    text: "동굴 안에 매달려 있는 돌기둥을 ___이라(라) 한다.",
     answer: "종유석",
     category: "자연",
   },
@@ -1064,7 +1064,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "겨울에 나무가 잎을 떨어뜨리는 것을 ___이라 한다.",
+    text: "겨울에 나무가 잎을 떨어뜨리는 것을 ___이라(라) 한다.",
     answer: "낙엽",
     category: "자연",
   },
@@ -1219,7 +1219,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "기온이 매우 높은 날을 ___이라 한다.",
+    text: "기온이 매우 높은 날을 ___이라(라) 한다.",
     answer: "폭염",
     category: "날씨",
   },
@@ -1370,7 +1370,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "우리나라 전통 부채를 ___이라 한다.",
+    text: "우리나라 전통 부채를 ___이라(라) 한다.",
     answer: "합죽선",
     category: "문화",
   },
@@ -1380,7 +1380,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한옥의 바닥 난방 시스템을 ___이라 한다.",
+    text: "한옥의 바닥 난방 시스템을 ___이라(라) 한다.",
     answer: "온돌",
     category: "문화",
   },
@@ -1444,7 +1444,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "우주인이 입는 옷을 우주___이라 한다.",
+    text: "우주인이 입는 옷을 우주___이라(라) 한다.",
     answer: "복",
     category: "우주",
   },
@@ -1619,7 +1619,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 동물: 원인결과 ────
   {
-    text: "겨울이 오면 다람쥐는 먹이를 모으는데, 이것을 ___이라고 한다.",
+    text: "겨울이 오면 다람쥐는 먹이를 모으는데, 이것을 ___이라고(라고) 한다.",
     answer: "저장",
     category: "동물",
   },
@@ -2241,7 +2241,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 생활상식 신규 ────
   {
-    text: "음식에서 에너지를 주는 영양소를 ___이라 한다.",
+    text: "음식에서 에너지를 주는 영양소를 ___이라(라) 한다.",
     answer: "탄수화물",
     category: "생활상식",
   },
@@ -2291,7 +2291,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 날씨 신규 ────
   {
-    text: "아침에 풀잎에 맺히는 물방울을 ___이라 한다.",
+    text: "아침에 풀잎에 맺히는 물방울을 ___이라(라) 한다.",
     answer: "이슬",
     category: "날씨",
   },
@@ -2493,7 +2493,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "지리산은 ___개의 도에 걸쳐 있다.", answer: "세", category: "지리" },
   {
-    text: "제주도에는 ___이라는 높은 산이 있다.",
+    text: "제주도에는 ___이라는(라는) 높은 산이 있다.",
     answer: "한라산",
     category: "지리",
   },
@@ -2600,7 +2600,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "고구려, 백제, 신라를 합쳐 ___이라고 부른다.",
+    text: "고구려, 백제, 신라를 합쳐 ___이라고(라고) 부른다.",
     answer: "삼국",
     category: "역사",
   },
@@ -2658,7 +2658,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "얼음은 물의 ___상태이다.", answer: "고체", category: "과학" },
   { text: "수증기는 물의 ___상태이다.", answer: "기체", category: "과학" },
-  { text: "무게를 재는 도구를 ___이라 한다.", answer: "저울", category: "과학" },
+  { text: "무게를 재는 도구를 ___이라(라) 한다.", answer: "저울", category: "과학" },
   { text: "길이를 재는 도구를 ___라 한다.", answer: "자", category: "과학" },
   {
     text: "온도를 재는 도구를 ___라 한다.",
@@ -2693,12 +2693,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "물이 수증기로 변하는 것을 ___이라 한다.",
+    text: "물이 수증기로 변하는 것을 ___이라(라) 한다.",
     answer: "증발",
     category: "과학",
   },
   {
-    text: "수증기가 물방울로 변하는 것을 ___이라 한다.",
+    text: "수증기가 물방울로 변하는 것을 ___이라(라) 한다.",
     answer: "응결",
     category: "과학",
   },
@@ -2758,12 +2758,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "강의 하류에 흙이 쌓이는 것을 ___이라 한다.",
+    text: "강의 하류에 흙이 쌓이는 것을 ___이라(라) 한다.",
     answer: "퇴적",
     category: "지구과학",
   },
   { text: "지구의 내부는 매우 ___다.", answer: "뜨겁", category: "지구과학" },
-  { text: "지구의 겉면을 ___이라 한다.", answer: "지각", category: "지구과학" },
+  { text: "지구의 겉면을 ___이라(라) 한다.", answer: "지각", category: "지구과학" },
   {
     text: "바다의 밀물과 썰물은 ___의 인력 때문이다.",
     answer: "달",
@@ -2861,7 +2861,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "화산에서 나오는 뜨거운 돌을 ___이라 한다.",
+    text: "화산에서 나오는 뜨거운 돌을 ___이라(라) 한다.",
     answer: "용암",
     category: "지구과학",
   },
@@ -3024,12 +3024,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "지구는 태양 주위를 도는데 이것을 ___이라 한다.",
+    text: "지구는 태양 주위를 도는데 이것을 ___이라(라) 한다.",
     answer: "공전",
     category: "우주",
   },
   {
-    text: "지구가 스스로 도는 것을 ___이라 한다.",
+    text: "지구가 스스로 도는 것을 ___이라(라) 한다.",
     answer: "자전",
     category: "우주",
   },
@@ -3368,7 +3368,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "삼별초는 ___에 대항한 군대이다.", answer: "몽골", category: "역사" },
   {
-    text: "조선시대 서민 교육기관을 ___이라 한다.",
+    text: "조선시대 서민 교육기관을 ___이라(라) 한다.",
     answer: "서당",
     category: "역사",
   },
@@ -3394,12 +3394,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "한국 최초의 우주인은 ___이다.", answer: "이소연", category: "역사" },
   {
-    text: "조선시대 왕이 사는 곳을 ___이라 한다.",
+    text: "조선시대 왕이 사는 곳을 ___이라(라) 한다.",
     answer: "궁궐",
     category: "역사",
   },
   {
-    text: "조선시대에 편지를 전하는 제도를 ___이라 한다.",
+    text: "조선시대에 편지를 전하는 제도를 ___이라(라) 한다.",
     answer: "역참",
     category: "역사",
   },
@@ -3498,7 +3498,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "지층에서 발견되는 옛 생물의 흔적을 ___이라 한다.",
+    text: "지층에서 발견되는 옛 생물의 흔적을 ___이라(라) 한다.",
     answer: "화석",
     category: "과학",
   },
@@ -3594,7 +3594,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "1톤은 ___kg이다.", answer: "1000", category: "수학상식" },
   {
-    text: "반지름의 두 배를 ___이라 한다.",
+    text: "반지름의 두 배를 ___이라(라) 한다.",
     answer: "지름",
     category: "수학상식",
   },
@@ -3614,7 +3614,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "둥근 기둥 모양의 도형을 ___이라 한다.",
+    text: "둥근 기둥 모양의 도형을 ___이라(라) 한다.",
     answer: "원기둥",
     category: "수학상식",
   },
@@ -4273,7 +4273,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 역사 신규 ────
   {
-    text: "일제 강점기에 나라를 되찾기 위한 운동을 ___이라 한다.",
+    text: "일제 강점기에 나라를 되찾기 위한 운동을 ___이라(라) 한다.",
     answer: "독립운동",
     category: "역사",
   },
@@ -4340,12 +4340,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 수학상식 신규 ────
   {
-    text: "도형을 뒤집어도 모양이 같으면 ___이라 한다.",
+    text: "도형을 뒤집어도 모양이 같으면 ___이라(라) 한다.",
     answer: "대칭",
     category: "수학상식",
   },
   {
-    text: "원의 중심에서 둘레까지의 거리를 ___이라 한다.",
+    text: "원의 중심에서 둘레까지의 거리를 ___이라(라) 한다.",
     answer: "반지름",
     category: "수학상식",
   },
@@ -4603,7 +4603,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "조선시대 왕의 일기를 ___이라 한다.",
+    text: "조선시대 왕의 일기를 ___이라(라) 한다.",
     answer: "조선왕조실록",
     category: "역사",
   },
@@ -4708,7 +4708,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "빛이 렌즈를 지날 때 꺾이는 현상을 ___이라 한다.",
+    text: "빛이 렌즈를 지날 때 꺾이는 현상을 ___이라(라) 한다.",
     answer: "굴절",
     category: "물리",
   },
@@ -4729,7 +4729,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "물체의 빠르기를 나타내는 것을 ___이라 한다.",
+    text: "물체의 빠르기를 나타내는 것을 ___이라(라) 한다.",
     answer: "속력",
     category: "물리",
   },
@@ -4772,7 +4772,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "화학",
   },
   {
-    text: "산성과 염기성의 중간을 ___이라 한다.",
+    text: "산성과 염기성의 중간을 ___이라(라) 한다.",
     answer: "중성",
     category: "화학",
   },
@@ -4792,7 +4792,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "식물이 꽃가루를 옮기는 것을 ___이라 한다.",
+    text: "식물이 꽃가루를 옮기는 것을 ___이라(라) 한다.",
     answer: "수분",
     category: "식물",
   },
@@ -4807,7 +4807,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "식물",
   },
   {
-    text: "식물의 잎에서 수분이 증발하는 것을 ___이라 한다.",
+    text: "식물의 잎에서 수분이 증발하는 것을 ___이라(라) 한다.",
     answer: "증산작용",
     category: "식물",
   },
@@ -4910,7 +4910,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "빛이 1년 동안 가는 거리를 ___이라 한다.",
+    text: "빛이 1년 동안 가는 거리를 ___이라(라) 한다.",
     answer: "광년",
     category: "우주",
   },
@@ -4958,17 +4958,17 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "우주의 나이는 약 ___억 년이다.", answer: "138", category: "우주" },
   {
-    text: "우주가 시작된 사건을 ___이라 한다.",
+    text: "우주가 시작된 사건을 ___이라(라) 한다.",
     answer: "빅뱅",
     category: "우주",
   },
   {
-    text: "달이 지구 그림자에 가려지는 것을 ___이라 한다.",
+    text: "달이 지구 그림자에 가려지는 것을 ___이라(라) 한다.",
     answer: "월식",
     category: "우주",
   },
   {
-    text: "해가 달에 가려지는 현상을 ___이라 한다.",
+    text: "해가 달에 가려지는 현상을 ___이라(라) 한다.",
     answer: "일식",
     category: "우주",
   },
@@ -5107,7 +5107,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "소리의 빠르기를 ___이라고 한다.",
+    text: "소리의 빠르기를 ___이라고(라고) 한다.",
     answer: "음속",
     category: "생활상식",
   },
@@ -5170,7 +5170,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "소리는 진공에서 전달되지 ___는다.", answer: "않", category: "물리" },
   {
-    text: "빛이 물에서 공기로 나올 때 꺾이는 현상을 ___이라 한다.",
+    text: "빛이 물에서 공기로 나올 때 꺾이는 현상을 ___이라(라) 한다.",
     answer: "굴절",
     category: "물리",
   },
@@ -5691,7 +5691,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "우주비행사가 우주 밖으로 나가 활동하는 것을 ___이라 한다.",
+    text: "우주비행사가 우주 밖으로 나가 활동하는 것을 ___이라(라) 한다.",
     answer: "우주유영",
     category: "우주",
   },
@@ -5834,12 +5834,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
   { text: "삼각기둥의 면은 ___개이다.", answer: "5", category: "수학상식" },
   { text: "사각뿔의 꼭짓점은 ___개이다.", answer: "5", category: "수학상식" },
   {
-    text: "통계에서 가장 자주 나오는 값을 ___이라 한다.",
+    text: "통계에서 가장 자주 나오는 값을 ___이라(라) 한다.",
     answer: "최빈값",
     category: "수학상식",
   },
   {
-    text: "자료를 크기순으로 나열했을 때 가운데 값을 ___이라 한다.",
+    text: "자료를 크기순으로 나열했을 때 가운데 값을 ___이라(라) 한다.",
     answer: "중앙값",
     category: "수학상식",
   },
@@ -5922,7 +5922,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "판소리에서 소리하는 사람을 ___이라 한다.",
+    text: "판소리에서 소리하는 사람을 ___이라(라) 한다.",
     answer: "소리꾼",
     category: "문화",
   },

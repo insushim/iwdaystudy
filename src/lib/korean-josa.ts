@@ -50,6 +50,10 @@ export function numberIsRieul(n: number): boolean {
 }
 
 function pick(anchor: string, withB: string, withoutB: string): string {
+  // 빈칸이 그대로 노출되는 문항("___이라(라) 한다")은 받침을 알 수 없다.
+  // 이때는 관형적으로 쓰는 받침형(을·은·이·과·이라)을 쓴다 — 플레이스홀더가
+  // 학생 화면에 그대로 새는 것보다 낫다.
+  if (anchor === "_") return withB;
   if (/^\d+$/.test(anchor)) {
     return numberHasBatchim(parseInt(anchor, 10)) ? withB : withoutB;
   }
@@ -58,6 +62,7 @@ function pick(anchor: string, withB: string, withoutB: string): string {
 
 /** 앵커(한글 마지막 글자 또는 숫자 전체) 기준 '으로'/'로' 선택. */
 function pickRo(anchor: string): string {
+  if (anchor === "_") return "으로";
   if (/^\d+$/.test(anchor)) {
     const n = parseInt(anchor, 10);
     return numberHasBatchim(n) && !numberIsRieul(n) ? "으로" : "로";
@@ -75,18 +80,27 @@ const MIDDLE = `(?:["'”’)\\]]|\\s*\\([^)]*\\))*`;
 
 // 앵커(한글/숫자) + MIDDLE(따옴표/괄호) + 조사 플레이스홀더.
 const JOSA_PAIRS: Array<[RegExp, string, string]> = [
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})을\\(를\\)`, "g"), "을", "를"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})를\\(을\\)`, "g"), "을", "를"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})은\\(는\\)`, "g"), "은", "는"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})는\\(은\\)`, "g"), "은", "는"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})이\\(가\\)`, "g"), "이", "가"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})가\\(이\\)`, "g"), "이", "가"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})과\\(와\\)`, "g"), "과", "와"],
-  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})와\\(과\\)`, "g"), "과", "와"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})을\\(를\\)`, "g"), "을", "를"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})를\\(을\\)`, "g"), "을", "를"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})은\\(는\\)`, "g"), "은", "는"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})는\\(은\\)`, "g"), "은", "는"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})이\\(가\\)`, "g"), "이", "가"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})가\\(이\\)`, "g"), "이", "가"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})과\\(와\\)`, "g"), "과", "와"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})와\\(과\\)`, "g"), "과", "와"],
+  // 서술격조사 '-이라' 계열. 커리큘럼 템플릿이 "___이라고 해요" 처럼 조사를
+  // 하드코딩해 두어 받침 없는 정답이 오면 "명사이라고 해요" 같은 비문이 됐다.
+  // 템플릿을 플레이스홀더로 바꾸고 여기서 받침 규칙으로 고른다.
+  // (문자열 교정 방식은 쓸 수 없다 — "아이라고"의 '아'+'이라고' 와
+  //  '아이'+'라고' 를 사전 없이 구별할 수 없기 때문.)
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})이라고\\(라고\\)`, "g"), "이라고", "라고"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})이라는\\(라는\\)`, "g"), "이라는", "라는"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})이라도\\(라도\\)`, "g"), "이라도", "라도"],
+  [new RegExp(`([가-힣]|\\d+|_)(${MIDDLE})이라\\(라\\)`, "g"), "이라", "라"],
 ];
 
 const RO_PLACEHOLDER = new RegExp(
-  `([가-힣]|\\d+)(${MIDDLE})으로\\(로\\)|([가-힣]|\\d+)(${MIDDLE})로\\(으로\\)`,
+  `([가-힣]|\\d+|_)(${MIDDLE})으로\\(로\\)|([가-힣]|\\d+|_)(${MIDDLE})로\\(으로\\)`,
   "g",
 );
 

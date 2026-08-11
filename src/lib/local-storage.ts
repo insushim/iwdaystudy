@@ -971,6 +971,29 @@ export function clearAllLocalData(): void {
   localStorage.removeItem(DAILY_SETS_KEY);
   localStorage.removeItem(QUESTIONS_KEY);
   localStorage.removeItem(BADGES_KEY);
+
+  // 학습기록 5종만 지우면 정작 민감한 것이 남는다:
+  // araharu_users 에는 이 기기에서 가입한 사람들의 이름·이메일·학교·학년과
+  // (local-auth 의) 약한 비밀번호 해시가 들어 있다. 학급에서 기기를 돌려 쓰는
+  // 환경이라 사용자가 바뀌면 함께 지운다. 진행 중이던 세션 상태도 정리한다.
+  for (const key of [
+    "araharu_users",
+    "araharu-classes",
+    "araharu-class-members",
+    "araharu_daily_sets",
+  ]) {
+    localStorage.removeItem(key);
+  }
+  // 오늘의 세트 캐시는 사용자별 키(araharu_today_set_v14_<userId>_<date>)라
+  // 접두사로 훑어 지운다.
+  try {
+    for (const k of Object.keys(localStorage)) {
+      if (k.startsWith("araharu_today_set_")) localStorage.removeItem(k);
+    }
+    sessionStorage.removeItem("araharu-learning-session");
+  } catch {
+    /* 정리 실패가 로그인을 막아서는 안 된다 */
+  }
 }
 
 // ---------- Local Data Ownership (기기 공유 프라이버시) ----------

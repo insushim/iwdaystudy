@@ -2695,7 +2695,7 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
   { text: "삼각형의 변은 ___개이다.", answer: "3", category: "수학" },
   { text: "사각형의 변은 ___개이다.", answer: "4", category: "수학" },
   {
-    text: "동그라미를 다른 말로 ___이라고 해요.",
+    text: "동그라미를 다른 말로 ___이라고(라고) 해요.",
     answer: "원",
     category: "수학",
   },
@@ -2736,7 +2736,7 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
   { text: "식물이 자라려면 ___이 필요해요.", answer: "물", category: "과학" },
   { text: "식물이 자라려면 ___빛이 필요해요.", answer: "햇", category: "과학" },
   {
-    text: "꽃의 아래 부분을 ___이라고 해요.",
+    text: "꽃의 아래 부분을 ___이라고(라고) 해요.",
     answer: "줄기",
     category: "과학",
   },
@@ -3298,12 +3298,12 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
     category: "상식",
   },
   {
-    text: "찰흙으로 모양을 빚는 것을 ___이라고 해요.",
+    text: "찰흙으로 모양을 빚는 것을 ___이라고(라고) 해요.",
     answer: "만들기",
     category: "상식",
   },
   {
-    text: "종이를 접어 만드는 것을 종이___이라고 해요.",
+    text: "종이를 접어 만드는 것을 종이___이라고(라고) 해요.",
     answer: "접기",
     category: "상식",
   },
@@ -3333,12 +3333,12 @@ export const grade1KnowledgeData: KnowledgeEntry[] = [
     category: "상식",
   },
   {
-    text: "학교에서 점심을 먹는 것을 ___이라고 해요.",
+    text: "학교에서 점심을 먹는 것을 ___이라고(라고) 해요.",
     answer: "급식",
     category: "상식",
   },
   {
-    text: "학교에서 나누어 주는 우유를 ___이라고 해요.",
+    text: "학교에서 나누어 주는 우유를 ___이라고(라고) 해요.",
     answer: "급식우유",
     category: "상식",
   },
@@ -4883,7 +4883,7 @@ export const grade1WritingPrompts: string[] = [
 export const grade1KoreanData: KnowledgeEntry[] = [
   // --- 기존 40개 ---
   {
-    text: "문장의 끝에 찍는 점을 ___이라고 합니다.",
+    text: "문장의 끝에 찍는 점을 ___이라고(라고) 합니다.",
     answer: "마침표",
     category: "국어",
   },
@@ -4913,7 +4913,7 @@ export const grade1KoreanData: KnowledgeEntry[] = [
     category: "국어",
   },
   {
-    text: "글자의 아래에 오는 자음을 ___이라고 해요.",
+    text: "글자의 아래에 오는 자음을 ___이라고(라고) 해요.",
     answer: "받침",
     category: "국어",
   },
@@ -4971,22 +4971,22 @@ export const grade1KoreanData: KnowledgeEntry[] = [
     category: "말하기",
   },
   {
-    text: "동화에서 이야기를 들려주는 사람을 ___이라고 해요.",
+    text: "동화에서 이야기를 들려주는 사람을 ___이라고(라고) 해요.",
     answer: "작가",
     category: "읽기",
   },
   {
-    text: "그림책에서 그림을 그리는 사람을 ___이라고 해요.",
+    text: "그림책에서 그림을 그리는 사람을 ___이라고(라고) 해요.",
     answer: "화가",
     category: "읽기",
   },
   {
-    text: "이야기에 나오는 사람이나 동물을 ___이라고 해요.",
+    text: "이야기에 나오는 사람이나 동물을 ___이라고(라고) 해요.",
     answer: "인물",
     category: "읽기",
   },
   {
-    text: "이야기가 일어나는 장소를 ___이라고 해요.",
+    text: "이야기가 일어나는 장소를 ___이라고(라고) 해요.",
     answer: "배경",
     category: "읽기",
   },
@@ -5036,12 +5036,12 @@ export const grade1KoreanData: KnowledgeEntry[] = [
     category: "국어",
   },
   {
-    text: "사람이나 사물의 이름을 나타내는 말을 ___이라고 해요.",
+    text: "사람이나 사물의 이름을 나타내는 말을 ___이라고(라고) 해요.",
     answer: "명사",
     category: "국어",
   },
   {
-    text: "글을 소리 내어 읽는 것을 ___이라고 해요.",
+    text: "글을 소리 내어 읽는 것을 ___이라고(라고) 해요.",
     answer: "낭독",
     category: "읽기",
   },
@@ -5320,7 +5320,7 @@ export const grade1KoreanData: KnowledgeEntry[] = [
     category: "쓰기",
   },
   {
-    text: "생각을 그림으로 그리는 것을 ___이라고 해요.",
+    text: "생각을 그림으로 그리는 것을 ___이라고(라고) 해요.",
     answer: "생각 그림",
     category: "쓰기",
   },
@@ -5438,17 +5438,17 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "그림을 그릴 때 사용하는 물감을 ___이라고 해요.",
+    text: "그림을 그릴 때 사용하는 물감을 ___이라고(라고) 해요.",
     answer: "수채화",
     category: "미술",
   },
   {
-    text: "색종이를 접어서 만드는 것을 ___이라고 해요.",
+    text: "색종이를 접어서 만드는 것을 ___이라고(라고) 해요.",
     answer: "종이접기",
     category: "만들기",
   },
   {
-    text: "찰흙으로 물건을 만드는 것을 ___이라고 해요.",
+    text: "찰흙으로 물건을 만드는 것을 ___이라고(라고) 해요.",
     answer: "찰흙놀이",
     category: "만들기",
   },
@@ -5468,17 +5468,17 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "음악에서 소리의 높고 낮음을 ___이라고 해요.",
+    text: "음악에서 소리의 높고 낮음을 ___이라고(라고) 해요.",
     answer: "음높이",
     category: "음악",
   },
   {
-    text: "음악에서 소리의 세고 약함을 ___이라고 해요.",
+    text: "음악에서 소리의 세고 약함을 ___이라고(라고) 해요.",
     answer: "셈여림",
     category: "음악",
   },
   {
-    text: "음악에서 빠르고 느린 것을 ___이라고 해요.",
+    text: "음악에서 빠르고 느린 것을 ___이라고(라고) 해요.",
     answer: "빠르기",
     category: "음악",
   },
@@ -5514,22 +5514,22 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "도화지에 물감으로 그림을 그리는 것을 ___이라고 해요.",
+    text: "도화지에 물감으로 그림을 그리는 것을 ___이라고(라고) 해요.",
     answer: "그림 그리기",
     category: "미술",
   },
   {
-    text: "검정색 크레파스로 칠한 후 긁어내는 기법을 ___이라고 해요.",
+    text: "검정색 크레파스로 칠한 후 긁어내는 기법을 ___이라고(라고) 해요.",
     answer: "스크래치",
     category: "미술",
   },
   {
-    text: "손바닥에 물감을 묻혀 찍는 것을 ___이라고 해요.",
+    text: "손바닥에 물감을 묻혀 찍는 것을 ___이라고(라고) 해요.",
     answer: "핸드프린팅",
     category: "미술",
   },
   {
-    text: "도장을 이용해서 찍는 놀이를 ___이라고 해요.",
+    text: "도장을 이용해서 찍는 놀이를 ___이라고(라고) 해요.",
     answer: "스탬핑",
     category: "미술",
   },
@@ -5539,7 +5539,7 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "빈 상자로 무언가를 만드는 놀이를 ___이라고 해요.",
+    text: "빈 상자로 무언가를 만드는 놀이를 ___이라고(라고) 해요.",
     answer: "상자 만들기",
     category: "만들기",
   },
@@ -5579,32 +5579,32 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "실을 이용해서 꿰는 놀이를 ___이라고 해요.",
+    text: "실을 이용해서 꿰는 놀이를 ___이라고(라고) 해요.",
     answer: "꿰기",
     category: "만들기",
   },
   {
-    text: "종이를 찢어서 붙이는 미술 기법을 ___이라고 해요.",
+    text: "종이를 찢어서 붙이는 미술 기법을 ___이라고(라고) 해요.",
     answer: "찢어 붙이기",
     category: "미술",
   },
   {
-    text: "음악 시간에 친구들과 함께 노래 부르는 것을 ___이라고 해요.",
+    text: "음악 시간에 친구들과 함께 노래 부르는 것을 ___이라고(라고) 해요.",
     answer: "합창",
     category: "음악",
   },
   {
-    text: "악기를 함께 연주하는 것을 ___이라고 해요.",
+    text: "악기를 함께 연주하는 것을 ___이라고(라고) 해요.",
     answer: "합주",
     category: "음악",
   },
   {
-    text: "율동을 하며 노래 부르는 것을 ___이라고 해요.",
+    text: "율동을 하며 노래 부르는 것을 ___이라고(라고) 해요.",
     answer: "율동",
     category: "음악",
   },
   {
-    text: "전통 음악에서 사용하는 북을 ___이라고 해요.",
+    text: "전통 음악에서 사용하는 북을 ___이라고(라고) 해요.",
     answer: "장구",
     category: "음악",
   },
@@ -5616,27 +5616,27 @@ export const grade1CreativeData: KnowledgeEntry[] = [
   // --- 추가 확장 (160+개) ---
   // 미술 기법 추가
   {
-    text: "종이를 반으로 접어 물감을 찍는 기법을 ___이라고 해요.",
+    text: "종이를 반으로 접어 물감을 찍는 기법을 ___이라고(라고) 해요.",
     answer: "데칼코마니",
     category: "미술",
   },
   {
-    text: "물 위에 물감을 떨어뜨려 종이에 옮기는 것을 ___이라고 해요.",
+    text: "물 위에 물감을 떨어뜨려 종이에 옮기는 것을 ___이라고(라고) 해요.",
     answer: "마블링",
     category: "미술",
   },
   {
-    text: "여러 가지 재료를 붙여 작품을 만드는 것을 ___이라고 해요.",
+    text: "여러 가지 재료를 붙여 작품을 만드는 것을 ___이라고(라고) 해요.",
     answer: "콜라주",
     category: "미술",
   },
   {
-    text: "물감을 뿌려서 그림을 그리는 것을 ___이라고 해요.",
+    text: "물감을 뿌려서 그림을 그리는 것을 ___이라고(라고) 해요.",
     answer: "뿌리기",
     category: "미술",
   },
   {
-    text: "물감을 불어서 퍼뜨리는 기법을 ___이라고 해요.",
+    text: "물감을 불어서 퍼뜨리는 기법을 ___이라고(라고) 해요.",
     answer: "불기",
     category: "미술",
   },
@@ -5729,7 +5729,7 @@ export const grade1CreativeData: KnowledgeEntry[] = [
   },
   // 음악 추가
   {
-    text: "음악 시간에 '도레미파솔라시도'를 ___이라고 해요.",
+    text: "음악 시간에 '도레미파솔라시도'를 ___이라고(라고) 해요.",
     answer: "음계",
     category: "음악",
   },
@@ -5769,7 +5769,7 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "우리나라 전통 노래를 ___이라고 해요.",
+    text: "우리나라 전통 노래를 ___이라고(라고) 해요.",
     answer: "민요",
     category: "음악",
   },
@@ -5861,47 +5861,47 @@ export const grade1CreativeData: KnowledgeEntry[] = [
   },
   // 체육/놀이
   {
-    text: "체육에서 줄에 맞추어 넘는 것을 ___이라고 해요.",
+    text: "체육에서 줄에 맞추어 넘는 것을 ___이라고(라고) 해요.",
     answer: "줄넘기",
     category: "체육",
   },
   {
-    text: "술래가 숨은 친구를 찾는 놀이를 ___이라고 해요.",
+    text: "술래가 숨은 친구를 찾는 놀이를 ___이라고(라고) 해요.",
     answer: "숨바꼭질",
     category: "체육",
   },
   {
-    text: "술래가 잡으러 다니는 놀이를 ___이라고 해요.",
+    text: "술래가 잡으러 다니는 놀이를 ___이라고(라고) 해요.",
     answer: "술래잡기",
     category: "체육",
   },
   {
-    text: "공을 발로 차는 운동을 ___이라고 해요.",
+    text: "공을 발로 차는 운동을 ___이라고(라고) 해요.",
     answer: "축구",
     category: "체육",
   },
   {
-    text: "공을 바구니에 넣는 운동을 ___이라고 해요.",
+    text: "공을 바구니에 넣는 운동을 ___이라고(라고) 해요.",
     answer: "농구",
     category: "체육",
   },
   {
-    text: "물속에서 하는 운동을 ___이라고 해요.",
+    text: "물속에서 하는 운동을 ___이라고(라고) 해요.",
     answer: "수영",
     category: "체육",
   },
   {
-    text: "빨리 달리는 것을 ___이라고 해요.",
+    text: "빨리 달리는 것을 ___이라고(라고) 해요.",
     answer: "달리기",
     category: "체육",
   },
   {
-    text: "친구들과 함께 달리기 시합을 하는 것을 ___이라고 해요.",
+    text: "친구들과 함께 달리기 시합을 하는 것을 ___이라고(라고) 해요.",
     answer: "달리기 시합",
     category: "체육",
   },
   {
-    text: "체조할 때 몸을 쭉 펴는 것을 ___이라고 해요.",
+    text: "체조할 때 몸을 쭉 펴는 것을 ___이라고(라고) 해요.",
     answer: "스트레칭",
     category: "체육",
   },
@@ -5921,49 +5921,49 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "팽이를 치는 놀이를 ___이라고 해요.",
+    text: "팽이를 치는 놀이를 ___이라고(라고) 해요.",
     answer: "팽이치기",
     category: "만들기",
   },
   {
-    text: "제기를 차는 놀이를 ___이라고 해요.",
+    text: "제기를 차는 놀이를 ___이라고(라고) 해요.",
     answer: "제기차기",
     category: "만들기",
   },
   // 감상
   {
-    text: "미술관에서 그림을 보는 것을 ___이라고 해요.",
+    text: "미술관에서 그림을 보는 것을 ___이라고(라고) 해요.",
     answer: "감상",
     category: "미술",
   },
   {
-    text: "음악을 듣고 느낌을 말하는 것을 ___이라고 해요.",
+    text: "음악을 듣고 느낌을 말하는 것을 ___이라고(라고) 해요.",
     answer: "감상",
     category: "음악",
   },
   {
-    text: "그림을 보고 느낀 점을 말하는 것을 ___이라고 해요.",
+    text: "그림을 보고 느낀 점을 말하는 것을 ___이라고(라고) 해요.",
     answer: "감상 발표",
     category: "미술",
   },
   {
-    text: "친구의 작품을 보고 좋은 점을 찾는 것을 ___이라고 해요.",
+    text: "친구의 작품을 보고 좋은 점을 찾는 것을 ___이라고(라고) 해요.",
     answer: "칭찬",
     category: "미술",
   },
   {
-    text: "작품을 여러 사람에게 보여주는 것을 ___이라고 해요.",
+    text: "작품을 여러 사람에게 보여주는 것을 ___이라고(라고) 해요.",
     answer: "전시",
     category: "미술",
   },
   // 창의적 사고
   {
-    text: "새로운 것을 만들어내는 생각을 ___이라고 해요.",
+    text: "새로운 것을 만들어내는 생각을 ___이라고(라고) 해요.",
     answer: "창의력",
     category: "미술",
   },
   {
-    text: "여러 가지 방법으로 생각하는 것을 ___이라고 해요.",
+    text: "여러 가지 방법으로 생각하는 것을 ___이라고(라고) 해요.",
     answer: "상상력",
     category: "미술",
   },
@@ -5978,7 +5978,7 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "점, 선, 면으로 그림을 그리는 것을 ___이라고 해요.",
+    text: "점, 선, 면으로 그림을 그리는 것을 ___이라고(라고) 해요.",
     answer: "추상화",
     category: "미술",
   },
@@ -5989,22 +5989,22 @@ export const grade1CreativeData: KnowledgeEntry[] = [
     category: "체육",
   },
   {
-    text: "팔을 위로 쭉 뻗는 동작을 ___이라고 해요.",
+    text: "팔을 위로 쭉 뻗는 동작을 ___이라고(라고) 해요.",
     answer: "뻗기",
     category: "체육",
   },
   {
-    text: "몸을 빙글빙글 도는 것을 ___이라고 해요.",
+    text: "몸을 빙글빙글 도는 것을 ___이라고(라고) 해요.",
     answer: "돌기",
     category: "체육",
   },
   {
-    text: "음악에 맞춰 손을 흔드는 것을 ___이라고 해요.",
+    text: "음악에 맞춰 손을 흔드는 것을 ___이라고(라고) 해요.",
     answer: "흔들기",
     category: "체육",
   },
   {
-    text: "높이 뛰어오르는 동작을 ___이라고 해요.",
+    text: "높이 뛰어오르는 동작을 ___이라고(라고) 해요.",
     answer: "점프",
     category: "체육",
   },

@@ -2675,7 +2675,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
   },
   // 신규 45개 (총 60개)
   {
-    text: "식물이 빛을 받아 양분을 만드는 것을 ___이라 한다.",
+    text: "식물이 빛을 받아 양분을 만드는 것을 ___이라(라) 한다.",
     answer: "광합성",
     category: "과학",
   },
@@ -2685,7 +2685,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "뼈와 뼈를 이어 주는 것을 ___이라 한다.",
+    text: "뼈와 뼈를 이어 주는 것을 ___이라(라) 한다.",
     answer: "관절",
     category: "과학",
   },
@@ -2698,7 +2698,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
   { text: "곤충의 다리는 ___개이다.", answer: "6", category: "과학" },
   { text: "거미의 다리는 ___개이다.", answer: "8", category: "과학" },
   {
-    text: "식물의 잎에서 수분이 빠져나가는 것을 ___이라 한다.",
+    text: "식물의 잎에서 수분이 빠져나가는 것을 ___이라(라) 한다.",
     answer: "증산",
     category: "과학",
   },
@@ -2719,7 +2719,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "혈액이 온몸을 도는 것을 ___이라 한다.",
+    text: "혈액이 온몸을 도는 것을 ___이라(라) 한다.",
     answer: "혈액 순환",
     category: "과학",
   },
@@ -2749,12 +2749,12 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "온도를 재는 도구를 ___이라 한다.",
+    text: "온도를 재는 도구를 ___이라(라) 한다.",
     answer: "온도계",
     category: "과학",
   },
   {
-    text: "지도에서 방위를 나타내는 기호를 ___이라 한다.",
+    text: "지도에서 방위를 나타내는 기호를 ___이라(라) 한다.",
     answer: "방위표",
     category: "사회",
   },
@@ -2771,7 +2771,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "우리나라 돈의 단위는 ___이다.", answer: "원", category: "사회" },
   {
-    text: "지도에서 실제 거리를 줄인 비율을 ___이라 한다.",
+    text: "지도에서 실제 거리를 줄인 비율을 ___이라(라) 한다.",
     answer: "축척",
     category: "사회",
   },
@@ -2791,7 +2791,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "빛이 물체에 부딪혀 되돌아오는 것을 ___이라 한다.",
+    text: "빛이 물체에 부딪혀 되돌아오는 것을 ___이라(라) 한다.",
     answer: "반사",
     category: "과학",
   },
@@ -2811,12 +2811,12 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "한 해에서 낮의 길이가 가장 긴 날을 ___이라 한다.",
+    text: "한 해에서 낮의 길이가 가장 긴 날을 ___이라(라) 한다.",
     answer: "하지",
     category: "과학",
   },
   {
-    text: "한 해에서 밤의 길이가 가장 긴 날을 ___이라 한다.",
+    text: "한 해에서 밤의 길이가 가장 긴 날을 ___이라(라) 한다.",
     answer: "동지",
     category: "과학",
   },
@@ -2891,12 +2891,12 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "혈액이 온몸을 도는 것을 ___이라 한다.",
+    text: "혈액이 온몸을 도는 것을 ___이라(라) 한다.",
     answer: "혈액 순환",
     category: "과학",
   },
   {
-    text: "뼈를 이어 주는 부분을 ___이라 한다.",
+    text: "뼈를 이어 주는 부분을 ___이라(라) 한다.",
     answer: "관절",
     category: "과학",
   },
@@ -2906,17 +2906,17 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "전기를 통하는 물질을 ___이라 한다.",
+    text: "전기를 통하는 물질을 ___이라(라) 한다.",
     answer: "도체",
     category: "과학",
   },
   {
-    text: "전기를 통하지 않는 물질을 ___이라 한다.",
+    text: "전기를 통하지 않는 물질을 ___이라(라) 한다.",
     answer: "부도체",
     category: "과학",
   },
   {
-    text: "N극과 S극이 끌어당기는 힘을 ___이라 한다.",
+    text: "N극과 S극이 끌어당기는 힘을 ___이라(라) 한다.",
     answer: "자기력",
     category: "과학",
   },
@@ -2960,7 +2960,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "사회",
   },
   {
-    text: "우리나라의 전통 장을 만드는 것을 ___이라 한다.",
+    text: "우리나라의 전통 장을 만드는 것을 ___이라(라) 한다.",
     answer: "장 담그기",
     category: "문화",
   },
@@ -2972,7 +2972,7 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "직각은 ___도이다.", answer: "90", category: "수학" },
   {
-    text: "원의 중심에서 원까지의 거리를 ___이라 한다.",
+    text: "원의 중심에서 원까지의 거리를 ___이라(라) 한다.",
     answer: "반지름",
     category: "수학",
   },
@@ -2994,27 +2994,27 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "판소리에서 소리를 하는 사람을 ___이라 한다.",
+    text: "판소리에서 소리를 하는 사람을 ___이라(라) 한다.",
     answer: "소리꾼",
     category: "문화",
   },
   {
-    text: "판소리에서 북을 치는 사람을 ___이라 한다.",
+    text: "판소리에서 북을 치는 사람을 ___이라(라) 한다.",
     answer: "고수",
     category: "문화",
   },
   {
-    text: "우리나라 전통 음악을 ___이라 한다.",
+    text: "우리나라 전통 음악을 ___이라(라) 한다.",
     answer: "국악",
     category: "문화",
   },
   {
-    text: "탈을 쓰고 추는 춤을 ___이라 한다.",
+    text: "탈을 쓰고 추는 춤을 ___이라(라) 한다.",
     answer: "탈춤",
     category: "문화",
   },
   {
-    text: "김치를 담그는 행사를 ___이라 한다.",
+    text: "김치를 담그는 행사를 ___이라(라) 한다.",
     answer: "김장",
     category: "문화",
   },
@@ -3024,12 +3024,12 @@ export const grade3KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한복에서 여자의 치마를 ___이라 한다.",
+    text: "한복에서 여자의 치마를 ___이라(라) 한다.",
     answer: "치마",
     category: "문화",
   },
   {
-    text: "한복에서 남자의 바지를 ___이라 한다.",
+    text: "한복에서 남자의 바지를 ___이라(라) 한다.",
     answer: "바지",
     category: "문화",
   },
@@ -5382,7 +5382,7 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "찰흙으로 모양을 빚어 만드는 것을 ___이라 한다.",
+    text: "찰흙으로 모양을 빚어 만드는 것을 ___이라(라) 한다.",
     answer: "조소",
     category: "미술",
   },
@@ -5392,37 +5392,37 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "좌우가 똑같은 모양을 ___이라 한다.",
+    text: "좌우가 똑같은 모양을 ___이라(라) 한다.",
     answer: "대칭",
     category: "미술",
   },
   {
-    text: "같은 모양이 반복되는 것을 ___이라 한다.",
+    text: "같은 모양이 반복되는 것을 ___이라(라) 한다.",
     answer: "패턴",
     category: "미술",
   },
   {
-    text: "종이를 접어 모양을 만드는 것을 ___이라 한다.",
+    text: "종이를 접어 모양을 만드는 것을 ___이라(라) 한다.",
     answer: "종이접기",
     category: "미술",
   },
   {
-    text: "크레파스로 색칠한 위에 검정색을 덮고 긁어내는 기법을 ___이라 한다.",
+    text: "크레파스로 색칠한 위에 검정색을 덮고 긁어내는 기법을 ___이라(라) 한다.",
     answer: "스크래치",
     category: "미술",
   },
   {
-    text: "빨강, 파랑, 노랑을 삼___이라 한다.",
+    text: "빨강, 파랑, 노랑을 삼___이라(라) 한다.",
     answer: "원색",
     category: "미술",
   },
   {
-    text: "여러 가지 재료를 붙여 만드는 미술 기법을 ___이라 한다.",
+    text: "여러 가지 재료를 붙여 만드는 미술 기법을 ___이라(라) 한다.",
     answer: "콜라주",
     category: "미술",
   },
   {
-    text: "판에 그림을 새기고 찍어내는 것을 ___이라 한다.",
+    text: "판에 그림을 새기고 찍어내는 것을 ___이라(라) 한다.",
     answer: "판화",
     category: "미술",
   },
@@ -5458,7 +5458,7 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "같은 빠르기로 반복되는 음악의 흐름을 ___이라 한다.",
+    text: "같은 빠르기로 반복되는 음악의 흐름을 ___이라(라) 한다.",
     answer: "리듬",
     category: "음악",
   },
@@ -5468,7 +5468,7 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "도레미파솔라시 7개의 음을 ___이라 한다.",
+    text: "도레미파솔라시 7개의 음을 ___이라(라) 한다.",
     answer: "음계",
     category: "음악",
   },
@@ -5476,7 +5476,7 @@ export const grade3CreativeData: KnowledgeEntry[] = [
   { text: "2분음표는 ___박자를 나타낸다.", answer: "2", category: "음악" },
   { text: "4분음표는 ___박자를 나타낸다.", answer: "1", category: "음악" },
   {
-    text: "여러 사람이 함께 노래 부르는 것을 ___이라 한다.",
+    text: "여러 사람이 함께 노래 부르는 것을 ___이라(라) 한다.",
     answer: "합창",
     category: "음악",
   },
@@ -5497,7 +5497,7 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "풀 대신 테이프로 붙이는 것을 ___이라 한다.",
+    text: "풀 대신 테이프로 붙이는 것을 ___이라(라) 한다.",
     answer: "접착",
     category: "만들기",
   },
@@ -5507,28 +5507,28 @@ export const grade3CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "털실을 엮어 만드는 것을 ___이라 한다.",
+    text: "털실을 엮어 만드는 것을 ___이라(라) 한다.",
     answer: "뜨개질",
     category: "만들기",
   },
   {
-    text: "나무에 색을 칠하고 장식을 붙이는 것을 ___이라 한다.",
+    text: "나무에 색을 칠하고 장식을 붙이는 것을 ___이라(라) 한다.",
     answer: "꾸미기",
     category: "만들기",
   },
   // 감상 (6개)
   {
-    text: "그림을 감상할 때 느끼는 생각이나 기분을 ___이라 한다.",
+    text: "그림을 감상할 때 느끼는 생각이나 기분을 ___이라(라) 한다.",
     answer: "감상문",
     category: "감상",
   },
   {
-    text: "미술 작품을 전시하는 곳을 ___이라 한다.",
+    text: "미술 작품을 전시하는 곳을 ___이라(라) 한다.",
     answer: "미술관",
     category: "감상",
   },
   {
-    text: "음악을 연주하는 공연장을 ___이라 한다.",
+    text: "음악을 연주하는 공연장을 ___이라(라) 한다.",
     answer: "음악당",
     category: "감상",
   },

@@ -29,8 +29,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       'SELECT role FROM profiles WHERE id = ?'
     ).bind(userId).first<{ role: string }>();
 
-    if (!profile || (profile.role !== 'teacher' && profile.role !== 'admin')) {
-      return jsonResponse({ message: '교사 또는 관리자만 문제를 생성할 수 있습니다.' }, 403);
+    // AI 생성은 Anthropic API 비용이 실제로 발생하고, 만들어진 문항이
+    // is_published=1 로 전 학년에 노출된다. 승인 교사 전원에게 열어두면
+    // 비용·품질 통제가 불가능하므로 관리자 전용으로 제한한다.
+    if (!profile || profile.role !== 'admin') {
+      return jsonResponse({ message: '관리자만 문항을 생성할 수 있습니다.' }, 403);
     }
 
     const body = await context.request.json() as GenerateBody;

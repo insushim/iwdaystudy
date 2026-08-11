@@ -29,7 +29,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식물이 빛을 받아 양분을 만드는 것을 ___이라 한다.",
+    text: "식물이 빛을 받아 양분을 만드는 것을 ___이라(라) 한다.",
     answer: "광합성",
     category: "과학",
   },
@@ -39,7 +39,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "뼈와 뼈를 이어 주는 것을 ___이라 한다.",
+    text: "뼈와 뼈를 이어 주는 것을 ___이라(라) 한다.",
     answer: "관절",
     category: "과학",
   },
@@ -48,7 +48,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
   { text: "곤충의 다리는 ___개이다.", answer: "6", category: "과학" },
   { text: "거미의 다리는 ___개이다.", answer: "8", category: "과학" },
   {
-    text: "식물의 잎에서 수분이 빠져나가는 것을 ___이라 한다.",
+    text: "식물의 잎에서 수분이 빠져나가는 것을 ___이라(라) 한다.",
     answer: "증산",
     category: "과학",
   },
@@ -58,7 +58,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "혈액이 온몸을 도는 것을 ___이라 한다.",
+    text: "혈액이 온몸을 도는 것을 ___이라(라) 한다.",
     answer: "혈액 순환",
     category: "과학",
   },
@@ -78,7 +78,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "온도를 재는 도구를 ___이라 한다.",
+    text: "온도를 재는 도구를 ___이라(라) 한다.",
     answer: "온도계",
     category: "과학",
   },
@@ -109,7 +109,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "빛이 물체에 부딪혀 되돌아오는 것을 ___이라 한다.",
+    text: "빛이 물체에 부딪혀 되돌아오는 것을 ___이라(라) 한다.",
     answer: "반사",
     category: "과학",
   },
@@ -119,12 +119,12 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "한 해에서 낮의 길이가 가장 긴 날을 ___이라 한다.",
+    text: "한 해에서 낮의 길이가 가장 긴 날을 ___이라(라) 한다.",
     answer: "하지",
     category: "과학",
   },
   {
-    text: "한 해에서 밤의 길이가 가장 긴 날을 ___이라 한다.",
+    text: "한 해에서 밤의 길이가 가장 긴 날을 ___이라(라) 한다.",
     answer: "동지",
     category: "과학",
   },
@@ -150,17 +150,17 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "고체가 액체로 변하는 것을 ___이라 한다.",
+    text: "고체가 액체로 변하는 것을 ___이라(라) 한다.",
     answer: "융해",
     category: "과학",
   },
   {
-    text: "액체가 기체로 변하는 것을 ___이라 한다.",
+    text: "액체가 기체로 변하는 것을 ___이라(라) 한다.",
     answer: "증발",
     category: "과학",
   },
   {
-    text: "기체가 액체로 변하는 것을 ___이라 한다.",
+    text: "기체가 액체로 변하는 것을 ___이라(라) 한다.",
     answer: "응결",
     category: "과학",
   },
@@ -170,7 +170,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식물의 씨앗이 싹트는 것을 ___이라 한다.",
+    text: "식물의 씨앗이 싹트는 것을 ___이라(라) 한다.",
     answer: "발아",
     category: "과학",
   },
@@ -190,7 +190,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "화산이 폭발할 때 나오는 뜨거운 돌을 ___이라 한다.",
+    text: "화산이 폭발할 때 나오는 뜨거운 돌을 ___이라(라) 한다.",
     answer: "용암",
     category: "과학",
   },
@@ -200,7 +200,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "공룡 뼈가 돌 속에 남아 있는 것을 ___이라 한다.",
+    text: "공룡 뼈가 돌 속에 남아 있는 것을 ___이라(라) 한다.",
     answer: "화석",
     category: "과학",
   },
@@ -213,7 +213,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "무게를 재는 도구를 ___이라 한다.",
+    text: "무게를 재는 도구를 ___이라(라) 한다.",
     answer: "저울",
     category: "과학",
   },
@@ -234,7 +234,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "하늘에서 얼음 알갱이가 내리는 것을 ___이라 한다.",
+    text: "하늘에서 얼음 알갱이가 내리는 것을 ___이라(라) 한다.",
     answer: "우박",
     category: "과학",
   },
@@ -254,7 +254,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "꽃가루가 암술머리에 붙는 것을 ___이라 한다.",
+    text: "꽃가루가 암술머리에 붙는 것을 ___이라(라) 한다.",
     answer: "수분",
     category: "과학",
   },
@@ -332,7 +332,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
   },
   { text: "태양은 ___쪽에서 뜬다.", answer: "동", category: "과학" },
   {
-    text: "태양이 가장 높이 올라가는 때를 ___이라 한다.",
+    text: "태양이 가장 높이 올라가는 때를 ___이라(라) 한다.",
     answer: "정오(남중)",
     category: "과학",
   },
@@ -436,13 +436,13 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "사회",
   },
   {
-    text: "지도에서 방위를 나타내는 기호를 ___이라 한다.",
+    text: "지도에서 방위를 나타내는 기호를 ___이라(라) 한다.",
     answer: "방위표",
     category: "사회",
   },
   { text: "우리나라 돈의 단위는 ___이다.", answer: "원", category: "사회" },
   {
-    text: "지도에서 실제 거리를 줄인 비율을 ___이라 한다.",
+    text: "지도에서 실제 거리를 줄인 비율을 ___이라(라) 한다.",
     answer: "축척",
     category: "사회",
   },
@@ -482,17 +482,17 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "사회",
   },
   {
-    text: "시장에서 물건을 사고파는 활동을 ___이라 한다.",
+    text: "시장에서 물건을 사고파는 활동을 ___이라(라) 한다.",
     answer: "거래",
     category: "사회",
   },
   {
-    text: "편지를 보내고 받는 기관을 ___이라 한다.",
+    text: "편지를 보내고 받는 기관을 ___이라(라) 한다.",
     answer: "우체국",
     category: "사회",
   },
   {
-    text: "책을 빌려 읽을 수 있는 곳을 ___이라 한다.",
+    text: "책을 빌려 읽을 수 있는 곳을 ___이라(라) 한다.",
     answer: "도서관",
     category: "사회",
   },
@@ -517,17 +517,17 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "사회",
   },
   {
-    text: "사람들이 지켜야 할 약속을 ___이라 한다.",
+    text: "사람들이 지켜야 할 약속을 ___이라(라) 한다.",
     answer: "규칙",
     category: "사회",
   },
   {
-    text: "투표로 대표를 뽑는 것을 ___이라 한다.",
+    text: "투표로 대표를 뽑는 것을 ___이라(라) 한다.",
     answer: "선거",
     category: "사회",
   },
   {
-    text: "국민이 나라에 내는 돈을 ___이라 한다.",
+    text: "국민이 나라에 내는 돈을 ___이라(라) 한다.",
     answer: "세금",
     category: "사회",
   },
@@ -561,24 +561,24 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     answer: "다문화",
     category: "사회",
   },
-  { text: "물건의 값을 ___이라 한다.", answer: "가격", category: "사회" },
+  { text: "물건의 값을 ___이라(라) 한다.", answer: "가격", category: "사회" },
   {
-    text: "돈을 아껴 쓰는 것을 ___이라 한다.",
+    text: "돈을 아껴 쓰는 것을 ___이라(라) 한다.",
     answer: "절약",
     category: "사회",
   },
   {
-    text: "마을의 중요한 일을 의논하는 모임을 ___이라 한다.",
+    text: "마을의 중요한 일을 의논하는 모임을 ___이라(라) 한다.",
     answer: "회의",
     category: "사회",
   },
   {
-    text: "물건을 만드는 곳을 ___이라 한다.",
+    text: "물건을 만드는 곳을 ___이라(라) 한다.",
     answer: "공장",
     category: "사회",
   },
   {
-    text: "아픈 사람을 치료하는 곳을 ___이라 한다.",
+    text: "아픈 사람을 치료하는 곳을 ___이라(라) 한다.",
     answer: "병원",
     category: "사회",
   },
@@ -636,7 +636,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "훈민정음은 백성을 가르치는 바른 ___이라는 뜻이다.",
+    text: "훈민정음은 백성을 가르치는 바른 ___이라는(라는) 뜻이다.",
     answer: "소리",
     category: "역사",
   },
@@ -657,7 +657,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "고구려의 무덤에 그려진 그림을 ___이라 한다.",
+    text: "고구려의 무덤에 그려진 그림을 ___이라(라) 한다.",
     answer: "벽화",
     category: "역사",
   },
@@ -714,22 +714,22 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "우리나라 전통 옷을 ___이라 한다.",
+    text: "우리나라 전통 옷을 ___이라(라) 한다.",
     answer: "한복",
     category: "문화",
   },
   {
-    text: "우리나라 전통 집을 ___이라 한다.",
+    text: "우리나라 전통 집을 ___이라(라) 한다.",
     answer: "한옥",
     category: "문화",
   },
   {
-    text: "우리나라 전통 종이를 ___이라 한다.",
+    text: "우리나라 전통 종이를 ___이라(라) 한다.",
     answer: "한지",
     category: "문화",
   },
   {
-    text: "우리나라 전통 무술을 ___이라 한다.",
+    text: "우리나라 전통 무술을 ___이라(라) 한다.",
     answer: "태권도",
     category: "문화",
   },
@@ -739,7 +739,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한옥의 바닥 난방 시설을 ___이라 한다.",
+    text: "한옥의 바닥 난방 시설을 ___이라(라) 한다.",
     answer: "온돌",
     category: "문화",
   },
@@ -754,7 +754,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "설날에 어른들께 하는 인사를 ___이라 한다.",
+    text: "설날에 어른들께 하는 인사를 ___이라(라) 한다.",
     answer: "세배",
     category: "문화",
   },
@@ -769,7 +769,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "판소리에서 노래를 부르는 사람을 ___이라 한다.",
+    text: "판소리에서 노래를 부르는 사람을 ___이라(라) 한다.",
     answer: "소리꾼",
     category: "문화",
   },
@@ -779,12 +779,12 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "세배를 하면 어른들이 주시는 돈을 ___이라 한다.",
+    text: "세배를 하면 어른들이 주시는 돈을 ___이라(라) 한다.",
     answer: "세뱃돈",
     category: "문화",
   },
   {
-    text: "한복 중 여자가 입는 윗옷을 ___이라 한다.",
+    text: "한복 중 여자가 입는 윗옷을 ___이라(라) 한다.",
     answer: "저고리",
     category: "문화",
   },
@@ -794,7 +794,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "제기차기에 사용하는 도구를 ___이라 한다.",
+    text: "제기차기에 사용하는 도구를 ___이라(라) 한다.",
     answer: "제기",
     category: "문화",
   },
@@ -813,7 +813,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
   },
   { text: "1cm는 ___mm이다.", answer: "10", category: "수학" },
   {
-    text: "원 위의 한 점에서 중심까지의 거리를 ___이라 한다.",
+    text: "원 위의 한 점에서 중심까지의 거리를 ___이라(라) 한다.",
     answer: "반지름",
     category: "수학",
   },
@@ -825,7 +825,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "수학",
   },
   {
-    text: "나눗셈에서 나눈 결과를 ___이라 한다.",
+    text: "나눗셈에서 나눈 결과를 ___이라(라) 한다.",
     answer: "몫",
     category: "수학",
   },
@@ -835,22 +835,22 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
     category: "수학",
   },
   {
-    text: "세 개의 변으로 이루어진 도형을 ___이라 한다.",
+    text: "세 개의 변으로 이루어진 도형을 ___이라(라) 한다.",
     answer: "삼각형",
     category: "수학",
   },
   {
-    text: "네 개의 변으로 이루어진 도형을 ___이라 한다.",
+    text: "네 개의 변으로 이루어진 도형을 ___이라(라) 한다.",
     answer: "사각형",
     category: "수학",
   },
   {
-    text: "네 변의 길이가 모두 같고 네 각이 모두 직각인 사각형을 ___이라 한다.",
+    text: "네 변의 길이가 모두 같고 네 각이 모두 직각인 사각형을 ___이라(라) 한다.",
     answer: "정사각형",
     category: "수학",
   },
   {
-    text: "원을 그리는 도구를 ___이라 한다.",
+    text: "원을 그리는 도구를 ___이라(라) 한다.",
     answer: "컴퍼스",
     category: "수학",
   },
@@ -862,7 +862,7 @@ export const grade3KnowledgeDataExtra: KnowledgeEntry[] = [
   { text: "0.1은 ___분의 1이다.", answer: "10", category: "수학" },
   { text: "1/2은 소수로 ___이다.", answer: "0.5", category: "수학" },
   {
-    text: "도형을 밀고, 뒤집고, 돌리는 것을 도형의 ___이라 한다.",
+    text: "도형을 밀고, 뒤집고, 돌리는 것을 도형의 ___이라(라) 한다.",
     answer: "이동",
     category: "수학",
   },
@@ -1494,7 +1494,7 @@ export const grade3SafetyDataExtra: SafetyEntry[] = [
     category: "정보안전",
   },
   {
-    text: "인터넷에서 허위 정보를 퍼뜨리는 것을 ___이라 한다.",
+    text: "인터넷에서 허위 정보를 퍼뜨리는 것을 ___이라(라) 한다.",
     answer: "가짜 뉴스",
     category: "정보안전",
   },

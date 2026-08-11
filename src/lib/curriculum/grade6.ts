@@ -2058,7 +2058,7 @@ export const grade6KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "산성 용액의 pH는 ___보다 작다.", answer: "7", category: "과학" },
   {
-    text: "조선 시대에 천체를 관측하던 기구를 ___이라 한다.",
+    text: "조선 시대에 천체를 관측하던 기구를 ___이라(라) 한다.",
     answer: "혼천의",
     category: "역사",
   },
@@ -2220,7 +2220,7 @@ export const grade6KnowledgeData: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "전염병이 세계적으로 유행하는 것을 ___이라 한다.",
+    text: "전염병이 세계적으로 유행하는 것을 ___이라(라) 한다.",
     answer: "팬데믹",
     category: "사회",
   },
@@ -2302,7 +2302,7 @@ export const grade6KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "물질이 열을 받아 부피가 커지는 것을 ___이라 한다.",
+    text: "물질이 열을 받아 부피가 커지는 것을 ___이라(라) 한다.",
     answer: "팽창",
     category: "과학",
   },
@@ -2391,12 +2391,12 @@ export const grade6KnowledgeData: KnowledgeEntry[] = [
     category: "사회",
   },
   {
-    text: "경제 활동에서 물건을 만드는 것을 ___이라 한다.",
+    text: "경제 활동에서 물건을 만드는 것을 ___이라(라) 한다.",
     answer: "생산",
     category: "사회",
   },
   {
-    text: "경제 활동에서 물건을 사서 쓰는 것을 ___이라 한다.",
+    text: "경제 활동에서 물건을 사서 쓰는 것을 ___이라(라) 한다.",
     answer: "소비",
     category: "사회",
   },
@@ -2457,7 +2457,7 @@ export const grade6KnowledgeData: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "조선 시대 천주교를 박해한 사건을 ___이라 한다.",
+    text: "조선 시대 천주교를 박해한 사건을 ___이라(라) 한다.",
     answer: "천주교 박해",
     category: "역사",
   },
@@ -4892,22 +4892,22 @@ export const grade6WritingPrompts: string[] = [
 export const grade6CreativeData: KnowledgeEntry[] = [
   // 디자인
   {
-    text: "디자인에서 전체적인 조화와 통일감을 만드는 원리를 ___이라 한다.",
+    text: "디자인에서 전체적인 조화와 통일감을 만드는 원리를 ___이라(라) 한다.",
     answer: "통일성",
     category: "디자인",
   },
   {
-    text: "시각적으로 안정감을 주기 위해 요소를 고르게 배치하는 것을 ___이라 한다.",
+    text: "시각적으로 안정감을 주기 위해 요소를 고르게 배치하는 것을 ___이라(라) 한다.",
     answer: "균형",
     category: "디자인",
   },
   {
-    text: "작은 것에서 큰 것으로 점점 변하는 것을 ___이라 한다.",
+    text: "작은 것에서 큰 것으로 점점 변하는 것을 ___이라(라) 한다.",
     answer: "점이",
     category: "디자인",
   },
   {
-    text: "포스터에서 글자와 그림의 배치를 ___이라 한다.",
+    text: "포스터에서 글자와 그림의 배치를 ___이라(라) 한다.",
     answer: "레이아웃",
     category: "디자인",
   },
@@ -5009,7 +5009,7 @@ export const grade6CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "한국 전통 음악에서 12음계 체계를 ___이라 한다.",
+    text: "한국 전통 음악에서 12음계 체계를 ___이라(라) 한다.",
     answer: "12율",
     category: "음악",
   },
@@ -5045,7 +5045,7 @@ export const grade6CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "움직이는 조각 작품을 ___이라 한다.",
+    text: "움직이는 조각 작품을 ___이라(라) 한다.",
     answer: "모빌",
     category: "미술",
   },
@@ -5076,17 +5076,17 @@ export const grade6CreativeData: KnowledgeEntry[] = [
   },
   // 영상/미디어
   {
-    text: "여러 장의 그림을 빠르게 넘겨 움직이는 것처럼 보이게 하는 것을 ___이라 한다.",
+    text: "여러 장의 그림을 빠르게 넘겨 움직이는 것처럼 보이게 하는 것을 ___이라(라) 한다.",
     answer: "애니메이션",
     category: "감상",
   },
   {
-    text: "영화에서 장면과 장면을 이어 붙이는 작업을 ___이라 한다.",
+    text: "영화에서 장면과 장면을 이어 붙이는 작업을 ___이라(라) 한다.",
     answer: "편집",
     category: "감상",
   },
   {
-    text: "카메라가 피사체에 가까이 다가가는 촬영 기법을 ___이라 한다.",
+    text: "카메라가 피사체에 가까이 다가가는 촬영 기법을 ___이라(라) 한다.",
     answer: "클로즈업",
     category: "감상",
   },
@@ -5116,12 +5116,12 @@ export const grade6ScienceData: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "생태계에서 생물을 먹고 먹히는 관계로 연결한 것을 ___이라 한다.",
+    text: "생태계에서 생물을 먹고 먹히는 관계로 연결한 것을 ___이라(라) 한다.",
     answer: "먹이사슬",
     category: "생물",
   },
   {
-    text: "생태계에서 먹이사슬이 복잡하게 얽힌 것을 ___이라 한다.",
+    text: "생태계에서 먹이사슬이 복잡하게 얽힌 것을 ___이라(라) 한다.",
     answer: "먹이그물",
     category: "생물",
   },
@@ -5141,7 +5141,7 @@ export const grade6ScienceData: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "생물이 환경에 적응하여 살아남는 과정을 ___이라 한다.",
+    text: "생물이 환경에 적응하여 살아남는 과정을 ___이라(라) 한다.",
     answer: "자연선택",
     category: "생물",
   },
@@ -5203,7 +5203,7 @@ export const grade6ScienceData: KnowledgeEntry[] = [
   },
   // 화학
   {
-    text: "물질을 이루는 기본 입자를 ___이라 한다.",
+    text: "물질을 이루는 기본 입자를 ___이라(라) 한다.",
     answer: "원자",
     category: "화학",
   },
@@ -5238,12 +5238,12 @@ export const grade6ScienceData: KnowledgeEntry[] = [
     category: "화학",
   },
   {
-    text: "물질이 열을 받아 부피가 커지는 현상을 ___이라 한다.",
+    text: "물질이 열을 받아 부피가 커지는 현상을 ___이라(라) 한다.",
     answer: "열팽창",
     category: "화학",
   },
   {
-    text: "금속이 전기를 잘 전달하는 성질을 ___이라 한다.",
+    text: "금속이 전기를 잘 전달하는 성질을 ___이라(라) 한다.",
     answer: "전기전도성",
     category: "화학",
   },
@@ -5299,7 +5299,7 @@ export const grade6ScienceData: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "우주에서 별이 모여 있는 거대한 집단을 ___이라 한다.",
+    text: "우주에서 별이 모여 있는 거대한 집단을 ___이라(라) 한다.",
     answer: "은하",
     category: "지구과학",
   },
@@ -5491,7 +5491,7 @@ export const grade6SocialData: KnowledgeEntry[] = [
     category: "경제",
   },
   {
-    text: "물가가 계속 오르는 현상을 ___이라 한다.",
+    text: "물가가 계속 오르는 현상을 ___이라(라) 한다.",
     answer: "인플레이션",
     category: "경제",
   },

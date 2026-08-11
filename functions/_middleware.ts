@@ -119,6 +119,9 @@ export const onRequest: PagesFunction<Env, string, MiddlewareData> = async (cont
     return context.env.ASSETS.fetch(new Request(assetUrl.toString()));
   }
 
+  // 아래 /api 처리 전체를 감싼다 — 레이트리밋·계정상태 조회에서 예외가 나도
+  // 스택 트레이스가 아니라 일반 JSON 500 이 나가야 한다.
+  try {
   // Rate limiting for sensitive endpoints (login, signup, generate)
   if (url.pathname.startsWith('/api')) {
     const rateCheck = await checkRateLimit(context.env.DB, request, url.pathname);
@@ -219,28 +222,7 @@ export const onRequest: PagesFunction<Env, string, MiddlewareData> = async (cont
   }
 
   // Continue to the actual function handler.
-  // Central error boundary: an uncaught handler error would otherwise reach the
-  // client as a raw stack trace containing absolute filesystem paths.
-  let response: Response;
-  try {
-    response = await context.next();
-  } catch (err) {
-    if (url.pathname.startsWith('/api')) {
-      console.error('[api-error]', url.pathname, err);
-      return new Response(
-        JSON.stringify({ message: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.' }),
-        {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': allowedOrigin,
-            'Vary': 'Origin',
-          },
-        },
-      );
-    }
-    throw err;
-  }
+  const response = await context.next();
 
   // CORS headers (origin-restricted)
   response.headers.set('Access-Control-Allow-Origin', allowedOrigin);
@@ -287,4 +269,24 @@ export const onRequest: PagesFunction<Env, string, MiddlewareData> = async (cont
   }
 
   return response;
+  } catch (err) {
+    // 여기까지 온 예외는 클라이언트에게 스택 트레이스로 나가면 안 된다.
+    if (url.pathname.startsWith('/api')) {
+      console.error('[api-error]', url.pathname, err);
+      return new Response(
+        JSON.stringify({
+          message: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.',
+        }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': allowedOrigin,
+            'Vary': 'Origin',
+          },
+        },
+      );
+    }
+    throw err;
+  }
 };

@@ -2021,7 +2021,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
   },
   // Grade 5-6
   {
-    text: "온라인에서 타인을 지속적으로 괴롭히는 것을 ___이라고 한다.",
+    text: "온라인에서 타인을 지속적으로 괴롭히는 것을 ___이라고(라고) 한다.",
     answer: "사이버 불링",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2123,7 +2123,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "인터넷 윤리를 지키는 것을 ___이라고 한다.",
+    text: "인터넷 윤리를 지키는 것을 ___이라고(라고) 한다.",
     answer: "네티켓",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2166,7 +2166,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "유해 사이트를 차단하는 소프트웨어를 ___이라 한다.",
+    text: "유해 사이트를 차단하는 소프트웨어를 ___이라(라) 한다.",
     answer: "필터링",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -11194,7 +11194,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "온라인에서 성적 대화를 유도하는 것을 온라인 ___이라 한다.",
+    text: "온라인에서 성적 대화를 유도하는 것을 온라인 ___이라(라) 한다.",
     answer: "그루밍",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11648,7 +11648,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "위험한 상황에서는 ___이라도 가까운 곳으로 도망간다.",
+    text: "위험한 상황에서는 ___이라도(라도) 가까운 곳으로 도망간다.",
     answer: "뛰어서",
     category: "성폭력예방",
     gradeGroup: "1-2",

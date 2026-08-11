@@ -152,8 +152,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       await context.env.DB.batch(stmts);
     }
 
-    // Update streak and points for this student
-    const streakResult = await updateStreakAndPoints(context.env.DB, userId, total_score);
+    // 포인트는 **최초 완료 때만** 적립한다. 같은 세트를 반복 제출하면
+    // total_points 가 계속 누적되어 포인트·배지를 무한히 불릴 수 있었다.
+    // (existing 이 있었다는 건 이미 한 번 제출·적립했다는 뜻)
+    const streakResult = await updateStreakAndPoints(
+      context.env.DB,
+      userId,
+      existing ? 0 : total_score,
+    );
 
     // Check badge conditions
     const newBadges = await checkBadgeConditions(context.env.DB, userId, {

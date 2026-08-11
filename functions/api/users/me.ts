@@ -16,8 +16,10 @@ const FIELD_VALIDATORS: Record<string, (v: unknown) => boolean> = {
   semester: (v) => v === null || v === 1 || v === 2,
   school_name: (v) => v === null || (typeof v === 'string' && v.length <= 80),
   class_name: (v) => v === null || (typeof v === 'string' && v.length <= 40),
+  // 스키마·bulk-create 에는 학번 상한이 없다. 100 으로 좁히면 기존 101번+
+  // 학번을 가진 계정이 프로필을 저장하지 못한다(회귀).
   student_number: (v) =>
-    v === null || (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 100),
+    v === null || (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 9999),
 };
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {

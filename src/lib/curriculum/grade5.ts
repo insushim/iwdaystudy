@@ -1910,12 +1910,12 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "삼국을 통일한 나라는 ___이다.", answer: "신라", category: "역사" },
   {
-    text: "물질의 가장 작은 단위를 ___이라 한다.",
+    text: "물질의 가장 작은 단위를 ___이라(라) 한다.",
     answer: "원자",
     category: "과학",
   },
   {
-    text: "국회에서 법을 만드는 것을 ___이라 한다.",
+    text: "국회에서 법을 만드는 것을 ___이라(라) 한다.",
     answer: "입법",
     category: "사회",
   },
@@ -1942,7 +1942,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "6·25 전쟁은 ___년에 시작되었다.", answer: "1950", category: "역사" },
   {
-    text: "혈액을 온몸으로 보내는 기관을 ___이라 한다.",
+    text: "혈액을 온몸으로 보내는 기관을 ___이라(라) 한다.",
     answer: "심장",
     category: "과학",
   },
@@ -1974,7 +1974,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "백두산의 꼭대기에는 ___이라는 호수가 있다.",
+    text: "백두산의 꼭대기에는 ___이라는(라는) 호수가 있다.",
     answer: "천지",
     category: "지리",
   },
@@ -2059,7 +2059,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "식물이 스스로 양분을 만드는 과정을 ___이라 한다.",
+    text: "식물이 스스로 양분을 만드는 과정을 ___이라(라) 한다.",
     answer: "광합성",
     category: "과학",
   },
@@ -2069,7 +2069,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "조선 시대 과거 시험의 최종 단계를 ___이라 한다.",
+    text: "조선 시대 과거 시험의 최종 단계를 ___이라(라) 한다.",
     answer: "전시",
     category: "역사",
   },
@@ -2091,7 +2091,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "지구의 내부 구조 중 가장 바깥층을 ___이라 한다.",
+    text: "지구의 내부 구조 중 가장 바깥층을 ___이라(라) 한다.",
     answer: "지각",
     category: "과학",
   },
@@ -2116,7 +2116,7 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "조선 시대 지방을 다스리던 관리를 ___이라 했다.",
+    text: "조선 시대 지방을 다스리던 관리를 ___이라(라) 했다.",
     answer: "수령",
     category: "역사",
   },
@@ -2139,13 +2139,13 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
   { text: "고려의 수도는 지금의 ___시이다.", answer: "개성", category: "역사" },
   // ===== 추가 47개 (총 약 94개) =====
   { text: "식물의 줄기가 하는 일은 물과 양분을 ___하는 것이다.", answer: "운반", category: "과학" },
-  { text: "물이 증발하여 수증기가 되는 현상을 ___이라 한다.", answer: "증발", category: "과학" },
-  { text: "수증기가 식어서 물방울이 되는 것을 ___이라 한다.", answer: "응결", category: "과학" },
+  { text: "물이 증발하여 수증기가 되는 현상을 ___이라(라) 한다.", answer: "증발", category: "과학" },
+  { text: "수증기가 식어서 물방울이 되는 것을 ___이라(라) 한다.", answer: "응결", category: "과학" },
   { text: "물질의 세 가지 상태는 고체, 액체, ___이다.", answer: "기체", category: "과학" },
   { text: "자석의 같은 극끼리는 ___한다.", answer: "밀어냄", category: "과학" },
   { text: "자석의 다른 극끼리는 ___한다.", answer: "끌어당김", category: "과학" },
   { text: "먹이사슬에서 가장 아래에 있는 것은 ___이다.", answer: "식물", category: "과학" },
-  { text: "동물의 먹이 관계가 복잡하게 얽힌 것을 먹이 ___이라 한다.", answer: "그물", category: "과학" },
+  { text: "동물의 먹이 관계가 복잡하게 얽힌 것을 먹이 ___이라(라) 한다.", answer: "그물", category: "과학" },
   { text: "1km는 ___m이다.", answer: "1000", category: "수학" },
   { text: "1kg은 ___g이다.", answer: "1000", category: "수학" },
   { text: "분수에서 위의 수를 ___라 한다.", answer: "분자", category: "수학" },
@@ -2172,9 +2172,9 @@ export const grade5KnowledgeData: KnowledgeEntry[] = [
   { text: "나침반의 바늘은 항상 ___쪽을 가리킨다.", answer: "북", category: "과학" },
   { text: "열은 온도가 높은 곳에서 ___곳으로 이동한다.", answer: "낮은", category: "과학" },
   { text: "소리는 ___의 진동으로 전달된다.", answer: "공기", category: "과학" },
-  { text: "빛이 다른 물질을 만나 꺾이는 현상을 ___이라 한다.", answer: "굴절", category: "과학" },
+  { text: "빛이 다른 물질을 만나 꺾이는 현상을 ___이라(라) 한다.", answer: "굴절", category: "과학" },
   { text: "물체의 그림자가 가장 긴 때는 해가 ___때이다.", answer: "낮을", category: "과학" },
-  { text: "화산이 폭발할 때 나오는 돌을 ___이라 한다.", answer: "화산암", category: "과학" },
+  { text: "화산이 폭발할 때 나오는 돌을 ___이라(라) 한다.", answer: "화산암", category: "과학" },
   { text: "지진의 세기를 나타내는 단위는 ___이다.", answer: "규모", category: "과학" },
   { text: "우리나라 전통 가옥의 지붕 재료는 주로 ___이다.", answer: "기와", category: "문화" },
   { text: "조선 시대 시골 민가의 지붕 재료는 ___이다.", answer: "짚", category: "문화" },
@@ -3549,12 +3549,12 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "빨강, 노랑, 파랑을 색의 ___이라 한다.",
+    text: "빨강, 노랑, 파랑을 색의 ___이라(라) 한다.",
     answer: "삼원색",
     category: "미술",
   },
   {
-    text: "두 가지 이상의 색을 섞어 새로운 색을 만드는 것을 ___이라 한다.",
+    text: "두 가지 이상의 색을 섞어 새로운 색을 만드는 것을 ___이라(라) 한다.",
     answer: "혼색",
     category: "미술",
   },
@@ -3564,12 +3564,12 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "찰흙으로 형태를 만드는 미술 활동을 ___이라 한다.",
+    text: "찰흙으로 형태를 만드는 미술 활동을 ___이라(라) 한다.",
     answer: "조소",
     category: "미술",
   },
   {
-    text: "밝고 어두운 정도의 차이를 색의 ___이라 한다.",
+    text: "밝고 어두운 정도의 차이를 색의 ___이라(라) 한다.",
     answer: "명도",
     category: "미술",
   },
@@ -3594,12 +3594,12 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "한국 전통 미술에서 다섯 가지 색을 ___이라 한다.",
+    text: "한국 전통 미술에서 다섯 가지 색을 ___이라(라) 한다.",
     answer: "오방색",
     category: "미술",
   },
   {
-    text: "판화에서 물감을 묻혀 종이에 찍는 것을 ___이라 한다.",
+    text: "판화에서 물감을 묻혀 종이에 찍는 것을 ___이라(라) 한다.",
     answer: "인쇄",
     category: "미술",
   },
@@ -3615,7 +3615,7 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "도레미파솔라시도에서 '도'에서 높은 '도'까지를 한 ___이라 한다.",
+    text: "도레미파솔라시도에서 '도'에서 높은 '도'까지를 한 ___이라(라) 한다.",
     answer: "옥타브",
     category: "음악",
   },
@@ -3625,17 +3625,17 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "음의 길고 짧음을 나타내는 것을 ___이라 한다.",
+    text: "음의 길고 짧음을 나타내는 것을 ___이라(라) 한다.",
     answer: "음표",
     category: "음악",
   },
   {
-    text: "여러 사람이 함께 노래하는 것을 ___이라 한다.",
+    text: "여러 사람이 함께 노래하는 것을 ___이라(라) 한다.",
     answer: "합창",
     category: "음악",
   },
   {
-    text: "우리나라 전통 음악을 ___이라 총칭한다.",
+    text: "우리나라 전통 음악을 ___이라(라) 총칭한다.",
     answer: "국악",
     category: "음악",
   },
@@ -3655,7 +3655,7 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "같은 높이의 음이 반복되는 것을 ___이라 한다.",
+    text: "같은 높이의 음이 반복되는 것을 ___이라(라) 한다.",
     answer: "동음반복",
     category: "음악",
   },
@@ -3666,17 +3666,17 @@ export const grade5CreativeData: KnowledgeEntry[] = [
   },
   // 디자인
   {
-    text: "물건의 겉모양을 아름답고 쓰기 편하게 꾸미는 것을 ___이라 한다.",
+    text: "물건의 겉모양을 아름답고 쓰기 편하게 꾸미는 것을 ___이라(라) 한다.",
     answer: "디자인",
     category: "디자인",
   },
   {
-    text: "같은 모양이나 색이 규칙적으로 반복되는 무늬를 ___이라 한다.",
+    text: "같은 모양이나 색이 규칙적으로 반복되는 무늬를 ___이라(라) 한다.",
     answer: "패턴",
     category: "디자인",
   },
   {
-    text: "포스터에서 가장 중요한 내용을 눈에 잘 띄게 하는 것을 ___이라 한다.",
+    text: "포스터에서 가장 중요한 내용을 눈에 잘 띄게 하는 것을 ___이라(라) 한다.",
     answer: "강조",
     category: "디자인",
   },
@@ -3692,7 +3692,7 @@ export const grade5CreativeData: KnowledgeEntry[] = [
   },
   // 감상
   {
-    text: "미술 작품을 보고 느낌이나 생각을 말하는 것을 ___이라 한다.",
+    text: "미술 작품을 보고 느낌이나 생각을 말하는 것을 ___이라(라) 한다.",
     answer: "감상",
     category: "감상",
   },
@@ -3722,7 +3722,7 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "감상",
   },
   {
-    text: "오케스트라에서 지휘자가 사용하는 막대를 ___이라 한다.",
+    text: "오케스트라에서 지휘자가 사용하는 막대를 ___이라(라) 한다.",
     answer: "지휘봉",
     category: "감상",
   },
@@ -3737,12 +3737,12 @@ export const grade5CreativeData: KnowledgeEntry[] = [
     category: "감상",
   },
   {
-    text: "그림에서 빛과 그림자의 대비를 ___이라 한다.",
+    text: "그림에서 빛과 그림자의 대비를 ___이라(라) 한다.",
     answer: "명암",
     category: "감상",
   },
   {
-    text: "전통 탈춤에서 사용하는 가면을 ___이라 한다.",
+    text: "전통 탈춤에서 사용하는 가면을 ___이라(라) 한다.",
     answer: "탈",
     category: "감상",
   },
@@ -3752,7 +3752,7 @@ export const grade5CreativeData: KnowledgeEntry[] = [
 export const grade5ScienceData: KnowledgeEntry[] = [
   // 생물
   {
-    text: "식물의 잎에서 물이 수증기로 빠져나가는 현상을 ___이라 한다.",
+    text: "식물의 잎에서 물이 수증기로 빠져나가는 현상을 ___이라(라) 한다.",
     answer: "증산작용",
     category: "생물",
   },
@@ -3762,22 +3762,22 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "꽃의 수술에서 만들어지는 가루를 ___이라 한다.",
+    text: "꽃의 수술에서 만들어지는 가루를 ___이라(라) 한다.",
     answer: "꽃가루",
     category: "생물",
   },
   {
-    text: "식물의 뿌리 끝에 있는 솜털 같은 것을 ___이라 한다.",
+    text: "식물의 뿌리 끝에 있는 솜털 같은 것을 ___이라(라) 한다.",
     answer: "뿌리털",
     category: "생물",
   },
   {
-    text: "동물이 겨울을 나기 위해 깊은 잠에 빠지는 것을 ___이라 한다.",
+    text: "동물이 겨울을 나기 위해 깊은 잠에 빠지는 것을 ___이라(라) 한다.",
     answer: "겨울잠",
     category: "생물",
   },
   {
-    text: "나비가 알에서 성충이 되기까지의 변화를 ___이라 한다.",
+    text: "나비가 알에서 성충이 되기까지의 변화를 ___이라(라) 한다.",
     answer: "완전변태",
     category: "생물",
   },
@@ -3787,12 +3787,12 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "식물이 빛 방향으로 자라는 성질을 ___이라 한다.",
+    text: "식물이 빛 방향으로 자라는 성질을 ___이라(라) 한다.",
     answer: "굴광성",
     category: "생물",
   },
   {
-    text: "씨앗이 싹 트는 것을 ___이라 한다.",
+    text: "씨앗이 싹 트는 것을 ___이라(라) 한다.",
     answer: "발아",
     category: "생물",
   },
@@ -3828,7 +3828,7 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "빛이 거울에 반사되는 현상을 빛의 ___이라 한다.",
+    text: "빛이 거울에 반사되는 현상을 빛의 ___이라(라) 한다.",
     answer: "반사",
     category: "물리",
   },
@@ -3838,19 +3838,19 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "물체의 위치가 변하는 것을 ___이라 한다.",
+    text: "물체의 위치가 변하는 것을 ___이라(라) 한다.",
     answer: "운동",
     category: "물리",
   },
   {
-    text: "빛이 투명한 물체를 통과할 때 꺾이는 현상을 빛의 ___이라 한다.",
+    text: "빛이 투명한 물체를 통과할 때 꺾이는 현상을 빛의 ___이라(라) 한다.",
     answer: "굴절",
     category: "물리",
   },
   { text: "전기가 흐르는 길을 ___라 한다.", answer: "회로", category: "물리" },
   // 화학
   {
-    text: "물질이 고체에서 액체로 변하는 것을 ___이라 한다.",
+    text: "물질이 고체에서 액체로 변하는 것을 ___이라(라) 한다.",
     answer: "융해",
     category: "화학",
   },
@@ -3875,7 +3875,7 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "화학",
   },
   {
-    text: "용질이 물에 녹아 있는 액체를 ___이라 한다.",
+    text: "용질이 물에 녹아 있는 액체를 ___이라(라) 한다.",
     answer: "용액",
     category: "화학",
   },
@@ -3890,7 +3890,7 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "화학",
   },
   {
-    text: "물질이 타서 새로운 물질이 생기는 변화를 ___이라 한다.",
+    text: "물질이 타서 새로운 물질이 생기는 변화를 ___이라(라) 한다.",
     answer: "연소",
     category: "화학",
   },
@@ -3941,7 +3941,7 @@ export const grade5ScienceData: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "날씨를 관측하는 곳을 ___이라 한다.",
+    text: "날씨를 관측하는 곳을 ___이라(라) 한다.",
     answer: "기상청",
     category: "지구과학",
   },
@@ -3986,7 +3986,7 @@ export const grade5SocialData: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "산과 강이 많은 우리나라의 지형적 특징을 삼천리___이라 한다.",
+    text: "산과 강이 많은 우리나라의 지형적 특징을 삼천리___이라(라) 한다.",
     answer: "금수강산",
     category: "지리",
   },
@@ -3996,7 +3996,7 @@ export const grade5SocialData: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "지도에서 높낮이를 나타내는 선을 ___이라 한다.",
+    text: "지도에서 높낮이를 나타내는 선을 ___이라(라) 한다.",
     answer: "등고선",
     category: "지리",
   },
@@ -4073,12 +4073,12 @@ export const grade5SocialData: KnowledgeEntry[] = [
     category: "경제",
   },
   {
-    text: "물건을 만들어 내는 활동을 ___이라 한다.",
+    text: "물건을 만들어 내는 활동을 ___이라(라) 한다.",
     answer: "생산",
     category: "경제",
   },
   {
-    text: "물건이나 서비스를 사용하는 것을 ___이라 한다.",
+    text: "물건이나 서비스를 사용하는 것을 ___이라(라) 한다.",
     answer: "소비",
     category: "경제",
   },
@@ -4130,7 +4130,7 @@ export const grade5SocialData: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "우리나라의 전통 주거 형태를 ___이라 한다.",
+    text: "우리나라의 전통 주거 형태를 ___이라(라) 한다.",
     answer: "한옥",
     category: "문화",
   },

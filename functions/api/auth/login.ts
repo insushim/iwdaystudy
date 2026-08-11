@@ -129,7 +129,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Block unapproved teachers
+    // Block unapproved teachers.
+    // approval_status 가 NULL 인 교사 레코드(과거 수동 SQL 등으로 생길 수 있음)는
+    // 미들웨어 게이트에서 403 이 되므로, 로그인 단계도 같은 판정을 내려야
+    // "로그인은 되는데 아무것도 안 되는" 상태가 안 생긴다.
+    if (user.role === "teacher" && !user.approval_status) {
+      return jsonResponse(
+        {
+          message:
+            "승인 대기 중인 계정입니다. 관리자 승인 후 로그인할 수 있습니다.",
+        },
+        403,
+      );
+    }
     if (user.role === "teacher" && user.approval_status === "pending") {
       return jsonResponse(
         {

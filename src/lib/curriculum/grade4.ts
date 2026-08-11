@@ -2126,30 +2126,30 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "우리나라의 전통 집을 ___이라 한다.",
+    text: "우리나라의 전통 집을 ___이라(라) 한다.",
     answer: "한옥",
     category: "문화",
   },
   {
-    text: "뼈와 뼈가 만나는 곳을 ___이라 한다.",
+    text: "뼈와 뼈가 만나는 곳을 ___이라(라) 한다.",
     answer: "관절",
     category: "과학",
   },
   { text: "조선을 세운 사람은 ___이다.", answer: "이성계", category: "역사" },
-  { text: "소리의 빠르기를 ___이라 한다.", answer: "음속", category: "과학" },
+  { text: "소리의 빠르기를 ___이라(라) 한다.", answer: "음속", category: "과학" },
   // 신규 45개 (총 60개)
   {
-    text: "빛이 물에서 공기로 나갈 때 꺾이는 현상을 ___이라 한다.",
+    text: "빛이 물에서 공기로 나갈 때 꺾이는 현상을 ___이라(라) 한다.",
     answer: "굴절",
     category: "과학",
   },
   {
-    text: "지구가 하루에 한 바퀴 도는 것을 ___이라 한다.",
+    text: "지구가 하루에 한 바퀴 도는 것을 ___이라(라) 한다.",
     answer: "자전",
     category: "과학",
   },
   {
-    text: "지구가 1년에 태양을 한 바퀴 도는 것을 ___이라 한다.",
+    text: "지구가 1년에 태양을 한 바퀴 도는 것을 ___이라(라) 한다.",
     answer: "공전",
     category: "과학",
   },
@@ -2190,12 +2190,12 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "독도는 ___도에 속한다.", answer: "경상북", category: "지리" },
   {
-    text: "우리나라의 전통 음악을 ___이라 한다.",
+    text: "우리나라의 전통 음악을 ___이라(라) 한다.",
     answer: "국악",
     category: "문화",
   },
   {
-    text: "우리나라의 전통 춤을 ___이라 한다.",
+    text: "우리나라의 전통 춤을 ___이라(라) 한다.",
     answer: "한국 무용",
     category: "문화",
   },
@@ -2215,7 +2215,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "암석이 오랜 시간 부서져 만들어진 것을 ___이라 한다.",
+    text: "암석이 오랜 시간 부서져 만들어진 것을 ___이라(라) 한다.",
     answer: "흙",
     category: "과학",
   },
@@ -2231,12 +2231,12 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
   },
   { text: "고려를 세운 사람은 ___이다.", answer: "왕건", category: "역사" },
   {
-    text: "고려 시대에 만들어진 우리나라 도자기를 ___이라 한다.",
+    text: "고려 시대에 만들어진 우리나라 도자기를 ___이라(라) 한다.",
     answer: "청자",
     category: "역사",
   },
   {
-    text: "조선 시대 도자기를 ___이라 한다.",
+    text: "조선 시대 도자기를 ___이라(라) 한다.",
     answer: "백자",
     category: "역사",
   },
@@ -2273,7 +2273,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "별들이 모여 있는 모양을 ___이라 한다.",
+    text: "별들이 모여 있는 모양을 ___이라(라) 한다.",
     answer: "별자리",
     category: "과학",
   },
@@ -2283,7 +2283,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "무역에서 수출이 수입보다 많은 것을 ___이라 한다.",
+    text: "무역에서 수출이 수입보다 많은 것을 ___이라(라) 한다.",
     answer: "무역 흑자",
     category: "사회",
   },
@@ -2318,26 +2318,26 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "다각형 중 변이 5개인 것을 ___이라 한다.",
+    text: "다각형 중 변이 5개인 것을 ___이라(라) 한다.",
     answer: "오각형",
     category: "수학",
   },
   {
-    text: "다각형 중 변이 6개인 것을 ___이라 한다.",
+    text: "다각형 중 변이 6개인 것을 ___이라(라) 한다.",
     answer: "육각형",
     category: "수학",
   },
   {
-    text: "직선이 만나서 생기는 꼭짓점의 각도가 90도인 각을 ___이라 한다.",
+    text: "직선이 만나서 생기는 꼭짓점의 각도가 90도인 각을 ___이라(라) 한다.",
     answer: "직각",
     category: "수학",
   },
   {
-    text: "90도보다 작은 각을 ___이라 한다.",
+    text: "90도보다 작은 각을 ___이라(라) 한다.",
     answer: "예각",
     category: "수학",
   },
-  { text: "90도보다 큰 각을 ___이라 한다.", answer: "둔각", category: "수학" },
+  { text: "90도보다 큰 각을 ___이라(라) 한다.", answer: "둔각", category: "수학" },
   { text: "훈민정음은 ___년에 반포되었다.", answer: "1446", category: "역사" },
   // ===== 추가 50개 (총 약 100개) =====
   {
@@ -2373,7 +2373,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "자석에서 철을 끌어당기는 힘이 가장 센 곳을 ___이라 한다.",
+    text: "자석에서 철을 끌어당기는 힘이 가장 센 곳을 ___이라(라) 한다.",
     answer: "극",
     category: "과학",
   },
@@ -2388,7 +2388,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "열이 높은 곳에서 낮은 곳으로 이동하는 것을 ___이라 한다.",
+    text: "열이 높은 곳에서 낮은 곳으로 이동하는 것을 ___이라(라) 한다.",
     answer: "열전도",
     category: "과학",
   },
@@ -2398,7 +2398,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "물이 높은 곳에서 낮은 곳으로 떨어지는 곳을 ___이라 한다.",
+    text: "물이 높은 곳에서 낮은 곳으로 떨어지는 곳을 ___이라(라) 한다.",
     answer: "폭포",
     category: "지리",
   },
@@ -2436,12 +2436,12 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "바람의 세기를 재는 기구를 ___이라 한다.",
+    text: "바람의 세기를 재는 기구를 ___이라(라) 한다.",
     answer: "풍속계",
     category: "과학",
   },
   {
-    text: "비의 양을 재는 기구를 ___이라 한다.",
+    text: "비의 양을 재는 기구를 ___이라(라) 한다.",
     answer: "우량계",
     category: "과학",
   },
@@ -2556,7 +2556,7 @@ export const grade4KnowledgeData: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "직각삼각형에서 가장 긴 변을 ___이라 한다.",
+    text: "직각삼각형에서 가장 긴 변을 ___이라(라) 한다.",
     answer: "빗변",
     category: "수학",
   },
@@ -2676,7 +2676,7 @@ export const grade4SafetyData: SafetyEntry[] = [
     category: "정보안전",
   },
   {
-    text: "인터넷에서 허위 정보를 퍼뜨리는 것을 ___이라 한다.",
+    text: "인터넷에서 허위 정보를 퍼뜨리는 것을 ___이라(라) 한다.",
     answer: "가짜 뉴스",
     category: "정보안전",
   },
@@ -4858,12 +4858,12 @@ export const grade4WritingPrompts: string[] = [
 export const grade4CreativeData: KnowledgeEntry[] = [
   // 미술 (15개)
   {
-    text: "가까운 것은 크게, 먼 것은 작게 그리는 것을 ___이라 한다.",
+    text: "가까운 것은 크게, 먼 것은 작게 그리는 것을 ___이라(라) 한다.",
     answer: "원근법",
     category: "미술",
   },
   {
-    text: "좌우가 똑같은 것을 대칭, 다른 것을 ___이라 한다.",
+    text: "좌우가 똑같은 것을 대칭, 다른 것을 ___이라(라) 한다.",
     answer: "비대칭",
     category: "미술",
   },
@@ -4899,12 +4899,12 @@ export const grade4CreativeData: KnowledgeEntry[] = [
   },
   { text: "색이 선명한 정도를 ___라 한다.", answer: "채도", category: "미술" },
   {
-    text: "그림의 구도를 정하는 것을 ___이라 한다.",
+    text: "그림의 구도를 정하는 것을 ___이라(라) 한다.",
     answer: "구성",
     category: "미술",
   },
   {
-    text: "실제 사물을 보고 그리는 것을 ___이라 한다.",
+    text: "실제 사물을 보고 그리는 것을 ___이라(라) 한다.",
     answer: "사생",
     category: "미술",
   },
@@ -4924,7 +4924,7 @@ export const grade4CreativeData: KnowledgeEntry[] = [
     category: "미술",
   },
   {
-    text: "전통 문양 중 반복되는 기하학적 무늬를 ___이라 한다.",
+    text: "전통 문양 중 반복되는 기하학적 무늬를 ___이라(라) 한다.",
     answer: "기하 문양",
     category: "미술",
   },
@@ -4957,12 +4957,12 @@ export const grade4CreativeData: KnowledgeEntry[] = [
   { text: "8분음표는 ___박자를 나타낸다.", answer: "반", category: "음악" },
   { text: "점4분음표는 ___박자를 나타낸다.", answer: "1.5", category: "음악" },
   {
-    text: "같은 높이의 음을 이어주는 줄을 ___이라 한다.",
+    text: "같은 높이의 음을 이어주는 줄을 ___이라(라) 한다.",
     answer: "붙임줄",
     category: "음악",
   },
   {
-    text: "음의 높낮이를 나타내는 5개의 줄을 ___이라 한다.",
+    text: "음의 높낮이를 나타내는 5개의 줄을 ___이라(라) 한다.",
     answer: "오선",
     category: "음악",
   },
@@ -4977,12 +4977,12 @@ export const grade4CreativeData: KnowledgeEntry[] = [
     category: "음악",
   },
   {
-    text: "노래를 부르기 전에 목을 풀기 위해 하는 것을 ___이라 한다.",
+    text: "노래를 부르기 전에 목을 풀기 위해 하는 것을 ___이라(라) 한다.",
     answer: "발성 연습",
     category: "음악",
   },
   {
-    text: "여러 가지 악기로 함께 연주하는 것을 ___이라 한다.",
+    text: "여러 가지 악기로 함께 연주하는 것을 ___이라(라) 한다.",
     answer: "합주",
     category: "음악",
   },
@@ -4993,12 +4993,12 @@ export const grade4CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "종이를 여러 겹 붙여 단단하게 만드는 기법을 ___이라 한다.",
+    text: "종이를 여러 겹 붙여 단단하게 만드는 기법을 ___이라(라) 한다.",
     answer: "종이죽",
     category: "만들기",
   },
   {
-    text: "바느질에서 천과 천을 잇는 것을 ___이라 한다.",
+    text: "바느질에서 천과 천을 잇는 것을 ___이라(라) 한다.",
     answer: "박음질",
     category: "만들기",
   },
@@ -5013,7 +5013,7 @@ export const grade4CreativeData: KnowledgeEntry[] = [
     category: "만들기",
   },
   {
-    text: "나무를 조각할 때 사용하는 도구를 ___이라 한다.",
+    text: "나무를 조각할 때 사용하는 도구를 ___이라(라) 한다.",
     answer: "조각칼",
     category: "만들기",
   },
@@ -5029,22 +5029,22 @@ export const grade4CreativeData: KnowledgeEntry[] = [
     category: "감상",
   },
   {
-    text: "전통 미술에서 산수를 그린 그림을 ___이라 한다.",
+    text: "전통 미술에서 산수를 그린 그림을 ___이라(라) 한다.",
     answer: "산수화",
     category: "감상",
   },
   {
-    text: "미술 작품에 대한 자신의 느낌을 글로 적는 것을 ___이라 한다.",
+    text: "미술 작품에 대한 자신의 느낌을 글로 적는 것을 ___이라(라) 한다.",
     answer: "감상문",
     category: "감상",
   },
   {
-    text: "한국 전통 건축에서 지붕의 곡선미를 ___이라 한다.",
+    text: "한국 전통 건축에서 지붕의 곡선미를 ___이라(라) 한다.",
     answer: "처마 곡선",
     category: "감상",
   },
   {
-    text: "공연이 끝난 후 관객이 보내는 박수를 ___이라 한다.",
+    text: "공연이 끝난 후 관객이 보내는 박수를 ___이라(라) 한다.",
     answer: "갈채",
     category: "감상",
   },
