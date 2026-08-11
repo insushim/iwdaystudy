@@ -61,11 +61,10 @@ bash scripts/create-release.sh patch "버그 수정"
 
 - **`master` 브랜치 push → `.github/workflows/cf-deploy.yml`** (실질적인 상시 배포 경로)
   1. 버전 동기화(`sync-version.mjs`)
-  2. **D1 마이그레이션** (`wrangler/schema.sql`) — 실패 시 이후 단계(빌드·배포)를 중단한다
   3. `npm run build`
   4. Cloudflare Pages 배포
 - **태그(`v*`) push 또는 workflow_dispatch → `.github/workflows/deploy.yml`** (릴리스 경로)
-  1. 웹 빌드 (버전 동기화 포함) → Cloudflare Pages 배포 + D1 마이그레이션(실패 시 중단)
+  1. 웹 빌드 (버전 동기화 포함) → Cloudflare Pages 배포
   2. Android APK 빌드 (버전 동기화 포함)
   3. GitHub Release 생성 (APK 첨부, 릴리스 노트 자동 생성)
 
@@ -73,7 +72,16 @@ bash scripts/create-release.sh patch "버그 수정"
 
 ### D1 마이그레이션
 
-스키마 변경은 `wrangler/schema.sql`에 반영한다. 배포 워크플로가 매번 `wrangler d1 execute araharu-db --file=wrangler/schema.sql --remote`를 실행하므로, 컬럼 추가 등은 **기존 데이터를 깨지 않는 형태**(예: `ALTER TABLE ... ADD COLUMN` + 기본값, 또는 `CREATE TABLE IF NOT EXISTS`)로 작성해야 한다. 마이그레이션이 실패하면 배포 자체가 중단된다.
+스키마 변경은 `wrangler/schema.sql`에 반영하고, **배포 전에 직접** 적용한다:
+
+```bash
+bash scripts/db-migrate.sh          # 원격(프로덕션) D1
+bash scripts/db-migrate.sh --local  # 로컬 개발 D1
+```
+
+CI 에서 자동으로 돌리지 않는 이유: GitHub Actions 의 `CLOUDFLARE_API_TOKEN` 에 D1:Edit 권한이 없어 `d1 execute --remote` 가 `Authentication error [code: 10000]` 으로 실패하고, 그 때문에 사이트 배포 전체가 막힌다(2026-08-12 실측). 토큰에 **D1:Edit** 권한을 추가하면 두 워크플로의 주석 처리된 마이그레이션 단계를 되살릴 수 있다.
+
+컬럼 추가 등은 **기존 데이터를 깨지 않는 형태**(`ALTER TABLE ... ADD COLUMN` + 기본값, 또는 `CREATE TABLE IF NOT EXISTS`)로 작성해야 한다.
 
 ## 환경변수 / 시크릿
 
@@ -81,7 +89,7 @@ bash scripts/create-release.sh patch "버그 수정"
 
 | 이름 | 용도 |
 |---|---|
-| `CLOUDFLARE_API_TOKEN` | Cloudflare Pages 배포 + D1 마이그레이션 인증 |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare Pages 배포 인증 (D1:Edit 권한은 없음 — 마이그레이션은 로컬 수동) |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 계정 ID |
 
 **Cloudflare Pages 시크릿** (`wrangler secret put <이름>` 으로 등록, `wrangler.toml` 참고):

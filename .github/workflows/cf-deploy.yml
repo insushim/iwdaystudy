@@ -32,14 +32,12 @@ jobs:
       - name: Sync version (package.json -> android/gradle, functions/api/version.ts)
         run: node scripts/sync-version.mjs
 
-      - name: Run D1 Migration
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: d1 execute araharu-db --file=wrangler/schema.sql --remote
-        # continue-on-error 없음: 마이그레이션 실패 시 이후 Build/Deploy 단계를 중단시킨다.
-        # (스키마에 방어 없는 컬럼을 추가한 채 배포되면 런타임 500이 나는 문제를 막기 위함)
+      # D1 마이그레이션은 여기서 돌리지 않는다.
+      # 현재 CLOUDFLARE_API_TOKEN 에 D1:Edit 권한이 없어 `d1 execute --remote` 가
+      # "Authentication error [code: 10000]" 으로 실패하고, 그 때문에 사이트 배포까지
+      # 막혔다(2026-08-12 실측). 스키마 변경 시에는 배포 **전에** 로컬에서
+      #   bash scripts/db-migrate.sh
+      # 를 돌린다(README 참고). 토큰에 D1:Edit 을 부여하면 이 단계를 되살릴 수 있다.
 
       - name: Build
         run: npm run build
