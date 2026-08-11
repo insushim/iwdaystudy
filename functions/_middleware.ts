@@ -18,7 +18,11 @@ interface MiddlewareData extends Record<string, unknown> {
   cronAuthenticated?: boolean;
 }
 
-const DEFAULT_ORIGIN = "https://araharu.pages.dev";
+// 실제 운영 도메인은 araharu-ecp.pages.dev 다(araharu.pages.dev 는 갱신되지 않는
+// 별개의 옛 Pages 프로젝트). 목록 첫 항목이 매칭 실패 시의 기본값이 되므로
+// 운영 도메인을 앞에 둔다. 필요하면 ALLOWED_ORIGIN 환경변수로 덮어쓴다.
+const DEFAULT_ORIGIN =
+  "https://araharu-ecp.pages.dev,https://araharu.pages.dev";
 
 function resolveAllowedOrigin(requestOrigin: string | null, env: Env): string {
   const allowed = env.ALLOWED_ORIGIN || DEFAULT_ORIGIN;

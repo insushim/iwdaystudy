@@ -208,8 +208,8 @@ jobs:
 
           ### 설치 방법
           - **Android**: 아래 APK 파일을 다운로드하여 설치하세요
-          - **iOS**: https://araharu.pages.dev 접속 → 공유 버튼(□↑) → "홈 화면에 추가"
-          - **웹**: https://araharu.pages.dev
+          - **iOS**: https://araharu-ecp.pages.dev 접속 → 공유 버튼(□↑) → "홈 화면에 추가"
+          - **웹**: https://araharu-ecp.pages.dev
 
           ### 업데이트
           - Android 앱: 자동으로 업데이트를 감지합니다

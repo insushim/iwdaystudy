@@ -2,7 +2,7 @@
 
 초등학교 1~6학년 학생을 위한 **매일 아침 학습 세트** 웹앱. 학년·학기별로 수학·맞춤법·상식·안전·한자·영어·독해 문항을 매일 자동 생성해 제공하고, 학생·학부모·교사·관리자용 대시보드를 함께 제공한다.
 
-- 웹/PWA: https://araharu.pages.dev
+- 웹/PWA: https://araharu-ecp.pages.dev  ← 실제 운영 도메인 (araharu.pages.dev 는 갱신되지 않는 옛 Pages 프로젝트)
 - Android: GitHub Releases에서 APK 배포 (자동 업데이트 감지)
 
 ## 기술 스택

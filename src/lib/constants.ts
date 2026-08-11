@@ -3,7 +3,7 @@ export const APP_TAGLINE = "매일 아침, 알아가는 즐거움";
 export const APP_DESCRIPTION =
   "초등 1~6학년 맞춤 일일학습 프로그램. 2022 개정 교육과정 기반 매일 30분 아침학습으로 학습 습관을 키워요.";
 export const APP_URL =
-  process.env.NEXT_PUBLIC_APP_URL || "https://araharu.pages.dev";
+  process.env.NEXT_PUBLIC_APP_URL || "https://araharu-ecp.pages.dev";
 
 export const GRADES = [1, 2, 3, 4, 5, 6] as const;
 export const SEMESTERS = [1, 2] as const;

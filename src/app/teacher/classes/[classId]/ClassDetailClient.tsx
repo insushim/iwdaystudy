@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { APP_URL } from "@/lib/constants";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -167,9 +168,14 @@ export default function ClassDetailClient() {
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
+  // 예전에는 없는 라우트(/join/<code>)와 갱신되지 않는 옛 도메인을 하드코딩해
+  // 복사한 링크가 항상 깨졌다. 현재 접속한 주소를 기준으로 로그인 안내 + 코드를
+  // 함께 복사한다.
   const handleCopyLink = () => {
+    const origin =
+      typeof window !== "undefined" ? window.location.origin : APP_URL;
     navigator.clipboard.writeText(
-      `https://araharu.pages.dev/join/${classInfo.inviteCode}`,
+      `${classInfo.name} 학급 참여 안내\n${origin}/login/ 에서 로그인한 뒤 학급 코드 ${classInfo.inviteCode} 를 입력하세요.`,
     );
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
