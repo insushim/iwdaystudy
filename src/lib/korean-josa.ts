@@ -4,6 +4,9 @@
  * 제너레이터 템플릿이 `을(를)`, `은(는)`, `이(가)`, `와(과)`, `으로(로)` 같은
  * 리터럴 플레이스홀더를 그대로 내보내던 버그(학생 화면에 "정원을(를)" 노출)를
  * 받침 유무 기준으로 올바른 조사 하나로 치환한다. 한글 음절과 숫자(한국어 읽기) 모두 처리.
+ *
+ * naturalizeKorean = 플레이스홀더(...을(를)...) 치환.
+ * fixExistingJosa = 플레이스홀더 없이 이미 잘못 박힌 조사(예: "6를", "배으로")를 교정.
  */
 
 /** 한글 음절의 받침(종성) 유무. 한글 음절이 아니면 false. */
@@ -35,6 +38,17 @@ export function numberHasBatchim(n: number): boolean {
   return last === 1 || last === 3 || last === 6 || last === 7 || last === 8;
 }
 
+/**
+ * 정수의 한국어 읽기 마지막 음절 받침이 ㄹ인지 (으로/로 선택용).
+ * 1일ㄹ 7칠ㄹ 8팔ㄹ만 참. 끝자리 0(십·백·천·만·억)은 전부 ㄹ 받침이 아니다.
+ */
+export function numberIsRieul(n: number): boolean {
+  const v = Math.abs(Math.trunc(n));
+  const last = v % 10;
+  if (last === 0) return false;
+  return last === 1 || last === 7 || last === 8;
+}
+
 function pick(anchor: string, withB: string, withoutB: string): string {
   if (/^\d+$/.test(anchor)) {
     return numberHasBatchim(parseInt(anchor, 10)) ? withB : withoutB;
@@ -42,17 +56,39 @@ function pick(anchor: string, withB: string, withoutB: string): string {
   return hasBatchim(anchor.slice(-1)) ? withB : withoutB;
 }
 
-// 앵커(한글/숫자) + 선택적 괄호 음철표기(예: "암탉 (h-e-n)") + 조사 플레이스홀더.
+/** 앵커(한글 마지막 글자 또는 숫자 전체) 기준 '으로'/'로' 선택. */
+function pickRo(anchor: string): string {
+  if (/^\d+$/.test(anchor)) {
+    const n = parseInt(anchor, 10);
+    return numberHasBatchim(n) && !numberIsRieul(n) ? "으로" : "로";
+  }
+  const ch = anchor.slice(-1);
+  return hasBatchim(ch) && !isRieul(ch) ? "으로" : "로";
+}
+
+// 앵커와 조사 플레이스홀더 사이에 끼어들 수 있는 것:
+// ① 닫는 따옴표/괄호(예: "두렵다"과(와), '목적'은(는)) — 이 경우 실제 받침 판정은
+//    따옴표 안쪽 마지막 글자(앵커)로 해야 하므로 따옴표 자체는 그대로 보존하고 건너뛴다.
+// ② 괄호 음철 표기(예: "암탉 (h-e-n)을(를)").
+// 두 가지를 반복 조합해도 매칭되도록 비귀속 그룹으로 구성한다.
+const MIDDLE = `(?:["'”’)\\]]|\\s*\\([^)]*\\))*`;
+
+// 앵커(한글/숫자) + MIDDLE(따옴표/괄호) + 조사 플레이스홀더.
 const JOSA_PAIRS: Array<[RegExp, string, string]> = [
-  [/([가-힣]|\d+)(\s*\([^)]*\))?을\(를\)/g, "을", "를"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?를\(을\)/g, "을", "를"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?은\(는\)/g, "은", "는"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?는\(은\)/g, "은", "는"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?이\(가\)/g, "이", "가"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?가\(이\)/g, "이", "가"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?과\(와\)/g, "과", "와"],
-  [/([가-힣]|\d+)(\s*\([^)]*\))?와\(과\)/g, "과", "와"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})을\\(를\\)`, "g"), "을", "를"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})를\\(을\\)`, "g"), "을", "를"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})은\\(는\\)`, "g"), "은", "는"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})는\\(은\\)`, "g"), "은", "는"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})이\\(가\\)`, "g"), "이", "가"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})가\\(이\\)`, "g"), "이", "가"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})과\\(와\\)`, "g"), "과", "와"],
+  [new RegExp(`([가-힣]|\\d+)(${MIDDLE})와\\(과\\)`, "g"), "과", "와"],
 ];
+
+const RO_PLACEHOLDER = new RegExp(
+  `([가-힣]|\\d+)(${MIDDLE})으로\\(로\\)|([가-힣]|\\d+)(${MIDDLE})로\\(으로\\)`,
+  "g",
+);
 
 /**
  * 문자열 내 조사/계사 플레이스홀더를 받침 규칙으로 보정한다.
@@ -61,21 +97,83 @@ const JOSA_PAIRS: Array<[RegExp, string, string]> = [
 export function naturalizeKorean(text: string): string {
   if (!text) return text;
   for (const [re, withB, withoutB] of JOSA_PAIRS) {
-    text = text.replace(re, (_m, anchor: string, paren?: string) => {
-      return anchor + (paren || "") + pick(anchor, withB, withoutB);
+    text = text.replace(re, (_m, anchor: string, middle?: string) => {
+      return anchor + (middle || "") + pick(anchor, withB, withoutB);
     });
   }
   // 으로(로) / 로(으로): 받침 있고 ㄹ 아니면 '으로', 그 외 '로'
   text = text.replace(
-    /([가-힣])으로\(로\)|([가-힣])로\(으로\)/g,
-    (_m, a: string, b: string) => {
-      const c = a || b;
-      return c + (hasBatchim(c) && !isRieul(c) ? "으로" : "로");
+    RO_PLACEHOLDER,
+    (_m, a?: string, am?: string, b?: string, bm?: string) => {
+      const anchor = a ?? b ?? "";
+      const middle = (a ? am : bm) || "";
+      return anchor + middle + pickRo(anchor);
     },
   );
   // 계사 보정: 모음으로 끝나는 명사 + '이에요' → '예요' (예: 고양이이에요 → 고양이예요)
   text = text.replace(/([가-힣])이에요/g, (m, c: string) =>
     hasBatchim(c) ? m : c + "예요",
   );
+  return text;
+}
+
+// ── 이미 잘못 박혀 있는 조사 교정 (플레이스홀더가 아니라 완성된 문장 텍스트 대상) ──
+//
+// 오탐 방지: "사과", "치과", "효과" 처럼 '과'로 끝나는 단어, "근로", "경로", "백로",
+// "공로", "진로", "통로", "판로", "향로", "폭로", "선로" 처럼 '로'로 끝나는 단어는
+// 조사가 아니라 단어의 일부이므로 절대 바꾸지 않는다. 그래서:
+//   - 숫자 앵커가 아닌 한글 앵커의 와/과·이/가·은/는·을/를 교정은 하지 않는다
+//     (오탐 위험이 이득보다 크다 — 숫자 앵커만 정확히 계산 가능하므로 숫자만 교정).
+//   - '으로'→'로'(받침 없는 음절 뒤) 방향만 교정한다. 반대 방향('로'→'으로')은
+//     하지 않는다: 사전 없이는 조사 '로'와 낱말의 일부('통학로'·'등산로'·'산책로'·
+//     '진입로'·'순환로' 등)를 구별할 수 없고, 예외 목록은 2음절만 걸러 3음절 이상
+//     낱말을 그대로 망가뜨린다(실측: "통학로" → "통학으로"). 교정 이득보다 콘텐츠
+//     훼손 위험이 커서 제거했다.
+
+// 조사 뒤에 오는 경계: 공백/문장부호/닫는 괄호·따옴표/문자열 끝.
+const JOSA_BOUNDARY = `(?=[\\s.,!?;:)\\]"'”’」』]|$)`;
+
+const NUM_JOSA_RE = new RegExp(
+  `(\\d+)(이|가|은|는|을|를|와|과)${JOSA_BOUNDARY}`,
+  "g",
+);
+const NO_BATCHIM_EURO_RE = new RegExp(`([가-힣])으로${JOSA_BOUNDARY}`, "g");
+
+/**
+ * 숫자 직후 조사(이/가·은/는·을/를·와/과)와 '으로/로'가 받침 규칙에 맞지 않게
+ * 이미 박혀 있는 경우를 교정한다. 플레이스홀더가 없는 완성 문장 텍스트 대상.
+ */
+export function fixExistingJosa(text: string): string {
+  if (!text) return text;
+
+  // 1) 숫자 + 조사: numberHasBatchim 기준으로 교정
+  text = text.replace(
+    NUM_JOSA_RE,
+    (m: string, num: string, particle: string) => {
+      const b = numberHasBatchim(parseInt(num, 10));
+      switch (particle) {
+        case "이":
+        case "가":
+          return num + (b ? "이" : "가");
+        case "은":
+        case "는":
+          return num + (b ? "은" : "는");
+        case "을":
+        case "를":
+          return num + (b ? "을" : "를");
+        case "와":
+        case "과":
+          return num + (b ? "과" : "와");
+        default:
+          return m;
+      }
+    },
+  );
+
+  // 2) 받침 없는 한글 + '으로' → '로' (실질적으로 오탐 위험 없음)
+  text = text.replace(NO_BATCHIM_EURO_RE, (m: string, ch: string) =>
+    hasBatchim(ch) ? m : ch + "로",
+  );
+
   return text;
 }

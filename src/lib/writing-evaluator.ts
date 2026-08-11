@@ -890,12 +890,23 @@ export function evaluateWriting(
   const punctCount = (cleaned.match(/[.!?\n]/g) || []).length;
   // (v7.1) 서술어(~다/~요/~해 등)로 끝나는 어절이 하나도 없으면 "사과는 바다는
   // 학교는…"처럼 조사만 붙인 낱말 나열 — 문장이 아니므로 word-list로 취급
-  const predicateTokens = cleaned
-    .split(/\s+/)
-    .filter((t) => /(다|요|죠|자|네|까|어|해|함|음)[.!?~"'”’]*$/.test(t)).length;
+  // (v7.2) 위 판정을 "전체 토큰 중 서술어 종결 0개"로만 걸면, 마침표로 문장처럼
+  // 끊은 무의미 명사 나열에 "의자"처럼 우연히 종결어미 글자(자/다/요 등)로 끝나는
+  // 명사가 하나만 섞여도 게이트 전체가 무력화된다(실측: 4~6개 문장짜리 무의미
+  // 명사 나열이 정직하게 쓴 짧은 글보다 높은 점수를 받음). 토큰 전체가 아니라
+  // "문장" 단위로 서술어 종결 비율을 재서, 대부분의 문장에 진짜 서술어가
+  // 없으면(2/3 미만) 명사 나열로 판정한다 — 정상 글은 문장마다 서술어로
+  // 끝나는 게 한국어 문법상 기본이라 비율이 항상 1에 가까워 오탐이 없다.
+  const PREDICATE_ENDING_REGEX =
+    /(다|요|죠|자|네|까|어|해|함|음|지)[.!?~"'”’]*$/;
+  const predicateSentenceCount = sentences.filter((s) =>
+    PREDICATE_ENDING_REGEX.test(s.trim()),
+  ).length;
+  const predicateSentenceRatio =
+    sentences.length > 0 ? predicateSentenceCount / sentences.length : 1;
   const isWordList =
     words.length >= 8 &&
-    ((prose < 0.15 && punctCount < 2) || predicateTokens === 0);
+    ((prose < 0.15 && punctCount < 2) || predicateSentenceRatio < 0.34);
 
   // 주제 관련성: 프롬프트가 구체적(키워드 2개+)일 때만 평가
   const promptKeywords = options?.prompt

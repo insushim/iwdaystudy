@@ -1,5 +1,13 @@
+// 시그니처는 커리큘럼 데이터에 의존하지 않는 별도 모듈에 있다.
+// (local-storage 등이 이 무거운 파일을 통째로 끌어오지 않도록 분리)
+import {
+  getQuestionSignature,
+  NON_REPEATABLE_QUESTION_TYPES,
+} from "./question-signature";
+
 import { getDayOfYear, getGradeGroup } from "@/lib/utils";
 import { lookupStandardCode } from "@/lib/curriculum/standard-mapping";
+import { naturalizeKorean, fixExistingJosa, hasBatchim } from "@/lib/korean-josa";
 import {
   GRADE_SET_COMPOSITION,
   DEFAULT_READINESS_ITEMS,
@@ -141,18 +149,6 @@ import {
   grade6SocialData,
 } from "@/lib/curriculum/grade6";
 
-const NON_REPEATABLE_QUESTION_TYPES = new Set([
-  "multiple_choice",
-  "fill_blank",
-  "short_answer",
-  "true_false",
-  "matching",
-  "ordering",
-  "drawing",
-  "calculation",
-  "word_puzzle",
-  "dictation",
-]);
 
 // Seeded PRNG for reproducible daily sets (same seed = same set per day)
 function seededRandom(seed: number) {
@@ -382,6 +378,43 @@ function shuffleArrayInPlace<T>(arr: T[], random: () => number): void {
   }
 }
 
+// ── 조사 후처리 choke point ──────────────────────────────────────
+// 제너레이터가 만든 문항의 모든 문자열(중첩 배열·객체 포함)에 조사 플레이스홀더
+// 치환(naturalizeKorean)과 기존 오류 조사 교정(fixExistingJosa)을 한 번씩 통과시킨다.
+// generateDailySet의 questions 조립이 끝나는 단일 choke point에서만 호출한다.
+function polishKoreanText(s: string): string {
+  return fixExistingJosa(naturalizeKorean(s));
+}
+
+function deepPolishKorean<T>(value: T): T {
+  if (typeof value === "string") {
+    return polishKoreanText(value) as unknown as T;
+  }
+  if (Array.isArray(value)) {
+    return value.map((v) => deepPolishKorean(v)) as unknown as T;
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
+      out[k] = deepPolishKorean(v);
+    }
+    return out as T;
+  }
+  return value;
+}
+
+function polishQuestionsKorean(qs: Question[]): Question[] {
+  return qs.map((q) => ({
+    ...q,
+    title: q.title != null ? polishKoreanText(q.title) : q.title,
+    content: deepPolishKorean(q.content),
+    answer: deepPolishKorean(q.answer),
+    explanation:
+      q.explanation != null ? polishKoreanText(q.explanation) : q.explanation,
+    hint: q.hint != null ? polishKoreanText(q.hint) : q.hint,
+  }));
+}
+
 // ── 초등 교육과정 초과(중등 개념) 문항 필터 ──────────────────────
 // 뉴턴·관성·원소기호·화학식·pH·원자핵·유전자·옴의법칙 등은 중학 과정.
 // 분명한 마커만 골라 제거(고기압·볼트(나사) 등 초등 어휘 오제거 방지).
@@ -399,25 +432,58 @@ const ABOVE_GRADE_ANSWERS = new Set([
   "뉴턴", "뉴턴(N)", "H₂O", "CO₂", "NaCl", "원자핵", "양성자", "중성자",
   "아원자", "유전자", "미토콘드리아", "멘델레예프", "이산화황", "역학적",
 ]);
+function blobIsAboveGrade(blob: string): boolean {
+  if (!blob) return false;
+  if (ABOVE_GRADE_PHRASES.some((p) => blob.includes(p))) return true;
+  for (const a of ABOVE_GRADE_ANSWERS) {
+    if (blob.includes(a)) return true;
+  }
+  return false;
+}
+
 function isAboveGrade(text: string, answer: string): boolean {
-  const a = (answer || "").trim();
-  if (ABOVE_GRADE_ANSWERS.has(a)) return true;
-  const blob = `${text || ""} ${a}`;
-  return ABOVE_GRADE_PHRASES.some((p) => blob.includes(p));
+  return blobIsAboveGrade(`${text || ""} ${(answer || "").trim()}`);
+}
+
+/**
+ * above-grade(중등 개념) 필터. 필터 후 결과가 비면(폴백) 원본 풀을 그대로 반환해
+ * "필터로 문항이 부족해짐" 문제를 방지한다(filterMathByProgress와 동일한 관례).
+ */
+function filterAboveGrade<T>(items: T[], blobOf: (item: T) => string): T[] {
+  if (!items || items.length === 0) return items;
+  const filtered = items.filter((item) => !blobIsAboveGrade(blobOf(item)));
+  return filtered.length > 0 ? filtered : items;
 }
 
 // OX(true_false) false문용 오답: 정답과 길이·형식이 가장 비슷한 보기를 우선 선택해
 // "농촌에는 넓은 낮이 있다" 같은 비문을 줄인다. (choices는 이미 category 일치)
+/**
+ * O/X 문항에서 '거짓 문장'을 만들 때 빈칸에 넣을 오답을 고른다.
+ *
+ * 문장 템플릿은 정답 낱말에 맞춰 조사·어미가 이미 박혀 있다("___로 나뉜다",
+ * "___이다"). 아무 낱말이나 넣으면 "물이 도다", "회복개이다", "다칠을" 같은
+ * 비문이 학생 화면에 그대로 나간다. 그래서 (1) 받침 유무가 같고 (2) 길이가
+ * 비슷한 후보만 쓴다. 조건을 만족하는 후보가 없으면 null 을 돌려주고,
+ * 호출부는 '참인 문장'으로 출제한다 — 비문을 내보내는 것보다 낫다.
+ */
 function pickTfWrong(
   answer: string,
   choices: string[],
   rng: () => number,
-): string {
-  const wrong = choices.filter((c) => c !== answer);
-  if (wrong.length === 0) return answer;
-  const similar = wrong.filter((c) => sameFormat(answer, c));
-  const usePool = similar.length > 0 ? similar : wrong;
-  return usePool[Math.floor(rng() * usePool.length)];
+): string | null {
+  const wrong = choices.filter((c) => c !== answer && c.trim().length > 0);
+  if (wrong.length === 0) return null;
+
+  const aLast = answer.slice(-1);
+  const aBatchim = hasBatchim(aLast);
+  const safe = wrong.filter(
+    (c) =>
+      sameFormat(answer, c) &&
+      hasBatchim(c.slice(-1)) === aBatchim &&
+      Math.abs(c.length - answer.length) <= 1,
+  );
+  if (safe.length === 0) return null;
+  return safe[Math.floor(rng() * safe.length)];
 }
 
 function generateMathChoices(correct: number, random: () => number): string[] {
@@ -1918,12 +1984,17 @@ function buildKnowledgeQuestion(
 ): Question {
   const rng = random || Math.random;
   if (variant === "tf") {
-    const isCorrectStatement = rng() > 0.5;
+    let isCorrectStatement = rng() > 0.5;
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
       const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
-      displayText = entry.text.replace("___", wrongAnswer);
+      if (wrongAnswer === null) {
+        // 문법이 깨지지 않는 오답 후보가 없으면 참인 문장으로 낸다.
+        isCorrectStatement = true;
+      } else {
+        displayText = entry.text.replace("___", wrongAnswer);
+      }
     }
     return {
       id: `q-${setId}-${orderIndex}`,
@@ -1980,12 +2051,17 @@ function buildSafetyQuestion(
 ): Question {
   const rng = random || Math.random;
   if (variant === "tf") {
-    const isCorrectStatement = rng() > 0.5;
+    let isCorrectStatement = rng() > 0.5;
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
       const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
-      displayText = entry.text.replace("___", wrongAnswer);
+      if (wrongAnswer === null) {
+        // 문법이 깨지지 않는 오답 후보가 없으면 참인 문장으로 낸다.
+        isCorrectStatement = true;
+      } else {
+        displayText = entry.text.replace("___", wrongAnswer);
+      }
     }
     return {
       id: `q-${setId}-${orderIndex}`,
@@ -2300,12 +2376,17 @@ function buildSubjectQuestion(
 ): Question {
   const rng = random || Math.random;
   if (variant === "tf") {
-    const isCorrectStatement = rng() > 0.5;
+    let isCorrectStatement = rng() > 0.5;
     const filledText = entry.text.replace("___", entry.answer);
     let displayText = filledText;
     if (!isCorrectStatement) {
       const wrongAnswer = pickTfWrong(entry.answer, choices, rng);
-      displayText = entry.text.replace("___", wrongAnswer);
+      if (wrongAnswer === null) {
+        // 문법이 깨지지 않는 오답 후보가 없으면 참인 문장으로 낸다.
+        isCorrectStatement = true;
+      } else {
+        displayText = entry.text.replace("___", wrongAnswer);
+      }
     }
     return {
       id: `q-${setId}-${orderIndex}`,
@@ -2350,18 +2431,6 @@ function buildSubjectQuestion(
   };
 }
 
-export function getQuestionSignature(question: Question): string | null {
-  if (!NON_REPEATABLE_QUESTION_TYPES.has(question.question_type)) {
-    return null;
-  }
-
-  return JSON.stringify({
-    subject: question.subject,
-    question_type: question.question_type,
-    content: question.content,
-    answer: question.answer,
-  });
-}
 
 function countRepeatedQuestions(
   questions: Question[],
@@ -2414,13 +2483,45 @@ export function generateDailySet(
   const composition = GRADE_SET_COMPOSITION[gradeGroup];
   const data = getGradeData(grade, semester, finalSeed, subjectAccuracy);
 
-  // 초등 교육과정 초과(중등) 개념 문항 제거 — 모든 학년 적용(저학년엔 해당 없음)
-  const dropAboveGrade = (e: { text: string; answer: string }) =>
-    !isAboveGrade(e.text, e.answer);
-  if (data.science) data.science = data.science.filter(dropAboveGrade);
-  if (data.social) data.social = data.social.filter(dropAboveGrade);
-  if (data.creative) data.creative = data.creative.filter(dropAboveGrade);
-  data.knowledge = data.knowledge.filter(dropAboveGrade);
+  // 초등 교육과정 초과(중등) 개념 문항 제거 — 전 과목 풀 적용(저학년엔 해당 없음).
+  // 필터 후 풀이 비면(폴백) 원본을 유지해 문항 부족을 방지(filterAboveGrade 내부 처리).
+  if (data.science)
+    data.science = filterAboveGrade(data.science, (e) => `${e.text} ${e.answer}`);
+  if (data.social)
+    data.social = filterAboveGrade(data.social, (e) => `${e.text} ${e.answer}`);
+  if (data.creative)
+    data.creative = filterAboveGrade(data.creative, (e) => `${e.text} ${e.answer}`);
+  data.knowledge = filterAboveGrade(data.knowledge, (e) => `${e.text} ${e.answer}`);
+
+  if (data.korean)
+    data.korean = filterAboveGrade(data.korean, (e) => `${e.text} ${e.answer}`);
+  if (data.koreanReading)
+    data.koreanReading = filterAboveGrade(
+      data.koreanReading,
+      (e) =>
+        `${e.passage} ${e.question} ${(e.choices || []).join(" ")} ${e.correct}`,
+    );
+  data.vocab = filterAboveGrade(
+    data.vocab,
+    (e) => `${(e.meanings || []).join(" ")} ${e.answer}`,
+  );
+  data.safety = filterAboveGrade(data.safety, (e) => `${e.text} ${e.answer}`);
+  if (data.english)
+    data.english = filterAboveGrade(
+      data.english,
+      (e) =>
+        `${e.sentence} ${e.translation} ${e.word} ${e.targetKo || ""}`,
+    );
+  if (data.hanja)
+    data.hanja = filterAboveGrade(
+      data.hanja,
+      (e) => `${e.meaning} ${e.sentence} ${(e.words || []).join(" ")}`,
+    );
+  data.spelling = filterAboveGrade(
+    data.spelling,
+    (e) => `${e.q1} ${e.q2} ${e.explanation}`,
+  );
+  data.writing = filterAboveGrade(data.writing, (e) => e);
 
   // Attach new vocab variant pools
   data.synonymPairs = getSynonymPairs(grade, finalSeed);
@@ -2701,17 +2802,14 @@ export function generateDailySet(
           // Pick one meaning and ask which word has this meaning
           const mIdx = Math.floor(random() * mmw.meanings.length);
           const correctMeaning = mmw.meanings[mIdx];
-          const wrongChoices = data.vocab
-            .map((v) => v.answer)
-            .filter((w) => w !== mmw.word);
-          const choices = [
+          // generateChoices는 normForDup 기반 근사중복까지 걸러내므로 4지선다
+          // 중복 보기(같은 오답이 2~3번 노출)를 막는다(수동 filter로는 부족했음).
+          const choices = generateChoices(
             mmw.word,
-            ...rankByCloseLength(wrongChoices, mmw.word.length, random).slice(
-              0,
-              3,
-            ),
-          ];
-          shuffleArrayInPlace(choices, random);
+            data.vocab,
+            (v) => v.answer,
+            random,
+          );
           questions.push(
             buildVocabQuestion(
               setId,
@@ -2735,17 +2833,14 @@ export function generateDailySet(
         ) {
           const idx = Math.floor(random() * data.wordPuzzles.length);
           const puzzle = data.wordPuzzles[idx];
-          const wrongChoices = data.vocab
-            .map((v) => v.answer)
-            .filter((w) => w !== puzzle.word);
-          const choices = [
+          // generateChoices는 normForDup 기반 근사중복까지 걸러내므로 4지선다
+          // 중복 보기(같은 오답이 2~3번 노출)를 막는다(수동 filter로는 부족했음).
+          const choices = generateChoices(
             puzzle.word,
-            ...rankByCloseLength(wrongChoices, puzzle.word.length, random).slice(
-              0,
-              3,
-            ),
-          ];
-          shuffleArrayInPlace(choices, random);
+            data.vocab,
+            (v) => v.answer,
+            random,
+          );
           questions.push(
             buildVocabQuestion(
               setId,
@@ -3130,7 +3225,7 @@ export function generateDailySet(
     }
   }
 
-  return { set: dailySet, questions };
+  return { set: dailySet, questions: polishQuestionsKorean(questions) };
 }
 
 export function generateDailySetWithoutRepeats(
@@ -3178,3 +3273,5 @@ export function generateDailySetWithoutRepeats(
     generateDailySet(grade, semester, completedSetIds, subjectAccuracy)
   );
 }
+
+export { getQuestionSignature };

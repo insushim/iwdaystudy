@@ -19,9 +19,9 @@ import { Card, CardContent } from "@/components/ui/card";
 const features = [
   {
     icon: Brain,
-    title: "AI 맞춤 학습",
+    title: "수준별 맞춤 출제",
     description:
-      "아이의 수준과 학습 패턴을 분석하여 딱 맞는 문제를 출제해요. 어려우면 쉽게, 쉬우면 도전적으로!",
+      "과목별 정답률에 따라 난이도가 자동으로 조정돼요. 어려우면 쉽게, 쉬우면 도전적으로!",
     color: "text-ara-orange",
     bg: "bg-ara-orange/10",
     borderHover: "hover:border-ara-orange/30",
@@ -91,15 +91,15 @@ const itemVariants = {
   },
 };
 
-// Comparison data
-const comparisons = [
-  { feature: "2022 개정 교육과정 기반", us: true, others: "일부" },
-  { feature: "AI 맞춤 문제 출제", us: true, others: "유료" },
-  { feature: "선행학습법 지원", us: true, others: false },
-  { feature: "개인정보 최소 수집", us: true, others: false },
-  { feature: "오프라인 학습 지원", us: true, others: "일부" },
-  { feature: "광고 없는 환경", us: true, others: false },
-  { feature: "학부모 리포트", us: true, others: "유료" },
+// 아라하루가 실제로 제공하는 것만 적는다.
+// (근거를 댈 수 없는 타사 비교는 표시광고법상 문제가 되므로 두지 않는다.)
+const promises = [
+  "2022 개정 교육과정 진도에 맞춘 출제",
+  "과목별 정답률에 따른 자동 난이도 조정",
+  "하루 한 세트, 국어·수학·영어·한자 등 전 과목",
+  "광고 없는 화면",
+  "가입 시 최소한의 정보만 수집",
+  "학습 기록·정답률 리포트 제공",
 ];
 
 export function Features() {
@@ -187,14 +187,14 @@ export function Features() {
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 mb-4">
               <WifiOff className="h-7 w-7 text-amber-600" />
             </div>
-            <h4 className="text-base font-bold mb-2">오프라인 학습</h4>
+            <h4 className="text-base font-bold mb-2">가벼운 데이터 사용</h4>
             <p className="text-sm text-muted-foreground">
-              인터넷이 없어도 문제 풀기가 가능해요. 캠핑, 차 안에서도 학습해요.
+              문제를 기기에서 직접 만들어요. 푸는 동안 추가 통신이 없어요.
             </p>
           </div>
         </motion.div>
 
-        {/* Comparison table */}
+        {/* 제공 항목 체크리스트 */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -203,44 +203,24 @@ export function Features() {
           className="mt-16"
         >
           <h3 className="text-xl font-bold text-center mb-6">
-            다른 학습 앱과 비교해보세요
+            아라하루가 약속하는 것
           </h3>
           <div className="max-w-2xl mx-auto overflow-hidden rounded-2xl border bg-card">
-            {/* Header */}
-            <div className="grid grid-cols-3 bg-muted/50 px-4 py-3 text-sm font-bold">
-              <div>기능</div>
-              <div className="text-center text-primary">아라하루</div>
-              <div className="text-center text-muted-foreground">다른 앱</div>
-            </div>
-            {/* Rows */}
-            {comparisons.map((row, i) => (
+            {promises.map((item, i) => (
               <motion.div
-                key={row.feature}
+                key={item}
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                className={`grid grid-cols-3 px-4 py-3 text-sm ${
+                className={`flex items-center gap-3 px-4 py-3 text-sm ${
                   i % 2 === 0 ? '' : 'bg-muted/20'
-                } ${i < comparisons.length - 1 ? 'border-b border-border/50' : ''}`}
+                } ${i < promises.length - 1 ? 'border-b border-border/50' : ''}`}
               >
-                <div className="font-medium">{row.feature}</div>
-                <div className="flex justify-center">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100">
-                    <Check className="h-4 w-4 text-green-600" />
-                  </div>
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-green-100">
+                  <Check className="h-4 w-4 text-green-600" />
                 </div>
-                <div className="flex justify-center items-center">
-                  {row.others === true ? (
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100">
-                      <Check className="h-4 w-4 text-green-600" />
-                    </div>
-                  ) : row.others === false ? (
-                    <span className="text-muted-foreground">-</span>
-                  ) : (
-                    <span className="text-xs text-amber-600 font-medium bg-amber-50 px-2 py-0.5 rounded-full">{row.others}</span>
-                  )}
-                </div>
+                <span className="font-medium">{item}</span>
               </motion.div>
             ))}
           </div>

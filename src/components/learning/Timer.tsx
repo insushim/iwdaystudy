@@ -15,9 +15,13 @@ interface Props {
   paused?: boolean;
   /** Expose elapsed time in seconds to parent */
   onTick?: (elapsedSeconds: number) => void;
+  /** Notify parent when the user toggles the internal pause button, so the
+   *  parent can stop counting time actually used for grading/records too
+   *  (previously only the display paused, not the real timeSpent). */
+  onPauseChange?: (paused: boolean) => void;
 }
 
-export default function Timer({ countdownSeconds, onTimeUp, className, paused: externalPaused, onTick }: Props) {
+export default function Timer({ countdownSeconds, onTimeUp, className, paused: externalPaused, onTick, onPauseChange }: Props) {
   const [elapsed, setElapsed] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -92,7 +96,11 @@ export default function Timer({ countdownSeconds, onTimeUp, className, paused: e
       <Button
         variant="ghost"
         size="icon-xs"
-        onClick={() => setIsPaused(!isPaused)}
+        onClick={() => {
+          const next = !isPaused;
+          setIsPaused(next);
+          onPauseChange?.(next);
+        }}
         className="rounded-full"
         title={isPaused ? '계속하기' : '일시정지'}
       >

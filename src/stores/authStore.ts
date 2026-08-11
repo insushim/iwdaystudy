@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Profile } from "@/types/database";
 import type { SignupData } from "@/lib/local-auth";
+import { ensureLocalDataOwnership } from "@/lib/local-storage";
 
 interface AuthState {
   user: Profile | null;
@@ -67,6 +68,10 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const result = await apiLogin(email, password, expectedRole);
+          // 기기 공유(학급 공용 PC/태블릿) 대응: 마지막으로 이 기기에 로그인했던
+          // 사용자와 다르면 이전 사용자의 학습 데이터를 지운다. 같은 학생이
+          // 다시 로그인하는 경우엔 지우지 않아 기록이 보존된다.
+          ensureLocalDataOwnership(result.user.id);
           localStorage.setItem("auth_token", result.token);
           localStorage.setItem(
             "araharu_current_user",
@@ -101,6 +106,7 @@ export const useAuthStore = create<AuthState>()(
             return;
           }
           if (result.token) {
+            ensureLocalDataOwnership(result.user.id);
             localStorage.setItem("auth_token", result.token);
             localStorage.setItem(
               "araharu_current_user",

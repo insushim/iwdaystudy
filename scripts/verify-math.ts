@@ -531,6 +531,168 @@ function checkEntry(source: string, e: MathEntry) {
     return;
   }
 
+  // 29) 단위변환: cm↔m, m↔km, g↔kg, mL↔L, 넓이 cm²↔m²
+  m = expr.match(/^(\d+)cm는 몇 m\?$/);
+  if (m) { const v = Number(m[1]) / 100; if (Math.abs(ans - v) > 1e-9) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)cm는 몇 m 몇 cm\? \(m 부분의 수만 입력\)$/);
+  if (m) { const v = Math.floor(Number(m[1]) / 100); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)m (\d+)cm는 모두 몇 cm\?$/);
+  if (m) { const v = Number(m[1]) * 100 + Number(m[2]); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)m는 몇 km\?$/);
+  if (m) { const v = Number(m[1]) / 1000; if (Math.abs(ans - v) > 1e-9) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)m는 몇 km 몇 m\? \(km 부분의 수만 입력\)$/);
+  if (m) { const v = Math.floor(Number(m[1]) / 1000); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)km (\d+)m는 모두 몇 m\?$/);
+  if (m) { const v = Number(m[1]) * 1000 + Number(m[2]); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)g은 몇 kg\?$/);
+  if (m) { const v = Number(m[1]) / 1000; if (Math.abs(ans - v) > 1e-9) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)g은 몇 kg 몇 g\? \(kg 부분의 수만 입력\)$/);
+  if (m) { const v = Math.floor(Number(m[1]) / 1000); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)kg (\d+)g은 모두 몇 g\?$/);
+  if (m) { const v = Number(m[1]) * 1000 + Number(m[2]); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)mL는 몇 L\?$/);
+  if (m) { const v = Number(m[1]) / 1000; if (Math.abs(ans - v) > 1e-9) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)mL는 몇 L 몇 mL\? \(L 부분의 수만 입력\)$/);
+  if (m) { const v = Math.floor(Number(m[1]) / 1000); if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^(\d+)m × (\d+)m = \d+m²는 몇 cm²\?$/);
+  if (m) { const v = Number(m[1]) * Number(m[2]) * 10000; if (ans !== v) flag(source, "unit-convert-wrong", e, v); validatedCount++; return; }
+
+  // 30) 각도: 직각삼각형/삼각형/사각형 나머지 각
+  m = expr.match(/^직각삼각형의 한 각이 (\d+)°일 때 나머지 한 각은\?$/);
+  if (m) { const v = 90 - Number(m[1]); if (ans !== v) flag(source, "angle-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^삼각형 두 각이 (\d+)°와 (\d+)°일 때 나머지 한 각은\?$/);
+  if (m) { const v = 180 - Number(m[1]) - Number(m[2]); if (ans !== v) flag(source, "angle-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^사각형의 세 각이 (\d+)°, (\d+)°, (\d+)°일 때 나머지 한 각은\?$/);
+  if (m) { const v = 360 - Number(m[1]) - Number(m[2]) - Number(m[3]); if (ans !== v) flag(source, "angle-wrong", e, v); validatedCount++; return; }
+
+  // 31) 넓이: 서술형 직사각형 / 복합도형(잘라낸 넓이)
+  m = expr.match(/가로가 (\d+)m, 세로가 (\d+)m입니다\. 넓이는 몇 m²\?$/);
+  if (m) { const v = Number(m[1]) * Number(m[2]); if (ans !== v) flag(source, "word-area-wrong", e, v); validatedCount++; return; }
+  m = expr.match(/^큰 직사각형 가로 (\d+)cm, 세로 (\d+)cm에서 가로 (\d+)cm, 세로 (\d+)cm를 잘라냈을 때 넓이는\?$/);
+  if (m) {
+    const v = Number(m[1]) * Number(m[2]) - Number(m[3]) * Number(m[4]);
+    if (ans !== v) flag(source, "composite-area-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+
+  // 32) 경우의 수 (조합 nCr)
+  m = expr.match(/^(\d+)가지 중 (\d+)가지를 고르는 경우의 수는\?$/);
+  if (m) {
+    const fact = (x: number): number => (x <= 1 ? 1 : x * fact(x - 1));
+    const n = Number(m[1]), r = Number(m[2]);
+    const v = fact(n) / (fact(r) * fact(n - r));
+    if (ans !== v) flag(source, "combination-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+
+  // 33) 어림하기 (반올림)
+  m = expr.match(/^(\d+)을 반올림하여 (십|백|천)의 자리까지 나타내면\?$/);
+  if (m) {
+    const place = m[2] === "십" ? 10 : m[2] === "백" ? 100 : 1000;
+    const v = Math.round(Number(m[1]) / place) * place;
+    if (ans !== v) flag(source, "rounding-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+
+  // 34) 크기비교(분수): "A/B과 C/D 중 더 큰 분수는? (1: A/B, 2: C/D, 0: 같음)"
+  {
+    const qIdx = expr.indexOf("중 더 큰 분수는?");
+    if (qIdx !== -1) {
+      const prefix = expr.slice(0, qIdx);
+      const pFracs = [...prefix.matchAll(new RegExp(FRAC, "g"))].map((f) => [Number(f[1]), Number(f[2])]);
+      if (pFracs.length === 2) {
+        const [a, b] = pFracs.map(([n, d]) => n / d);
+        const expected = a > b ? 1 : a < b ? 2 : 0;
+        if (ans !== expected) flag(source, "fraction-compare2-wrong", e, expected);
+        validatedCount++;
+        return;
+      }
+    }
+  }
+
+  // 35) 순서배열 (정수/소수 나열 — 첫/두 번째, 가장 작은/큰)
+  m = expr.match(/^([\d.,\s]+)(?:을|를) (작은|큰) 수부터 나열하면\? \(첫 번째 수는\?\)$/);
+  if (m) {
+    const nums = m[1].split(",").map((s) => Number(s.trim()));
+    const sorted = [...nums].sort((a, b) => a - b);
+    const expected = m[2] === "작은" ? sorted[0] : sorted[sorted.length - 1];
+    if (ans !== expected) flag(source, "ordering-wrong", e, expected);
+    validatedCount++;
+    return;
+  }
+  m = expr.match(/^([\d.,\s]+)(?:을|를) (작은|큰) 수부터 나열할 때 두 번째 수는\?$/);
+  if (m) {
+    const nums = m[1].split(",").map((s) => Number(s.trim()));
+    const sorted = [...nums].sort((a, b) => a - b);
+    const ordered = m[2] === "작은" ? sorted : [...sorted].reverse();
+    const expected = ordered[1];
+    if (ans !== expected) flag(source, "ordering-wrong", e, expected);
+    validatedCount++;
+    return;
+  }
+  m = expr.match(/^([\d.,\s]+)(?:을|를) 작은 수부터 나열할 때 가장 (작은|큰) 수는\?$/);
+  if (m) {
+    const nums = m[1].split(",").map((s) => Number(s.trim()));
+    const expected = m[2] === "작은" ? Math.min(...nums) : Math.max(...nums);
+    if (Math.abs(ans - expected) > 1e-9) flag(source, "ordering-wrong", e, expected);
+    validatedCount++;
+    return;
+  }
+
+  // 36) 도형: 변/꼭짓점/대칭축 개수
+  {
+    const SIDE_MAP: Record<string, number> = { 삼각형: 3, 사각형: 4, 오각형: 5, 육각형: 6 };
+    const AXIS_MAP: Record<string, number> = { 정삼각형: 3, 정사각형: 4, 정오각형: 5, 정육각형: 6 };
+    let mm = expr.match(/^(삼각형|사각형|오각형|육각형)의 (변|꼭짓점)은 몇 개\?$/);
+    if (mm) {
+      const expected = SIDE_MAP[mm[1]];
+      if (ans !== expected) flag(source, "shape-count-wrong", e, expected);
+      validatedCount++;
+      return;
+    }
+    mm = expr.match(/^(정삼각형|정사각형|정오각형|정육각형)의 대칭축은 몇 개\?$/);
+    if (mm) {
+      const expected = AXIS_MAP[mm[1]];
+      if (ans !== expected) flag(source, "symmetry-axis-wrong", e, expected);
+      validatedCount++;
+      return;
+    }
+  }
+
+  // 37) 서술형: 거스름돈 / 나눗셈(장·개·자루 나누기) / 혼합(두 품목 가격) / 비교(개수 차이)
+  m = expr.match(/^(\d+)원짜리 .+?을 (\d+)개 사고 (\d+)원을 냈습니다\. 거스름돈은\?$/);
+  if (m) {
+    const v = Number(m[3]) - Number(m[1]) * Number(m[2]);
+    if (ans !== v) flag(source, "word-change-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+  m = expr.match(/(\d+)(?:장|개|자루)[을를] .+?(\d+)(?:명|개)(?:에게|에) 똑같이 (?:나누어 주려고|담으려고|넣으려고) 합니다\./);
+  if (m) {
+    const dividend = Number(m[1]), divisor = Number(m[2]);
+    const v = dividend / divisor;
+    if (!Number.isInteger(v) || ans !== v) flag(source, "word-div-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+  m = expr.match(/^.+? (\d+)개\(개당 (\d+)원\)와 .+? (\d+)개\(개당 (\d+)원\)의 총 가격은\?$/);
+  if (m) {
+    const v = Number(m[1]) * Number(m[2]) + Number(m[3]) * Number(m[4]);
+    if (ans !== v) flag(source, "word-mixed-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+  m = expr.match(/(\d+)개, [^\d]*?(\d+)개 가지고 있습니다\. 누가 몇 개 더 많나요/);
+  if (m) {
+    const v = Math.abs(Number(m[1]) - Number(m[2]));
+    if (ans !== v) flag(source, "word-compare-wrong", e, v);
+    validatedCount++;
+    return;
+  }
+
   return skip(source, e);
 }
 

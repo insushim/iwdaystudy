@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: POST /api/auth/bulk-create
 // Creates multiple student accounts in D1 for cross-device login
 
+import { authUserId } from '../../lib/ctx';
 import { hashPassword } from "../../lib/crypto";
 import { logAudit, clientIp } from "../../lib/audit";
 
@@ -24,7 +25,7 @@ interface BulkCreateBody {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    const callerId = (context as any).userId as string | undefined;
+    const callerId = authUserId(context.data) as string | undefined;
     if (!callerId) {
       return jsonResponse({ message: "인증이 필요합니다." }, 401);
     }

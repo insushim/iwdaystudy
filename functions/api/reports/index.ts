@@ -2,13 +2,14 @@
 // Returns learning reports/statistics for a student
 // Query params: ?student_id=xxx&period=week|month|all&from=YYYY-MM-DD&to=YYYY-MM-DD
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
   try {
-    const userId = (context as any).userId;
+    const userId = authUserId(context.data);
     if (!userId) {
       return jsonResponse({ message: '인증이 필요합니다.' }, 401);
     }

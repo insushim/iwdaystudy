@@ -33,6 +33,69 @@ import {
 } from "@/components/ui/select";
 import { useAuthStore } from "@/stores/authStore";
 
+// 알림/학급/화면 설정을 실제로 저장하는 백엔드가 없다(프로필만 authStore를
+// 통해 localStorage에 저장됨). 나머지 설정도 최소한 localStorage에 실제로
+// 저장해, "저장" 버튼이 아무 효과 없는 가짜 동작이 되지 않게 한다.
+const SETTINGS_STORAGE_KEY = "araharu_teacher_prefs";
+
+interface TeacherPrefs {
+  notifications: {
+    studentComplete: boolean;
+    dailyReport: boolean;
+    weeklyReport: boolean;
+    badgeEarned: boolean;
+    lowEngagement: boolean;
+    emailNotify: boolean;
+  };
+  classSettings: {
+    autoAssign: boolean;
+    showRanking: boolean;
+    allowRetry: boolean;
+    maxRetries: string;
+  };
+  appearance: {
+    sound: boolean;
+    theme: string;
+  };
+}
+
+const DEFAULT_PREFS: TeacherPrefs = {
+  notifications: {
+    studentComplete: true,
+    dailyReport: true,
+    weeklyReport: true,
+    badgeEarned: false,
+    lowEngagement: true,
+    emailNotify: false,
+  },
+  classSettings: {
+    autoAssign: true,
+    showRanking: false,
+    allowRetry: true,
+    maxRetries: "3",
+  },
+  appearance: {
+    sound: true,
+    theme: "system",
+  },
+};
+
+function loadPrefs(): TeacherPrefs {
+  if (typeof window === "undefined") return DEFAULT_PREFS;
+  try {
+    const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+    if (!raw) return DEFAULT_PREFS;
+    const parsed = JSON.parse(raw);
+    return {
+      notifications: { ...DEFAULT_PREFS.notifications, ...parsed.notifications },
+      classSettings: { ...DEFAULT_PREFS.classSettings, ...parsed.classSettings },
+      appearance: { ...DEFAULT_PREFS.appearance, ...parsed.appearance },
+    };
+  } catch {
+    return DEFAULT_PREFS;
+  }
+}
+
 export default function TeacherSettingsPage() {
   const { user, updateProfile } = useAuthStore();
 
@@ -55,26 +118,14 @@ export default function TeacherSettingsPage() {
     }
   }, [user]);
 
-  const [notifications, setNotifications] = useState({
-    studentComplete: true,
-    dailyReport: true,
-    weeklyReport: true,
-    badgeEarned: false,
-    lowEngagement: true,
-    emailNotify: false,
-  });
-
-  const [classSettings, setClassSettings] = useState({
-    autoAssign: true,
-    showRanking: false,
-    allowRetry: true,
-    maxRetries: "3",
-  });
-
-  const [appearance, setAppearance] = useState({
-    sound: true,
-    theme: "system",
-  });
+  // 지연 초기화로 마운트 시점에 이 기기에 저장된 설정을 바로 불러온다.
+  const [notifications, setNotifications] = useState(
+    () => loadPrefs().notifications,
+  );
+  const [classSettings, setClassSettings] = useState(
+    () => loadPrefs().classSettings,
+  );
+  const [appearance, setAppearance] = useState(() => loadPrefs().appearance);
 
   const [saved, setSaved] = useState(false);
 
@@ -84,6 +135,16 @@ export default function TeacherSettingsPage() {
       email: profile.email,
       school_name: profile.school,
     });
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem(
+          SETTINGS_STORAGE_KEY,
+          JSON.stringify({ notifications, classSettings, appearance }),
+        );
+      } catch {
+        // ignore
+      }
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -102,7 +163,7 @@ export default function TeacherSettingsPage() {
             설정
           </h1>
           <p className="text-muted-foreground text-sm mt-1">
-            프로필 및 환경을 설정하세요
+            프로필 및 환경을 설정하세요 (이 기기에 저장됩니다)
           </p>
         </div>
         <Button onClick={handleSave} className="gap-2">

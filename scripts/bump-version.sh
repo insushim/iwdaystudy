@@ -20,15 +20,16 @@ require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n')
 echo "  package.json: ${NEW_VERSION}"
 
 # 2. service worker
-sed -i "s/const APP_VERSION = .*/const APP_VERSION = \"${NEW_VERSION}\";/" public/sw.js
+# -i.bak 사용: macOS(BSD sed)와 Linux(GNU sed) 모두에서 동작한다 (-i만 쓰면 macOS에서 실패함)
+sed -i.bak "s/const APP_VERSION = .*/const APP_VERSION = \"${NEW_VERSION}\";/" public/sw.js
+rm -f public/sw.js.bak
 echo "  sw.js: ${NEW_VERSION}"
 
-# 3. Android versionName + versionCode
-CURRENT_CODE=$(grep "versionCode" android/app/build.gradle | head -1 | sed 's/[^0-9]//g')
-NEW_CODE=$((CURRENT_CODE + 1))
-sed -i "s/versionCode ${CURRENT_CODE}/versionCode ${NEW_CODE}/" android/app/build.gradle
-sed -i "s/versionName \".*\"/versionName \"${NEW_VERSION}\"/" android/app/build.gradle
-echo "  android: ${NEW_VERSION} (code ${NEW_CODE})"
+# 3. android/app/build.gradle + functions/api/version.ts
+#    package.json(위에서 이미 갱신됨)을 진실원으로 삼아 동기화한다.
+#    (과거엔 android만 sed로 갱신하고 functions/api/version.ts는 누락돼
+#     3곳의 버전이 서로 어긋났음 — scripts/sync-version.mjs 로 일원화)
+node scripts/sync-version.mjs
 
 echo ""
 echo "=== 완료 ==="

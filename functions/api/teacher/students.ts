@@ -1,6 +1,7 @@
 // GET /api/teacher/students - list own students
 // DELETE /api/teacher/students - bulk delete (requires body.student_ids)
 
+import { authUserId } from '../../lib/ctx';
 import { logAudit, clientIp } from '../../lib/audit';
 
 interface Env {
@@ -8,7 +9,7 @@ interface Env {
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(
@@ -34,7 +35,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 };
 
 export const onRequestDelete: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(

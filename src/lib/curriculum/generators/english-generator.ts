@@ -188,6 +188,38 @@ const G34_NUMBERS: W[] = [
   { w: "first", p: "퍼스트", k: "첫 번째", pr: ["second", "one"] },
 ];
 
+// 수관형사(분류사 앞에 오는 형태): "둘 권"이 아니라 "두 권"이 맞는 한국어 문법.
+// 매핑에 없는 값(백/영/첫 번째 등)은 원래 형태를 그대로 사용한다.
+const NUMBER_COUNTER_FORM: Record<string, string> = {
+  하나: "한",
+  둘: "두",
+  셋: "세",
+  넷: "네",
+  다섯: "다섯",
+  여섯: "여섯",
+  일곱: "일곱",
+  여덟: "여덟",
+  아홉: "아홉",
+  열: "열",
+  열하나: "열한",
+  열둘: "열두",
+  열셋: "열세",
+  열넷: "열네",
+  열다섯: "열다섯",
+  열여섯: "열여섯",
+  열일곱: "열일곱",
+  열여덟: "열여덟",
+  열아홉: "열아홉",
+  스물: "스무",
+  서른: "서른",
+  마흔: "마흔",
+  쉰: "쉰",
+};
+
+function toCounterForm(k: string): string {
+  return NUMBER_COUNTER_FORM[k] ?? k;
+}
+
 const G34_ANIMALS: W[] = [
   { w: "dog", p: "도그", k: "개", pr: ["puppy", "bark"] },
   { w: "cat", p: "캣", k: "고양이", pr: ["kitten", "meow"] },
@@ -5192,7 +5224,7 @@ function generateGrade3_4Entries(rng: () => number): EnglishEntry[] {
     const idx = Math.floor(rng() * items.length);
     entries.push({
       sentence: `I have ${n.w} ${items[idx]}.`,
-      translation: `나는 ${n.k} ${itemsK[idx]} 있어요.`,
+      translation: `나는 ${toCounterForm(n.k)} ${itemsK[idx]} 있어요.`,
       word: n.w,
       pronunciation: n.p,
       practice: n.pr,

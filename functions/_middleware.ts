@@ -11,6 +11,13 @@ interface Env {
   CRON_SECRET?: string;
 }
 
+interface MiddlewareData extends Record<string, unknown> {
+  userId?: string;
+  userEmail?: string | null;
+  userRole?: string;
+  cronAuthenticated?: boolean;
+}
+
 const DEFAULT_ORIGIN = "https://araharu.pages.dev";
 
 function resolveAllowedOrigin(requestOrigin: string | null, env: Env): string {
@@ -45,7 +52,7 @@ function isPublicPath(pathname: string): boolean {
   return PUBLIC_PATHS.some((p) => pathname === p || pathname === `${p}/`);
 }
 
-export const onRequest: PagesFunction<Env> = async (context) => {
+export const onRequest: PagesFunction<Env, string, MiddlewareData> = async (context) => {
   const { request } = context;
   const url = new URL(request.url);
   const requestOrigin = request.headers.get('Origin');
@@ -155,15 +162,81 @@ export const onRequest: PagesFunction<Env> = async (context) => {
           }
         );
       }
-      (context as any).userId = tokenData.id;
-      (context as any).userEmail = tokenData.email;
+      // Central account-state gate: a signed token alone is not authorization.
+      // Teachers stay locked out until an admin approves them, and a deleted
+      // account's still-valid token stops working immediately.
+      const account = await context.env.DB.prepare(
+        'SELECT role, approval_status FROM profiles WHERE id = ?',
+      )
+        .bind(tokenData.id)
+        .first<{ role: string; approval_status: string | null }>();
+
+      if (!account) {
+        return new Response(
+          JSON.stringify({ message: '계정을 찾을 수 없습니다. 다시 로그인해주세요.' }),
+          {
+            status: 401,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': allowedOrigin,
+              'Vary': 'Origin',
+            },
+          },
+        );
+      }
+
+      if (account.role === 'teacher' && account.approval_status !== 'approved') {
+        return new Response(
+          JSON.stringify({
+            message:
+              account.approval_status === 'rejected'
+                ? '승인이 거절된 계정입니다. 관리자에게 문의해주세요.'
+                : '관리자 승인 대기 중인 계정입니다.',
+          }),
+          {
+            status: 403,
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': allowedOrigin,
+              'Vary': 'Origin',
+            },
+          },
+        );
+      }
+
+      // Pages Functions pass values to downstream handlers via `context.data`,
+      // NOT by mutating `context` (the handler receives a different context object).
+      context.data.userId = tokenData.id;
+      context.data.userEmail = tokenData.email ?? null;
+      context.data.userRole = account.role;
     } else {
-      (context as any).cronAuthenticated = true;
+      context.data.cronAuthenticated = true;
     }
   }
 
-  // Continue to the actual function handler
-  const response = await context.next();
+  // Continue to the actual function handler.
+  // Central error boundary: an uncaught handler error would otherwise reach the
+  // client as a raw stack trace containing absolute filesystem paths.
+  let response: Response;
+  try {
+    response = await context.next();
+  } catch (err) {
+    if (url.pathname.startsWith('/api')) {
+      console.error('[api-error]', url.pathname, err);
+      return new Response(
+        JSON.stringify({ message: '요청을 처리하지 못했습니다. 잠시 후 다시 시도해주세요.' }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': allowedOrigin,
+            'Vary': 'Origin',
+          },
+        },
+      );
+    }
+    throw err;
+  }
 
   // CORS headers (origin-restricted)
   response.headers.set('Access-Control-Allow-Origin', allowedOrigin);

@@ -5,6 +5,13 @@ on:
     branches: [master]
   workflow_dispatch:
 
+# deploy.yml도 태그 push(v*)에서 동일하게 Cloudflare Pages에 배포한다.
+# create-release.sh는 `git push origin master --tags`로 master와 태그를 함께 push하므로
+# 두 워크플로가 동시에 켜질 수 있다 — 같은 group으로 묶어 동시 배포를 막는다.
+concurrency:
+  group: cloudflare-pages-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,6 +28,18 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Sync version (package.json -> android/gradle, functions/api/version.ts)
+        run: node scripts/sync-version.mjs
+
+      - name: Run D1 Migration
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: d1 execute araharu-db --file=wrangler/schema.sql --remote
+        # continue-on-error 없음: 마이그레이션 실패 시 이후 Build/Deploy 단계를 중단시킨다.
+        # (스키마에 방어 없는 컬럼을 추가한 채 배포되면 런타임 500이 나는 문제를 막기 위함)
 
       - name: Build
         run: npm run build

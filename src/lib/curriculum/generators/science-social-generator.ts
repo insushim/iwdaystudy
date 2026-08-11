@@ -82,7 +82,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물체를 비탈면 위로 올리면 힘은 작아지지만 ___은 길어진다.",
+    text: "물체를 비탈면 위로 올리면 힘은 작아지지만 ___는 길어진다.",
     answer: "거리",
     category: "물리",
     gradeGroup: "upper",
@@ -94,7 +94,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "움직도르래를 하나 사용하면 힘이 ___로 줄어든다.",
+    text: "움직도르래를 하나 사용하면 힘이 ___으로 줄어든다.",
     answer: "절반",
     category: "물리",
     gradeGroup: "upper",
@@ -112,7 +112,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "수평잡기에서 무거운 쪽이 ___으로 기운다.",
+    text: "수평잡기에서 무거운 쪽이 ___로 기운다.",
     answer: "아래",
     category: "물리",
     gradeGroup: "lower",
@@ -138,13 +138,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "물질이 산소와 빠르게 반응하여 빛과 열을 내는 현상을 ___이라 한다.",
+    text: "물질이 산소와 빠르게 반응하여 빛과 열을 내는 현상을 ___라 한다.",
     answer: "연소",
     category: "화학",
     gradeGroup: "upper",
   },
   {
-    text: "연소 후 촛불에서 생기는 기체는 ___이다.",
+    text: "연소 후 촛불에서 생기는 기체는 ___다.",
     answer: "이산화탄소",
     category: "화학",
     gradeGroup: "upper",
@@ -186,7 +186,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "용해에서 녹는 물질(예: 소금)을 ___라 한다.",
+    text: "용해에서 녹는 물질(예: 소금)을 ___이라 한다.",
     answer: "용질",
     category: "화학",
     gradeGroup: "upper",
@@ -198,7 +198,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "물질의 세 가지 상태는 고체, 액체, ___이다.",
+    text: "물질의 세 가지 상태는 고체, 액체, ___다.",
     answer: "기체",
     category: "화학",
     gradeGroup: "lower",
@@ -248,13 +248,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "광합성에 필요한 기체는 ___이다.",
+    text: "광합성에 필요한 기체는 ___다.",
     answer: "이산화탄소",
     category: "생물",
     gradeGroup: "upper",
   },
   {
-    text: "광합성의 결과 만들어지는 기체는 ___이다.",
+    text: "광합성의 결과 만들어지는 기체는 ___다.",
     answer: "산소",
     category: "생물",
     gradeGroup: "upper",
@@ -266,13 +266,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "동물의 알이 깨어나 새끼가 되는 것을 ___이라 한다.",
+    text: "동물의 알이 깨어나 새끼가 되는 것을 ___라 한다.",
     answer: "부화",
     category: "생물",
     gradeGroup: "lower",
   },
   {
-    text: "배추흰나비의 한살이 순서는 알→애벌레→번데기→___이다.",
+    text: "배추흰나비의 한살이 순서는 알→애벌레→번데기→___다.",
     answer: "어른벌레",
     category: "생물",
     gradeGroup: "lower",
@@ -284,13 +284,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "씨가 싹을 틔우는 것을 ___이라 한다.",
+    text: "씨가 싹을 틔우는 것을 ___라 한다.",
     answer: "발아",
     category: "생물",
     gradeGroup: "lower",
   },
   {
-    text: "꽃의 수술에서 만들어지는 가루를 ___이라 한다.",
+    text: "꽃의 수술에서 만들어지는 가루를 ___라 한다.",
     answer: "꽃가루",
     category: "생물",
     gradeGroup: "lower",
@@ -302,7 +302,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "꽃가루받이 후 씨방이 자라서 ___이 된다.",
+    text: "꽃가루받이 후 씨방이 자라서 ___가 된다.",
     answer: "열매",
     category: "생물",
     gradeGroup: "lower",
@@ -358,7 +358,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "화산이 폭발할 때 나오는 녹은 돌을 ___라 한다.",
+    text: "화산이 폭발할 때 나오는 녹은 돌을 ___이라 한다.",
     answer: "용암",
     category: "지구과학",
     gradeGroup: "lower",
@@ -370,7 +370,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "땅이 갑자기 흔들리는 현상을 ___라 한다.",
+    text: "땅이 갑자기 흔들리는 현상을 ___이라 한다.",
     answer: "지진",
     category: "지구과학",
     gradeGroup: "lower",
@@ -382,7 +382,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "지층에서 발견되는 옛날 생물의 흔적을 ___라 한다.",
+    text: "지층에서 발견되는 옛날 생물의 흔적을 ___이라 한다.",
     answer: "화석",
     category: "지구과학",
     gradeGroup: "lower",
@@ -400,19 +400,19 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "강 하류에서는 퇴적이 잘 일어나 ___이 만들어진다.",
+    text: "강 하류에서는 퇴적이 잘 일어나 ___가 만들어진다.",
     answer: "평야",
     category: "지구과학",
     gradeGroup: "lower",
   },
   {
-    text: "바닷물이 육지 쪽으로 들어오는 것을 ___라 한다.",
+    text: "바닷물이 육지 쪽으로 들어오는 것을 ___이라 한다.",
     answer: "밀물",
     category: "지구과학",
     gradeGroup: "lower",
   },
   {
-    text: "바닷물이 빠져나가는 것을 ___라 한다.",
+    text: "바닷물이 빠져나가는 것을 ___이라 한다.",
     answer: "썰물",
     category: "지구과학",
     gradeGroup: "lower",
@@ -420,7 +420,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 환경 (Environment) ──
   {
-    text: "생물과 환경이 서로 영향을 주고받는 것을 ___이라 한다.",
+    text: "생물과 환경이 서로 영향을 주고받는 것을 ___라 한다.",
     answer: "생태계",
     category: "환경",
     gradeGroup: "upper",
@@ -444,7 +444,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "먹이 관계가 사슬처럼 연결된 것을 ___라 한다.",
+    text: "먹이 관계가 사슬처럼 연결된 것을 ___이라 한다.",
     answer: "먹이사슬",
     category: "환경",
     gradeGroup: "upper",
@@ -462,7 +462,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "쓰레기를 다시 사용하는 것을 ___라 한다.",
+    text: "쓰레기를 다시 사용하는 것을 ___이라 한다.",
     answer: "재활용",
     category: "환경",
     gradeGroup: "lower",
@@ -510,7 +510,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "산과 들에 나무를 많이 심어 가꾸는 일을 ___이라 한다.",
+    text: "산과 들에 나무를 많이 심어 가꾸는 일을 ___라 한다.",
     answer: "나무 심기",
     category: "환경",
     gradeGroup: "upper",
@@ -622,13 +622,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "폐에서 산소와 이산화탄소를 교환하는 것을 ___라 한다.",
+    text: "폐에서 산소와 이산화탄소를 교환하는 것을 ___이라 한다.",
     answer: "호흡",
     category: "인체",
     gradeGroup: "upper",
   },
   {
-    text: "심장이 혈액을 온몸으로 보내는 것을 ___라 한다.",
+    text: "심장이 혈액을 온몸으로 보내는 것을 ___이라 한다.",
     answer: "혈액순환",
     category: "인체",
     gradeGroup: "upper",
@@ -676,7 +676,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "들이마신 공기가 지나가는 관을 ___라 한다.",
+    text: "들이마신 공기가 지나가는 관을 ___이라 한다.",
     answer: "기관",
     category: "인체",
     gradeGroup: "upper",
@@ -756,7 +756,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "새의 몸은 ___로 덮여 있다.",
+    text: "새의 몸은 ___으로 덮여 있다.",
     answer: "깃털",
     category: "동물",
     gradeGroup: "lower",
@@ -886,7 +886,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
 
   // ── 날씨 (Weather) ──
   {
-    text: "공기 중의 수증기가 하늘에서 작은 물방울이 된 것을 ___라 한다.",
+    text: "공기 중의 수증기가 하늘에서 작은 물방울이 된 것을 ___이라 한다.",
     answer: "구름",
     category: "날씨",
     gradeGroup: "lower",
@@ -898,13 +898,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "겨울에 구름 속 물방울이 얼어서 내리는 것을 ___라 한다.",
+    text: "겨울에 구름 속 물방울이 얼어서 내리는 것을 ___이라 한다.",
     answer: "눈",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "공기가 이동하는 것을 ___라 한다.",
+    text: "공기가 이동하는 것을 ___이라 한다.",
     answer: "바람",
     category: "날씨",
     gradeGroup: "lower",
@@ -928,31 +928,31 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "기온을 재는 도구는 ___이다.",
+    text: "기온을 재는 도구는 ___다.",
     answer: "온도계",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "습도를 재는 도구는 ___이다.",
+    text: "습도를 재는 도구는 ___다.",
     answer: "습도계",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "바람의 세기를 재는 도구는 ___이다.",
+    text: "바람의 세기를 재는 도구는 ___다.",
     answer: "풍속계",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "바람의 방향을 알려주는 도구는 ___이다.",
+    text: "바람의 방향을 알려주는 도구는 ___다.",
     answer: "풍향계",
     category: "날씨",
     gradeGroup: "lower",
   },
   {
-    text: "아침에 풀잎에 맺히는 물방울을 ___라 한다.",
+    text: "아침에 풀잎에 맺히는 물방울을 ___이라 한다.",
     answer: "이슬",
     category: "날씨",
     gradeGroup: "lower",
@@ -1050,7 +1050,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "별이 모여 이루는 모양을 ___이라 한다.",
+    text: "별이 모여 이루는 모양을 ___라 한다.",
     answer: "별자리",
     category: "우주",
     gradeGroup: "lower",
@@ -1062,7 +1062,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "태양계 행성 중 생명체가 사는 곳은 ___이다.",
+    text: "태양계 행성 중 생명체가 사는 곳은 ___다.",
     answer: "지구",
     category: "우주",
     gradeGroup: "lower",
@@ -1094,13 +1094,13 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "나무, 쇠, 플라스틱, 유리 등은 물체를 만드는 ___이다.",
+    text: "나무, 쇠, 플라스틱, 유리 등은 물체를 만드는 ___다.",
     answer: "재료",
     category: "물질",
     gradeGroup: "lower",
   },
   {
-    text: "자석에 붙는 물질은 ___로 만든 것이다.",
+    text: "자석에 붙는 물질은 ___으로 만든 것이다.",
     answer: "철",
     category: "물질",
     gradeGroup: "lower",
@@ -1154,7 +1154,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "혼합물에서 각 물질을 나누는 것을 ___이라 한다.",
+    text: "혼합물에서 각 물질을 나누는 것을 ___라 한다.",
     answer: "분리",
     category: "물질",
     gradeGroup: "upper",
@@ -1296,7 +1296,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "거리를 시간으로 나눈 것을 ___라 한다.",
+    text: "거리를 시간으로 나눈 것을 ___이라 한다.",
     answer: "속력",
     category: "힘과운동",
     gradeGroup: "upper",
@@ -1338,7 +1338,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "로켓이 뜨거운 가스를 뒤로 뿜어내면 로켓은 반대 방향인 ___로 날아간다.",
+    text: "로켓이 뜨거운 가스를 뒤로 뿜어내면 로켓은 반대 방향인 ___으로 날아간다.",
     answer: "앞",
     category: "힘과운동",
     gradeGroup: "upper",
@@ -1364,7 +1364,7 @@ const SCIENCE_ITEMS: ScienceItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "빛이 거울에 부딪쳐 되돌아오는 것을 ___이라 한다.",
+    text: "빛이 거울에 부딪쳐 되돌아오는 것을 ___라 한다.",
     answer: "반사",
     category: "빛과소리",
     gradeGroup: "lower",
@@ -1583,13 +1583,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "삼국시대의 세 나라는 고구려, 백제, ___이다.",
+    text: "삼국시대의 세 나라는 고구려, 백제, ___다.",
     answer: "신라",
     category: "역사",
     gradeGroup: "upper",
   },
   {
-    text: "삼국을 통일한 나라는 ___이다.",
+    text: "삼국을 통일한 나라는 ___다.",
     answer: "신라",
     category: "역사",
     gradeGroup: "upper",
@@ -1601,7 +1601,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "조선을 세운 인물은 ___이다.",
+    text: "조선을 세운 인물은 ___다.",
     answer: "이성계",
     category: "역사",
     gradeGroup: "upper",
@@ -1661,13 +1661,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "백제의 수도였던 도시는 ___이다.",
+    text: "백제의 수도였던 도시는 ___다.",
     answer: "부여",
     category: "역사",
     gradeGroup: "upper",
   },
   {
-    text: "신라의 수도였던 도시는 ___이다.",
+    text: "신라의 수도였던 도시는 ___다.",
     answer: "경주",
     category: "역사",
     gradeGroup: "upper",
@@ -1681,7 +1681,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "사람들이 원하는 것에 비해 자원이 부족한 것을 ___라 한다.",
+    text: "사람들이 원하는 것에 비해 자원이 부족한 것을 ___이라 한다.",
     answer: "희소성",
     category: "경제",
     gradeGroup: "upper",
@@ -1699,13 +1699,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물건의 값을 ___라 한다.",
+    text: "물건의 값을 ___이라 한다.",
     answer: "가격",
     category: "경제",
     gradeGroup: "lower",
   },
   {
-    text: "나라와 나라 사이에 물건을 사고파는 것을 ___라 한다.",
+    text: "나라와 나라 사이에 물건을 사고파는 것을 ___이라 한다.",
     answer: "무역",
     category: "경제",
     gradeGroup: "upper",
@@ -1723,7 +1723,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "은행에 돈을 맡기는 것을 ___라 한다.",
+    text: "은행에 돈을 맡기는 것을 ___이라 한다.",
     answer: "저축",
     category: "경제",
     gradeGroup: "lower",
@@ -1741,13 +1741,13 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물건을 만드는 데 드는 돈을 ___라 한다.",
+    text: "물건을 만드는 데 드는 돈을 ___이라 한다.",
     answer: "비용",
     category: "경제",
     gradeGroup: "upper",
   },
   {
-    text: "한정된 자원을 어디에 쓸지 결정하는 것을 경제적 ___라 한다.",
+    text: "한정된 자원을 어디에 쓸지 결정하는 것을 경제적 ___이라 한다.",
     answer: "선택",
     category: "경제",
     gradeGroup: "upper",
@@ -1759,7 +1759,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "시장에서 물건을 팔려는 양을 ___라 한다.",
+    text: "시장에서 물건을 팔려는 양을 ___이라 한다.",
     answer: "공급",
     category: "경제",
     gradeGroup: "upper",
@@ -1779,7 +1779,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "법을 만드는 국가 기관은 ___이다.",
+    text: "법을 만드는 국가 기관은 ___다.",
     answer: "국회",
     category: "정치",
     gradeGroup: "upper",
@@ -1845,7 +1845,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "나라를 다스리는 기본 원리를 ___이라 한다.",
+    text: "나라를 다스리는 기본 원리를 ___라 한다.",
     answer: "정치",
     category: "정치",
     gradeGroup: "lower",
@@ -1863,7 +1863,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "다수의 의견을 따르되 소수 의견도 존중하는 것을 ___라 한다.",
+    text: "다수의 의견을 따르되 소수 의견도 존중하는 것을 ___이라 한다.",
     answer: "다수결",
     category: "정치",
     gradeGroup: "lower",
@@ -1913,7 +1913,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "우리나라 전통 악기 중 현악기에는 가야금과 ___이 있다.",
+    text: "우리나라 전통 악기 중 현악기에는 가야금과 ___가 있다.",
     answer: "거문고",
     category: "문화",
     gradeGroup: "lower",
@@ -1931,19 +1931,19 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "우리나라의 국기는 ___이다.",
+    text: "우리나라의 국기는 ___다.",
     answer: "태극기",
     category: "문화",
     gradeGroup: "lower",
   },
   {
-    text: "우리나라의 국화는 ___이다.",
+    text: "우리나라의 국화는 ___다.",
     answer: "무궁화",
     category: "문화",
     gradeGroup: "lower",
   },
   {
-    text: "우리나라의 국가(노래)는 ___이다.",
+    text: "우리나라의 국가(노래)는 ___다.",
     answer: "애국가",
     category: "문화",
     gradeGroup: "lower",
@@ -1993,7 +1993,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "학교에서 지켜야 할 규칙을 ___라 한다.",
+    text: "학교에서 지켜야 할 규칙을 ___이라 한다.",
     answer: "교칙",
     category: "법",
     gradeGroup: "lower",
@@ -2011,19 +2011,19 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "법을 위반했는지 판단하는 사람을 ___이라 한다.",
+    text: "법을 위반했는지 판단하는 사람을 ___라 한다.",
     answer: "판사",
     category: "법",
     gradeGroup: "upper",
   },
   {
-    text: "피고인의 권리를 지켜주는 사람을 ___이라 한다.",
+    text: "피고인의 권리를 지켜주는 사람을 ___라 한다.",
     answer: "변호사",
     category: "법",
     gradeGroup: "upper",
   },
   {
-    text: "범죄를 수사하는 사람을 ___이라 한다.",
+    text: "범죄를 수사하는 사람을 ___라 한다.",
     answer: "검사",
     category: "법",
     gradeGroup: "upper",
@@ -2073,7 +2073,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "쓰레기를 줄이고 다시 쓰는 것을 ___라 한다.",
+    text: "쓰레기를 줄이고 다시 쓰는 것을 ___이라 한다.",
     answer: "재활용",
     category: "환경",
     gradeGroup: "lower",
@@ -2121,7 +2121,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "일회용품 사용을 줄이면 ___를 보호할 수 있다.",
+    text: "일회용품 사용을 줄이면 ___을 보호할 수 있다.",
     answer: "환경",
     category: "환경",
     gradeGroup: "lower",
@@ -2165,7 +2165,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
 
   // ── 세계 (World) ──
   {
-    text: "세계에서 가장 큰 대륙은 ___이다.",
+    text: "세계에서 가장 큰 대륙은 ___다.",
     answer: "아시아",
     category: "세계",
     gradeGroup: "upper",
@@ -2177,25 +2177,25 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "세계에서 가장 인구가 많은 나라는 ___이다.",
+    text: "세계에서 가장 인구가 많은 나라는 ___다.",
     answer: "인도",
     category: "세계",
     gradeGroup: "upper",
   },
   {
-    text: "세계에서 면적이 가장 큰 나라는 ___이다.",
+    text: "세계에서 면적이 가장 큰 나라는 ___다.",
     answer: "러시아",
     category: "세계",
     gradeGroup: "upper",
   },
   {
-    text: "피라미드가 있는 나라는 ___이다.",
+    text: "피라미드가 있는 나라는 ___다.",
     answer: "이집트",
     category: "세계",
     gradeGroup: "upper",
   },
   {
-    text: "에펠탑이 있는 나라는 ___이다.",
+    text: "에펠탑이 있는 나라는 ___다.",
     answer: "프랑스",
     category: "세계",
     gradeGroup: "upper",
@@ -2225,7 +2225,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "일본의 수도는 ___이다.",
+    text: "일본의 수도는 ___다.",
     answer: "도쿄",
     category: "세계",
     gradeGroup: "upper",
@@ -2281,7 +2281,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "독립운동가로 안중근 의사가 쏜 사람은 ___이다.",
+    text: "독립운동가로 안중근 의사가 쏜 사람은 ___다.",
     answer: "이토 히로부미",
     category: "한국사",
     gradeGroup: "upper",
@@ -2293,7 +2293,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "대한민국 임시정부가 세워진 도시는 ___이다.",
+    text: "대한민국 임시정부가 세워진 도시는 ___다.",
     answer: "상하이",
     category: "한국사",
     gradeGroup: "upper",
@@ -2311,7 +2311,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "조선 시대 과거 시험은 ___을 뽑기 위한 것이었다.",
+    text: "조선 시대 과거 시험은 ___를 뽑기 위한 것이었다.",
     answer: "관리",
     category: "한국사",
     gradeGroup: "upper",
@@ -2353,7 +2353,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "석굴암과 불국사가 있는 도시는 ___이다.",
+    text: "석굴암과 불국사가 있는 도시는 ___다.",
     answer: "경주",
     category: "한국사",
     gradeGroup: "upper",
@@ -2445,7 +2445,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "노인을 공경하는 것을 ___라 한다.",
+    text: "노인을 공경하는 것을 ___이라 한다.",
     answer: "경로효친",
     category: "인권",
     gradeGroup: "lower",
@@ -2471,7 +2471,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "민주주의에서 가장 중요한 가치는 ___이다.",
+    text: "민주주의에서 가장 중요한 가치는 ___다.",
     answer: "자유",
     category: "민주주의",
     gradeGroup: "upper",
@@ -2483,7 +2483,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "비밀투표는 자신이 누구를 뽑았는지 ___로 하는 것이다.",
+    text: "비밀투표는 자신이 누구를 뽑았는지 ___으로 하는 것이다.",
     answer: "비밀",
     category: "민주주의",
     gradeGroup: "lower",
@@ -2525,7 +2525,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "5·18 민주화 운동이 일어난 도시는 ___이다.",
+    text: "5·18 민주화 운동이 일어난 도시는 ___다.",
     answer: "광주",
     category: "민주주의",
     gradeGroup: "upper",
@@ -2549,7 +2549,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "upper",
   },
   {
-    text: "국민의 뜻을 모아 나라를 이끄는 것을 ___이라 한다.",
+    text: "국민의 뜻을 모아 나라를 이끄는 것을 ___라 한다.",
     answer: "민주정치",
     category: "민주주의",
     gradeGroup: "lower",
@@ -2587,7 +2587,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "우리나라 전통 놀이 중 새해에 하는 것은 ___이다.",
+    text: "우리나라 전통 놀이 중 새해에 하는 것은 ___다.",
     answer: "윷놀이",
     category: "전통문화",
     gradeGroup: "lower",
@@ -2629,7 +2629,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "판소리에서 노래를 부르는 사람을 ___라 한다.",
+    text: "판소리에서 노래를 부르는 사람을 ___이라 한다.",
     answer: "소리꾼",
     category: "전통문화",
     gradeGroup: "upper",
@@ -2777,7 +2777,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "불을 끄고 사람을 구하는 사람을 ___라 한다.",
+    text: "불을 끄고 사람을 구하는 사람을 ___이라 한다.",
     answer: "소방관",
     category: "직업",
     gradeGroup: "lower",
@@ -2801,7 +2801,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "농작물을 기르는 사람을 ___이라 한다.",
+    text: "농작물을 기르는 사람을 ___라 한다.",
     answer: "농부",
     category: "직업",
     gradeGroup: "lower",
@@ -2857,7 +2857,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "지역의 문제를 해결하기 위해 모이는 곳을 ___이라 한다.",
+    text: "지역의 문제를 해결하기 위해 모이는 곳을 ___라 한다.",
     answer: "주민센터",
     category: "지역사회",
     gradeGroup: "lower",
@@ -2875,7 +2875,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "물건을 사고파는 장소를 ___라 한다.",
+    text: "물건을 사고파는 장소를 ___이라 한다.",
     answer: "시장",
     category: "지역사회",
     gradeGroup: "lower",
@@ -2893,25 +2893,25 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "범죄를 신고하는 곳은 ___이다.",
+    text: "범죄를 신고하는 곳은 ___다.",
     answer: "경찰서",
     category: "지역사회",
     gradeGroup: "lower",
   },
   {
-    text: "불이 났을 때 신고하는 곳은 ___이다.",
+    text: "불이 났을 때 신고하는 곳은 ___다.",
     answer: "소방서",
     category: "지역사회",
     gradeGroup: "lower",
   },
   {
-    text: "화재 신고 전화번호는 ___이다.",
+    text: "화재 신고 전화번호는 ___다.",
     answer: "119",
     category: "지역사회",
     gradeGroup: "lower",
   },
   {
-    text: "범죄 신고 전화번호는 ___이다.",
+    text: "범죄 신고 전화번호는 ___다.",
     answer: "112",
     category: "지역사회",
     gradeGroup: "lower",
@@ -2929,7 +2929,7 @@ const SOCIAL_ITEMS: SocialItem[] = [
     gradeGroup: "lower",
   },
   {
-    text: "지역 축제에 참여하면 지역의 ___을 알 수 있다.",
+    text: "지역 축제에 참여하면 지역의 ___를 알 수 있다.",
     answer: "문화",
     category: "지역사회",
     gradeGroup: "lower",
@@ -3053,21 +3053,21 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "생물",
     "both",
   ],
-  ["포유류는 새끼에게 ___를 먹여 키운다.", "젖", "생물", "lower"],
+  ["포유류는 새끼에게 ___을 먹여 키운다.", "젖", "생물", "lower"],
   ["거미는 곤충이 아닌 ___류에 속한다.", "거미", "생물", "lower"],
-  ["상어는 뼈가 ___로 되어 있다.", "연골", "생물", "upper"],
+  ["상어는 뼈가 ___으로 되어 있다.", "연골", "생물", "upper"],
   ["조류의 몸은 ___으로 덮여 있다.", "깃털", "생물", "lower"],
   ["파충류의 몸은 ___으로 덮여 있다.", "비늘", "생물", "lower"],
   ["양서류는 어릴 때 ___로 숨을 쉰다.", "아가미", "생물", "lower"],
   ["식물의 광합성은 ___에서 일어난다.", "잎", "생물", "both"],
   [
-    "식물의 잎이 초록색인 이유는 ___이라는 물질 때문이다.",
+    "식물의 잎이 초록색인 이유는 ___라는 물질 때문이다.",
     "엽록소",
     "생물",
     "upper",
   ],
   ["식물의 꽃가루가 암술에 닿는 것을 ___이라 한다.", "수분", "생물", "lower"],
-  ["열매 안에 들어있는 것을 ___라 한다.", "씨앗", "생물", "lower"],
+  ["열매 안에 들어있는 것을 ___이라 한다.", "씨앗", "생물", "lower"],
   ["지구의 표면은 여러 개의 ___으로 나뉘어 있다.", "판", "지구", "upper"],
   ["지진의 세기를 나타내는 단위를 ___라 한다.", "규모", "지구", "upper"],
   ["화산이 폭발할 때 나오는 가스를 ___라 한다.", "화산가스", "지구", "upper"],
@@ -3101,8 +3101,8 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["높은 곳에 있는 물체는 ___에너지가 크다.", "위치", "물리", "upper"],
   ["소리가 벽에 부딪혀 되돌아오는 것을 ___라 한다.", "메아리", "물리", "lower"],
   ["소리의 높낮이는 ___에 따라 달라진다.", "진동수", "물리", "upper"],
-  ["렌즈로 빛을 모으면 ___이 높아진다.", "온도", "물리", "lower"],
-  ["무지개의 색 순서는 빨주노초파남___이다.", "보", "물리", "lower"],
+  ["렌즈로 빛을 모으면 ___가 높아진다.", "온도", "물리", "lower"],
+  ["무지개의 색 순서는 빨주노초파남___다.", "보", "물리", "lower"],
   ["프리즘으로 햇빛을 분리하면 ___가지 색이 나온다.", "7", "물리", "lower"],
   ["볼록렌즈는 빛을 한 곳으로 ___시킨다.", "모음", "물리", "upper"],
   ["오목렌즈는 빛을 ___시킨다.", "퍼지게", "물리", "upper"],
@@ -3113,13 +3113,13 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["체온계의 원리는 물질의 ___팽창이다.", "열", "물리", "lower"],
-  ["음식물이 상하는 것을 ___이라 한다.", "부패", "생물", "lower"],
+  ["음식물이 상하는 것을 ___라 한다.", "부패", "생물", "lower"],
   ["우유를 높은 온도로 가열하는 것을 ___이라 한다.", "살균", "화학", "upper"],
-  ["탄산음료에 들어있는 기체는 ___이다.", "이산화탄소", "화학", "upper"],
+  ["탄산음료에 들어있는 기체는 ___다.", "이산화탄소", "화학", "upper"],
   // ── 물리 추가 ──
   ["물체가 빠르게 움직일수록 ___에너지가 크다.", "운동", "물리", "lower"],
   [
-    "시소에서 무거운 사람이 받침점에 ___이 앉으면 균형이 맞는다.",
+    "시소에서 무거운 사람이 받침점에 ___가 앉으면 균형이 맞는다.",
     "가까",
     "물리",
     "lower",
@@ -3223,14 +3223,14 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["사람의 뼈는 약 ___개이다.", "206", "생물", "upper"],
   ["사람의 이(치아)는 영구치 기준 ___개이다.", "32", "생물", "upper"],
   [
-    "식물의 뿌리 끝에서 물을 흡수하는 것을 ___라 한다.",
+    "식물의 뿌리 끝에서 물을 흡수하는 것을 ___이라 한다.",
     "뿌리털",
     "생물",
     "lower",
   ],
   ["곰팡이와 버섯은 ___류에 속한다.", "균", "생물", "upper"],
   ["혈액이 흐르는 관을 ___이라 한다.", "혈관", "생물", "lower"],
-  ["눈의 검은 부분을 ___이라 한다.", "눈동자", "생물", "lower"],
+  ["눈의 검은 부분을 ___라 한다.", "눈동자", "생물", "lower"],
   [
     "식물이 계절에 따라 잎을 떨어뜨리는 것을 ___이라 한다.",
     "낙엽",
@@ -3240,17 +3240,17 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["민들레 씨앗은 ___을 이용해 퍼진다.", "바람", "생물", "lower"],
   ["도꼬마리 씨앗은 ___의 몸에 붙어 퍼진다.", "동물", "생물", "lower"],
   ["고구마는 ___로 번식할 수 있다.", "줄기", "생물", "lower"],
-  ["감자의 먹는 부분은 ___이 변한 것이다.", "줄기", "생물", "lower"],
-  ["당근의 먹는 부분은 ___이 변한 것이다.", "뿌리", "생물", "lower"],
+  ["감자의 먹는 부분은 ___가 변한 것이다.", "줄기", "생물", "lower"],
+  ["당근의 먹는 부분은 ___가 변한 것이다.", "뿌리", "생물", "lower"],
   [
-    "미생물 중에서 유산균은 ___을 만드는 데 쓰인다.",
+    "미생물 중에서 유산균은 ___를 만드는 데 쓰인다.",
     "요구르트",
     "생물",
     "lower",
   ],
   ["사람의 혈액형은 A형, B형, AB형, ___형이 있다.", "O", "생물", "upper"],
   ["심장은 1분에 약 ___번 뛴다.", "70", "생물", "upper"],
-  ["꿀벌이 꽃가루를 옮기는 것을 ___이라 한다.", "화분매개", "생물", "both"],
+  ["꿀벌이 꽃가루를 옮기는 것을 ___라 한다.", "화분매개", "생물", "both"],
   ["낙타의 혹에는 ___이 저장되어 있다.", "지방", "생물", "lower"],
   ["카멜레온은 주변 환경에 맞게 ___을 바꾼다.", "색", "생물", "lower"],
   // ── 지구 추가 ──
@@ -3271,7 +3271,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["화석 연료가 만들어지는 데는 수___만 년이 걸린다.", "백", "지구", "upper"],
-  ["화산에서 분출되는 작은 돌 조각을 ___이라 한다.", "화산재", "지구", "lower"],
+  ["화산에서 분출되는 작은 돌 조각을 ___라 한다.", "화산재", "지구", "lower"],
   ["토양은 바위가 ___작용을 받아 잘게 부서진 것이다.", "풍화", "지구", "lower"],
   // ── 날씨 추가 ──
   ["기압이 낮은 곳에서는 날씨가 ___다.", "흐리", "날씨", "upper"],
@@ -3286,7 +3286,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["황사는 중국과 몽골의 ___에서 날아온다.", "사막", "날씨", "both"],
   ["장마는 ___에 비가 오랫동안 내리는 현상이다.", "여름", "날씨", "lower"],
   ["태풍의 중심을 ___이라 한다.", "눈", "날씨", "upper"],
-  ["기온이 0도 이하로 내려가면 ___가 내린다.", "눈", "날씨", "lower"],
+  ["기온이 0도 이하로 내려가면 ___이 내린다.", "눈", "날씨", "lower"],
   ["해풍은 낮에 ___에서 육지로 부는 바람이다.", "바다", "날씨", "upper"],
   ["육풍은 밤에 ___에서 바다로 부는 바람이다.", "육지", "날씨", "upper"],
   ["하루 중 기온이 가장 높은 때는 오후 ___시경이다.", "2", "날씨", "lower"],
@@ -3300,8 +3300,8 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "날씨",
     "lower",
   ],
-  ["봄에 부는 건조한 바람을 ___이라 한다.", "꽃샘추위", "날씨", "lower"],
-  ["눈이 많이 내린 것을 ___라 한다.", "폭설", "날씨", "lower"],
+  ["봄에 부는 건조한 바람을 ___라 한다.", "꽃샘추위", "날씨", "lower"],
+  ["눈이 많이 내린 것을 ___이라 한다.", "폭설", "날씨", "lower"],
   ["비가 매우 많이 오는 것을 ___라 한다.", "폭우", "날씨", "lower"],
   ["겨울철 한파가 오면 수도관이 ___할 수 있다.", "동파", "날씨", "both"],
   // ── 우주 추가 ──
@@ -3311,7 +3311,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["태양계에서 가장 뜨거운 행성은 ___이다.", "금성", "우주", "upper"],
   ["태양계에서 지구 바로 안쪽 행성은 ___이다.", "금성", "우주", "upper"],
   ["태양계에서 지구 바로 바깥 행성은 ___이다.", "화성", "우주", "upper"],
-  ["우리 은하의 이름은 ___이다.", "은하수", "우주", "lower"],
+  ["우리 은하의 이름은 ___다.", "은하수", "우주", "lower"],
   ["달의 표면에 있는 큰 구덩이를 ___라 한다.", "크레이터", "우주", "upper"],
   ["인류 최초로 달에 간 사람은 ___이다.", "닐 암스트롱", "우주", "upper"],
   ["별이 반짝이는 이유는 ___의 흔들림 때문이다.", "대기", "우주", "upper"],
@@ -3328,7 +3328,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["소행성은 주로 화성과 ___사이에 있다.", "목성", "우주", "upper"],
   ["태양의 흑점 수가 많으면 태양 활동이 ___하다.", "활발", "우주", "upper"],
   ["국제우주정거장의 약자는 ___이다.", "ISS", "우주", "upper"],
-  ["밤하늘에서 가장 밝은 별은 ___이다.", "시리우스", "우주", "upper"],
+  ["밤하늘에서 가장 밝은 별은 ___다.", "시리우스", "우주", "upper"],
   ["천왕성은 ___으로 누워서 공전한다.", "옆", "우주", "upper"],
   ["수성에는 ___가 거의 없어 기온차가 매우 크다.", "대기", "우주", "upper"],
   ["목성의 큰 빨간 점은 거대한 ___이다.", "폭풍", "우주", "upper"],
@@ -3342,18 +3342,18 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["자전거 바퀴에 공기를 넣으면 ___이 높아진다.", "기압", "물리", "lower"],
   ["물을 가열하면 수증기가 되는 것은 ___변화이다.", "상태", "화학", "lower"],
-  ["구리와 주석을 섞으면 ___가 된다.", "청동", "화학", "upper"],
+  ["구리와 주석을 섞으면 ___이 된다.", "청동", "화학", "upper"],
   ["물에 소금을 넣으면 끓는점이 ___아진다.", "높", "화학", "upper"],
   ["나방은 밤에 활동하는 ___성 곤충이다.", "야행", "생물", "lower"],
   [
-    "식물의 줄기가 위로 자라는 것은 아래로 자라는 성질의 ___이다.",
+    "식물의 줄기가 위로 자라는 것은 아래로 자라는 성질의 ___다.",
     "반대",
     "생물",
     "upper",
   ],
   ["겨울에 곰이 긴 잠을 자는 것을 ___이라 한다.", "동면", "생물", "lower"],
   ["바닷물의 약 ___퍼센트가 소금이다.", "3.5", "지구", "upper"],
-  ["지구에서 물이 가장 많은 곳은 ___이다.", "바다", "지구", "lower"],
+  ["지구에서 물이 가장 많은 곳은 ___다.", "바다", "지구", "lower"],
   [
     "사계절이 생기는 이유는 지구의 ___이 기울어져 있기 때문이다.",
     "자전축",
@@ -3375,7 +3375,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["개미는 땅속에 ___을 만들어 산다.", "집", "생물", "lower"],
   ["잠자리는 날개가 ___개이다.", "4", "생물", "lower"],
   ["무당벌레는 등에 ___이 있다.", "점", "생물", "lower"],
-  ["달팽이는 등에 ___을 지고 다닌다.", "껍데기", "생물", "lower"],
+  ["달팽이는 등에 ___를 지고 다닌다.", "껍데기", "생물", "lower"],
   ["지렁이는 ___에서 산다.", "흙속", "생물", "lower"],
   ["메뚜기는 뒷다리가 길어 ___을 잘한다.", "뜀", "생물", "lower"],
   ["반딧불이는 배에서 ___을 낸다.", "빛", "생물", "lower"],
@@ -3400,11 +3400,11 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["강아지는 꼬리를 흔들어 ___을 표현한다.", "기분", "생물", "lower"],
-  ["햄스터는 볼 주머니에 ___을 넣어 나른다.", "먹이", "생물", "lower"],
+  ["햄스터는 볼 주머니에 ___를 넣어 나른다.", "먹이", "생물", "lower"],
   ["금붕어는 ___로 숨을 쉰다.", "아가미", "생물", "lower"],
 
   // ── 식물의 생활 (lower, 3-4학년) ──
-  ["해바라기는 ___을 향해 꽃이 핀다.", "해", "생물", "lower"],
+  ["해바라기는 ___를 향해 꽃이 핀다.", "해", "생물", "lower"],
   ["봉숭아 씨앗은 ___면 씨가 터져 나온다.", "만지", "생물", "lower"],
   ["소나무는 겨울에도 잎이 ___다.", "푸르", "생물", "lower"],
   ["벚나무는 ___에 꽃이 핀다.", "봄", "생물", "lower"],
@@ -3440,11 +3440,11 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["면(무명)은 땀을 잘 ___한다.", "흡수", "물질", "lower"],
 
   // ── 자석 놀이 (lower, 3-4학년) ──
-  ["자석은 ___로 만든 물체를 끌어당긴다.", "철", "물질", "lower"],
+  ["자석은 ___으로 만든 물체를 끌어당긴다.", "철", "물질", "lower"],
   ["나침반 바늘은 자석으로 되어 있어 ___쪽을 가리킨다.", "북", "물질", "lower"],
   ["자석의 힘이 가장 센 곳은 양쪽 ___이다.", "끝(극)", "물질", "lower"],
   [
-    "냉장고 문에 자석이 붙는 이유는 냉장고가 ___로 만들어져서이다.",
+    "냉장고 문에 자석이 붙는 이유는 냉장고가 ___으로 만들어져서이다.",
     "철",
     "물질",
     "lower",
@@ -3494,7 +3494,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["물을 냉동실에 넣으면 ___이 된다.", "얼음", "화학", "lower"],
   ["얼음을 꺼내 놓으면 녹아서 ___이 된다.", "물", "화학", "lower"],
   [
-    "주전자의 물이 끓으면 김이 나오는데 이것은 ___이다.",
+    "주전자의 물이 끓으면 김이 나오는데 이것은 ___다.",
     "수증기",
     "화학",
     "lower",
@@ -3508,7 +3508,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["빨래가 마르는 것은 물이 ___로 변하기 때문이다.", "수증기", "화학", "lower"],
 
   // ── 흙과 바위 (lower, 3-4학년) ──
-  ["바위가 깨져서 작은 돌이 되는 것을 ___이라 한다.", "풍화", "지구", "lower"],
+  ["바위가 깨져서 작은 돌이 되는 것을 ___라 한다.", "풍화", "지구", "lower"],
   ["운동장의 흙과 화단의 흙은 ___이 다르다.", "색깔(알갱이)", "지구", "lower"],
   ["화단의 흙에는 식물이 잘 자라도록 ___이 많다.", "양분", "지구", "lower"],
   ["조개껍데기가 돌에 박혀 있으면 그것은 ___이다.", "화석", "지구", "lower"],
@@ -3523,7 +3523,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["배추흰나비는 알→___→번데기→어른벌레 순서이다.", "애벌레", "생물", "lower"],
-  ["잠자리의 애벌레는 물속에서 살며 ___이라 불린다.", "수채", "생물", "lower"],
+  ["잠자리의 애벌레는 물속에서 살며 ___라 불린다.", "수채", "생물", "lower"],
   ["매미는 땅속에서 ___년 이상 애벌레로 산다.", "7", "생물", "lower"],
 
   // ── 태양계와 별 (upper, 5-6학년) ──
@@ -3552,7 +3552,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "전기",
     "upper",
   ],
-  ["전선의 껍질을 벗기면 안에 ___이 보인다.", "구리", "전기", "upper"],
+  ["전선의 껍질을 벗기면 안에 ___가 보인다.", "구리", "전기", "upper"],
   ["가정에서 사용하는 전기 콘센트의 전압은 ___V이다.", "220", "전기", "upper"],
 
   // ── 산과 염기 간단 (upper, 5-6학년) ──
@@ -3593,19 +3593,19 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["식물의 뿌리 역할은 물과 양분을 ___하는 것이다.", "흡수", "생물", "upper"],
   ["식물의 줄기 역할은 물과 양분을 ___하는 것이다.", "운반", "생물", "upper"],
   ["식물의 잎 역할은 광합성으로 ___을 만드는 것이다.", "양분", "생물", "upper"],
-  ["식물의 꽃 역할은 열매와 ___를 만드는 것이다.", "씨앗", "생물", "upper"],
+  ["식물의 꽃 역할은 열매와 ___을 만드는 것이다.", "씨앗", "생물", "upper"],
   ["줄기를 자르면 나이테로 나무의 ___를 알 수 있다.", "나이", "생물", "upper"],
 
   // ── 우리 몸의 구조 간단 (upper, 5-6학년) ──
   ["음식을 삼키면 ___를 지나 위로 간다.", "식도", "인체", "upper"],
   ["위에서 음식이 잘게 ___된다.", "분해(소화)", "인체", "upper"],
-  ["소장에서 영양분이 ___로 흡수된다.", "혈액", "인체", "upper"],
+  ["소장에서 영양분이 ___으로 흡수된다.", "혈액", "인체", "upper"],
   ["숨을 들이마시면 공기가 ___로 들어간다.", "폐", "인체", "upper"],
   ["심장은 피를 온몸으로 ___어 준다.", "보내", "인체", "upper"],
   ["뇌는 우리 몸의 모든 활동을 ___하는 곳이다.", "조절", "인체", "upper"],
 
   // ── 날씨와 기후 (upper, 5-6학년) ──
-  ["일기예보에서 기온, 풍속, ___를 알려준다.", "강수량", "날씨", "upper"],
+  ["일기예보에서 기온, 풍속, ___을 알려준다.", "강수량", "날씨", "upper"],
   [
     "우리나라는 봄, 여름, 가을, 겨울의 ___이 뚜렷하다.",
     "사계절",
@@ -3622,7 +3622,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["생태계에서 토끼와 사슴은 ___자이다.", "소비", "환경", "upper"],
   ["생태계에서 곰팡이와 세균은 ___자이다.", "분해", "환경", "upper"],
   ["외래종이 들어오면 생태계의 ___이 깨질 수 있다.", "균형", "환경", "upper"],
-  ["갯벌은 많은 생물이 사는 ___이다.", "서식지", "환경", "upper"],
+  ["갯벌은 많은 생물이 사는 ___다.", "서식지", "환경", "upper"],
   [
     "습지를 보호해야 하는 이유는 많은 ___이 살기 때문이다.",
     "생물",
@@ -3631,12 +3631,12 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
 
   // ── 물의 순환 (upper, 5-6학년) ──
-  ["바다의 물이 증발하여 ___이 된다.", "수증기", "지구", "upper"],
+  ["바다의 물이 증발하여 ___가 된다.", "수증기", "지구", "upper"],
   ["수증기가 하늘에서 물방울이 되어 ___이 된다.", "구름", "지구", "upper"],
   ["구름에서 비나 눈이 내려 ___으로 돌아온다.", "땅(바다)", "지구", "upper"],
-  ["비가 땅에 스며들어 ___이 된다.", "지하수", "지구", "upper"],
+  ["비가 땅에 스며들어 ___가 된다.", "지하수", "지구", "upper"],
   [
-    "물의 순환에서 물은 바다→수증기→구름→비→___으로 돌아간다.",
+    "물의 순환에서 물은 바다→수증기→구름→비→___로 돌아간다.",
     "바다",
     "지구",
     "upper",
@@ -3646,20 +3646,20 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["달의 모양이 변하는 것을 달의 ___라 한다.", "위상 변화", "우주", "upper"],
   ["초승달은 오른쪽이 ___은 달이다.", "밝", "우주", "upper"],
   ["보름달은 달이 ___둥글게 보이는 것이다.", "완전히", "우주", "upper"],
-  ["그믐달은 달이 거의 보이지 ___는 때이다.", "않", "우주", "upper"],
+  ["그믐달은 달이 거의 보이지 ___은 때이다.", "않", "우주", "upper"],
   ["달에는 ___가 없어서 바람이 불지 않는다.", "공기", "우주", "upper"],
 
   // ── 추가 lower 과학 ──
   ["개구리는 겨울에 ___을 한다.", "겨울잠", "생물", "lower"],
-  ["다람쥐는 가을에 ___을 모아둔다.", "도토리", "생물", "lower"],
+  ["다람쥐는 가을에 ___를 모아둔다.", "도토리", "생물", "lower"],
   [
     "북극곰의 털이 하얀 이유는 눈 속에서 ___기 위해서이다.",
     "숨",
     "생물",
     "lower",
   ],
-  ["선인장은 ___가 적은 사막에서 산다.", "물", "생물", "lower"],
-  ["무궁화는 우리나라의 ___이다.", "국화", "생물", "lower"],
+  ["선인장은 ___이 적은 사막에서 산다.", "물", "생물", "lower"],
+  ["무궁화는 우리나라의 ___다.", "국화", "생물", "lower"],
   ["진달래꽃은 ___에 핀다.", "봄", "생물", "lower"],
   ["단풍나무 잎은 가을에 ___색으로 변한다.", "빨간", "생물", "lower"],
   ["은행나무 잎은 가을에 ___색으로 변한다.", "노란", "생물", "lower"],
@@ -3694,7 +3694,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["나뭇잎이 떨어지는 것도 ___때문이다.", "중력", "물리", "lower"],
-  ["풍선에 바람을 넣으면 ___이 커진다.", "부피", "물리", "lower"],
+  ["풍선에 바람을 넣으면 ___가 커진다.", "부피", "물리", "lower"],
   ["풍선을 누르면 다른 쪽이 ___어난다.", "튀", "물리", "lower"],
   [
     "빨대로 음료를 마실 수 있는 것은 ___의 차이 때문이다.",
@@ -3721,7 +3721,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["모기는 사람의 ___를 빨아 먹는다.", "피", "생물", "lower"],
   ["두더지는 ___에서 생활한다.", "땅속", "생물", "lower"],
-  ["비둘기는 도시에서 볼 수 있는 ___이다.", "새", "생물", "lower"],
+  ["비둘기는 도시에서 볼 수 있는 ___다.", "새", "생물", "lower"],
   [
     "참새의 몸 크기가 작은 이유 중 하나는 뼈가 ___기 때문이다.",
     "가볍",
@@ -3817,7 +3817,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "놀이터 시소에서 한쪽이 무거우면 그쪽이 ___으로 내려간다.",
+    "놀이터 시소에서 한쪽이 무거우면 그쪽이 ___로 내려간다.",
     "아래",
     "물리",
     "lower",
@@ -3875,7 +3875,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["빙하가 녹으면 해수면이 ___아진다.", "높", "지구", "upper"],
   ["물은 고체, 액체, 기체로 ___가 변한다.", "상태", "지구", "lower"],
   ["물의 순환은 태양 ___에 의해 일어난다.", "에너지", "지구", "upper"],
-  ["습한 공기가 산을 타고 올라가면 ___이 내린다.", "비", "지구", "upper"],
+  ["습한 공기가 산을 타고 올라가면 ___가 내린다.", "비", "지구", "upper"],
   ["건조한 지역에서는 물의 ___이 느리다.", "순환", "지구", "upper"],
   ["우리가 마시는 물도 물의 ___의 일부이다.", "순환", "지구", "lower"],
 
@@ -3903,7 +3903,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 식물의 생장 추가 (15) ──
   ["씨앗이 싹트는 것을 ___라 한다.", "발아", "생물", "lower"],
-  ["식물이 자라려면 물, 빛, ___가 필요하다.", "양분", "생물", "lower"],
+  ["식물이 자라려면 물, 빛, ___이 필요하다.", "양분", "생물", "lower"],
   ["식물의 줄기가 굵어지는 것을 ___성장이라 한다.", "비대", "생물", "upper"],
   ["씨앗 속에는 처음 자랄 때 필요한 ___이 들어 있다.", "양분", "생물", "lower"],
   ["햇빛을 많이 받으면 식물이 더 ___자란다.", "잘", "생물", "lower"],
@@ -3986,7 +3986,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "빛과소리",
     "lower",
   ],
-  ["만화경은 거울의 ___을 이용한 장난감이다.", "반사", "빛과소리", "lower"],
+  ["만화경은 거울의 ___를 이용한 장난감이다.", "반사", "빛과소리", "lower"],
   [
     "잠수부가 물속을 볼 때 물체가 실제 위치와 다르게 보이는 것은 빛의 ___때문이다.",
     "굴절",
@@ -4000,7 +4000,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "눈에 들어오는 빛의 양을 조절하는 부분을 ___이라 한다.",
+    "눈에 들어오는 빛의 양을 조절하는 부분을 ___라 한다.",
     "홍채",
     "빛과소리",
     "upper",
@@ -4043,7 +4043,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["초음파는 사람이 들을 수 없는 ___소리이다.", "높은", "빛과소리", "upper"],
   ["박쥐는 ___를 이용하여 먹이를 찾는다.", "초음파", "빛과소리", "upper"],
   ["소리의 세기 단위는 ___이다.", "데시벨", "빛과소리", "upper"],
-  ["큰 소리를 오래 들으면 ___가 손상될 수 있다.", "청력", "빛과소리", "upper"],
+  ["큰 소리를 오래 들으면 ___이 손상될 수 있다.", "청력", "빛과소리", "upper"],
   [
     "실전화기에서 실을 팽팽하게 하면 소리가 더 ___전달된다.",
     "잘",
@@ -4142,14 +4142,14 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["동물원은 멸종 위기 동물을 ___하는 역할을 한다.", "보호", "환경", "lower"],
   ["국립공원에서는 동식물을 함부로 ___할 수 없다.", "채집", "환경", "lower"],
   [
-    "생태 통로는 도로 때문에 끊긴 동물의 ___을 연결한다.",
+    "생태 통로는 도로 때문에 끊긴 동물의 ___를 연결한다.",
     "이동로",
     "환경",
     "upper",
   ],
   ["친환경 농법은 농약을 적게 사용하는 ___방법이다.", "농사", "환경", "lower"],
   ["유기농 식품은 화학 비료 없이 ___한 식품이다.", "재배", "환경", "upper"],
-  ["미세 플라스틱은 바다 생물에게 ___을 준다.", "피해", "환경", "upper"],
+  ["미세 플라스틱은 바다 생물에게 ___를 준다.", "피해", "환경", "upper"],
   [
     "탄소 중립은 배출하는 탄소와 흡수하는 탄소를 ___하게 만드는 것이다.",
     "같",
@@ -4257,7 +4257,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "나무, 유리, 플라스틱은 열을 잘 전달하지 ___는 물질이다.",
+    "나무, 유리, 플라스틱은 열을 잘 전달하지 ___은 물질이다.",
     "않",
     "물리",
     "upper",
@@ -4436,7 +4436,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "철새가 이동하는 이유는 먹이와 ___를 찾기 위해서이다.",
+    "철새가 이동하는 이유는 먹이와 ___을 찾기 위해서이다.",
     "따뜻한 환경",
     "생물",
     "lower",
@@ -4444,7 +4444,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 지구과학 - 실험결과예측 ──
   [
-    "화산 모형에 식초와 베이킹소다를 넣으면 ___가 넘쳐 흐른다.",
+    "화산 모형에 식초와 베이킹소다를 넣으면 ___이 넘쳐 흐른다.",
     "거품",
     "지구",
     "lower",
@@ -4538,7 +4538,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "안개 생성 과정: 밤에 기온 하강→수증기 응결→___이 생김",
+    "안개 생성 과정: 밤에 기온 하강→수증기 응결→___가 생김",
     "안개",
     "날씨",
     "lower",
@@ -4548,7 +4548,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["적운, 층운, 권운은 모두 ___의 종류이다.", "구름", "날씨", "upper"],
   ["비, 눈, 우박, 이슬, 안개는 모두 ___현상이다.", "기상", "날씨", "lower"],
   [
-    "온도계, 풍속계, 우량계는 모두 ___을 관측하는 도구이다.",
+    "온도계, 풍속계, 우량계는 모두 ___를 관측하는 도구이다.",
     "날씨",
     "날씨",
     "lower",
@@ -4683,7 +4683,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "인체",
     "upper",
   ],
-  ["호흡 순서: 코→기관→기관지→폐포→산소가 ___로 이동", "혈액", "인체", "upper"],
+  ["호흡 순서: 코→기관→기관지→폐포→산소가 ___으로 이동", "혈액", "인체", "upper"],
   [
     "반사 행동 순서: 자극→감각기관→___→운동기관→반응",
     "척수(뇌)",
@@ -4694,7 +4694,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   // ── 인체 - 분류하기 ──
   ["심장, 폐, 위, 간은 모두 ___에 해당한다.", "내장기관", "인체", "upper"],
   ["눈, 코, 귀, 혀, 피부는 모두 ___기관이다.", "감각", "인체", "lower"],
-  ["탄수화물, 단백질, 지방은 모두 3대 ___이다.", "영양소", "인체", "upper"],
+  ["탄수화물, 단백질, 지방은 모두 3대 ___다.", "영양소", "인체", "upper"],
 
   // ── 인체 - 인과관계 ──
   ["비타민이 부족하면 면역력이 ___해진다.", "약", "인체", "upper"],
@@ -4740,7 +4740,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "원숭이의 손이 물건을 잡기 좋은 이유는 ___가 있기 때문이다.",
+    "원숭이의 손이 물건을 잡기 좋은 이유는 ___이 있기 때문이다.",
     "엄지손가락",
     "생물",
     "lower",
@@ -4834,7 +4834,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "날씨",
     "lower",
   ],
-  ["봄에 꽃이 피는 이유는 ___가 올라가기 때문이다.", "기온", "날씨", "lower"],
+  ["봄에 꽃이 피는 이유는 ___이 올라가기 때문이다.", "기온", "날씨", "lower"],
   [
     "겨울에 입김이 보이는 이유는 수증기가 ___되기 때문이다.",
     "응결",
@@ -4847,7 +4847,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "날씨",
     "lower",
   ],
-  ["눈사람이 녹는 이유는 ___가 올라가기 때문이다.", "기온", "날씨", "lower"],
+  ["눈사람이 녹는 이유는 ___이 올라가기 때문이다.", "기온", "날씨", "lower"],
 
   // ── 추가 날씨 (upper) ──
   [
@@ -4893,7 +4893,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
 
   // ── 추가 우주 (upper) ──
-  ["블랙홀은 빛도 빠져나올 수 ___는 천체이다.", "없", "우주", "upper"],
+  ["블랙홀은 빛도 빠져나올 수 ___은 천체이다.", "없", "우주", "upper"],
   ["빛의 속도는 초속 약 ___만 km이다.", "30", "우주", "upper"],
   ["1광년은 빛이 ___년 동안 가는 거리이다.", "1", "우주", "upper"],
   ["우주 공간은 거의 ___상태이다.", "진공", "우주", "upper"],
@@ -4912,7 +4912,7 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "바다의 산호가 하얗게 변하는 것을 산호 ___이라 한다.",
+    "바다의 산호가 하얗게 변하는 것을 산호 ___라 한다.",
     "백화",
     "환경",
     "upper",
@@ -4958,10 +4958,10 @@ const SCI_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["현미경은 작은 것을 ___보는 도구이다.", "크게", "빛과소리", "lower"],
-  ["잠망경은 빛의 ___을 이용한 도구이다.", "반사", "빛과소리", "upper"],
+  ["잠망경은 빛의 ___를 이용한 도구이다.", "반사", "빛과소리", "upper"],
 
   // ── 물질 추가 ──
-  ["같은 크기의 쇠와 나무 중 더 무거운 것은 ___이다.", "쇠", "물질", "lower"],
+  ["같은 크기의 쇠와 나무 중 더 무거운 것은 ___다.", "쇠", "물질", "lower"],
   ["유리는 깨지기 ___물질이다.", "쉬운", "물질", "lower"],
   [
     "알루미늄 호일은 얇고 ___서 음식을 쌀 수 있다.",
@@ -4991,7 +4991,7 @@ const SCIENCE_EXTRA: ScienceItem[] = SCI_X.map(
 // ─── EXTRA SOCIAL (compact tuples) ──────────────────────────
 const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["우리나라 국보 1호였던 건물은 ___이다.", "숭례문", "문화", "lower"],
-  ["한반도의 동쪽 끝 섬은 ___이다.", "독도", "지리", "both"],
+  ["한반도의 동쪽 끝 섬은 ___다.", "독도", "지리", "both"],
   ["우리나라에서 가장 긴 강은 ___이다.", "낙동강", "지리", "lower"],
   ["한라산은 ___도에 있다.", "제주", "지리", "lower"],
   ["설악산은 ___도에 있다.", "강원", "지리", "lower"],
@@ -4999,21 +4999,21 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["우리나라의 행정 구역은 ___개의 광역시도로 나뉜다.", "17", "지리", "upper"],
   ["조선 시대 과거 시험에서 장원은 ___등을 뜻한다.", "1", "역사", "lower"],
   ["고려 시대에 발명된 인쇄술은 ___활자이다.", "금속", "역사", "lower"],
-  ["삼국 통일을 이룬 나라는 ___이다.", "신라", "역사", "lower"],
+  ["삼국 통일을 이룬 나라는 ___다.", "신라", "역사", "lower"],
   ["백제의 마지막 왕은 ___이다.", "의자왕", "역사", "upper"],
   ["고구려를 세운 사람은 ___이다.", "주몽", "역사", "lower"],
-  ["신라의 수도는 ___이었다.", "경주", "역사", "lower"],
+  ["신라의 수도는 ___였다.", "경주", "역사", "lower"],
   ["고려의 수도는 ___이었다.", "개경", "역사", "lower"],
-  ["조선 시대 양반의 집을 ___라 했다.", "한옥", "문화", "lower"],
+  ["조선 시대 양반의 집을 ___이라 했다.", "한옥", "문화", "lower"],
   [
     "우리나라 전통 무예인 ___는 올림픽 정식 종목이다.",
     "태권도",
     "문화",
     "both",
   ],
-  ["판소리는 ___와 고수 두 사람이 하는 공연이다.", "소리꾼", "문화", "lower"],
+  ["판소리는 ___과 고수 두 사람이 하는 공연이다.", "소리꾼", "문화", "lower"],
   ["한식은 유네스코 ___유산으로 등재되었다.", "무형문화", "문화", "upper"],
-  ["김치의 주재료는 ___이다.", "배추", "문화", "lower"],
+  ["김치의 주재료는 ___다.", "배추", "문화", "lower"],
   ["설날에 먹는 대표 음식은 ___이다.", "떡국", "문화", "lower"],
   ["정월대보름에 먹는 음식은 ___이다.", "오곡밥", "문화", "lower"],
   ["국회의원은 ___을 만드는 일을 한다.", "법", "정치", "upper"],
@@ -5030,9 +5030,9 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["은행에 돈을 맡기면 받는 것을 ___라 한다.", "이자", "경제", "lower"],
   ["물건을 외국에 파는 것을 ___이라 한다.", "수출", "경제", "upper"],
   ["물건을 외국에서 사오는 것을 ___이라 한다.", "수입", "경제", "upper"],
-  ["나라의 살림을 기록한 것을 ___라 한다.", "예산", "경제", "upper"],
+  ["나라의 살림을 기록한 것을 ___이라 한다.", "예산", "경제", "upper"],
   ["세금으로 운영되는 학교를 ___학교라 한다.", "공립", "경제", "lower"],
-  ["유엔(UN)은 세계 ___을 위해 만들어졌다.", "평화", "세계", "both"],
+  ["유엔(UN)은 세계 ___를 위해 만들어졌다.", "평화", "세계", "both"],
   ["올림픽의 오륜기는 ___개 대륙을 상징한다.", "5", "세계", "lower"],
   [
     "세계 4대 문명 중 메소포타미아는 ___강 유역에서 발생했다.",
@@ -5040,18 +5040,18 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "역사",
     "upper",
   ],
-  ["프랑스 혁명의 3대 이념은 자유, 평등, ___이다.", "박애", "역사", "upper"],
+  ["프랑스 혁명의 3대 이념은 자유, 평등, ___다.", "박애", "역사", "upper"],
   ["제2차 세계대전이 끝난 해는 ___년이다.", "1945", "역사", "upper"],
   ["간디는 ___의 독립을 이끈 지도자이다.", "인도", "세계", "upper"],
   ["만리장성을 세운 나라는 ___이다.", "중국", "세계", "lower"],
-  ["이집트의 유명한 건축물은 ___이다.", "피라미드", "세계", "lower"],
+  ["이집트의 유명한 건축물은 ___다.", "피라미드", "세계", "lower"],
   ["자유의 여신상은 ___에 있다.", "미국", "세계", "lower"],
   ["환경 오염을 줄이기 위해 ___에너지를 사용한다.", "재생", "환경", "upper"],
-  ["지구 온난화로 ___이 녹고 있다.", "빙하", "환경", "upper"],
+  ["지구 온난화로 ___가 녹고 있다.", "빙하", "환경", "upper"],
   ["미세먼지를 줄이려면 대중___을 이용해야 한다.", "교통", "환경", "both"],
   ["쓰레기를 줄이는 3R은 줄이기, 재사용, ___이다.", "재활용", "환경", "both"],
   ["플라스틱이 분해되는 데 약 ___년이 걸린다.", "500", "환경", "upper"],
-  ["멸종 위기 동물을 보호하는 곳을 ___라 한다.", "보호구역", "환경", "lower"],
+  ["멸종 위기 동물을 보호하는 곳을 ___이라 한다.", "보호구역", "환경", "lower"],
   ["비무장지대(DMZ)는 남한과 ___사이에 있다.", "북한", "정치", "both"],
   ["이산가족은 남북 ___으로 헤어진 가족이다.", "분단", "정치", "upper"],
   [
@@ -5077,20 +5077,20 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["평야가 넓은 곳은 주로 ___를 많이 짓는다.", "논농사", "지리", "lower"],
   // ── 역사 추가 ──
   [
-    "세종대왕이 만든 비 오는 양을 재는 기구는 ___이다.",
+    "세종대왕이 만든 비 오는 양을 재는 기구는 ___다.",
     "측우기",
     "역사",
     "both",
   ],
-  ["세종대왕이 만든 해시계는 ___이다.", "앙부일구", "역사", "upper"],
+  ["세종대왕이 만든 해시계는 ___다.", "앙부일구", "역사", "upper"],
   ["조선 시대 여성 화가로 유명한 사람은 ___이다.", "신사임당", "역사", "both"],
   ["고려 시대 왕실의 도자기는 ___자이다.", "청", "역사", "lower"],
   ["불국사와 석굴암은 ___시대에 만들어졌다.", "신라", "역사", "lower"],
-  ["첨성대는 별을 관측하던 ___이다.", "천문대", "역사", "lower"],
+  ["첨성대는 별을 관측하던 ___다.", "천문대", "역사", "lower"],
   ["조선의 마지막 왕은 ___이다.", "순종", "역사", "upper"],
   ["을사늑약이 체결된 해는 ___년이다.", "1905", "역사", "upper"],
   ["안창호가 세운 독립운동 단체는 ___회이다.", "흥사단", "역사", "upper"],
-  ["유관순 열사가 만세 운동을 한 곳은 ___이다.", "아우내장터", "역사", "upper"],
+  ["유관순 열사가 만세 운동을 한 곳은 ___다.", "아우내장터", "역사", "upper"],
   ["발해를 세운 사람은 ___이다.", "대조영", "역사", "upper"],
   ["발해는 고구려를 이은 나라로 ___국이라 불렸다.", "해동성", "역사", "upper"],
   [
@@ -5102,13 +5102,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["한산도 대첩에서 사용된 전술은 ___진이다.", "학익", "역사", "upper"],
   // ── 문화 추가 ──
   [
-    "우리나라 전통 놀이 중 줄을 당기는 놀이는 ___이다.",
+    "우리나라 전통 놀이 중 줄을 당기는 놀이는 ___다.",
     "줄다리기",
     "문화",
     "lower",
   ],
   [
-    "우리나라 전통 놀이 중 돌을 쌓는 놀이는 ___이다.",
+    "우리나라 전통 놀이 중 돌을 쌓는 놀이는 ___다.",
     "돌탑쌓기",
     "문화",
     "lower",
@@ -5123,13 +5123,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "both",
   ],
   ["우리나라의 유네스코 세계유산으로 ___이 있다.", "수원화성", "문화", "upper"],
-  ["비빔밥의 뜻은 여러 재료를 ___는 밥이다.", "섞", "문화", "lower"],
+  ["비빔밥의 뜻은 여러 재료를 ___은 밥이다.", "섞", "문화", "lower"],
   ["떡볶이의 주재료는 ___이다.", "떡", "문화", "lower"],
   ["대한민국의 화폐 단위는 ___이다.", "원", "문화", "lower"],
   ["태극기의 가운데 무늬를 ___이라 한다.", "태극", "문화", "lower"],
   ["태극기의 네 모서리에 있는 무늬를 ___라 한다.", "건곤감리", "문화", "upper"],
   // ── 정치 추가 ──
-  ["대통령이 법률안에 거부하는 것을 ___라 한다.", "거부권", "정치", "upper"],
+  ["대통령이 법률안에 거부하는 것을 ___이라 한다.", "거부권", "정치", "upper"],
   ["국무총리는 ___이 임명한다.", "대통령", "정치", "upper"],
   ["감사원은 국가의 ___를 감사한다.", "회계", "정치", "upper"],
   ["지방자치단체의 의회를 ___의회라 한다.", "지방", "정치", "upper"],
@@ -5138,19 +5138,19 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["국민이 법률안을 제안하는 것을 ___이라 한다.", "국민발안", "정치", "upper"],
   ["정당은 정치적 뜻이 같은 사람들의 ___이다.", "모임", "정치", "upper"],
   // ── 경제 추가 ──
-  ["나라에서 거두는 돈을 ___라 한다.", "세금", "경제", "lower"],
+  ["나라에서 거두는 돈을 ___이라 한다.", "세금", "경제", "lower"],
   ["부가가치세는 물건을 살 때 내는 ___이다.", "세금", "경제", "upper"],
   ["월급에서 떼는 세금을 ___세라 한다.", "소득", "경제", "upper"],
   ["돈의 가치가 떨어지면 물가가 ___한다.", "상승", "경제", "upper"],
   ["환율은 다른 나라 돈과 우리나라 돈의 ___비율이다.", "교환", "경제", "upper"],
   [
-    "기업이 물건을 만들어 이익을 남기는 것을 ___라 한다.",
+    "기업이 물건을 만들어 이익을 남기는 것을 ___이라 한다.",
     "이윤",
     "경제",
     "upper",
   ],
   ["물건의 품질이 좋으면 ___가 높아진다.", "수요", "경제", "upper"],
-  ["경쟁이 치열하면 물건의 ___가 내려간다.", "가격", "경제", "upper"],
+  ["경쟁이 치열하면 물건의 ___이 내려간다.", "가격", "경제", "upper"],
   ["국내에서 생산된 모든 재화의 가치를 ___라 한다.", "GDP", "경제", "upper"],
   [
     "시장에서 판매자끼리 경쟁하는 것을 ___경쟁이라 한다.",
@@ -5166,20 +5166,20 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   // ── 세계 추가 ──
-  ["세계에서 가장 높은 산은 ___이다.", "에베레스트", "세계", "upper"],
+  ["세계에서 가장 높은 산은 ___다.", "에베레스트", "세계", "upper"],
   ["세계에서 가장 긴 강은 ___강이다.", "나일", "세계", "upper"],
   ["아프리카에서 가장 큰 사막은 ___사막이다.", "사하라", "세계", "upper"],
-  ["호주의 수도는 ___이다.", "캔버라", "세계", "upper"],
-  ["이탈리아의 수도는 ___이다.", "로마", "세계", "upper"],
+  ["호주의 수도는 ___다.", "캔버라", "세계", "upper"],
+  ["이탈리아의 수도는 ___다.", "로마", "세계", "upper"],
   ["독일의 수도는 ___이다.", "베를린", "세계", "upper"],
-  ["브라질의 수도는 ___이다.", "브라질리아", "세계", "upper"],
-  ["인도의 수도는 ___이다.", "뉴델리", "세계", "upper"],
-  ["캐나다의 수도는 ___이다.", "오타와", "세계", "upper"],
+  ["브라질의 수도는 ___다.", "브라질리아", "세계", "upper"],
+  ["인도의 수도는 ___다.", "뉴델리", "세계", "upper"],
+  ["캐나다의 수도는 ___다.", "오타와", "세계", "upper"],
   ["올림픽은 ___년마다 열린다.", "4", "세계", "lower"],
   ["세계에서 가장 작은 나라는 ___이다.", "바티칸", "세계", "upper"],
-  ["콜로세움이 있는 나라는 ___이다.", "이탈리아", "세계", "lower"],
+  ["콜로세움이 있는 나라는 ___다.", "이탈리아", "세계", "lower"],
   ["만리장성이 있는 나라는 ___이다.", "중국", "세계", "lower"],
-  ["타지마할이 있는 나라는 ___이다.", "인도", "세계", "lower"],
+  ["타지마할이 있는 나라는 ___다.", "인도", "세계", "lower"],
   ["아마존 열대우림은 ___대륙에 있다.", "남아메리카", "세계", "upper"],
   ["남극에 사는 대표적인 동물은 ___이다.", "펭귄", "세계", "lower"],
   ["북극에 사는 대표적인 동물은 ___이다.", "북극곰", "세계", "lower"],
@@ -5221,7 +5221,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "조선 시대 세계 지도인 ___은 혼일강리역대국도지도이다.",
+    "조선 시대 세계 지도인 ___는 혼일강리역대국도지도이다.",
     "혼일강리역대국도지도",
     "역사",
     "upper",
@@ -5233,12 +5233,12 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "역사",
     "upper",
   ],
-  ["우리나라 전통 음료인 ___은 쌀로 만든다.", "식혜", "문화", "lower"],
+  ["우리나라 전통 음료인 ___는 쌀로 만든다.", "식혜", "문화", "lower"],
   ["전통 떡 중 무지개 색의 떡을 ___이라 한다.", "무지개떡", "문화", "lower"],
-  ["국민의 의무에는 국방, 납세, 교육, ___이 있다.", "근로", "정치", "upper"],
+  ["국민의 의무에는 국방, 납세, 교육, ___가 있다.", "근로", "정치", "upper"],
   ["대한민국 국회는 ___원제이다.", "단", "정치", "upper"],
   [
-    "기회비용은 하나를 선택할 때 포기하는 것의 ___이다.",
+    "기회비용은 하나를 선택할 때 포기하는 것의 ___다.",
     "가치",
     "경제",
     "upper",
@@ -5267,7 +5267,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["어촌은 ___가에 있는 마을이다.", "바다", "지리", "lower"],
   ["산촌은 ___에 있는 마을이다.", "산", "지리", "lower"],
   [
-    "우리 동네를 소개할 때 ___가 있는 곳을 알려준다.",
+    "우리 동네를 소개할 때 ___이 있는 곳을 알려준다.",
     "공공시설",
     "지리",
     "lower",
@@ -5313,21 +5313,21 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "문화센터에서는 다양한 ___를 배울 수 있다.",
+    "문화센터에서는 다양한 ___을 배울 수 있다.",
     "프로그램",
     "지역사회",
     "lower",
   ],
 
   // ── 교통수단과 통신수단의 발달 (lower, 3-4학년) ──
-  ["옛날 사람들은 ___를 타고 먼 곳을 갔다.", "말", "문화", "lower"],
+  ["옛날 사람들은 ___을 타고 먼 곳을 갔다.", "말", "문화", "lower"],
   [
     "기차가 처음 우리나라에 들어온 것은 ___시대이다.",
     "개화기(조선 말)",
     "문화",
     "lower",
   ],
-  ["옛날에는 편지를 전하는 사람을 ___라 했다.", "파발", "문화", "lower"],
+  ["옛날에는 편지를 전하는 사람을 ___이라 했다.", "파발", "문화", "lower"],
   ["전화기를 발명한 사람은 ___이다.", "벨", "문화", "upper"],
   [
     "인터넷이 발달하면서 ___으로 편지를 보낼 수 있게 되었다.",
@@ -5337,7 +5337,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
   ["비행기를 발명한 사람은 ___형제이다.", "라이트", "문화", "lower"],
   ["KTX는 우리나라의 ___열차이다.", "고속", "문화", "lower"],
-  ["옛날에는 소식을 전할 때 ___을 올렸다.", "봉화", "문화", "lower"],
+  ["옛날에는 소식을 전할 때 ___를 올렸다.", "봉화", "문화", "lower"],
   ["지하철은 땅 ___을 달리는 기차이다.", "속", "문화", "lower"],
   ["배는 바다나 강 위를 ___는 교통수단이다.", "다니", "문화", "lower"],
 
@@ -5347,9 +5347,9 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["정월 대보름에는 ___을 돌리는 풍습이 있다.", "쥐불", "문화", "lower"],
   ["초복, 중복, 말복을 ___이라 한다.", "삼복", "문화", "lower"],
   ["대보름에는 보름달을 보며 ___을 빈다.", "소원", "문화", "lower"],
-  ["제기차기는 ___로 제기를 차는 놀이이다.", "발", "문화", "lower"],
+  ["제기차기는 ___으로 제기를 차는 놀이이다.", "발", "문화", "lower"],
   ["연날리기는 ___을 이용해 연을 날리는 놀이이다.", "바람", "문화", "lower"],
-  ["투호는 통에 ___를 던져 넣는 놀이이다.", "화살", "문화", "lower"],
+  ["투호는 통에 ___을 던져 넣는 놀이이다.", "화살", "문화", "lower"],
   ["팽이치기는 ___에 하는 전통 놀이이다.", "겨울", "문화", "lower"],
   [
     "씨름에서 이기려면 상대를 ___으로 넘어뜨려야 한다.",
@@ -5359,12 +5359,12 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
 
   // ── 세계 여러 나라의 문화 (upper, 5-6학년) ──
-  ["일본의 전통 의복은 ___이다.", "기모노", "세계", "upper"],
-  ["중국의 전통 의복은 ___이다.", "치파오", "세계", "upper"],
-  ["인도 여성의 전통 의복은 ___이다.", "사리", "세계", "upper"],
+  ["일본의 전통 의복은 ___다.", "기모노", "세계", "upper"],
+  ["중국의 전통 의복은 ___다.", "치파오", "세계", "upper"],
+  ["인도 여성의 전통 의복은 ___다.", "사리", "세계", "upper"],
   ["미국의 대표 음식으로 ___가 있다.", "햄버거", "세계", "upper"],
   ["이탈리아의 대표 음식으로 ___가 있다.", "피자(파스타)", "세계", "upper"],
-  ["일본의 대표 음식으로 ___가 있다.", "초밥", "세계", "upper"],
+  ["일본의 대표 음식으로 ___이 있다.", "초밥", "세계", "upper"],
   ["멕시코의 대표 음식으로 ___가 있다.", "타코", "세계", "upper"],
   ["브라질의 유명한 축제는 ___축제이다.", "카니발", "세계", "upper"],
   [
@@ -5382,7 +5382,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 경제생활과 현명한 소비 (lower, 3-4학년) ──
   [
-    "물건을 살 때 ___를 비교하면 현명한 소비를 할 수 있다.",
+    "물건을 살 때 ___을 비교하면 현명한 소비를 할 수 있다.",
     "가격",
     "경제",
     "lower",
@@ -5390,7 +5390,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["용돈을 받으면 ___을 세워 쓰는 것이 좋다.", "계획", "경제", "lower"],
   ["꼭 필요한 물건인지 생각한 후 ___하는 것이 좋다.", "구매", "경제", "lower"],
   ["물건을 바꾸어 쓰는 것을 ___시장이라 한다.", "벼룩", "경제", "lower"],
-  ["저금통에 동전을 모으는 것을 ___라 한다.", "저축", "경제", "lower"],
+  ["저금통에 동전을 모으는 것을 ___이라 한다.", "저축", "경제", "lower"],
   ["물건의 가격표를 보고 ___을 비교한다.", "값", "경제", "lower"],
   [
     "광고를 보고 무조건 사지 않고 ___을 따져 봐야 한다.",
@@ -5398,7 +5398,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "경제",
     "lower",
   ],
-  ["편의점과 마트의 같은 물건도 ___가 다를 수 있다.", "가격", "경제", "lower"],
+  ["편의점과 마트의 같은 물건도 ___이 다를 수 있다.", "가격", "경제", "lower"],
   [
     "쇼핑할 때 목록을 미리 ___하면 불필요한 구매를 줄일 수 있다.",
     "작성",
@@ -5441,13 +5441,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 추가 upper 사회 ──
   [
-    "무역에서 우리나라가 가장 많이 수출하는 것은 ___이다.",
+    "무역에서 우리나라가 가장 많이 수출하는 것은 ___다.",
     "반도체",
     "경제",
     "upper",
   ],
   [
-    "우리나라의 대표적인 수출 품목으로 자동차와 ___가 있다.",
+    "우리나라의 대표적인 수출 품목으로 자동차와 ___이 있다.",
     "전자제품",
     "경제",
     "upper",
@@ -5456,12 +5456,12 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["아프리카 대륙에서 가장 긴 강은 ___이다.", "나일강", "세계", "upper"],
   ["태평양과 대서양을 연결하는 운하는 ___운하이다.", "파나마", "세계", "upper"],
   [
-    "지구본에서 적도는 지구의 ___을 가로지르는 선이다.",
+    "지구본에서 적도는 지구의 ___를 가로지르는 선이다.",
     "가운데",
     "세계",
     "upper",
   ],
-  ["유네스코는 교육, 과학, ___을 위한 국제기구이다.", "문화", "세계", "upper"],
+  ["유네스코는 교육, 과학, ___를 위한 국제기구이다.", "문화", "세계", "upper"],
   ["월드컵은 ___년마다 열리는 축구 대회이다.", "4", "세계", "upper"],
   [
     "국제적십자사는 전쟁이나 재난 시 ___을 돕는 기구이다.",
@@ -5477,7 +5477,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ],
 
   // ── 추가 lower 사회 - 우리 고장/교통/공공기관 ──
-  ["지도의 기호를 모아 놓은 것을 ___이라 한다.", "범례", "지리", "lower"],
+  ["지도의 기호를 모아 놓은 것을 ___라 한다.", "범례", "지리", "lower"],
   [
     "우리 동네에서 길을 건널 때 ___등을 보고 건넌다.",
     "신호",
@@ -5521,17 +5521,17 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["신용카드로 물건을 사면 나중에 ___을 내야 한다.", "대금", "경제", "upper"],
   ["은행에서 돈을 빌리면 ___를 내야 한다.", "이자", "경제", "upper"],
   [
-    "경제 활동에서 정직하게 거래하는 것을 ___이라 한다.",
+    "경제 활동에서 정직하게 거래하는 것을 ___라 한다.",
     "공정거래",
     "경제",
     "upper",
   ],
   ["소비자 보호를 위한 기관을 ___이라 한다.", "소비자원", "경제", "upper"],
   ["광고는 물건의 ___을 알리기 위해 만든다.", "장점", "경제", "lower"],
-  ["독도에는 다양한 ___가 살고 있다.", "해양 생물", "지리", "both"],
+  ["독도에는 다양한 ___이 살고 있다.", "해양 생물", "지리", "both"],
   ["한라산 꼭대기에는 ___이라는 호수가 있다.", "백록담", "지리", "lower"],
   ["우리나라는 사계절이 ___한 나라이다.", "뚜렷", "지리", "lower"],
-  ["세계의 3대 종교는 기독교, 이슬람교, ___이다.", "불교", "세계", "upper"],
+  ["세계의 3대 종교는 기독교, 이슬람교, ___다.", "불교", "세계", "upper"],
   [
     "영어를 공식 언어로 사용하는 나라 수는 ___개 이상이다.",
     "50",
@@ -5539,7 +5539,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["세계에서 인구가 두 번째로 많은 나라는 ___이다.", "중국", "세계", "upper"],
-  ["아시아에서 가장 넓은 나라는 ___이다.", "러시아", "세계", "upper"],
+  ["아시아에서 가장 넓은 나라는 ___다.", "러시아", "세계", "upper"],
   ["조선 시대 임금이 살던 궁궐은 ___이다.", "경복궁", "역사", "lower"],
   ["고인돌은 ___시대의 무덤이다.", "청동기", "역사", "upper"],
   ["빗살무늬토기는 ___시대에 사용한 그릇이다.", "신석기", "역사", "upper"],
@@ -5570,9 +5570,9 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["전라남도의 도청 소재지는 ___이다.", "무안", "지리", "lower"],
   ["충청남도의 도청 소재지는 ___이다.", "홍성", "지리", "lower"],
   ["경상북도의 도청 소재지는 ___이다.", "안동", "지리", "lower"],
-  ["우리나라에서 가장 넓은 호수는 ___이다.", "소양호", "지리", "lower"],
-  ["우리나라의 최동단 섬은 ___이다.", "독도", "지리", "both"],
-  ["우리나라의 최남단 섬은 ___이다.", "마라도", "지리", "lower"],
+  ["우리나라에서 가장 넓은 호수는 ___다.", "소양호", "지리", "lower"],
+  ["우리나라의 최동단 섬은 ___다.", "독도", "지리", "both"],
+  ["우리나라의 최남단 섬은 ___다.", "마라도", "지리", "lower"],
   ["한강은 ___에서 시작하여 서해로 흐른다.", "강원도", "지리", "lower"],
   ["우리나라의 기후는 ___기후에 속한다.", "온대", "지리", "upper"],
   ["우리나라 남부 해안에는 ___이 많이 발달해 있다.", "갯벌", "지리", "lower"],
@@ -5583,8 +5583,8 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["제주도는 화산 활동으로 만들어진 ___섬이다.", "화산", "지리", "lower"],
-  ["태백산맥은 우리나라의 ___을 이루고 있다.", "등뼈", "지리", "upper"],
-  ["우리나라의 서쪽은 ___이 발달하여 농사에 좋다.", "평야", "지리", "lower"],
+  ["태백산맥은 우리나라의 ___를 이루고 있다.", "등뼈", "지리", "upper"],
+  ["우리나라의 서쪽은 ___가 발달하여 농사에 좋다.", "평야", "지리", "lower"],
   ["동해안은 수심이 ___어 해수욕장이 발달했다.", "깊", "지리", "upper"],
 
   // ── 민주주의 원리 추가 (15) ──
@@ -5687,7 +5687,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["물건을 사서 사용하는 것을 ___라 한다.", "소비", "경제", "lower"],
-  ["돈을 벌어서 쓰고 남은 것을 ___라 한다.", "저축", "경제", "lower"],
+  ["돈을 벌어서 쓰고 남은 것을 ___이라 한다.", "저축", "경제", "lower"],
   ["물건의 가격은 ___와 공급에 의해 결정된다.", "수요", "경제", "upper"],
   ["물건이 부족하면 가격이 ___한다.", "상승", "경제", "upper"],
   ["물건이 넘치면 가격이 ___한다.", "하락", "경제", "upper"],
@@ -5699,7 +5699,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["경제 성장률이 높으면 나라가 더 ___해진다.", "부유", "경제", "upper"],
   ["실업률이 높으면 일자리가 ___하다는 뜻이다.", "부족", "경제", "upper"],
   [
-    "우리나라는 ___을 많이 수출하여 경제가 성장했다.",
+    "우리나라는 ___를 많이 수출하여 경제가 성장했다.",
     "반도체",
     "경제",
     "upper",
@@ -5709,7 +5709,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   // ── 한국사 주요 사건 추가 (15) ──
   ["단군왕검이 고조선을 세운 해는 기원전 ___년이다.", "2333", "역사", "upper"],
   [
-    "삼국 중 가장 먼저 불교를 받아들인 나라는 ___이다.",
+    "삼국 중 가장 먼저 불교를 받아들인 나라는 ___다.",
     "고구려",
     "역사",
     "upper",
@@ -5745,17 +5745,17 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "세계",
     "upper",
   ],
-  ["태국에서는 머리를 만지는 것이 ___이다.", "실례", "세계", "upper"],
-  ["프랑스의 유명한 미술관은 ___이다.", "루브르", "세계", "upper"],
+  ["태국에서는 머리를 만지는 것이 ___다.", "실례", "세계", "upper"],
+  ["프랑스의 유명한 미술관은 ___다.", "루브르", "세계", "upper"],
   ["미국의 유명한 자유의 여신상은 ___에 있다.", "뉴욕", "세계", "upper"],
   ["중국의 새해를 ___이라 한다.", "춘절", "세계", "upper"],
-  ["러시아의 전통 인형은 ___이다.", "마트료시카", "세계", "upper"],
+  ["러시아의 전통 인형은 ___다.", "마트료시카", "세계", "upper"],
   ["영국의 유명한 시계탑은 ___이다.", "빅벤", "세계", "upper"],
-  ["호주에 사는 대표적인 동물은 ___이다.", "캥거루", "세계", "lower"],
-  ["아프리카의 사바나에 사는 동물로 ___이 있다.", "사자", "세계", "lower"],
+  ["호주에 사는 대표적인 동물은 ___다.", "캥거루", "세계", "lower"],
+  ["아프리카의 사바나에 사는 동물로 ___가 있다.", "사자", "세계", "lower"],
   ["일본의 전통 무술로 ___가 있다.", "유도", "세계", "upper"],
-  ["그리스의 수도는 ___이다.", "아테네", "세계", "upper"],
-  ["스페인의 수도는 ___이다.", "마드리드", "세계", "upper"],
+  ["그리스의 수도는 ___다.", "아테네", "세계", "upper"],
+  ["스페인의 수도는 ___다.", "마드리드", "세계", "upper"],
   ["뉴질랜드의 원주민은 ___족이다.", "마오리", "세계", "upper"],
   ["세계 3대 폭포 중 하나는 ___폭포이다.", "나이아가라", "세계", "upper"],
   ["아마존 강은 ___대륙에 있다.", "남아메리카", "세계", "upper"],
@@ -5829,7 +5829,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "삼국 통일이 가능했던 이유는 신라가 ___과 동맹했기 때문이다.",
+    "삼국 통일이 가능했던 이유는 신라가 ___와 동맹했기 때문이다.",
     "당나라",
     "역사",
     "upper",
@@ -5841,7 +5841,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "조선이 성리학을 중시한 이유는 유교적 ___을 세우기 위해서이다.",
+    "조선이 성리학을 중시한 이유는 유교적 ___를 세우기 위해서이다.",
     "질서",
     "역사",
     "upper",
@@ -5889,7 +5889,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 역사 추가 (upper) ──
   ["갑오개혁으로 ___제도가 폐지되었다.", "신분", "역사", "upper"],
-  ["조선 시대 실학자 정약용이 만든 기계는 ___이다.", "거중기", "역사", "upper"],
+  ["조선 시대 실학자 정약용이 만든 기계는 ___다.", "거중기", "역사", "upper"],
   ["대한민국 임시정부의 초대 대통령은 ___이다.", "이승만", "역사", "upper"],
   ["4·19 혁명으로 ___대통령이 물러났다.", "이승만", "역사", "upper"],
   ["5·18 민주화 운동은 ___년에 일어났다.", "1980", "역사", "upper"],
@@ -5917,7 +5917,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   // ── 지리 - 분류하기 ──
   ["서울, 부산, 인천, 대구는 모두 ___시이다.", "광역", "지리", "upper"],
   ["세종, 제주는 모두 ___자치시/도이다.", "특별", "지리", "upper"],
-  ["경기도, 강원도, 충청도는 모두 ___이다.", "도", "지리", "lower"],
+  ["경기도, 강원도, 충청도는 모두 ___다.", "도", "지리", "lower"],
   [
     "한강, 낙동강, 금강, 영산강은 모두 우리나라의 ___이다.",
     "4대 강",
@@ -6010,7 +6010,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 경제 추가 (lower) ──
   ["시장에서 물건의 가격을 깎는 것을 ___이라 한다.", "흥정", "경제", "lower"],
-  ["같은 물건이라도 장소에 따라 ___가 다르다.", "가격", "경제", "lower"],
+  ["같은 물건이라도 장소에 따라 ___이 다르다.", "가격", "경제", "lower"],
   ["전통 시장에서 물건을 사면 ___이 싸다.", "가격", "경제", "lower"],
   [
     "필요한 것을 먼저 사고 남은 돈으로 원하는 것을 사는 것이 ___적 소비이다.",
@@ -6040,7 +6040,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   [
-    "헌법이 최고 법인 이유는 모든 법의 ___이 되기 때문이다.",
+    "헌법이 최고 법인 이유는 모든 법의 ___가 되기 때문이다.",
     "근거",
     "정치",
     "upper",
@@ -6066,7 +6066,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "정치",
     "upper",
   ],
-  ["납세, 국방, 교육, 근로는 모두 국민의 ___이다.", "의무", "정치", "upper"],
+  ["납세, 국방, 교육, 근로는 모두 국민의 ___다.", "의무", "정치", "upper"],
 
   // ── 정치 추가 ──
   [
@@ -6144,7 +6144,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["삼일절은 ___월 1일이다.", "3", "문화", "both"],
 
   // ── 법 - 인과관계 ──
-  ["법이 필요한 이유는 사회 ___을 유지하기 위해서이다.", "질서", "법", "upper"],
+  ["법이 필요한 이유는 사회 ___를 유지하기 위해서이다.", "질서", "법", "upper"],
   [
     "교통 법규가 있는 이유는 사람들의 ___을 보호하기 위해서이다.",
     "안전",
@@ -6152,7 +6152,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   [
-    "소비자 보호법이 있는 이유는 소비자의 ___을 지키기 위해서이다.",
+    "소비자 보호법이 있는 이유는 소비자의 ___를 지키기 위해서이다.",
     "권리",
     "법",
     "upper",
@@ -6172,11 +6172,11 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "법",
     "upper",
   ],
-  ["저작권법은 창작물의 ___을 보호하는 법이다.", "권리", "법", "upper"],
+  ["저작권법은 창작물의 ___를 보호하는 법이다.", "권리", "법", "upper"],
 
   // ── 인권 추가 ──
   [
-    "유엔아동권리협약에서 어린이의 4대 권리는 생존, 보호, 발달, ___이다.",
+    "유엔아동권리협약에서 어린이의 4대 권리는 생존, 보호, 발달, ___다.",
     "참여",
     "인권",
     "upper",
@@ -6189,15 +6189,15 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "upper",
   ],
   ["다문화 가정의 어린이도 ___을 받을 권리가 있다.", "교육", "인권", "lower"],
-  ["모든 사람은 행복을 추구할 ___이 있다.", "권리", "인권", "lower"],
+  ["모든 사람은 행복을 추구할 ___가 있다.", "권리", "인권", "lower"],
 
   // ── 세계 - 지도읽기 ──
   ["세계 지도에서 위쪽은 ___쪽이다.", "북", "세계", "lower"],
   ["세계 지도에서 적도 위쪽을 ___반구라 한다.", "북", "세계", "upper"],
   ["세계 지도에서 적도 아래쪽을 ___반구라 한다.", "남", "세계", "upper"],
   ["본초 자오선 기준 오른쪽을 ___반구라 한다.", "동", "세계", "upper"],
-  ["지구본에서 가로선을 ___라 한다.", "위선", "세계", "upper"],
-  ["지구본에서 세로선을 ___라 한다.", "경선", "세계", "upper"],
+  ["지구본에서 가로선을 ___이라 한다.", "위선", "세계", "upper"],
+  ["지구본에서 세로선을 ___이라 한다.", "경선", "세계", "upper"],
   ["적도에 가까울수록 기온이 ___다.", "높", "세계", "upper"],
   ["극지방에 가까울수록 기온이 ___다.", "낮", "세계", "upper"],
 
@@ -6262,12 +6262,12 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["아프리카에서 가장 높은 산은 ___산이다.", "킬리만자로", "세계", "upper"],
   ["세계에서 가장 넓은 호수는 ___해이다.", "카스피", "세계", "upper"],
   ["유럽에서 가장 긴 강은 ___강이다.", "볼가", "세계", "upper"],
-  ["남극 대륙은 ___로 덮여 있다.", "얼음", "세계", "lower"],
+  ["남극 대륙은 ___으로 덮여 있다.", "얼음", "세계", "lower"],
   ["북극은 대륙이 아니라 ___은 바다이다.", "얼어붙", "세계", "lower"],
   ["뉴질랜드의 수도는 ___이다.", "웰링턴", "세계", "upper"],
   ["멕시코의 수도는 ___시티이다.", "멕시코", "세계", "upper"],
   ["태국의 수도는 ___이다.", "방콕", "세계", "upper"],
-  ["이집트의 수도는 ___이다.", "카이로", "세계", "upper"],
+  ["이집트의 수도는 ___다.", "카이로", "세계", "upper"],
 
   // ── 환경 - 인과관계 ──
   ["분리수거를 하면 자원을 다시 ___할 수 있다.", "사용", "환경", "lower"],
@@ -6302,7 +6302,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "lower",
   ],
   ["빗물을 모아 쓰는 것도 물 ___에 도움이 된다.", "절약", "환경", "lower"],
-  ["폐식용유는 ___로 만들 수 있다.", "바이오디젤", "환경", "upper"],
+  ["폐식용유는 ___으로 만들 수 있다.", "바이오디젤", "환경", "upper"],
   ["녹색 건축은 에너지를 ___하는 건물을 짓는 것이다.", "절약", "환경", "upper"],
   [
     "탄소 중립이란 탄소 배출량과 흡수량을 ___게 만드는 것이다.",
@@ -6315,13 +6315,13 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["공청회는 시민의 ___을 듣는 자리이다.", "의견", "민주주의", "upper"],
   ["국민참여재판에서 시민이 ___의 역할을 한다.", "배심원", "민주주의", "upper"],
   [
-    "정보공개청구는 국민이 정부의 ___을 요청하는 제도이다.",
+    "정보공개청구는 국민이 정부의 ___를 요청하는 제도이다.",
     "정보",
     "민주주의",
     "upper",
   ],
   [
-    "시민단체는 사회 문제를 해결하기 위해 만든 ___이다.",
+    "시민단체는 사회 문제를 해결하기 위해 만든 ___다.",
     "단체",
     "민주주의",
     "upper",
@@ -6369,7 +6369,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
 
   // ── 지역사회 추가 ──
   [
-    "자원봉사는 대가 없이 다른 사람을 ___는 활동이다.",
+    "자원봉사는 대가 없이 다른 사람을 ___은 활동이다.",
     "돕",
     "지역사회",
     "lower",
@@ -6410,7 +6410,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
   ["배를 운전하는 사람을 ___라 한다.", "선장(항해사)", "직업", "lower"],
   ["동물을 치료하는 의사를 ___의사라 한다.", "수", "직업", "lower"],
   ["그림을 그리는 사람을 ___라 한다.", "화가", "직업", "lower"],
-  ["영화를 만드는 사람을 ___라 한다.", "감독", "직업", "lower"],
+  ["영화를 만드는 사람을 ___이라 한다.", "감독", "직업", "lower"],
   [
     "노래를 부르는 것을 직업으로 하는 사람을 ___라 한다.",
     "가수",
@@ -6429,7 +6429,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "전통문화",
     "upper",
   ],
-  ["전통 혼례에서 신랑이 타는 것을 ___라 한다.", "말", "전통문화", "lower"],
+  ["전통 혼례에서 신랑이 타는 것을 ___이라 한다.", "말", "전통문화", "lower"],
   ["한옥의 지붕에 올리는 것을 ___라 한다.", "기와", "전통문화", "lower"],
   ["전통 장례에서 고인을 모시는 것을 ___라 한다.", "상여", "전통문화", "upper"],
   ["우리나라 전통 염색 기법을 ___이라 한다.", "쪽염색", "전통문화", "upper"],
@@ -6447,7 +6447,7 @@ const SOC_X: [string, string, string, "lower" | "upper" | "both"][] = [
     "전통문화",
     "upper",
   ],
-  ["아리랑은 우리나라의 대표적인 ___이다.", "민요", "전통문화", "both"],
+  ["아리랑은 우리나라의 대표적인 ___다.", "민요", "전통문화", "both"],
 ];
 const SOCIAL_EXTRA: ScienceItem[] = SOC_X.map(
   ([text, answer, category, gradeGroup]) => ({

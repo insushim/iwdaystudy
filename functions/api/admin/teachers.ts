@@ -1,11 +1,12 @@
 // GET /api/admin/teachers?status=pending - list teachers by approval status
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(

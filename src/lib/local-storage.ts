@@ -5,7 +5,7 @@
 // Used in static export mode and for offline functionality.
 
 import { generateId } from "./utils";
-import { getQuestionSignature } from "./daily-set-generator";
+import { getQuestionSignature } from "./question-signature";
 import type {
   LearningRecord,
   QuestionResponse,
@@ -38,6 +38,19 @@ function getList<T>(key: string): T[] {
 function saveList<T>(key: string, items: T[]): void {
   if (typeof window === "undefined") return;
   localStorage.setItem(key, JSON.stringify(items));
+}
+
+// ---------- Date Helpers (KST/로컬 기준 통일) ----------
+// toISOString() 기반 날짜 추출(UTC)은 저녁~새벽 사이 학습 시 "오늘"이 하루 밀리는
+// 버그의 원인이었다(오늘의 세트 키는 로컬시간을 쓰는데 스트릭 계산은 UTC를 씀).
+// 이 파일에서 날짜(YYYY-MM-DD)를 만드는 모든 지점은 아래 헬퍼로 통일한다 —
+// Date 객체의 getFullYear/getMonth/getDate는 브라우저 로컬(=한국 사용자 기준 KST)
+// 시간을 반환하므로, ISO 문자열을 슬라이스하는 대신 이 방식을 쓴다.
+function toLocalDateKey(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
 }
 
 // ---------- Learning Records ----------
@@ -93,7 +106,7 @@ export function getRecordsByDateRange(
 ): LearningRecord[] {
   return getList<LearningRecord>(RECORDS_KEY).filter((r) => {
     if (r.student_id !== studentId) return false;
-    const recordDate = (r.completed_at || r.created_at).split("T")[0];
+    const recordDate = toLocalDateKey(new Date(r.completed_at || r.created_at));
     return recordDate >= from && recordDate <= to;
   });
 }
@@ -168,10 +181,7 @@ export function completeLearningRecord(
 export function getCompletedDates(studentId: string): string[] {
   return getLearningRecords(studentId)
     .filter((r) => r.is_completed)
-    .map((r) => {
-      const d = new Date(r.completed_at || r.created_at);
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    });
+    .map((r) => toLocalDateKey(new Date(r.completed_at || r.created_at)));
 }
 
 // ---------- Question Responses ----------
@@ -251,13 +261,13 @@ export function getStreakCount(studentId: string): number {
 
   if (records.length === 0) return 0;
 
-  // Get unique dates in descending order
+  // Get unique dates in descending order (로컬/KST 기준 — UTC 슬라이스 금지)
   const uniqueDates = Array.from(
-    new Set(records.map((r) => r.completed_at!.split("T")[0])),
+    new Set(records.map((r) => toLocalDateKey(new Date(r.completed_at!)))),
   ).sort((a, b) => (b > a ? 1 : -1));
 
-  const today = new Date().toISOString().split("T")[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+  const today = toLocalDateKey(new Date());
+  const yesterday = toLocalDateKey(new Date(Date.now() - 86400000));
 
   // The most recent activity must be today or yesterday
   if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) {
@@ -829,7 +839,7 @@ export function getLocalReport(
     { sessions: number; score: number; maxScore: number }
   >();
   for (const r of completed) {
-    const day = (r.completed_at || r.created_at).split("T")[0];
+    const day = toLocalDateKey(new Date(r.completed_at || r.created_at));
     const existing = dailyMap.get(day) || {
       sessions: 0,
       score: 0,
@@ -931,7 +941,7 @@ export function getChildTimeToday(childId: string): number {
   if (!raw) return 0;
   try {
     const data = JSON.parse(raw);
-    const today = new Date().toISOString().slice(0, 10);
+    const today = toLocalDateKey(new Date());
     return data.date === today ? data.minutes : 0;
   } catch {
     return 0;
@@ -940,7 +950,7 @@ export function getChildTimeToday(childId: string): number {
 
 export function addChildTimeToday(childId: string, minutes: number): void {
   const key = `${CHILD_TIME_TODAY_KEY}_${childId}`;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = toLocalDateKey(new Date());
   const current = getChildTimeToday(childId);
   localStorage.setItem(
     key,
@@ -948,10 +958,11 @@ export function addChildTimeToday(childId: string, minutes: number): void {
   );
 }
 
-// ---------- Data Reset (Dev/Debug) ----------
+// ---------- Data Reset (Dev/Debug + Device-Sharing Privacy) ----------
 
 /**
- * Clear all local learning data. Use for debugging only.
+ * Clear all local learning data. Use for debugging, or when a different
+ * student starts using a shared device (see ensureLocalDataOwnership).
  */
 export function clearAllLocalData(): void {
   if (typeof window === "undefined") return;
@@ -960,4 +971,33 @@ export function clearAllLocalData(): void {
   localStorage.removeItem(DAILY_SETS_KEY);
   localStorage.removeItem(QUESTIONS_KEY);
   localStorage.removeItem(BADGES_KEY);
+}
+
+// ---------- Local Data Ownership (기기 공유 프라이버시) ----------
+// 학급에서 기기를 공유하는 경우, 이전 학생의 학습기록·응답·글쓰기 답안·배지가
+// localStorage에 남아 다음 학생 기기에 잔존하는 문제가 있었다. logout 시점에는
+// "누가 다음에 로그인할지" 알 수 없어(같은 학생이 다시 들어올 수도 있음) 무조건
+// 지우면 같은 학생의 기록까지 날아간다. 대신 login 성공 시점에 "이 기기에
+// 마지막으로 로그인한 사용자 ID"를 기억해 두고, 그것과 다른 사용자가 로그인하면
+// 그때 이전 데이터를 지운다 — 같은 학생 재로그인은 안전하게 보존된다.
+const LOCAL_OWNER_KEY = "araharu_local_data_owner";
+
+/**
+ * 로그인 성공 시 호출. 이 기기에 마지막으로 데이터를 남긴 사용자와 다른
+ * 사용자가 로그인하면, 이전 사용자의 학습 데이터를 지우고 소유자를 갱신한다.
+ * 마이그레이션: 기존(이 변경 이전) 기기에는 소유자 기록이 없으므로 첫 로그인
+ * 시에는 지우지 않고 소유자만 기록한다 — 업데이트 배포 시 기존 이용자의
+ * 데이터가 갑자기 사라지지 않는다.
+ */
+export function ensureLocalDataOwnership(userId: string): void {
+  if (typeof window === "undefined") return;
+  try {
+    const lastOwner = localStorage.getItem(LOCAL_OWNER_KEY);
+    if (lastOwner && lastOwner !== userId) {
+      clearAllLocalData();
+    }
+    localStorage.setItem(LOCAL_OWNER_KEY, userId);
+  } catch {
+    // Non-critical: ownership tracking failed silently
+  }
 }

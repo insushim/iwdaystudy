@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ChevronLeft,
@@ -43,6 +43,53 @@ import type {
 // 글쓰기 문제가 복습 큐에 들어갈 점수 기준 (10점 만점 중 이 미만이면 다시 풀게 함)
 const WRITING_REVIEW_THRESHOLD = 5;
 
+// ── Helper: 느슨한 정답 비교 ──
+// 전각 숫자(０-９)를 반각으로 변환하고, 전각 +/-/.를 반각으로 바꾼다.
+function normalizeDigitsAndSigns(s: string): string {
+  return s
+    .replace(/[０-９]/g, (ch) =>
+      String.fromCharCode(ch.charCodeAt(0) - 0xff10 + 0x30),
+    )
+    .replace(/．/g, ".")
+    .replace(/－/g, "-")
+    .replace(/＋/g, "+");
+}
+
+// 순수 숫자(정수/소수, 콤마 천단위 구분자 허용)로만 이루어진 문자열이면
+// 정규화된 숫자로 파싱해 반환한다. 분수("3/4")나 한글이 섞인 값("3시 5분")
+// 등은 순수 숫자가 아니므로 null을 반환해 문자열 비교로 넘어가게 한다.
+function tryParseNumeric(raw: string): number | null {
+  let t = normalizeDigitsAndSigns(raw).trim();
+  if (t === "") return null;
+  t = t.replace(/,/g, ""); // 천단위 콤마 구분자 제거 (예: 1,100 -> 1100)
+  if (t.startsWith("+")) t = t.slice(1);
+  if (!/^-?\d+(\.\d+)?$/.test(t)) return null;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+
+// 양쪽 모두 순수 숫자로 파싱되면 수치로 비교한다(콤마·전각 숫자·소수 끝자리 0·
+// 앞뒤 공백 등을 정규화). "2.4"와 "2.40"은 같다고 판정하지만, "0.5"와 "1/2"처럼
+// 한쪽이라도 순수 숫자가 아니면 절대 수치로 동일시하지 않고 아래 문자열
+// 비교(공백만 정규화)로 넘어간다 — 분수·시각 등 표기 형식이 다른 정답을
+// 오답 처리하지 않으면서도, 표기가 다른 값을 같다고 관대하게 봐주지 않는다.
+function looseAnswerEquals(
+  userRaw: string,
+  correctRaw: string,
+  caseInsensitive = false,
+): boolean {
+  const userNum = tryParseNumeric(userRaw);
+  const correctNum = tryParseNumeric(correctRaw);
+  if (userNum !== null && correctNum !== null) {
+    return userNum === correctNum;
+  }
+  const normalize = (s: string) => {
+    const t = s.trim().replace(/\s+/g, " ");
+    return caseInsensitive ? t.toLowerCase() : t;
+  };
+  return normalize(userRaw) === normalize(correctRaw);
+}
+
 // ── Helper: evaluate a graded question answer ──
 function evaluateGradedAnswer(question: Question, answer: unknown): boolean {
   const qAnswer = question.answer;
@@ -54,32 +101,30 @@ function evaluateGradedAnswer(question: Question, answer: unknown): boolean {
       correctVal = String(
         qAnswer?.correct ?? qAnswer?.answer ?? qAnswer?.text ?? "",
       );
-      return String(answer).trim() === correctVal.trim();
+      return looseAnswerEquals(String(answer), correctVal);
     case "spelling":
       correctVal = String(qAnswer?.correct ?? qAnswer?.text ?? "");
-      return String(answer).trim() === correctVal.trim();
+      return looseAnswerEquals(String(answer), correctVal);
     case "vocabulary":
       correctVal = String(
         qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? "",
       );
-      return String(answer).trim() === correctVal.trim();
+      return looseAnswerEquals(String(answer), correctVal);
     case "hanja":
       correctVal = String(
         qAnswer?.correct ?? qAnswer?.reading ?? qAnswer?.text ?? "",
       );
-      return String(answer).trim() === correctVal.trim();
+      return looseAnswerEquals(String(answer), correctVal);
     case "english":
       correctVal = String(
         qAnswer?.correct ?? qAnswer?.word ?? qAnswer?.text ?? "",
       );
-      return (
-        String(answer).trim().toLowerCase() === correctVal.trim().toLowerCase()
-      );
+      return looseAnswerEquals(String(answer), correctVal, true);
     default:
       correctVal = String(
         qAnswer?.correct ?? qAnswer?.text ?? qAnswer?.answer ?? "",
       );
-      return String(answer).trim() === correctVal.trim();
+      return looseAnswerEquals(String(answer), correctVal);
   }
 }
 
@@ -89,6 +134,7 @@ export default function LearningSessionClient() {
   const { dailySet, isLoading } = useDailySet();
   const { play } = useSound();
   const {
+    sessionKey,
     questions,
     questionStates,
     currentIndex,
@@ -208,12 +254,25 @@ export default function LearningSessionClient() {
   }, [user, dailySet]);
 
   // Initialize session
+  // sessionStorage에서 새로고침 복원한 진행 상태가 지금 학생/세트와 다르면
+  // (다른 계정으로 전환됐거나 다른 날 세트로 넘어온 경우) 반드시 새로 시작해야
+  // 하므로, startedAt 유무뿐 아니라 sessionKey 일치 여부도 함께 확인한다.
   useEffect(() => {
-    if (dailySet && !startedAt && !alreadyDoneToday) {
-      initSession(dailySet.set, dailySet.questions);
+    if (!dailySet || !user || alreadyDoneToday) return;
+    const desiredKey = `${user.id}:${dailySet.set.id}`;
+    if (!startedAt || sessionKey !== desiredKey) {
+      initSession(dailySet.set, dailySet.questions, desiredKey);
       play("start");
     }
-  }, [dailySet, startedAt, alreadyDoneToday, initSession, play]);
+  }, [
+    dailySet,
+    user,
+    startedAt,
+    sessionKey,
+    alreadyDoneToday,
+    initSession,
+    play,
+  ]);
 
   // Timer
   useEffect(() => {
@@ -221,6 +280,20 @@ export default function LearningSessionClient() {
     const timer = setInterval(incrementTime, 1000);
     return () => clearInterval(timer);
   }, [startedAt, isPaused, isCompleted, incrementTime]);
+
+  // 학습 세션 중에는 대시보드 레이아웃의 하단 탭바(홈/학습/통계/기록/뱃지)를
+  // 숨긴다 — 그대로 노출돼 있으면 학생이 실수로 눌러 세션을 이탈하기 쉽다.
+  // dashboard-layout.tsx / MobileNav.tsx는 담당 범위 밖이라 직접 못 고치므로,
+  // 이 컴포넌트가 떠 있는 동안만 전역 스타일로 숨긴다(언마운트 시 자동 복원).
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.setAttribute("data-learning-session-hide-nav", "");
+    style.textContent = "nav.safe-area-bottom { display: none !important; }";
+    document.head.appendChild(style);
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   // 웨일북 등 터치 기기에서 오른쪽 스와이프 → 브라우저 뒤로가기 방지
   useEffect(() => {
@@ -490,14 +563,18 @@ export default function LearningSessionClient() {
   ]);
 
   const handleRetry = useCallback(() => {
-    if (dailySet) {
+    if (dailySet && user) {
       resetSession();
-      initSession(dailySet.set, dailySet.questions);
+      initSession(
+        dailySet.set,
+        dailySet.questions,
+        `${user.id}:${dailySet.set.id}`,
+      );
       setMascotState("default");
       setMascotMessage("다시 도전해봐요!");
       play("start");
     }
-  }, [dailySet, resetSession, initSession, play]);
+  }, [dailySet, user, resetSession, initSession, play]);
 
   const handleGoHome = useCallback(() => {
     router.push("/student/");
@@ -683,15 +760,15 @@ export default function LearningSessionClient() {
               </span>
             </motion.div>
 
-            <AnimatePresence mode="wait">
-              <QuestionRenderer
-                key={`review-${reviewIndex}-${reviewOriginalIndex}`}
-                question={reviewQuestion}
-                onAnswer={handleReviewAnswer}
-                showResult={reviewAnswered}
-                isCorrect={reviewIsCorrect}
-              />
-            </AnimatePresence>
+            {/* 본 풀이와 같은 이유로 AnimatePresence 를 쓰지 않는다. */}
+            <QuestionRenderer
+              key={`review-${reviewIndex}-${reviewOriginalIndex}`}
+              question={reviewQuestion}
+              onAnswer={handleReviewAnswer}
+              showResult={reviewAnswered}
+              isCorrect={reviewIsCorrect}
+              hideCorrectAnswer={true}
+            />
 
             {/* Desktop nav */}
             <div className="hidden lg:flex items-center justify-end mt-6 gap-3">
@@ -846,7 +923,11 @@ export default function LearningSessionClient() {
                     {timeRemainingMin}분 남음
                   </span>
                 )}
-              <Timer onTick={() => {}} paused={isPaused} />
+              <Timer
+                onTick={() => {}}
+                paused={isPaused}
+                onPauseChange={setIsPaused}
+              />
             </div>
           </div>
           {timeWarning && (
@@ -870,16 +951,19 @@ export default function LearningSessionClient() {
       {/* Main content */}
       <div className="flex-1 py-4 px-4 pb-24 lg:pb-8">
         <div className="max-w-5xl mx-auto">
-          <AnimatePresence mode="wait">
-            <QuestionRenderer
-              key={currentQuestion.id}
-              question={currentQuestion}
-              onAnswer={handleAnswer}
-              showResult={!!currentState?.isAnswered}
-              isCorrect={currentState?.isCorrect ?? null}
-              hideCorrectAnswer={true}
-            />
-          </AnimatePresence>
+          {/* AnimatePresence mode="wait" 를 쓰면 나가는 문항의 exit 완료 신호가
+              오지 않아 다음 문항이 영영 마운트되지 않는다(실측: "다음"을 눌러도
+              진행바만 움직이고 화면은 이전 문항 그대로). 등장 애니메이션은
+              QuestionRenderer 내부 motion.div 의 initial/animate 가 key 변경마다
+              그대로 재생하므로, 여기서는 키만 주고 곧바로 교체한다. */}
+          <QuestionRenderer
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={!!currentState?.isAnswered}
+            isCorrect={currentState?.isCorrect ?? null}
+            hideCorrectAnswer={true}
+          />
 
           {/* Desktop inline navigation */}
           <div className="hidden lg:flex items-center justify-between mt-6">

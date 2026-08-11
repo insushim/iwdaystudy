@@ -1,5 +1,6 @@
 // POST /api/admin/teacher-approval { teacher_id, action: "approve" | "reject" }
 
+import { authUserId } from '../../lib/ctx';
 import { logAudit, clientIp } from '../../lib/audit';
 
 interface Env {
@@ -12,7 +13,7 @@ interface Body {
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(

@@ -110,11 +110,21 @@ export default function MathQuestion({
       >
         <div className="text-4xl sm:text-5xl font-black tracking-wide text-foreground select-none text-center leading-relaxed">
           {variant === "reverse" ? (
-            <>
-              {renderMath(expression)}
-              {expression.endsWith("?") ? " " : " = "}
-              {String(content.result ?? "")}
-            </>
+            expression.endsWith("?") ? (
+              // 이미 물음표로 끝나는 문장형 역산("?부터 3씩 5번 뛰어 세면?")은
+              // 결과를 그냥 이어붙이면 "...세면? 42"처럼 깨져 보인다.
+              // 끝의 "?"를 떼고 자연스러운 문장으로 이어준다.
+              <>
+                {renderMath(expression.replace(/\?\s*$/, "").trimEnd())}{" "}
+                {String(content.result ?? "")}
+                입니다. <span className="text-muted-foreground/50">?</span>는
+                얼마일까요?
+              </>
+            ) : (
+              <>
+                {renderMath(expression)} = {String(content.result ?? "")}
+              </>
+            )
           ) : expression.endsWith("?") ? (
             // 문장형 질문 ("…는 몇 개?")은 이미 물음표로 끝남 → 그대로 출력
             <>{renderMath(expression)}</>

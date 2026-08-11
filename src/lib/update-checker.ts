@@ -1,5 +1,3 @@
-const GITHUB_OWNER = "insushim";
-const GITHUB_REPO = "iwdaystudy";
 const LAST_CHECK_KEY = "araharu_last_update_check";
 const CACHED_RELEASE_KEY = "araharu_cached_release";
 const CHECK_INTERVAL = 30 * 60 * 1000; // 30 minutes (more frequent for better UX)
@@ -10,6 +8,17 @@ export interface ReleaseInfo {
   apkUrl: string;
   htmlUrl: string;
   publishedAt: string;
+}
+
+// functions/api/version.ts 응답 형태 (동일 출처 API)
+interface VersionApiResponse {
+  version: string;
+  minVersion: string;
+  buildDate: string;
+  apkUrl?: string;
+  htmlUrl?: string;
+  maintenance?: boolean;
+  message?: string | null;
 }
 
 // Get current version from package.json (injected at build time)
@@ -39,28 +48,26 @@ export async function checkForUpdate(): Promise<ReleaseInfo | null> {
   }
 
   try {
-    const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`,
-      { headers: { Accept: "application/vnd.github.v3+json" } },
-    );
+    // 동일 출처(same-origin) API — CSP connect-src 'self' 로 통과한다.
+    // (GitHub API를 직접 호출하면 CSP에 막혀 항상 실패했음 — CSP를 풀지 않고 이 방식으로 해결)
+    const res = await fetch("/api/version", {
+      headers: { Accept: "application/json" },
+    });
 
     if (!res.ok) return null;
 
-    const data = await res.json();
-    const latestVersion = data.tag_name.replace("v", "");
+    const data = (await res.json()) as VersionApiResponse;
+    const latestVersion = data.version;
 
     localStorage.setItem(LAST_CHECK_KEY, String(now));
 
     if (isNewerVersion(latestVersion, getCurrentVersion())) {
-      const apkAsset = data.assets?.find((a: Record<string, string>) =>
-        a.name.endsWith(".apk"),
-      );
       const info: ReleaseInfo = {
         version: latestVersion,
-        notes: data.body || "",
-        apkUrl: apkAsset?.browser_download_url || "",
-        htmlUrl: data.html_url,
-        publishedAt: data.published_at,
+        notes: data.message || "",
+        apkUrl: data.apkUrl || "",
+        htmlUrl: data.htmlUrl || "",
+        publishedAt: data.buildDate,
       };
       localStorage.setItem(CACHED_RELEASE_KEY, JSON.stringify(info));
       return info;

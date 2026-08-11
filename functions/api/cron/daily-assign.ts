@@ -3,6 +3,7 @@
 // Intended to be called by a Cloudflare Cron Trigger or manually by admin
 // For Cloudflare Pages, this is triggered via an external cron service or admin action
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
   CRON_SECRET?: string;
@@ -11,7 +12,7 @@ interface Env {
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     // Verify this is an authorized call (either admin user or cron secret)
-    const userId = (context as any).userId;
+    const userId = authUserId(context.data);
     const cronSecret = context.request.headers.get('X-Cron-Secret');
 
     if (!userId && !cronSecret) {

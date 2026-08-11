@@ -8,6 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { PRICING } from "@/lib/constants";
 
+// 결제 연동이 없어 basic/premium/school은 아직 실제로 판매되지 않는다.
+// 가입하면 요금제 선택과 무관하게 전원 free로 생성되므로("무료 베타"),
+// 유료 플랜 버튼이 결제를 흉내내지 않도록 comingSoon으로 비활성화한다.
 const planMeta = [
   {
     key: "free" as const,
@@ -15,23 +18,26 @@ const planMeta = [
     color: "border-border",
     buttonVariant: "outline" as const,
     buttonText: "무료로 시작",
-    popular: false,
+    popular: true,
+    comingSoon: false,
   },
   {
     key: "basic" as const,
     icon: Check,
     color: "border-ara-blue",
     buttonVariant: "outline" as const,
-    buttonText: "베이직 시작",
+    buttonText: "준비 중",
     popular: false,
+    comingSoon: true,
   },
   {
     key: "premium" as const,
     icon: Crown,
     color: "border-primary",
-    buttonVariant: "default" as const,
-    buttonText: "프리미엄 시작",
-    popular: true,
+    buttonVariant: "outline" as const,
+    buttonText: "준비 중",
+    popular: false,
+    comingSoon: true,
   },
   {
     key: "school" as const,
@@ -40,6 +46,7 @@ const planMeta = [
     buttonVariant: "outline" as const,
     buttonText: "문의하기",
     popular: false,
+    comingSoon: false,
   },
 ];
 
@@ -78,7 +85,8 @@ export function PricingCards() {
             </span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            우리 아이에게 맞는 플랜을 선택하세요. 무료로 시작할 수 있어요.
+            지금은 무료 베타 기간이에요. 베이직·프리미엄·학교 플랜은 준비
+            중이며, 출시 전까지 모든 기능을 무료로 이용하실 수 있습니다.
           </p>
         </motion.div>
 
@@ -104,7 +112,17 @@ export function PricingCards() {
                   {meta.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <Badge className="bg-primary text-primary-foreground px-4 py-1">
-                        인기
+                        무료 베타
+                      </Badge>
+                    </div>
+                  )}
+                  {meta.comingSoon && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                      <Badge
+                        variant="secondary"
+                        className="px-4 py-1 text-muted-foreground"
+                      >
+                        준비 중
                       </Badge>
                     </div>
                   )}
@@ -141,17 +159,27 @@ export function PricingCards() {
                         </li>
                       ))}
                     </ul>
-                    <Button
-                      variant={meta.buttonVariant}
-                      className="w-full mt-6"
-                      asChild
-                    >
-                      <Link
-                        href={meta.key === "school" ? "#contact" : "/signup/"}
+                    {meta.comingSoon ? (
+                      <Button
+                        variant={meta.buttonVariant}
+                        className="w-full mt-6"
+                        disabled
                       >
                         {meta.buttonText}
-                      </Link>
-                    </Button>
+                      </Button>
+                    ) : (
+                      <Button
+                        variant={meta.buttonVariant}
+                        className="w-full mt-6"
+                        asChild
+                      >
+                        <Link
+                          href={meta.key === "school" ? "#contact" : "/signup/"}
+                        >
+                          {meta.buttonText}
+                        </Link>
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>

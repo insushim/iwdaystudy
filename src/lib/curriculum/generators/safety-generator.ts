@@ -67,7 +67,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "차에서 내릴 때는 ___이 오는지 확인해야 한다.",
+    text: "차에서 내릴 때는 ___가 오는지 확인해야 한다.",
     answer: "차",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -145,13 +145,13 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "차 뒤에서 ___를 하면 운전자가 볼 수 없어 위험하다.",
+    text: "차 뒤에서 ___을 하면 운전자가 볼 수 없어 위험하다.",
     answer: "숨바꼭질",
     category: "교통안전",
     gradeGroup: "1-2",
   },
   {
-    text: "밤에 길을 걸을 때는 ___이 있는 옷을 입으면 안전하다.",
+    text: "밤에 길을 걸을 때는 ___가 있는 옷을 입으면 안전하다.",
     answer: "반사",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -164,7 +164,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
   },
   // Grade 3-4
   {
-    text: "자전거를 탈 때는 반드시 ___를 착용해야 한다.",
+    text: "자전거를 탈 때는 반드시 ___을 착용해야 한다.",
     answer: "헬멧",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -188,13 +188,13 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "킥보드를 탈 때도 ___을 착용해야 한다.",
+    text: "킥보드를 탈 때도 ___를 착용해야 한다.",
     answer: "보호장구",
     category: "교통안전",
     gradeGroup: "3-4",
   },
   {
-    text: "교차로에서는 ___을 준수해야 한다.",
+    text: "교차로에서는 ___를 준수해야 한다.",
     answer: "교통신호",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -212,7 +212,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "자전거를 탈 때 ___을 사용하면 안 된다.",
+    text: "자전거를 탈 때 ___를 사용하면 안 된다.",
     answer: "휴대전화",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -260,7 +260,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "자전거를 탄 후에는 안전한 곳에 ___을 채워 보관한다.",
+    text: "자전거를 탄 후에는 안전한 곳에 ___를 채워 보관한다.",
     answer: "잠금장치",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -272,7 +272,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "교통사고 목격 시 ___을 기억하고 신고한다.",
+    text: "교통사고 목격 시 ___를 기억하고 신고한다.",
     answer: "차량 번호",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -345,7 +345,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "보행자 전용도로에서는 ___이 통행할 수 없다.",
+    text: "보행자 전용도로에서는 ___가 통행할 수 없다.",
     answer: "자동차",
     category: "교통안전",
     gradeGroup: "5-6",
@@ -412,7 +412,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "횡단보도에서 초록불이 깜빡이면 ___을 멈춰야 한다.",
+    text: "횡단보도에서 초록불이 깜빡이면 ___를 멈춰야 한다.",
     answer: "건너기",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -490,7 +490,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "우산을 들고 길을 걸을 때 시야가 좁아져 ___을 잘 봐야 한다.",
+    text: "우산을 들고 길을 걸을 때 시야가 좁아져 ___를 잘 봐야 한다.",
     answer: "차",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -502,7 +502,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "전동킥보드 탑승 시 ___를 반드시 착용해야 한다.",
+    text: "전동킥보드 탑승 시 ___을 반드시 착용해야 한다.",
     answer: "헬멧",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -557,7 +557,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "길을 건너다가 차가 빠르게 오면 ___으로 돌아가야 한다.",
+    text: "길을 건너다가 차가 빠르게 오면 ___로 돌아가야 한다.",
     answer: "뒤",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -569,7 +569,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "등하교 시 좁은 골목에서는 ___을 하며 걸어야 한다.",
+    text: "등하교 시 좁은 골목에서는 ___를 하며 걸어야 한다.",
     answer: "주의",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -623,7 +623,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "횡단보도 신호가 바뀌기 직전이라면 다음 ___을 기다려야 한다.",
+    text: "횡단보도 신호가 바뀌기 직전이라면 다음 ___를 기다려야 한다.",
     answer: "신호",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -671,7 +671,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "자전거 사고 시 다친 부위와 ___을 신고할 때 말해야 한다.",
+    text: "자전거 사고 시 다친 부위와 ___를 신고할 때 말해야 한다.",
     answer: "위치",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -683,13 +683,13 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "교통사고 현장에서 부상자를 발견하면 먼저 ___를 확보해야 한다.",
+    text: "교통사고 현장에서 부상자를 발견하면 먼저 ___을 확보해야 한다.",
     answer: "안전",
     category: "교통안전",
     gradeGroup: "5-6",
   },
   {
-    text: "고속도로에서 차가 고장 나면 ___를 켜고 갓길로 이동한다.",
+    text: "고속도로에서 차가 고장 나면 ___을 켜고 갓길로 이동한다.",
     answer: "비상등",
     category: "교통안전",
     gradeGroup: "5-6",
@@ -713,7 +713,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "자전거 수신호 순서: 방향 결정 → 뒤 확인 → ___로 신호 → 방향 전환",
+    text: "자전거 수신호 순서: 방향 결정 → 뒤 확인 → ___으로 신호 → 방향 전환",
     answer: "손",
     category: "교통안전",
     gradeGroup: "5-6",
@@ -738,7 +738,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "자동차가 후진할 때는 뒤에 ___가 없는지 확인해야 한다.",
+    text: "자동차가 후진할 때는 뒤에 ___이 없는지 확인해야 한다.",
     answer: "사람",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -768,7 +768,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "신호등의 초록색 사람이 깜빡이면 곧 ___이 바뀐다는 뜻이다.",
+    text: "신호등의 초록색 사람이 깜빡이면 곧 ___가 바뀐다는 뜻이다.",
     answer: "신호",
     category: "교통안전",
     gradeGroup: "1-2",
@@ -786,13 +786,13 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "차량 사각지대란 운전자가 ___로 볼 수 없는 영역이다.",
+    text: "차량 사각지대란 운전자가 ___으로 볼 수 없는 영역이다.",
     answer: "거울",
     category: "교통안전",
     gradeGroup: "3-4",
   },
   {
-    text: "교통사고 예방을 위해 야간에는 ___을 착용하면 좋다.",
+    text: "교통사고 예방을 위해 야간에는 ___를 착용하면 좋다.",
     answer: "반사띠",
     category: "교통안전",
     gradeGroup: "3-4",
@@ -877,7 +877,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "안개가 짙은 날에는 ___를 켜고 서행해야 한다.",
+    text: "안개가 짙은 날에는 ___을 켜고 서행해야 한다.",
     answer: "안개등",
     category: "교통안전",
     gradeGroup: "5-6",
@@ -895,7 +895,7 @@ const TRAFFIC_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "음주 측정을 거부하면 더 ___한 처벌을 받을 수 있다.",
+    text: "음주 측정을 거부하면 더 ___ 처벌을 받을 수 있다.",
     answer: "무거운",
     category: "교통안전",
     gradeGroup: "5-6",
@@ -926,7 +926,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 시 엘리베이터 대신 ___를 이용해야 한다.",
+    text: "화재 시 엘리베이터 대신 ___을 이용해야 한다.",
     answer: "계단",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -938,7 +938,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 시에는 ___을 낮추고 대피한다.",
+    text: "화재 시에는 ___를 낮추고 대피한다.",
     answer: "자세",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -968,7 +968,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 시 연기가 많으면 ___로 기어서 이동한다.",
+    text: "화재 시 연기가 많으면 ___으로 기어서 이동한다.",
     answer: "바닥",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -992,7 +992,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "가스레인지 근처에서 ___를 하면 안 된다.",
+    text: "가스레인지 근처에서 ___을 하면 안 된다.",
     answer: "장난",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1022,13 +1022,13 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "난로나 히터 가까이에 ___을 놓으면 화재 위험이 있다.",
+    text: "난로나 히터 가까이에 ___를 놓으면 화재 위험이 있다.",
     answer: "빨래",
     category: "화재안전",
     gradeGroup: "1-2",
   },
   {
-    text: "화재 시 ___으로 코와 입을 막으면 연기를 덜 마실 수 있다.",
+    text: "화재 시 ___로 코와 입을 막으면 연기를 덜 마실 수 있다.",
     answer: "옷소매",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1040,7 +1040,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "집에서 화재 발생 시 가족과 만날 ___을 미리 정해 둔다.",
+    text: "집에서 화재 발생 시 가족과 만날 ___를 미리 정해 둔다.",
     answer: "장소",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1071,13 +1071,13 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "전기 화재 시에는 ___로 끄면 안 된다.",
+    text: "전기 화재 시에는 ___으로 끄면 안 된다.",
     answer: "물",
     category: "화재안전",
     gradeGroup: "3-4",
   },
   {
-    text: "소화기의 사용 순서는 안전핀 뽑기, 호스 잡기, ___을 누르기이다.",
+    text: "소화기의 사용 순서는 안전핀 뽑기, 호스 잡기, ___를 누르기이다.",
     answer: "손잡이",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1101,7 +1101,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "화재의 3요소는 열, 산소, ___이다.",
+    text: "화재의 3요소는 열, 산소, ___다.",
     answer: "연료",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1149,7 +1149,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "캠핑장에서 화기 사용 후 ___을 완전히 끄고 자리를 뜬다.",
+    text: "캠핑장에서 화기 사용 후 ___를 완전히 끄고 자리를 뜬다.",
     answer: "불씨",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1198,13 +1198,13 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "화상을 입으면 즉시 ___로 15분 이상 식힌다.",
+    text: "화상을 입으면 즉시 ___으로 15분 이상 식힌다.",
     answer: "흐르는 찬물",
     category: "화재안전",
     gradeGroup: "5-6",
   },
   {
-    text: "스프링클러는 일정 온도에 도달하면 자동으로 ___를 뿌린다.",
+    text: "스프링클러는 일정 온도에 도달하면 자동으로 ___을 뿌린다.",
     answer: "물",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1246,7 +1246,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "완강기는 고층에서 ___를 타고 내려오는 피난 기구이다.",
+    text: "완강기는 고층에서 ___을 타고 내려오는 피난 기구이다.",
     answer: "줄",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1295,7 +1295,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "전기장판 위에 ___를 올리면 화재가 날 수 있다.",
+    text: "전기장판 위에 ___을 올리면 화재가 날 수 있다.",
     answer: "무거운 물건",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1373,7 +1373,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "불을 끌 때 ___를 사용하면 전기화재에 위험하다.",
+    text: "불을 끌 때 ___을 사용하면 전기화재에 위험하다.",
     answer: "물",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1385,7 +1385,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "산불 예방을 위해 산에서 ___를 피우면 안 된다.",
+    text: "산불 예방을 위해 산에서 ___을 피우면 안 된다.",
     answer: "불",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1397,7 +1397,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "화재 진압 후 ___를 검사하여 재발화를 방지한다.",
+    text: "화재 진압 후 ___을 검사하여 재발화를 방지한다.",
     answer: "잔불",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1410,7 +1410,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
   },
   // ── 추가: 다양한 문제 유형 (상황판단/순서맞추기/위험찾기/신고방법/역할극) ──
   {
-    text: "화재 경보가 울리면 엘리베이터 대신 ___를 이용해 대피한다.",
+    text: "화재 경보가 울리면 엘리베이터 대신 ___을 이용해 대피한다.",
     answer: "계단",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1452,7 +1452,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 대피 순서: 경보 확인 → 젖은 수건으로 입 막기 → ___으로 대피",
+    text: "화재 대피 순서: 경보 확인 → 젖은 수건으로 입 막기 → ___로 대피",
     answer: "비상구",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1470,7 +1470,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 신고 전화번호는 ___이다.",
+    text: "화재 신고 전화번호는 ___다.",
     answer: "119",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1488,7 +1488,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가스레인지 위에 수건을 놓으면 ___이 일어날 수 있다.",
+    text: "가스레인지 위에 수건을 놓으면 ___가 일어날 수 있다.",
     answer: "화재",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1512,7 +1512,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "화재 대피 중 연기가 올라오면 ___은 수건으로 막고 기어간다.",
+    text: "화재 대피 중 연기가 올라오면 ___는 수건으로 막고 기어간다.",
     answer: "코",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1530,7 +1530,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "정전이 되면 양초 대신 ___를 사용하는 것이 안전하다.",
+    text: "정전이 되면 양초 대신 ___을 사용하는 것이 안전하다.",
     answer: "손전등",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1560,7 +1560,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "화재 시 방화문은 ___고 대피해야 연기 확산을 막는다.",
+    text: "화재 시 방화문은 ___이고 대피해야 연기 확산을 막는다.",
     answer: "닫",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1578,13 +1578,13 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "비상구에 물건을 쌓아 두면 대피 시 ___이 막힌다.",
+    text: "비상구에 물건을 쌓아 두면 대피 시 ___가 막힌다.",
     answer: "통로",
     category: "화재안전",
     gradeGroup: "5-6",
   },
   {
-    text: "소화기 유효기간이 지나면 ___이 제대로 작동하지 않는다.",
+    text: "소화기 유효기간이 지나면 ___가 제대로 작동하지 않는다.",
     answer: "약제",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1597,7 +1597,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "화재 대피 시 ___를 열기 전에 뜨거운지 확인한다.",
+    text: "화재 대피 시 ___을 열기 전에 뜨거운지 확인한다.",
     answer: "문",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1657,7 +1657,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "건물에 화재 ___이 설치된 곳을 미리 알아 두어야 한다.",
+    text: "건물에 화재 ___가 설치된 곳을 미리 알아 두어야 한다.",
     answer: "소화기",
     category: "화재안전",
     gradeGroup: "3-4",
@@ -1724,7 +1724,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "대피 시 엘리베이터가 아닌 ___를 이용한다.",
+    text: "대피 시 엘리베이터가 아닌 ___을 이용한다.",
     answer: "계단",
     category: "화재안전",
     gradeGroup: "1-2",
@@ -1754,7 +1754,7 @@ const FIRE_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "건물의 방화 ___은 일정 시간 불을 막아 준다.",
+    text: "건물의 방화 ___는 일정 시간 불을 막아 준다.",
     answer: "셔터",
     category: "화재안전",
     gradeGroup: "5-6",
@@ -1809,7 +1809,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "인터넷으로 ___를 하면 건강에 좋지 않다.",
+    text: "인터넷으로 ___을 하면 건강에 좋지 않다.",
     answer: "밤샘",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -1833,7 +1833,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "모르는 사람이 보낸 ___을 열어 보면 안 된다.",
+    text: "모르는 사람이 보낸 ___를 열어 보면 안 된다.",
     answer: "메시지",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -1954,7 +1954,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "스마트폰 사용 후에는 ___를 쉬어야 한다.",
+    text: "스마트폰 사용 후에는 ___을 쉬어야 한다.",
     answer: "눈",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -1966,7 +1966,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "와이파이 비밀번호 없는 공개 ___은 해킹 위험이 있다.",
+    text: "와이파이 비밀번호 없는 공개 ___는 해킹 위험이 있다.",
     answer: "네트워크",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -1996,7 +1996,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "온라인 쇼핑 시 ___사이트인지 확인해야 한다.",
+    text: "온라인 쇼핑 시 ___ 사이트인지 확인해야 한다.",
     answer: "안전한",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2021,7 +2021,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
   },
   // Grade 5-6
   {
-    text: "온라인에서 타인을 지속적으로 괴롭히는 것을 ___라고 한다.",
+    text: "온라인에서 타인을 지속적으로 괴롭히는 것을 ___이라고 한다.",
     answer: "사이버 불링",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2063,7 +2063,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "딥페이크는 ___를 조작하여 만든 가짜 영상이다.",
+    text: "딥페이크는 ___을 조작하여 만든 가짜 영상이다.",
     answer: "얼굴",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2075,7 +2075,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "VPN은 인터넷 ___를 암호화하여 보안을 강화한다.",
+    text: "VPN은 인터넷 ___을 암호화하여 보안을 강화한다.",
     answer: "통신",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2154,7 +2154,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "친구의 사진을 허락 없이 온라인에 올리면 ___이 될 수 있다.",
+    text: "친구의 사진을 허락 없이 온라인에 올리면 ___가 될 수 있다.",
     answer: "문제",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -2166,7 +2166,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "유해 사이트를 차단하는 소프트웨어를 ___라 한다.",
+    text: "유해 사이트를 차단하는 소프트웨어를 ___이라 한다.",
     answer: "필터링",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2202,7 +2202,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "온라인 그루밍이란 범죄자가 청소년의 ___을 얻는 수법이다.",
+    text: "온라인 그루밍이란 범죄자가 청소년의 ___를 얻는 수법이다.",
     answer: "신뢰",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2220,7 +2220,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "스마트폰을 사용할 때 ___자세로 해야 건강에 좋다.",
+    text: "스마트폰을 사용할 때 ___ 자세로 해야 건강에 좋다.",
     answer: "바른",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -2232,7 +2232,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "온라인에서 친구를 사귈 때 실제 ___을 알려 주면 안 된다.",
+    text: "온라인에서 친구를 사귈 때 실제 ___를 알려 주면 안 된다.",
     answer: "주소",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2244,13 +2244,13 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "소프트웨어를 항상 ___로 업데이트해야 보안이 강화된다.",
+    text: "소프트웨어를 항상 ___으로 업데이트해야 보안이 강화된다.",
     answer: "최신 버전",
     category: "인터넷안전",
     gradeGroup: "3-4",
   },
   {
-    text: "개인정보를 요구하는 팝업 창은 ___고 무시해야 한다.",
+    text: "개인정보를 요구하는 팝업 창은 ___이고 무시해야 한다.",
     answer: "닫",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2268,7 +2268,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "디지털 시민의식이란 온라인에서도 ___를 지키는 것이다.",
+    text: "디지털 시민의식이란 온라인에서도 ___을 지키는 것이다.",
     answer: "예절",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2311,7 +2311,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "SNS에 집 주소를 올리면 ___을 당할 수 있다.",
+    text: "SNS에 집 주소를 올리면 ___를 당할 수 있다.",
     answer: "범죄",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2353,7 +2353,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "게임 중 욕설을 들으면 ___를 하고 신고한다.",
+    text: "게임 중 욕설을 들으면 ___을 하고 신고한다.",
     answer: "차단",
     category: "인터넷안전",
     gradeGroup: "3-4",
@@ -2413,7 +2413,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "공용 와이파이에서 은행 앱을 쓰면 ___이 유출될 수 있다.",
+    text: "공용 와이파이에서 은행 앱을 쓰면 ___가 유출될 수 있다.",
     answer: "비밀번호",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2426,7 +2426,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
   },
   // ── 추가 확장: 안전교육 시나리오 심화 ──
   {
-    text: "컴퓨터를 사용한 후에는 반드시 ___을 해야 한다.",
+    text: "컴퓨터를 사용한 후에는 반드시 ___를 해야 한다.",
     answer: "종료",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -2438,13 +2438,13 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "인터넷 사용 시간은 부모님과 ___를 정해야 한다.",
+    text: "인터넷 사용 시간은 부모님과 ___을 정해야 한다.",
     answer: "약속",
     category: "인터넷안전",
     gradeGroup: "1-2",
   },
   {
-    text: "무서운 광고가 뜨면 ___를 닫고 부모님에게 말한다.",
+    text: "무서운 광고가 뜨면 ___을 닫고 부모님에게 말한다.",
     answer: "창",
     category: "인터넷안전",
     gradeGroup: "1-2",
@@ -2504,7 +2504,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "다크웹은 일반 ___으로 접근할 수 없는 인터넷 영역이다.",
+    text: "다크웹은 일반 ___로 접근할 수 없는 인터넷 영역이다.",
     answer: "브라우저",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2516,7 +2516,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "보이스피싱 전화를 받으면 바로 ___을 끊고 확인한다.",
+    text: "보이스피싱 전화를 받으면 바로 ___를 끊고 확인한다.",
     answer: "전화",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2528,7 +2528,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "소셜 엔지니어링은 사람의 ___을 이용한 해킹 기법이다.",
+    text: "소셜 엔지니어링은 사람의 ___를 이용한 해킹 기법이다.",
     answer: "심리",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2601,7 +2601,7 @@ const INTERNET_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "디지털 ___이란 인터넷 접근 격차로 인한 사회적 불평등이다.",
+    text: "디지털 ___란 인터넷 접근 격차로 인한 사회적 불평등이다.",
     answer: "격차",
     category: "인터넷안전",
     gradeGroup: "5-6",
@@ -2644,7 +2644,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "쉬는 시간에 교실에서 ___를 던지면 안 된다.",
+    text: "쉬는 시간에 교실에서 ___을 던지면 안 된다.",
     answer: "물건",
     category: "학교안전",
     gradeGroup: "1-2",
@@ -2680,7 +2680,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "학용품인 ___로 장난치면 다칠 수 있다.",
+    text: "학용품인 ___으로 장난치면 다칠 수 있다.",
     answer: "칼",
     category: "학교안전",
     gradeGroup: "1-2",
@@ -2741,13 +2741,13 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
   },
   // Grade 3-4
   {
-    text: "과학 실험 시 ___를 착용하여 눈을 보호한다.",
+    text: "과학 실험 시 ___을 착용하여 눈을 보호한다.",
     answer: "보안경",
     category: "학교안전",
     gradeGroup: "3-4",
   },
   {
-    text: "실험실에서 화학 약품을 만질 때는 ___를 끼어야 한다.",
+    text: "실험실에서 화학 약품을 만질 때는 ___을 끼어야 한다.",
     answer: "장갑",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -2771,13 +2771,13 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "무거운 물건을 들 때는 ___를 굽혀서 든다.",
+    text: "무거운 물건을 들 때는 ___을 굽혀서 든다.",
     answer: "무릎",
     category: "학교안전",
     gradeGroup: "3-4",
   },
   {
-    text: "학교 운동장에서 야구를 할 때는 ___를 쓰고 한다.",
+    text: "학교 운동장에서 야구를 할 때는 ___을 쓰고 한다.",
     answer: "헬멧",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -2825,7 +2825,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "체육 시간에 ___을 빼고 운동해야 부상을 예방한다.",
+    text: "체육 시간에 ___를 빼고 운동해야 부상을 예방한다.",
     answer: "장신구",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -2843,7 +2843,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "교실 콘센트에 ___을 넣으면 감전 위험이 있다.",
+    text: "교실 콘센트에 ___를 넣으면 감전 위험이 있다.",
     answer: "쇠붙이",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -2868,7 +2868,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "체육 시간에 과격한 운동 중 ___가 나면 즉시 중단한다.",
+    text: "체육 시간에 과격한 운동 중 ___이 나면 즉시 중단한다.",
     answer: "통증",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -2892,13 +2892,13 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "체육관에서 운동 시 ___을 충분히 갖추어야 한다.",
+    text: "체육관에서 운동 시 ___를 충분히 갖추어야 한다.",
     answer: "보호장비",
     category: "학교안전",
     gradeGroup: "5-6",
   },
   {
-    text: "실험실에서는 반드시 ___를 확인 후 약품을 사용한다.",
+    text: "실험실에서는 반드시 ___을 확인 후 약품을 사용한다.",
     answer: "라벨",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -2922,7 +2922,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "체육 시간에 탈수 증상이 나타나면 ___를 충분히 마신다.",
+    text: "체육 시간에 탈수 증상이 나타나면 ___을 충분히 마신다.",
     answer: "물",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -2952,7 +2952,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "학교 안전사고 발생 시 학교안전공제회에 ___를 청구할 수 있다.",
+    text: "학교 안전사고 발생 시 학교안전공제회에 ___을 청구할 수 있다.",
     answer: "보상",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -2995,13 +2995,13 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "비 오는 날 복도가 미끄러우므로 ___을 걸어야 한다.",
+    text: "비 오는 날 복도가 미끄러우므로 ___를 걸어야 한다.",
     answer: "천천히",
     category: "학교안전",
     gradeGroup: "1-2",
   },
   {
-    text: "놀이 시간에 교실 안에서 ___을 하면 위험하다.",
+    text: "놀이 시간에 교실 안에서 ___를 하면 위험하다.",
     answer: "뛰어다니기",
     category: "학교안전",
     gradeGroup: "1-2",
@@ -3019,13 +3019,13 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "체육 시간에 축구할 때 ___를 차면 위험하다.",
+    text: "체육 시간에 축구할 때 ___을 차면 위험하다.",
     answer: "사람",
     category: "학교안전",
     gradeGroup: "3-4",
   },
   {
-    text: "조리 실습 시 앞치마를 입고 머리를 ___는 것이 안전하다.",
+    text: "조리 실습 시 앞치마를 입고 머리를 ___은 것이 안전하다.",
     answer: "묶",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3049,7 +3049,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "실험 중 화학약품이 피부에 닿으면 ___로 충분히 씻는다.",
+    text: "실험 중 화학약품이 피부에 닿으면 ___으로 충분히 씻는다.",
     answer: "흐르는 물",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -3091,7 +3091,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "과학 실험 시 알코올램프에 직접 ___를 대면 안 된다.",
+    text: "과학 실험 시 알코올램프에 직접 ___을 대면 안 된다.",
     answer: "입",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3103,7 +3103,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "학교 안전사고 시 사진이나 ___로 증거를 남기는 것이 좋다.",
+    text: "학교 안전사고 시 사진이나 ___으로 증거를 남기는 것이 좋다.",
     answer: "영상",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -3188,7 +3188,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "실험 중 약품이 피부에 묻으면 바로 ___로 씻는다.",
+    text: "실험 중 약품이 피부에 묻으면 바로 ___으로 씻는다.",
     answer: "물",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3206,7 +3206,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "학교 화재 대피 순서: 경보 울림 → 줄 서기 → 선생님 따라 ___로 이동",
+    text: "학교 화재 대피 순서: 경보 울림 → 줄 서기 → 선생님 따라 ___으로 이동",
     answer: "운동장",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3230,7 +3230,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "교내 지진 대피 시 책상 밑으로 들어가 ___을 보호한다.",
+    text: "교내 지진 대피 시 책상 밑으로 들어가 ___를 보호한다.",
     answer: "머리",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -3248,7 +3248,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "과학실 가스 밸브를 열어 놓으면 ___가 발생할 수 있다.",
+    text: "과학실 가스 밸브를 열어 놓으면 ___이 발생할 수 있다.",
     answer: "폭발",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -3285,7 +3285,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "교실에서 공을 차면 ___이 깨질 수 있다.",
+    text: "교실에서 공을 차면 ___가 깨질 수 있다.",
     answer: "유리",
     category: "학교안전",
     gradeGroup: "1-2",
@@ -3297,19 +3297,19 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "놀이 시간에 친구를 밀면 ___을 다칠 수 있다.",
+    text: "놀이 시간에 친구를 밀면 ___를 다칠 수 있다.",
     answer: "머리",
     category: "학교안전",
     gradeGroup: "1-2",
   },
   {
-    text: "운동장에서 돌을 던지면 ___을 다치게 할 수 있다.",
+    text: "운동장에서 돌을 던지면 ___를 다치게 할 수 있다.",
     answer: "친구",
     category: "학교안전",
     gradeGroup: "1-2",
   },
   {
-    text: "과학 실험 시 긴 머리카락은 ___로 묶어야 안전하다.",
+    text: "과학 실험 시 긴 머리카락은 ___으로 묶어야 안전하다.",
     answer: "고무줄",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3345,7 +3345,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "수련회에서 산행 시 정해진 ___을 벗어나면 안 된다.",
+    text: "수련회에서 산행 시 정해진 ___를 벗어나면 안 된다.",
     answer: "코스",
     category: "학교안전",
     gradeGroup: "5-6",
@@ -3412,7 +3412,7 @@ const SCHOOL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "목공실에서 톱밥이 눈에 들어가면 ___로 씻는다.",
+    text: "목공실에서 톱밥이 눈에 들어가면 ___으로 씻는다.",
     answer: "물",
     category: "학교안전",
     gradeGroup: "3-4",
@@ -3491,7 +3491,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "놀이기구 위에서 ___를 던지면 안 된다.",
+    text: "놀이기구 위에서 ___을 던지면 안 된다.",
     answer: "물건",
     category: "놀이안전",
     gradeGroup: "1-2",
@@ -3515,19 +3515,19 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "장난감 총의 ___을 사람에게 겨누면 안 된다.",
+    text: "장난감 총의 ___를 사람에게 겨누면 안 된다.",
     answer: "총구",
     category: "놀이안전",
     gradeGroup: "1-2",
   },
   {
-    text: "볼풀장에서 다른 친구의 ___를 밟지 않도록 주의한다.",
+    text: "볼풀장에서 다른 친구의 ___을 밟지 않도록 주의한다.",
     answer: "몸",
     category: "놀이안전",
     gradeGroup: "1-2",
   },
   {
-    text: "인라인스케이트를 탈 때는 ___와 무릎보호대를 착용한다.",
+    text: "인라인스케이트를 탈 때는 ___과 무릎보호대를 착용한다.",
     answer: "헬멧",
     category: "놀이안전",
     gradeGroup: "1-2",
@@ -3576,7 +3576,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
   },
   // Grade 3-4
   {
-    text: "자전거를 탈 때는 ___와 팔꿈치 보호대를 착용한다.",
+    text: "자전거를 탈 때는 ___과 팔꿈치 보호대를 착용한다.",
     answer: "무릎",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -3618,7 +3618,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "놀이공원에서 놀이기구를 탈 때 ___을 매야 한다.",
+    text: "놀이공원에서 놀이기구를 탈 때 ___를 매야 한다.",
     answer: "안전바",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -3636,7 +3636,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "야외에서 놀 때 ___이 심하면 실내로 들어간다.",
+    text: "야외에서 놀 때 ___가 심하면 실내로 들어간다.",
     answer: "더위",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -3715,7 +3715,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "승마 체험 시 반드시 ___을 착용한다.",
+    text: "승마 체험 시 반드시 ___를 착용한다.",
     answer: "안전모",
     category: "놀이안전",
     gradeGroup: "5-6",
@@ -3848,7 +3848,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "롤러스케이트를 탈 때 ___를 배워야 다치지 않는다.",
+    text: "롤러스케이트를 탈 때 ___을 배워야 다치지 않는다.",
     answer: "멈추는 법",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -3860,13 +3860,13 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "해변에서 놀 때 ___을 발라야 피부를 보호할 수 있다.",
+    text: "해변에서 놀 때 ___를 발라야 피부를 보호할 수 있다.",
     answer: "자외선차단제",
     category: "놀이안전",
     gradeGroup: "3-4",
   },
   {
-    text: "클라이밍을 할 때 ___을 착용하고 안전 규칙을 지켜야 한다.",
+    text: "클라이밍을 할 때 ___를 착용하고 안전 규칙을 지켜야 한다.",
     answer: "안전벨트",
     category: "놀이안전",
     gradeGroup: "5-6",
@@ -3896,7 +3896,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "놀이터에서 줄넘기를 하면서 ___을 하면 위험하다.",
+    text: "놀이터에서 줄넘기를 하면서 ___를 하면 위험하다.",
     answer: "뛰기",
     category: "놀이안전",
     gradeGroup: "1-2",
@@ -3914,7 +3914,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "낚시를 할 때 뒤에 사람이 있으면 ___를 던지면 안 된다.",
+    text: "낚시를 할 때 뒤에 사람이 있으면 ___을 던지면 안 된다.",
     answer: "낚싯줄",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -3987,7 +3987,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "높은 곳에서 뛰어내리면 ___을 다칠 수 있다.",
+    text: "높은 곳에서 뛰어내리면 ___를 다칠 수 있다.",
     answer: "다리",
     category: "놀이안전",
     gradeGroup: "1-2",
@@ -4023,7 +4023,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "공놀이를 할 때 주변에 ___가 없는지 확인한다.",
+    text: "공놀이를 할 때 주변에 ___이 없는지 확인한다.",
     answer: "사람",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -4053,7 +4053,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "캠핑장에서 불을 피울 때는 ___가 반드시 함께 있어야 한다.",
+    text: "캠핑장에서 불을 피울 때는 ___이 반드시 함께 있어야 한다.",
     answer: "어른",
     category: "놀이안전",
     gradeGroup: "5-6",
@@ -4114,7 +4114,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "뜨거운 여름에 금속 놀이기구는 ___를 입을 수 있다.",
+    text: "뜨거운 여름에 금속 놀이기구는 ___을 입을 수 있다.",
     answer: "화상",
     category: "놀이안전",
     gradeGroup: "1-2",
@@ -4150,7 +4150,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "물놀이 튜브는 ___이 아니므로 구명장비로 쓸 수 없다.",
+    text: "물놀이 튜브는 ___가 아니므로 구명장비로 쓸 수 없다.",
     answer: "구명장비",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -4174,7 +4174,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "서핑 시 다른 서퍼와의 ___을 유지해야 한다.",
+    text: "서핑 시 다른 서퍼와의 ___를 유지해야 한다.",
     answer: "거리",
     category: "놀이안전",
     gradeGroup: "5-6",
@@ -4253,7 +4253,7 @@ const PLAY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "워터파크의 ___을 타기 전에 안전 수칙을 확인한다.",
+    text: "워터파크의 ___를 타기 전에 안전 수칙을 확인한다.",
     answer: "슬라이드",
     category: "놀이안전",
     gradeGroup: "3-4",
@@ -4326,7 +4326,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "날것의 고기나 ___는 익혀서 먹어야 한다.",
+    text: "날것의 고기나 ___은 익혀서 먹어야 한다.",
     answer: "생선",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4368,7 +4368,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "급식을 받을 때 ___을 하고 먹는다.",
+    text: "급식을 받을 때 ___를 하고 먹는다.",
     answer: "손 씻기",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4410,7 +4410,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "음식에서 이상한 ___가 나면 먹지 않는다.",
+    text: "음식에서 이상한 ___이 나면 먹지 않는다.",
     answer: "맛",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4435,7 +4435,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "알레르기가 있는 음식의 ___를 미리 확인해야 한다.",
+    text: "알레르기가 있는 음식의 ___을 미리 확인해야 한다.",
     answer: "성분",
     category: "식품안전",
     gradeGroup: "3-4",
@@ -4519,7 +4519,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "식기를 ___로 소독하면 세균을 제거할 수 있다.",
+    text: "식기를 ___으로 소독하면 세균을 제거할 수 있다.",
     answer: "열탕",
     category: "식품안전",
     gradeGroup: "3-4",
@@ -4531,7 +4531,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "방부제는 식품의 ___을 방지하기 위해 사용된다.",
+    text: "방부제는 식품의 ___를 방지하기 위해 사용된다.",
     answer: "부패",
     category: "식품안전",
     gradeGroup: "3-4",
@@ -4683,7 +4683,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "과일은 먹기 전에 ___로 깨끗이 씻는다.",
+    text: "과일은 먹기 전에 ___으로 깨끗이 씻는다.",
     answer: "흐르는 물",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4713,7 +4713,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "식중독 증상이 나타나면 ___를 많이 마시고 병원에 간다.",
+    text: "식중독 증상이 나타나면 ___을 많이 마시고 병원에 간다.",
     answer: "물",
     category: "식품안전",
     gradeGroup: "5-6",
@@ -4737,7 +4737,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "빵이나 과자에 ___이 보이면 먹으면 안 된다.",
+    text: "빵이나 과자에 ___가 보이면 먹으면 안 된다.",
     answer: "곰팡이",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4804,7 +4804,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "냉장고에서 오래된 음식은 ___가 날 수 있으니 버린다.",
+    text: "냉장고에서 오래된 음식은 ___이 날 수 있으니 버린다.",
     answer: "상",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4906,7 +4906,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "식재료를 보관할 때 교차 오염 방지를 위해 ___을 분리한다.",
+    text: "식재료를 보관할 때 교차 오염 방지를 위해 ___를 분리한다.",
     answer: "용기",
     category: "식품안전",
     gradeGroup: "5-6",
@@ -4925,7 +4925,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "과일을 먹기 전에 ___로 깨끗이 씻어야 한다.",
+    text: "과일을 먹기 전에 ___으로 깨끗이 씻어야 한다.",
     answer: "물",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -4943,7 +4943,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "뜨거운 음식은 ___이 식은 후 먹어야 화상을 방지한다.",
+    text: "뜨거운 음식은 ___가 식은 후 먹어야 화상을 방지한다.",
     answer: "온도",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -5064,7 +5064,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "과자 봉지가 부풀어 있으면 ___이 상한 것일 수 있다.",
+    text: "과자 봉지가 부풀어 있으면 ___가 상한 것일 수 있다.",
     answer: "과자",
     category: "식품안전",
     gradeGroup: "1-2",
@@ -5082,7 +5082,7 @@ const FOOD_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "음식점의 위생 ___는 A, B, C 등급으로 나뉜다.",
+    text: "음식점의 위생 ___은 A, B, C 등급으로 나뉜다.",
     answer: "등급",
     category: "식품안전",
     gradeGroup: "3-4",
@@ -5167,7 +5167,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "지진이 나면 ___로 머리를 보호한다.",
+    text: "지진이 나면 ___으로 머리를 보호한다.",
     answer: "방석",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5185,13 +5185,13 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "황사가 심한 날에는 ___을 쓰고 외출한다.",
+    text: "황사가 심한 날에는 ___를 쓰고 외출한다.",
     answer: "마스크",
     category: "자연재해",
     gradeGroup: "1-2",
   },
   {
-    text: "지진이 멈추면 ___를 이용해 밖으로 나간다.",
+    text: "지진이 멈추면 ___을 이용해 밖으로 나간다.",
     answer: "계단",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5203,7 +5203,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "비가 많이 오는 날 ___이 있는 곳은 위험하다.",
+    text: "비가 많이 오는 날 ___가 있는 곳은 위험하다.",
     answer: "웅덩이",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5215,7 +5215,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "지진 시 가스레인지의 ___을 잠가야 한다.",
+    text: "지진 시 가스레인지의 ___를 잠가야 한다.",
     answer: "밸브",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5227,7 +5227,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "갑자기 바닷물이 빠지면 ___가 올 수 있으므로 대피한다.",
+    text: "갑자기 바닷물이 빠지면 ___이 올 수 있으므로 대피한다.",
     answer: "해일",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5258,7 +5258,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
   },
   // Grade 3-4
   {
-    text: "지진 발생 시 흔들림이 멈추면 ___로 대피한다.",
+    text: "지진 발생 시 흔들림이 멈추면 ___으로 대피한다.",
     answer: "운동장",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -5270,7 +5270,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "지진의 세기를 나타내는 단위는 ___이다.",
+    text: "지진의 세기를 나타내는 단위는 ___다.",
     answer: "규모",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -5300,7 +5300,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "호우 경보가 발령되면 지하 ___는 침수될 수 있으므로 대피한다.",
+    text: "호우 경보가 발령되면 지하 ___은 침수될 수 있으므로 대피한다.",
     answer: "주차장",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -5391,7 +5391,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "지진 대피 시 3가지 행동 수칙은 엎드려, 잡아, ___이다.",
+    text: "지진 대피 시 3가지 행동 수칙은 엎드려, 잡아, ___다.",
     answer: "기다려",
     category: "자연재해",
     gradeGroup: "5-6",
@@ -5409,7 +5409,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "재난 시 가족과 만날 ___을 미리 정해 둔다.",
+    text: "재난 시 가족과 만날 ___를 미리 정해 둔다.",
     answer: "장소",
     category: "자연재해",
     gradeGroup: "5-6",
@@ -5524,13 +5524,13 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "지진 대피 시 머리를 ___로 보호한다.",
+    text: "지진 대피 시 머리를 ___으로 보호한다.",
     answer: "가방",
     category: "자연재해",
     gradeGroup: "3-4",
   },
   {
-    text: "폭우 시 지하 ___는 침수 위험이 있으므로 대피한다.",
+    text: "폭우 시 지하 ___은 침수 위험이 있으므로 대피한다.",
     answer: "공간",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -5608,7 +5608,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "폭염 시 ___를 자주 마시고 그늘에서 쉬어야 한다.",
+    text: "폭염 시 ___을 자주 마시고 그늘에서 쉬어야 한다.",
     answer: "물",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -5639,7 +5639,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "천둥 번개가 칠 때 나무 아래에 서면 ___을 맞을 수 있다.",
+    text: "천둥 번개가 칠 때 나무 아래에 서면 ___를 맞을 수 있다.",
     answer: "번개",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5772,7 +5772,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
   },
   // ── 추가 확장: 안전교육 시나리오 심화 ──
   {
-    text: "지진이 나면 밖으로 뛰어나가지 말고 먼저 ___을 보호한다.",
+    text: "지진이 나면 밖으로 뛰어나가지 말고 먼저 ___를 보호한다.",
     answer: "머리",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5802,7 +5802,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "비상용 ___를 미리 준비해 두면 재난 시 도움이 된다.",
+    text: "비상용 ___을 미리 준비해 두면 재난 시 도움이 된다.",
     answer: "가방",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5862,7 +5862,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "기후 변화로 인해 자연재해의 ___과 강도가 증가하고 있다.",
+    text: "기후 변화로 인해 자연재해의 ___와 강도가 증가하고 있다.",
     answer: "빈도",
     category: "자연재해",
     gradeGroup: "5-6",
@@ -5893,7 +5893,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
   },
   // ── 추가 확장 2차: 안전교육 콘텐츠 보강 ──
   {
-    text: "무서운 소리가 나면 ___을 보호하고 어른 곁으로 간다.",
+    text: "무서운 소리가 나면 ___를 보호하고 어른 곁으로 간다.",
     answer: "머리",
     category: "자연재해",
     gradeGroup: "1-2",
@@ -5929,7 +5929,7 @@ const NATURAL_DISASTER: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "폭풍해일이란 태풍으로 바닷물이 ___으로 올라오는 것이다.",
+    text: "폭풍해일이란 태풍으로 바닷물이 ___로 올라오는 것이다.",
     answer: "육지",
     category: "자연재해",
     gradeGroup: "3-4",
@@ -6044,7 +6044,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "에스컬레이터에서는 ___을 잡고 서 있어야 한다.",
+    text: "에스컬레이터에서는 ___를 잡고 서 있어야 한다.",
     answer: "손잡이",
     category: "생활안전",
     gradeGroup: "1-2",
@@ -6062,7 +6062,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "위급할 때는 방범용 ___를 눌러 도움을 요청한다.",
+    text: "위급할 때는 방범용 ___을 눌러 도움을 요청한다.",
     answer: "비상벨",
     category: "생활안전",
     gradeGroup: "1-2",
@@ -6104,7 +6104,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "주차장에서는 차가 갑자기 움직일 수 있으므로 ___을 살핀다.",
+    text: "주차장에서는 차가 갑자기 움직일 수 있으므로 ___를 살핀다.",
     answer: "주위",
     category: "생활안전",
     gradeGroup: "1-2",
@@ -6129,7 +6129,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "지하철에서 비상시 ___를 열어 탈출할 수 있다.",
+    text: "지하철에서 비상시 ___을 열어 탈출할 수 있다.",
     answer: "비상문",
     category: "생활안전",
     gradeGroup: "3-4",
@@ -6159,7 +6159,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "119에 신고할 때는 ___를 침착하게 말해야 한다.",
+    text: "119에 신고할 때는 ___을 침착하게 말해야 한다.",
     answer: "상황",
     category: "생활안전",
     gradeGroup: "3-4",
@@ -6183,7 +6183,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "대중교통에서 비상 시 ___를 눌러 기관사에게 알린다.",
+    text: "대중교통에서 비상 시 ___을 눌러 기관사에게 알린다.",
     answer: "비상벨",
     category: "생활안전",
     gradeGroup: "3-4",
@@ -6244,7 +6244,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "심장이 멈춘 사람에게는 ___를 시행해야 한다.",
+    text: "심장이 멈춘 사람에게는 ___을 시행해야 한다.",
     answer: "심폐소생술",
     category: "생활안전",
     gradeGroup: "5-6",
@@ -6304,7 +6304,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "응급 상황에서 의식 확인은 환자의 ___을 두드리며 부른다.",
+    text: "응급 상황에서 의식 확인은 환자의 ___를 두드리며 부른다.",
     answer: "어깨",
     category: "생활안전",
     gradeGroup: "5-6",
@@ -6630,7 +6630,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "독버섯을 먹었을 때는 ___을 유도하고 바로 병원에 간다.",
+    text: "독버섯을 먹었을 때는 ___를 유도하고 바로 병원에 간다.",
     answer: "구토",
     category: "생활안전",
     gradeGroup: "5-6",
@@ -6673,7 +6673,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "현관문을 열 때 밖에 ___가 있는지 확인하고 연다.",
+    text: "현관문을 열 때 밖에 ___이 있는지 확인하고 연다.",
     answer: "사람",
     category: "생활안전",
     gradeGroup: "1-2",
@@ -6739,7 +6739,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "골절 시 부목을 대고 ___을 하여 고정한다.",
+    text: "골절 시 부목을 대고 ___를 하여 고정한다.",
     answer: "붕대",
     category: "생활안전",
     gradeGroup: "5-6",
@@ -6751,7 +6751,7 @@ const DAILY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "뇌진탕이 의심되면 ___을 재우지 말고 관찰해야 한다.",
+    text: "뇌진탕이 의심되면 ___를 재우지 말고 관찰해야 한다.",
     answer: "환자",
     category: "생활안전",
     gradeGroup: "5-6",
@@ -6994,7 +6994,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "감전 사고 시에는 먼저 ___를 차단해야 한다.",
+    text: "감전 사고 시에는 먼저 ___을 차단해야 한다.",
     answer: "전원",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7006,7 +7006,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "멀티탭에 허용 전력 이상을 사용하면 ___이 발생할 수 있다.",
+    text: "멀티탭에 허용 전력 이상을 사용하면 ___가 발생할 수 있다.",
     answer: "과부하",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7024,7 +7024,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "누전 차단기는 전기 ___을 방지하는 장치이다.",
+    text: "누전 차단기는 전기 ___를 방지하는 장치이다.",
     answer: "사고",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7036,19 +7036,19 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "정전 시 ___를 사용하고 양초는 화재 위험이 있다.",
+    text: "정전 시 ___을 사용하고 양초는 화재 위험이 있다.",
     answer: "손전등",
     category: "전기안전",
     gradeGroup: "3-4",
   },
   {
-    text: "전기 기구의 ___을 정기적으로 점검해야 한다.",
+    text: "전기 기구의 ___를 정기적으로 점검해야 한다.",
     answer: "코드",
     category: "전기안전",
     gradeGroup: "3-4",
   },
   {
-    text: "전기 합선을 예방하려면 오래된 ___를 교체한다.",
+    text: "전기 합선을 예방하려면 오래된 ___을 교체한다.",
     answer: "배선",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7121,7 +7121,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "감전된 사람을 구할 때 ___이 통하지 않는 물건으로 분리한다.",
+    text: "감전된 사람을 구할 때 ___가 통하지 않는 물건으로 분리한다.",
     answer: "전기",
     category: "전기안전",
     gradeGroup: "5-6",
@@ -7169,7 +7169,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "감전 시 심장이 멎을 수 있으므로 ___를 시행한다.",
+    text: "감전 시 심장이 멎을 수 있으므로 ___을 시행한다.",
     answer: "심폐소생술",
     category: "전기안전",
     gradeGroup: "5-6",
@@ -7224,7 +7224,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
   },
   // 추가 전기안전
   {
-    text: "전기 코드 위에 ___를 올려놓으면 안 된다.",
+    text: "전기 코드 위에 ___을 올려놓으면 안 된다.",
     answer: "무거운 물건",
     category: "전기안전",
     gradeGroup: "1-2",
@@ -7284,13 +7284,13 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "전기선을 ___로 묶으면 안 된다.",
+    text: "전기선을 ___으로 묶으면 안 된다.",
     answer: "못",
     category: "전기안전",
     gradeGroup: "1-2",
   },
   {
-    text: "전기 기구 코드를 잡아당겨 빼면 ___가 벗겨질 수 있다.",
+    text: "전기 기구 코드를 잡아당겨 빼면 ___이 벗겨질 수 있다.",
     answer: "피복",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7333,7 +7333,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "플러그를 뺄 때 ___을 잡고 빼야 한다.",
+    text: "플러그를 뺄 때 ___를 잡고 빼야 한다.",
     answer: "플러그",
     category: "전기안전",
     gradeGroup: "1-2",
@@ -7351,7 +7351,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "하나의 멀티탭에 너무 많은 기기를 꽂으면 ___가 날 수 있다.",
+    text: "하나의 멀티탭에 너무 많은 기기를 꽂으면 ___이 날 수 있다.",
     answer: "불",
     category: "전기안전",
     gradeGroup: "1-2",
@@ -7459,7 +7459,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "손상된 충전 케이블을 계속 쓰면 ___이 날 수 있다.",
+    text: "손상된 충전 케이블을 계속 쓰면 ___가 날 수 있다.",
     answer: "화재",
     category: "전기안전",
     gradeGroup: "5-6",
@@ -7478,13 +7478,13 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "콘센트 구멍에 ___를 넣으면 절대 안 된다.",
+    text: "콘센트 구멍에 ___을 넣으면 절대 안 된다.",
     answer: "손가락",
     category: "전기안전",
     gradeGroup: "1-2",
   },
   {
-    text: "전기가 통하는 물체를 만지면 ___이 온다.",
+    text: "전기가 통하는 물체를 만지면 ___가 온다.",
     answer: "전기",
     category: "전기안전",
     gradeGroup: "1-2",
@@ -7502,7 +7502,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "전등을 갈 때는 반드시 ___를 먼저 끄고 교체한다.",
+    text: "전등을 갈 때는 반드시 ___을 먼저 끄고 교체한다.",
     answer: "전원",
     category: "전기안전",
     gradeGroup: "1-2",
@@ -7550,7 +7550,7 @@ const ELECTRICAL_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "전기장판은 ___고 사용하면 과열 위험이 있다.",
+    text: "전기장판은 ___이고 사용하면 과열 위험이 있다.",
     answer: "접",
     category: "전기안전",
     gradeGroup: "3-4",
@@ -7714,7 +7714,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "밥을 먹은 직후 물에 들어가면 ___가 날 수 있다.",
+    text: "밥을 먹은 직후 물에 들어가면 ___이 날 수 있다.",
     answer: "경련",
     category: "물놀이안전",
     gradeGroup: "1-2",
@@ -7774,7 +7774,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "계곡 물놀이 시 ___가 빠르면 들어가지 않는다.",
+    text: "계곡 물놀이 시 ___이 빠르면 들어가지 않는다.",
     answer: "물살",
     category: "물놀이안전",
     gradeGroup: "1-2",
@@ -7829,7 +7829,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "하천에서 물놀이 시 갑작스러운 ___으로 수위가 오를 수 있다.",
+    text: "하천에서 물놀이 시 갑작스러운 ___로 수위가 오를 수 있다.",
     answer: "비",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -7938,7 +7938,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "인공호흡 시 환자의 ___를 젖혀 기도를 확보한다.",
+    text: "인공호흡 시 환자의 ___을 젖혀 기도를 확보한다.",
     answer: "턱",
     category: "물놀이안전",
     gradeGroup: "5-6",
@@ -8004,7 +8004,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "수상 안전법에 따라 유선장에는 ___가 배치되어야 한다.",
+    text: "수상 안전법에 따라 유선장에는 ___이 배치되어야 한다.",
     answer: "안전요원",
     category: "물놀이안전",
     gradeGroup: "5-6",
@@ -8095,7 +8095,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "물놀이 중 다리에 ___이 나면 즉시 물 밖으로 나온다.",
+    text: "물놀이 중 다리에 ___가 나면 즉시 물 밖으로 나온다.",
     answer: "쥐",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -8137,13 +8137,13 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "계곡에서 물놀이 시 상류에서 ___가 내려올 수 있다.",
+    text: "계곡에서 물놀이 시 상류에서 ___이 내려올 수 있다.",
     answer: "물",
     category: "물놀이안전",
     gradeGroup: "3-4",
   },
   {
-    text: "물에서 나온 후 ___를 충분히 입어 체온을 유지한다.",
+    text: "물에서 나온 후 ___을 충분히 입어 체온을 유지한다.",
     answer: "옷",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -8210,7 +8210,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "친구가 깊은 물에 들어가려 하면 '___이 없으면 안 돼'라고 말한다.",
+    text: "친구가 깊은 물에 들어가려 하면 '___가 없으면 안 돼'라고 말한다.",
     answer: "구명조끼",
     category: "물놀이안전",
     gradeGroup: "1-2",
@@ -8240,7 +8240,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "물에 빠진 사람에게 ___이나 긴 막대를 던져 줘야 한다.",
+    text: "물에 빠진 사람에게 ___나 긴 막대를 던져 줘야 한다.",
     answer: "튜브",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -8270,7 +8270,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "익수자 구조 순서: 119 신고 → 구명 도구 던지기 → ___이 올 때까지 격려",
+    text: "익수자 구조 순서: 119 신고 → 구명 도구 던지기 → ___가 올 때까지 격려",
     answer: "구조대",
     category: "물놀이안전",
     gradeGroup: "5-6",
@@ -8282,13 +8282,13 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "물에 빠진 사람을 구한 후에는 ___를 확인하고 CPR을 실시한다.",
+    text: "물에 빠진 사람을 구한 후에는 ___을 확인하고 CPR을 실시한다.",
     answer: "호흡",
     category: "물놀이안전",
     gradeGroup: "5-6",
   },
   {
-    text: "저체온증이 오면 ___으로 몸을 감싸 체온을 올려야 한다.",
+    text: "저체온증이 오면 ___로 몸을 감싸 체온을 올려야 한다.",
     answer: "담요",
     category: "물놀이안전",
     gradeGroup: "5-6",
@@ -8337,19 +8337,19 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "얕은 물에서도 미끄러지면 ___을 다칠 수 있다.",
+    text: "얕은 물에서도 미끄러지면 ___를 다칠 수 있다.",
     answer: "머리",
     category: "물놀이안전",
     gradeGroup: "1-2",
   },
   {
-    text: "해변에서 ___을 밟으면 다칠 수 있으니 샌들을 신는다.",
+    text: "해변에서 ___를 밟으면 다칠 수 있으니 샌들을 신는다.",
     answer: "조개껍데기",
     category: "물놀이안전",
     gradeGroup: "1-2",
   },
   {
-    text: "구명조끼를 입을 때 ___이 딱 맞아야 빠지지 않는다.",
+    text: "구명조끼를 입을 때 ___가 딱 맞아야 빠지지 않는다.",
     answer: "크기",
     category: "물놀이안전",
     gradeGroup: "1-2",
@@ -8367,7 +8367,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "해파리에 쏘이면 ___로 상처를 씻으면 안 된다.",
+    text: "해파리에 쏘이면 ___으로 상처를 씻으면 안 된다.",
     answer: "민물",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -8379,7 +8379,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "수상 스키를 탈 때는 ___을 반드시 착용한다.",
+    text: "수상 스키를 탈 때는 ___를 반드시 착용한다.",
     answer: "구명조끼",
     category: "물놀이안전",
     gradeGroup: "3-4",
@@ -8494,7 +8494,7 @@ const WATER_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "물에 빠진 사람을 구할 때 뛰어들면 ___가 모두 위험해진다.",
+    text: "물에 빠진 사람을 구할 때 뛰어들면 ___이 모두 위험해진다.",
     answer: "둘",
     category: "물놀이안전",
     gradeGroup: "5-6",
@@ -8537,13 +8537,13 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "뜨거운 ___을 만지면 화상을 입을 수 있다.",
+    text: "뜨거운 ___를 만지면 화상을 입을 수 있다.",
     answer: "냄비",
     category: "가정안전",
     gradeGroup: "1-2",
   },
   {
-    text: "세제나 ___를 먹으면 안 된다.",
+    text: "세제나 ___을 먹으면 안 된다.",
     answer: "약",
     category: "가정안전",
     gradeGroup: "1-2",
@@ -8567,13 +8567,13 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "높은 곳의 물건을 꺼낼 때 ___을 안정적으로 놓고 올라간다.",
+    text: "높은 곳의 물건을 꺼낼 때 ___를 안정적으로 놓고 올라간다.",
     answer: "의자",
     category: "가정안전",
     gradeGroup: "1-2",
   },
   {
-    text: "집 안에서 ___를 신으면 미끄러질 수 있다.",
+    text: "집 안에서 ___을 신으면 미끄러질 수 있다.",
     answer: "양말",
     category: "가정안전",
     gradeGroup: "1-2",
@@ -8597,13 +8597,13 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "작은 물건이나 ___를 입에 넣으면 목에 걸릴 수 있다.",
+    text: "작은 물건이나 ___을 입에 넣으면 목에 걸릴 수 있다.",
     answer: "장난감",
     category: "가정안전",
     gradeGroup: "1-2",
   },
   {
-    text: "베란다에서 ___를 던지면 아래 사람이 다칠 수 있다.",
+    text: "베란다에서 ___을 던지면 아래 사람이 다칠 수 있다.",
     answer: "물건",
     category: "가정안전",
     gradeGroup: "1-2",
@@ -8688,7 +8688,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가구를 벽에 ___으로 고정하면 전도 사고를 예방할 수 있다.",
+    text: "가구를 벽에 ___로 고정하면 전도 사고를 예방할 수 있다.",
     answer: "L자 금구",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -8700,7 +8700,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "세탁기 사용 후 ___를 닫아 어린이 사고를 예방한다.",
+    text: "세탁기 사용 후 ___을 닫아 어린이 사고를 예방한다.",
     answer: "뚜껑",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -8742,7 +8742,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "전기밥솥의 ___이 나올 때 손을 대면 화상을 입는다.",
+    text: "전기밥솥의 ___가 나올 때 손을 대면 화상을 입는다.",
     answer: "증기",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -8797,13 +8797,13 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "아파트 화재 시 현관문을 닫고 ___으로 대피하면 연기 유입을 줄일 수 있다.",
+    text: "아파트 화재 시 현관문을 닫고 ___로 대피하면 연기 유입을 줄일 수 있다.",
     answer: "베란다",
     category: "가정안전",
     gradeGroup: "5-6",
   },
   {
-    text: "실내 ___를 정기적으로 측정하면 건강을 지킬 수 있다.",
+    text: "실내 ___을 정기적으로 측정하면 건강을 지킬 수 있다.",
     answer: "공기질",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -8827,19 +8827,19 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "겨울철 동파 방지를 위해 수도관에 ___을 감아 둔다.",
+    text: "겨울철 동파 방지를 위해 수도관에 ___를 감아 둔다.",
     answer: "보온재",
     category: "가정안전",
     gradeGroup: "5-6",
   },
   {
-    text: "라돈은 지하에서 올라오는 방사성 ___이다.",
+    text: "라돈은 지하에서 올라오는 방사성 ___다.",
     answer: "기체",
     category: "가정안전",
     gradeGroup: "5-6",
   },
   {
-    text: "가정 내 전기 용량 초과 시 ___이 자주 내려간다.",
+    text: "가정 내 전기 용량 초과 시 ___가 자주 내려간다.",
     answer: "차단기",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -8875,7 +8875,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "화재 시 아파트 세대 간 ___을 파괴하고 대피할 수 있다.",
+    text: "화재 시 아파트 세대 간 ___를 파괴하고 대피할 수 있다.",
     answer: "경량칸막이",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -8906,7 +8906,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "테이블 위의 뜨거운 ___을 손으로 당기면 화상을 입는다.",
+    text: "테이블 위의 뜨거운 ___를 손으로 당기면 화상을 입는다.",
     answer: "냄비",
     category: "가정안전",
     gradeGroup: "1-2",
@@ -8978,7 +8978,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "겨울철 난방 시 ___을 해야 일산화탄소 중독을 예방한다.",
+    text: "겨울철 난방 시 ___를 해야 일산화탄소 중독을 예방한다.",
     answer: "환기",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -9002,7 +9002,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "아파트 경량칸막이는 비상시 ___를 파괴하고 대피하는 곳이다.",
+    text: "아파트 경량칸막이는 비상시 ___을 파괴하고 대피하는 곳이다.",
     answer: "벽",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -9081,13 +9081,13 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가스 냄새가 나면 ___를 열어 환기하고 불을 켜지 않는다.",
+    text: "가스 냄새가 나면 ___을 열어 환기하고 불을 켜지 않는다.",
     answer: "창문",
     category: "가정안전",
     gradeGroup: "3-4",
   },
   {
-    text: "집에서 화재가 나면 ___을 낮추고 대피한다.",
+    text: "집에서 화재가 나면 ___를 낮추고 대피한다.",
     answer: "자세",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -9160,7 +9160,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "부엌 칼은 ___가 안쪽으로 향하게 놓아야 한다.",
+    text: "부엌 칼은 ___이 안쪽으로 향하게 놓아야 한다.",
     answer: "날",
     category: "가정안전",
     gradeGroup: "1-2",
@@ -9202,7 +9202,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가스레인지를 사용할 때는 ___을 틀어 환기해야 한다.",
+    text: "가스레인지를 사용할 때는 ___를 틀어 환기해야 한다.",
     answer: "환풍기",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -9238,7 +9238,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가정용 방재 용품에는 손전등, 라디오, ___이 포함된다.",
+    text: "가정용 방재 용품에는 손전등, 라디오, ___가 포함된다.",
     answer: "배터리",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -9268,7 +9268,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "고령자 가정에는 화장실에 ___을 설치해 미끄럼을 방지한다.",
+    text: "고령자 가정에는 화장실에 ___를 설치해 미끄럼을 방지한다.",
     answer: "손잡이",
     category: "가정안전",
     gradeGroup: "5-6",
@@ -9317,7 +9317,7 @@ const HOME_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가스 누출 시 ___를 켜면 폭발할 수 있다.",
+    text: "가스 누출 시 ___을 켜면 폭발할 수 있다.",
     answer: "불",
     category: "가정안전",
     gradeGroup: "3-4",
@@ -9414,7 +9414,7 @@ const DRUG_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "세제 용기에 다른 ___을 담으면 혼동할 수 있어 위험하다.",
+    text: "세제 용기에 다른 ___를 담으면 혼동할 수 있어 위험하다.",
     answer: "액체",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -9571,13 +9571,13 @@ const DRUG_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "가정 상비약에는 소독약, 해열제, ___이 포함된다.",
+    text: "가정 상비약에는 소독약, 해열제, ___가 포함된다.",
     answer: "반창고",
     category: "약물안전",
     gradeGroup: "3-4",
   },
   {
-    text: "약을 보관할 때 ___와 습기를 피해야 한다.",
+    text: "약을 보관할 때 ___과 습기를 피해야 한다.",
     answer: "고온",
     category: "약물안전",
     gradeGroup: "3-4",
@@ -9601,7 +9601,7 @@ const DRUG_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "감기약을 먹고 ___을 운전하면 사고 위험이 있다.",
+    text: "감기약을 먹고 ___를 운전하면 사고 위험이 있다.",
     answer: "차",
     category: "약물안전",
     gradeGroup: "3-4",
@@ -9747,7 +9747,7 @@ const DRUG_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "연고를 바를 때 상처가 아닌 곳에 바르면 ___이 없다.",
+    text: "연고를 바를 때 상처가 아닌 곳에 바르면 ___가 없다.",
     answer: "효과",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -10068,7 +10068,7 @@ const DRUG_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "임상시험이란 새 약의 안전성과 ___을 확인하는 과정이다.",
+    text: "임상시험이란 새 약의 안전성과 ___를 확인하는 과정이다.",
     answer: "효과",
     category: "약물안전",
     gradeGroup: "5-6",
@@ -10099,7 +10099,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "인터넷에 나의 ___를 올리면 안 된다.",
+    text: "인터넷에 나의 ___을 올리면 안 된다.",
     answer: "사진",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10129,7 +10129,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "인터넷 회원가입 시 부모님의 ___을 받아야 한다.",
+    text: "인터넷 회원가입 시 부모님의 ___를 받아야 한다.",
     answer: "동의",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10141,13 +10141,13 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "SNS에 가족의 ___를 올리기 전에 허락을 받아야 한다.",
+    text: "SNS에 가족의 ___을 올리기 전에 허락을 받아야 한다.",
     answer: "사진",
     category: "개인정보보호",
     gradeGroup: "1-2",
   },
   {
-    text: "친구의 ___를 다른 친구에게 함부로 알려 주면 안 된다.",
+    text: "친구의 ___을 다른 친구에게 함부로 알려 주면 안 된다.",
     answer: "비밀",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10165,7 +10165,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "내 ___은 나만 아는 비밀이어야 한다.",
+    text: "내 ___는 나만 아는 비밀이어야 한다.",
     answer: "비밀번호",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10177,7 +10177,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "가족의 ___을 모르는 사람에게 말하면 안 된다.",
+    text: "가족의 ___를 모르는 사람에게 말하면 안 된다.",
     answer: "전화번호",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10189,7 +10189,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "나의 ___를 인터넷에 올리면 나쁜 사람이 찾아올 수 있다.",
+    text: "나의 ___을 인터넷에 올리면 나쁜 사람이 찾아올 수 있다.",
     answer: "집 사진",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10226,7 +10226,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "온라인 게임에서 개인정보를 물어보면 ___이다.",
+    text: "온라인 게임에서 개인정보를 물어보면 ___다.",
     answer: "사기",
     category: "개인정보보호",
     gradeGroup: "3-4",
@@ -10280,13 +10280,13 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "게임 아이디에 실명을 사용하면 ___가 노출될 수 있다.",
+    text: "게임 아이디에 실명을 사용하면 ___이 노출될 수 있다.",
     answer: "신원",
     category: "개인정보보호",
     gradeGroup: "3-4",
   },
   {
-    text: "사진의 위치 정보(GPS)가 포함되면 촬영 ___이 노출된다.",
+    text: "사진의 위치 정보(GPS)가 포함되면 촬영 ___가 노출된다.",
     answer: "장소",
     category: "개인정보보호",
     gradeGroup: "3-4",
@@ -10377,7 +10377,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "쿠키 수집 ___를 읽고 동의 여부를 결정해야 한다.",
+    text: "쿠키 수집 ___을 읽고 동의 여부를 결정해야 한다.",
     answer: "정책",
     category: "개인정보보호",
     gradeGroup: "5-6",
@@ -10468,7 +10468,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "학교에서 개인정보 보호 수업을 통해 ___를 배운다.",
+    text: "학교에서 개인정보 보호 수업을 통해 ___을 배운다.",
     answer: "안전",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10522,7 +10522,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "온라인 게임에서 ___을 알려 달라고 하면 사기일 수 있다.",
+    text: "온라인 게임에서 ___를 알려 달라고 하면 사기일 수 있다.",
     answer: "비밀번호",
     category: "개인정보보호",
     gradeGroup: "3-4",
@@ -10540,7 +10540,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "디지털 유산이란 사망 후 남는 온라인 ___이다.",
+    text: "디지털 유산이란 사망 후 남는 온라인 ___다.",
     answer: "자료",
     category: "개인정보보호",
     gradeGroup: "5-6",
@@ -10577,7 +10577,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "친구가 내 비밀번호를 알려달라고 하면 '___은 비밀이야'라고 말한다.",
+    text: "친구가 내 비밀번호를 알려달라고 하면 '___는 비밀이야'라고 말한다.",
     answer: "비밀번호",
     category: "개인정보보호",
     gradeGroup: "1-2",
@@ -10746,7 +10746,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "USB를 분실하면 저장된 ___가 유출될 수 있다.",
+    text: "USB를 분실하면 저장된 ___이 유출될 수 있다.",
     answer: "파일",
     category: "개인정보보호",
     gradeGroup: "3-4",
@@ -10758,7 +10758,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "클라우드에 저장한 사진도 ___이 유출될 수 있다.",
+    text: "클라우드에 저장한 사진도 ___가 유출될 수 있다.",
     answer: "개인정보",
     category: "개인정보보호",
     gradeGroup: "3-4",
@@ -10873,7 +10873,7 @@ const PRIVACY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "개인정보를 요구하는 이벤트는 ___을 의심해 봐야 한다.",
+    text: "개인정보를 요구하는 이벤트는 ___를 의심해 봐야 한다.",
     answer: "사기",
     category: "개인정보보호",
     gradeGroup: "5-6",
@@ -10958,7 +10958,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "내 몸의 ___은 나만 결정할 수 있다.",
+    text: "내 몸의 ___는 나만 결정할 수 있다.",
     answer: "경계",
     category: "성폭력예방",
     gradeGroup: "1-2",
@@ -10976,13 +10976,13 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "다른 사람을 만질 때도 상대방의 ___을 받아야 한다.",
+    text: "다른 사람을 만질 때도 상대방의 ___를 받아야 한다.",
     answer: "동의",
     category: "성폭력예방",
     gradeGroup: "1-2",
   },
   {
-    text: "화장실에 갈 때는 친구와 ___이 가면 안전하다.",
+    text: "화장실에 갈 때는 친구와 ___가 가면 안전하다.",
     answer: "함께",
     category: "성폭력예방",
     gradeGroup: "1-2",
@@ -11109,7 +11109,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "위기 상황에서 주변에 ___를 요청하는 연습을 한다.",
+    text: "위기 상황에서 주변에 ___을 요청하는 연습을 한다.",
     answer: "도움",
     category: "성폭력예방",
     gradeGroup: "3-4",
@@ -11170,7 +11170,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "그루밍은 가해자가 피해자의 ___을 얻어 범죄를 저지르는 수법이다.",
+    text: "그루밍은 가해자가 피해자의 ___를 얻어 범죄를 저지르는 수법이다.",
     answer: "신뢰",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11248,7 +11248,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "몸캠 피싱은 ___을 이용한 사이버 성범죄이다.",
+    text: "몸캠 피싱은 ___를 이용한 사이버 성범죄이다.",
     answer: "영상통화",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11260,7 +11260,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "성폭력 예방을 위해 서로의 ___을 존중하는 문화가 필요하다.",
+    text: "성폭력 예방을 위해 서로의 ___를 존중하는 문화가 필요하다.",
     answer: "경계",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11327,7 +11327,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "싫은 스킨십을 당하면 ___을 크게 외치고 자리를 피한다.",
+    text: "싫은 스킨십을 당하면 ___를 크게 외치고 자리를 피한다.",
     answer: "싫어요",
     category: "성폭력예방",
     gradeGroup: "1-2",
@@ -11424,7 +11424,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "동의 없이 다른 사람의 몸을 촬영하는 것은 ___이다.",
+    text: "동의 없이 다른 사람의 몸을 촬영하는 것은 ___다.",
     answer: "범죄",
     category: "성폭력예방",
     gradeGroup: "3-4",
@@ -11466,19 +11466,19 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "성범죄 증거를 보존하기 위해 ___을 하지 않는 것이 좋다.",
+    text: "성범죄 증거를 보존하기 위해 ___를 하지 않는 것이 좋다.",
     answer: "씻기",
     category: "성폭력예방",
     gradeGroup: "5-6",
   },
   {
-    text: "디지털 성범죄란 온라인에서 성적 ___를 유포하는 행위이다.",
+    text: "디지털 성범죄란 온라인에서 성적 ___을 유포하는 행위이다.",
     answer: "영상",
     category: "성폭력예방",
     gradeGroup: "5-6",
   },
   {
-    text: "그루밍이란 성범죄자가 피해자의 ___을 얻어 접근하는 수법이다.",
+    text: "그루밍이란 성범죄자가 피해자의 ___를 얻어 접근하는 수법이다.",
     answer: "신뢰",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11496,7 +11496,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "2차 피해란 피해 사실이 알려져 추가로 ___을 받는 것이다.",
+    text: "2차 피해란 피해 사실이 알려져 추가로 ___를 받는 것이다.",
     answer: "피해",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11605,7 +11605,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "스토킹 처벌법에 의해 지속적 따라다님은 ___으로 처벌된다.",
+    text: "스토킹 처벌법에 의해 지속적 따라다님은 ___로 처벌된다.",
     answer: "범죄",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11678,7 +11678,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "몰래 카메라를 발견하면 ___을 만지지 말고 신고한다.",
+    text: "몰래 카메라를 발견하면 ___를 만지지 말고 신고한다.",
     answer: "카메라",
     category: "성폭력예방",
     gradeGroup: "3-4",
@@ -11696,7 +11696,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "성범죄 가해자의 ___은 성범죄자 알림e를 통해 확인할 수 있다.",
+    text: "성범죄 가해자의 ___는 성범죄자 알림e를 통해 확인할 수 있다.",
     answer: "정보",
     category: "성폭력예방",
     gradeGroup: "5-6",
@@ -11727,7 +11727,7 @@ const SEXUAL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
 const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
   // Grade 1-2
   {
-    text: "친구를 때리거나 ___는 것은 폭력이다.",
+    text: "친구를 때리거나 ___은 것은 폭력이다.",
     answer: "밀",
     category: "학교폭력예방",
     gradeGroup: "1-2",
@@ -11763,7 +11763,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "친구와 다투었을 때는 ___으로 해결해야 한다.",
+    text: "친구와 다투었을 때는 ___로 해결해야 한다.",
     answer: "대화",
     category: "학교폭력예방",
     gradeGroup: "1-2",
@@ -11793,7 +11793,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "친구의 물건을 ___로 숨기면 안 된다.",
+    text: "친구의 물건을 ___으로 숨기면 안 된다.",
     answer: "장난",
     category: "학교폭력예방",
     gradeGroup: "1-2",
@@ -11884,7 +11884,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "학교폭력을 신고하면 ___가 보장된다.",
+    text: "학교폭력을 신고하면 ___이 보장된다.",
     answer: "비밀",
     category: "학교폭력예방",
     gradeGroup: "3-4",
@@ -12011,7 +12011,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "학교폭력 피해 학생에게는 심리 ___이 제공된다.",
+    text: "학교폭력 피해 학생에게는 심리 ___가 제공된다.",
     answer: "치료",
     category: "학교폭력예방",
     gradeGroup: "5-6",
@@ -12071,7 +12071,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "회복적 ___은 가해자와 피해자 간 관계 회복을 돕는 방법이다.",
+    text: "회복적 ___는 가해자와 피해자 간 관계 회복을 돕는 방법이다.",
     answer: "정의",
     category: "학교폭력예방",
     gradeGroup: "5-6",
@@ -12096,7 +12096,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "다른 친구의 ___을 놀리거나 흉내 내면 안 된다.",
+    text: "다른 친구의 ___를 놀리거나 흉내 내면 안 된다.",
     answer: "말투",
     category: "학교폭력예방",
     gradeGroup: "1-2",
@@ -12162,7 +12162,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "학교폭력 목격 시 도움을 주면 ___가 될 수 있다.",
+    text: "학교폭력 목격 시 도움을 주면 ___이 될 수 있다.",
     answer: "영웅",
     category: "학교폭력예방",
     gradeGroup: "3-4",
@@ -12235,7 +12235,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "친구의 사진을 합성해 올리는 것은 ___이다.",
+    text: "친구의 사진을 합성해 올리는 것은 ___다.",
     answer: "범죄",
     category: "학교폭력예방",
     gradeGroup: "3-4",
@@ -12265,7 +12265,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "사이버 폭력의 증거는 ___을 해서 보관해야 한다.",
+    text: "사이버 폭력의 증거는 ___를 해서 보관해야 한다.",
     answer: "캡처",
     category: "학교폭력예방",
     gradeGroup: "3-4",
@@ -12307,7 +12307,7 @@ const SCHOOL_VIOLENCE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "회복적 사법이란 가해자와 피해자 간의 ___을 통한 해결 방식이다.",
+    text: "회복적 사법이란 가해자와 피해자 간의 ___를 통한 해결 방식이다.",
     answer: "대화",
     category: "학교폭력예방",
     gradeGroup: "5-6",
@@ -12592,7 +12592,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "세제나 살충제는 ___가 아니므로 절대 먹으면 안 된다.",
+    text: "세제나 살충제는 ___이 아니므로 절대 먹으면 안 된다.",
     answer: "음식",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -12641,7 +12641,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "담배 연기는 ___는 사람에게도 해롭다.",
+    text: "담배 연기는 ___은 사람에게도 해롭다.",
     answer: "옆에 있",
     category: "약물안전",
     gradeGroup: "3-4",
@@ -12702,7 +12702,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "약을 먹기 전에 ___을 읽어야 한다.",
+    text: "약을 먹기 전에 ___를 읽어야 한다.",
     answer: "설명서",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -12726,7 +12726,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "약물 내성이란 약이 ___이 떨어지는 현상이다.",
+    text: "약물 내성이란 약이 ___가 떨어지는 현상이다.",
     answer: "효과",
     category: "약물안전",
     gradeGroup: "5-6",
@@ -12769,7 +12769,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "청소년의 약물 남용 예방을 위해 가정에서의 ___이 중요하다.",
+    text: "청소년의 약물 남용 예방을 위해 가정에서의 ___가 중요하다.",
     answer: "대화",
     category: "약물안전",
     gradeGroup: "3-4",
@@ -12781,7 +12781,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "합성 마약인 ___는 소량으로도 사망에 이를 수 있다.",
+    text: "합성 마약인 ___은 소량으로도 사망에 이를 수 있다.",
     answer: "펜타닐",
     category: "약물안전",
     gradeGroup: "5-6",
@@ -12921,13 +12921,13 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "살충제를 뿌린 후에는 반드시 ___을 해야 한다.",
+    text: "살충제를 뿌린 후에는 반드시 ___를 해야 한다.",
     answer: "환기",
     category: "약물안전",
     gradeGroup: "1-2",
   },
   {
-    text: "세정제로 장난을 치면 ___을 다칠 수 있다.",
+    text: "세정제로 장난을 치면 ___를 다칠 수 있다.",
     answer: "피부",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -12945,7 +12945,7 @@ const DRUG_ABUSE_PREVENTION: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "약을 먹기 싫어도 ___이 정해준 약은 먹어야 한다.",
+    text: "약을 먹기 싫어도 ___가 정해준 약은 먹어야 한다.",
     answer: "의사",
     category: "약물안전",
     gradeGroup: "1-2",
@@ -13152,13 +13152,13 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "알레르기 반응으로 얼굴이 ___는 증상이 나타날 수 있다.",
+    text: "알레르기 반응으로 얼굴이 ___은 증상이 나타날 수 있다.",
     answer: "붓",
     category: "식품알레르기",
     gradeGroup: "3-4",
   },
   {
-    text: "학교 급식 식단에 알레르기 유발 식품 ___이 표시되어 있다.",
+    text: "학교 급식 식단에 알레르기 유발 식품 ___가 표시되어 있다.",
     answer: "번호",
     category: "식품알레르기",
     gradeGroup: "3-4",
@@ -13195,7 +13195,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "5-6",
   },
   {
-    text: "글루텐 알레르기가 있으면 ___이 들어간 음식을 피해야 한다.",
+    text: "글루텐 알레르기가 있으면 ___가 들어간 음식을 피해야 한다.",
     answer: "밀가루",
     category: "식품알레르기",
     gradeGroup: "5-6",
@@ -13214,7 +13214,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "알레르기가 있는 음식을 먹으면 ___가 부을 수 있다.",
+    text: "알레르기가 있는 음식을 먹으면 ___이 부을 수 있다.",
     answer: "목",
     category: "식품알레르기",
     gradeGroup: "1-2",
@@ -13238,7 +13238,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "식품 알레르기 반응이 심하면 호흡___가 올 수 있다.",
+    text: "식품 알레르기 반응이 심하면 호흡___이 올 수 있다.",
     answer: "곤란",
     category: "식품알레르기",
     gradeGroup: "3-4",
@@ -13317,13 +13317,13 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "음식을 먹고 혀가 붓기 시작하면 바로 ___을 멈추고 알린다.",
+    text: "음식을 먹고 혀가 붓기 시작하면 바로 ___를 멈추고 알린다.",
     answer: "먹기",
     category: "식품알레르기",
     gradeGroup: "1-2",
   },
   {
-    text: "현장학습 때 도시락에 알레르기 유발 ___이 있는지 확인한다.",
+    text: "현장학습 때 도시락에 알레르기 유발 ___가 있는지 확인한다.",
     answer: "재료",
     category: "식품알레르기",
     gradeGroup: "1-2",
@@ -13383,7 +13383,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "음식점에서 주문 시 알레르기 ___을 미리 알려야 한다.",
+    text: "음식점에서 주문 시 알레르기 ___를 미리 알려야 한다.",
     answer: "정보",
     category: "식품알레르기",
     gradeGroup: "3-4",
@@ -13474,7 +13474,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "알레르기 반응으로 ___이 빨개질 수 있다.",
+    text: "알레르기 반응으로 ___가 빨개질 수 있다.",
     answer: "피부",
     category: "식품알레르기",
     gradeGroup: "1-2",
@@ -13498,7 +13498,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "외식 시 알레르기 유발 식품 ___를 요청할 수 있다.",
+    text: "외식 시 알레르기 유발 식품 ___을 요청할 수 있다.",
     answer: "목록",
     category: "식품알레르기",
     gradeGroup: "3-4",
@@ -13607,7 +13607,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "콩 알레르기가 있으면 ___로 만든 간장도 주의해야 한다.",
+    text: "콩 알레르기가 있으면 ___으로 만든 간장도 주의해야 한다.",
     answer: "콩",
     category: "식품알레르기",
     gradeGroup: "1-2",
@@ -13619,7 +13619,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "1-2",
   },
   {
-    text: "알레르기 반응의 경미한 증상에는 ___과 가려움이 있다.",
+    text: "알레르기 반응의 경미한 증상에는 ___와 가려움이 있다.",
     answer: "두드러기",
     category: "식품알레르기",
     gradeGroup: "3-4",
@@ -13667,7 +13667,7 @@ const ALLERGY_SAFETY: SafetyTemplate[] = [
     gradeGroup: "3-4",
   },
   {
-    text: "알레르기 유발 물질이 포함되면 포장지에 ___으로 표시되어야 한다.",
+    text: "알레르기 유발 물질이 포함되면 포장지에 ___로 표시되어야 한다.",
     answer: "굵은 글씨",
     category: "식품알레르기",
     gradeGroup: "3-4",

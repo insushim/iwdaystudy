@@ -85,10 +85,15 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       )
       .run();
 
-    const token = await createToken(
-      { id, email, exp: Date.now() + 7 * 24 * 60 * 60 * 1000 },
-      context.env.AUTH_SECRET,
-    );
+    // An unapproved teacher must not receive a usable token — otherwise the
+    // admin approval gate is bypassable by simply keeping the signup response.
+    const token =
+      approvalStatus === "approved"
+        ? await createToken(
+            { id, email, exp: Date.now() + 7 * 24 * 60 * 60 * 1000 },
+            context.env.AUTH_SECRET,
+          )
+        : null;
 
     const user = {
       id, email, name, role,

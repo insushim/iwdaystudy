@@ -43,7 +43,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   { text: "닭이 낳는 것은 ___이다.", answer: "달걀", category: "동물" },
-  { text: "소는 ___를 먹는 초식동물이다.", answer: "풀", category: "동물" },
+  { text: "소는 ___을 먹는 초식동물이다.", answer: "풀", category: "동물" },
   {
     text: "개구리는 어릴 때 ___라고 불린다.",
     answer: "올챙이",
@@ -52,7 +52,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "나비는 원래 ___였다가 변한다.", answer: "애벌레", category: "동물" },
   { text: "토끼의 귀는 매우 ___다.", answer: "길", category: "동물" },
   {
-    text: "거북이는 등에 딱딱한 ___이 있다.",
+    text: "거북이는 등에 딱딱한 ___가 있다.",
     answer: "껍데기",
     category: "동물",
   },
@@ -60,30 +60,30 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "새는 ___로 하늘을 난다.", answer: "날개", category: "동물" },
   { text: "물고기는 ___로 숨을 쉰다.", answer: "아가미", category: "동물" },
   {
-    text: "오리는 발에 ___이 있어서 헤엄을 잘 친다.",
+    text: "오리는 발에 ___가 있어서 헤엄을 잘 친다.",
     answer: "물갈퀴",
     category: "동물",
   },
   { text: "사자는 동물의 ___이라고 불린다.", answer: "왕", category: "동물" },
   { text: "기린의 ___은 매우 길다.", answer: "목", category: "동물" },
   { text: "코끼리는 긴 ___로 물을 마신다.", answer: "코", category: "동물" },
-  { text: "펭귄은 날지 못하는 ___이다.", answer: "새", category: "동물" },
+  { text: "펭귄은 날지 못하는 ___다.", answer: "새", category: "동물" },
   {
-    text: "다람쥐는 겨울을 대비해 ___을 모은다.",
+    text: "다람쥐는 겨울을 대비해 ___를 모은다.",
     answer: "도토리",
     category: "동물",
   },
-  { text: "젖소에게서 ___을 얻는다.", answer: "우유", category: "동물" },
+  { text: "젖소에게서 ___를 얻는다.", answer: "우유", category: "동물" },
   { text: "양에게서 ___을 깎아 옷을 만든다.", answer: "털", category: "동물" },
   {
-    text: "고슴도치는 몸에 뾰족한 ___이 있다.",
+    text: "고슴도치는 몸에 뾰족한 ___가 있다.",
     answer: "가시",
     category: "동물",
   },
   { text: "무당벌레는 몸에 ___이 있다.", answer: "점", category: "동물" },
   { text: "부엉이는 주로 ___에 활동한다.", answer: "밤", category: "동물" },
   { text: "낙타의 등에는 ___이 있다.", answer: "혹", category: "동물" },
-  { text: "잠자리는 ___이 네 개이다.", answer: "날개", category: "동물" },
+  { text: "잠자리는 ___가 네 개이다.", answer: "날개", category: "동물" },
   { text: "독수리는 하늘 높이 ___수 있다.", answer: "날", category: "동물" },
   {
     text: "거미는 ___을 쳐서 먹이를 잡는다.",
@@ -102,7 +102,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "두더지는 ___속에서 산다.", answer: "땅", category: "동물" },
   { text: "돌고래는 바다에 사는 ___류이다.", answer: "포유", category: "동물" },
   {
-    text: "개미는 자기 몸보다 ___것을 들 수 있다.",
+    text: "개미는 자기 몸보다 ___ 것을 들 수 있다.",
     answer: "무거운",
     category: "동물",
   },
@@ -135,7 +135,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "봄에 꽃이 ___다.", answer: "핀", category: "자연" },
   {
-    text: "강물은 높은 곳에서 ___곳으로 흐른다.",
+    text: "강물은 높은 곳에서 ___ 곳으로 흐른다.",
     answer: "낮은",
     category: "자연",
   },
@@ -173,7 +173,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "일곱",
     category: "자연",
   },
-  { text: "꽃에서 좋은 ___이 난다.", answer: "향기", category: "자연" },
+  { text: "꽃에서 좋은 ___가 난다.", answer: "향기", category: "자연" },
   { text: "연못에는 ___가 살고 있다.", answer: "물고기", category: "자연" },
   {
     text: "흙 위에 자라는 초록색 식물을 ___이라 한다.",
@@ -181,7 +181,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "가을에 논에서 거두는 곡식은 ___이다.",
+    text: "가을에 논에서 거두는 곡식은 ___다.",
     answer: "벼",
     category: "자연",
   },
@@ -191,7 +191,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "돌멩이를 물에 던지면 ___으로 가라앉는다.",
+    text: "돌멩이를 물에 던지면 ___로 가라앉는다.",
     answer: "아래",
     category: "자연",
   },
@@ -216,7 +216,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "비가 온 뒤 하늘에 뜨는 것은 ___이다.",
+    text: "비가 온 뒤 하늘에 뜨는 것은 ___다.",
     answer: "무지개",
     category: "자연",
   },
@@ -243,13 +243,13 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "혀로 음식의 ___을 느낀다.", answer: "맛", category: "인체" },
   { text: "사람은 두 ___로 걷는다.", answer: "다리", category: "인체" },
   { text: "사람의 체온은 약 ___도이다.", answer: "36.5", category: "인체" },
-  { text: "심장은 ___을 온몸으로 보내준다.", answer: "피", category: "인체" },
+  { text: "심장은 ___를 온몸으로 보내준다.", answer: "피", category: "인체" },
   { text: "머리카락은 ___에서 자란다.", answer: "머리", category: "인체" },
   { text: "사람의 눈은 ___개이다.", answer: "두", category: "인체" },
   { text: "콧구멍은 ___개이다.", answer: "두", category: "인체" },
   { text: "발가락은 한 발에 ___개이다.", answer: "다섯", category: "인체" },
   { text: "눈물은 ___에서 나온다.", answer: "눈", category: "인체" },
-  { text: "땀은 ___을 통해 나온다.", answer: "피부", category: "인체" },
+  { text: "땀은 ___를 통해 나온다.", answer: "피부", category: "인체" },
   { text: "뼈는 몸을 ___해 준다.", answer: "지탱", category: "인체" },
   {
     text: "피부로 뜨겁고 차가운 것을 ___할 수 있다.",
@@ -274,7 +274,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "심장",
     category: "인체",
   },
-  { text: "귀로 하는 것은 ___이다.", answer: "듣기", category: "인체" },
+  { text: "귀로 하는 것은 ___다.", answer: "듣기", category: "인체" },
   {
     text: "근육이 있어서 몸을 ___일 수 있다.",
     answer: "움직",
@@ -282,14 +282,14 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
 
   // === 식물 (30) ===
-  { text: "꽃이 지고 나면 ___이 열린다.", answer: "열매", category: "식물" },
+  { text: "꽃이 지고 나면 ___가 열린다.", answer: "열매", category: "식물" },
   {
-    text: "장미에는 ___이 있어 찔릴 수 있다.",
+    text: "장미에는 ___가 있어 찔릴 수 있다.",
     answer: "가시",
     category: "식물",
   },
   {
-    text: "해바라기는 ___을 따라 고개를 돌린다.",
+    text: "해바라기는 ___를 따라 고개를 돌린다.",
     answer: "해",
     category: "식물",
   },
@@ -333,7 +333,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "식물",
   },
   { text: "귤은 ___에서 주로 재배한다.", answer: "제주도", category: "식물" },
-  { text: "배추는 ___을 담그는 데 쓴다.", answer: "김치", category: "식물" },
+  { text: "배추는 ___를 담그는 데 쓴다.", answer: "김치", category: "식물" },
   {
     text: "민들레 씨앗은 ___을 타고 날아간다.",
     answer: "바람",
@@ -341,7 +341,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "도토리는 ___나무의 열매이다.", answer: "참나무", category: "식물" },
   {
-    text: "나무의 나이는 ___을 세면 알 수 있다.",
+    text: "나무의 나이는 ___를 세면 알 수 있다.",
     answer: "나이테",
     category: "식물",
   },
@@ -358,7 +358,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "식물",
   },
   {
-    text: "식물이 자라려면 물, 햇빛, ___이 필요하다.",
+    text: "식물이 자라려면 물, 햇빛, ___가 필요하다.",
     answer: "공기",
     category: "식물",
   },
@@ -410,7 +410,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "가을 하늘은 매우 ___고 높다.", answer: "맑", category: "날씨" },
   {
-    text: "봄에 중국에서 날아오는 먼지를 ___이라 한다.",
+    text: "봄에 중국에서 날아오는 먼지를 ___라 한다.",
     answer: "황사",
     category: "날씨",
   },
@@ -421,7 +421,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "맑은 날 하늘은 ___색이다.", answer: "파란", category: "날씨" },
   {
-    text: "빗방울이 얼어서 떨어지는 것을 ___라 한다.",
+    text: "빗방울이 얼어서 떨어지는 것을 ___이라 한다.",
     answer: "우박",
     category: "날씨",
   },
@@ -443,7 +443,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "눈이 녹으면 ___이 된다.", answer: "물", category: "날씨" },
   { text: "추운 날 창문에 ___이 맺힌다.", answer: "김", category: "날씨" },
   {
-    text: "비가 많이 오면 ___이 날 수 있어 조심해야 한다.",
+    text: "비가 많이 오면 ___가 날 수 있어 조심해야 한다.",
     answer: "홍수",
     category: "날씨",
   },
@@ -549,7 +549,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "식사 후에는 ___을 닦아야 한다.",
+    text: "식사 후에는 ___를 닦아야 한다.",
     answer: "이",
     category: "생활상식",
   },
@@ -569,7 +569,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "에스컬레이터에서는 ___을 잡아야 한다.",
+    text: "에스컬레이터에서는 ___를 잡아야 한다.",
     answer: "손잡이",
     category: "생활상식",
   },
@@ -579,12 +579,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "태극기는 우리나라의 ___이다.",
+    text: "태극기는 우리나라의 ___다.",
     answer: "국기",
     category: "생활상식",
   },
   {
-    text: "우리나라의 국가는 ___이다.",
+    text: "우리나라의 국가는 ___다.",
     answer: "애국가",
     category: "생활상식",
   },
@@ -599,7 +599,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "아침에 일어나면 ___을 해야 상쾌하다.",
+    text: "아침에 일어나면 ___를 해야 상쾌하다.",
     answer: "세수",
     category: "생활상식",
   },
@@ -615,12 +615,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "선생님께 인사할 때는 ___을 해야 한다.",
+    text: "선생님께 인사할 때는 ___를 해야 한다.",
     answer: "인사",
     category: "생활상식",
   },
   {
-    text: "차가 오는 방향을 살피며 ___를 건너야 한다.",
+    text: "차가 오는 방향을 살피며 ___을 건너야 한다.",
     answer: "길",
     category: "생활상식",
   },
@@ -675,7 +675,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "제기차기는 ___로 제기를 차는 놀이이다.",
+    text: "제기차기는 ___으로 제기를 차는 놀이이다.",
     answer: "발",
     category: "문화",
   },
@@ -690,7 +690,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "바람",
     category: "문화",
   },
-  { text: "한지는 우리나라 전통 ___이다.", answer: "종이", category: "문화" },
+  { text: "한지는 우리나라 전통 ___다.", answer: "종이", category: "문화" },
   { text: "광복절은 ___월 15일이다.", answer: "8", category: "문화" },
   {
     text: "단오에는 ___를 뛰는 풍습이 있다.",
@@ -703,7 +703,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "비빔밥은 밥에 여러 ___를 넣어 비벼 먹는다.",
+    text: "비빔밥은 밥에 여러 ___을 넣어 비벼 먹는다.",
     answer: "나물",
     category: "문화",
   },
@@ -771,7 +771,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
 
   // === 과학 (기초, 10) ===
-  { text: "물이 얼면 ___가 된다.", answer: "얼음", category: "과학" },
+  { text: "물이 얼면 ___이 된다.", answer: "얼음", category: "과학" },
   {
     text: "소리가 벽에 부딪혀 되돌아오는 것을 ___라고 한다.",
     answer: "메아리",
@@ -783,7 +783,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "화산에서 나오는 뜨거운 액체를 ___라고 한다.",
+    text: "화산에서 나오는 뜨거운 액체를 ___이라고 한다.",
     answer: "용암",
     category: "과학",
   },
@@ -796,7 +796,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "빛이 물체에 가로막혀 생기는 것은 ___이다.",
+    text: "빛이 물체에 가로막혀 생기는 것은 ___다.",
     answer: "그림자",
     category: "과학",
   },
@@ -809,7 +809,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "원",
     category: "생활상식",
   },
-  { text: "우리나라의 국화는 ___이다.", answer: "무궁화", category: "문화" },
+  { text: "우리나라의 국화는 ___다.", answer: "무궁화", category: "문화" },
   { text: "설날에 먹는 음식은 ___이다.", answer: "떡국", category: "문화" },
   { text: "추석에 먹는 음식은 ___이다.", answer: "송편", category: "문화" },
   { text: "어린이날은 ___월 5일이다.", answer: "5", category: "문화" },
@@ -824,7 +824,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "강강술래는 ___에 하는 놀이이다.", answer: "추석", category: "문화" },
   { text: "삼계탕은 복날에 먹는 ___이다.", answer: "보양식", category: "문화" },
   {
-    text: "가위바위보에서 가위는 ___을 이긴다.",
+    text: "가위바위보에서 가위는 ___를 이긴다.",
     answer: "보",
     category: "생활상식",
   },
@@ -879,7 +879,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "인체",
   },
   { text: "눈을 감으면 볼 수 ___다.", answer: "없", category: "인체" },
-  { text: "토마토는 과일이 아니라 ___이다.", answer: "채소", category: "식물" },
+  { text: "토마토는 과일이 아니라 ___다.", answer: "채소", category: "식물" },
   { text: "수박의 줄무늬는 ___색이다.", answer: "초록", category: "식물" },
   {
     text: "개미는 자기 몸무게의 ___배를 들 수 있다.",
@@ -910,29 +910,29 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "더하기의 반대 연산은 ___이다.",
+    text: "더하기의 반대 연산은 ___다.",
     answer: "빼기",
     category: "생활상식",
   },
 
   // ──── 추가: 세계 상식 (10) ────
   {
-    text: "세계에서 가장 큰 동물은 ___이다.",
+    text: "세계에서 가장 큰 동물은 ___다.",
     answer: "대왕고래",
     category: "동물",
   },
   {
-    text: "세계에서 가장 빠른 동물은 ___이다.",
+    text: "세계에서 가장 빠른 동물은 ___다.",
     answer: "치타",
     category: "동물",
   },
   {
-    text: "세계에서 가장 큰 동물은 ___이다.",
+    text: "세계에서 가장 큰 동물은 ___다.",
     answer: "흰긴수염고래",
     category: "동물",
   },
   {
-    text: "세계에서 가장 작은 새는 ___이다.",
+    text: "세계에서 가장 작은 새는 ___다.",
     answer: "벌새",
     category: "동물",
   },
@@ -942,17 +942,17 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "대나무를 먹는 흑백 곰은 ___이다.",
+    text: "대나무를 먹는 흑백 곰은 ___다.",
     answer: "판다",
     category: "동물",
   },
   {
-    text: "오스트레일리아에만 사는 동물은 ___이다.",
+    text: "오스트레일리아에만 사는 동물은 ___다.",
     answer: "캥거루",
     category: "동물",
   },
   {
-    text: "세계에서 가장 높은 산은 ___이다.",
+    text: "세계에서 가장 높은 산은 ___다.",
     answer: "에베레스트",
     category: "자연",
   },
@@ -971,7 +971,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   { text: "까치는 우리나라의 ___새이다.", answer: "나라", category: "동물" },
   { text: "참새는 ___색 깃털을 가지고 있다.", answer: "갈", category: "동물" },
   {
-    text: "비둘기는 도시에서 흔히 볼 수 있는 ___이다.",
+    text: "비둘기는 도시에서 흔히 볼 수 있는 ___다.",
     answer: "새",
     category: "동물",
   },
@@ -1019,7 +1019,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 자연 확장 (20) ────
   {
-    text: "바위가 오랜 시간 부서지면 ___이 된다.",
+    text: "바위가 오랜 시간 부서지면 ___가 된다.",
     answer: "모래",
     category: "자연",
   },
@@ -1028,7 +1028,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "물",
     category: "자연",
   },
-  { text: "지구의 모양은 둥근 ___이다.", answer: "구", category: "자연" },
+  { text: "지구의 모양은 둥근 ___다.", answer: "구", category: "자연" },
   {
     text: "산에서 흐르는 물을 ___이라 한다.",
     answer: "시냇물",
@@ -1044,7 +1044,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "깊은 바다에는 ___가 닿지 않아 어둡다.",
+    text: "깊은 바다에는 ___이 닿지 않아 어둡다.",
     answer: "빛",
     category: "자연",
   },
@@ -1070,7 +1070,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "별은 스스로 ___을 내는 천체이다.", answer: "빛", category: "자연" },
   {
-    text: "꽃가루를 옮기는 곤충으로 ___이 있다.",
+    text: "꽃가루를 옮기는 곤충으로 ___가 있다.",
     answer: "나비",
     category: "자연",
   },
@@ -1085,7 +1085,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "잡식동물은 식물과 ___을 모두 먹는다.",
+    text: "잡식동물은 식물과 ___를 모두 먹는다.",
     answer: "고기",
     category: "자연",
   },
@@ -1097,7 +1097,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 인체 확장 (15) ────
   {
-    text: "사람의 이빨은 음식을 ___는 역할을 한다.",
+    text: "사람의 이빨은 음식을 ___은 역할을 한다.",
     answer: "씹",
     category: "인체",
   },
@@ -1111,7 +1111,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "구부리",
     category: "인체",
   },
-  { text: "갈비뼈는 ___을 보호한다.", answer: "심장과 폐", category: "인체" },
+  { text: "갈비뼈는 ___를 보호한다.", answer: "심장과 폐", category: "인체" },
   { text: "손톱은 손가락 끝을 ___해 준다.", answer: "보호", category: "인체" },
   {
     text: "땀을 흘리면 몸의 ___가 낮아진다.",
@@ -1119,7 +1119,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "인체",
   },
   { text: "잠을 자면 몸이 ___된다.", answer: "회복", category: "인체" },
-  { text: "척추는 등을 지탱하는 ___이다.", answer: "뼈", category: "인체" },
+  { text: "척추는 등을 지탱하는 ___다.", answer: "뼈", category: "인체" },
   {
     text: "침은 음식을 ___하는 것을 돕는다.",
     answer: "소화",
@@ -1136,7 +1136,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "인체",
   },
   {
-    text: "속눈썹은 ___이 눈에 들어가지 않게 한다.",
+    text: "속눈썹은 ___가 눈에 들어가지 않게 한다.",
     answer: "먼지",
     category: "인체",
   },
@@ -1199,7 +1199,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "껍질",
     category: "식물",
   },
-  { text: "배나무는 가을에 ___을 맺는다.", answer: "열매", category: "식물" },
+  { text: "배나무는 가을에 ___를 맺는다.", answer: "열매", category: "식물" },
 
   // ──── 추가: 날씨 확장 (15) ────
   { text: "바람이 불면 나뭇잎이 ___린다.", answer: "흔들", category: "날씨" },
@@ -1214,7 +1214,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "모래바람이 부는 현상을 ___이라 한다.",
+    text: "모래바람이 부는 현상을 ___라 한다.",
     answer: "황사",
     category: "날씨",
   },
@@ -1234,12 +1234,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "번개는 하늘에서 내리치는 ___이다.",
+    text: "번개는 하늘에서 내리치는 ___다.",
     answer: "전기",
     category: "날씨",
   },
   {
-    text: "천둥은 번개와 함께 나는 큰 ___이다.",
+    text: "천둥은 번개와 함께 나는 큰 ___다.",
     answer: "소리",
     category: "날씨",
   },
@@ -1276,17 +1276,17 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 추가: 생활상식 확장 (15) ────
   {
-    text: "치약은 ___을 닦을 때 사용한다.",
+    text: "치약은 ___를 닦을 때 사용한다.",
     answer: "이",
     category: "생활상식",
   },
   {
-    text: "목욕할 때 사용하는 것은 ___이다.",
+    text: "목욕할 때 사용하는 것은 ___다.",
     answer: "비누",
     category: "생활상식",
   },
   {
-    text: "우체통에 넣으면 ___이 배달된다.",
+    text: "우체통에 넣으면 ___가 배달된다.",
     answer: "편지",
     category: "생활상식",
   },
@@ -1336,7 +1336,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "칫솔은 ___을 닦는 데 사용하는 도구이다.",
+    text: "칫솔은 ___를 닦는 데 사용하는 도구이다.",
     answer: "이",
     category: "생활상식",
   },
@@ -1354,7 +1354,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한국의 전통 놀이로 ___이 있다.",
+    text: "한국의 전통 놀이로 ___가 있다.",
     answer: "팽이치기",
     category: "문화",
   },
@@ -1386,12 +1386,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "정월 대보름에 쥐불___를 한다.", answer: "놀이", category: "문화" },
   {
-    text: "전통 결혼식에서 신부가 타는 것은 ___이다.",
+    text: "전통 결혼식에서 신부가 타는 것은 ___다.",
     answer: "가마",
     category: "문화",
   },
   {
-    text: "한국의 전통 떡으로 ___이 있다.",
+    text: "한국의 전통 떡으로 ___가 있다.",
     answer: "인절미",
     category: "문화",
   },
@@ -1401,7 +1401,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "고려시대의 대표 도자기는 ___이다.",
+    text: "고려시대의 대표 도자기는 ___다.",
     answer: "청자",
     category: "문화",
   },
@@ -1419,12 +1419,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
   // ──── 추가: 우주 확장 (15) ────
   { text: "달에서는 소리가 ___지 않는다.", answer: "들리", category: "우주" },
   {
-    text: "밤하늘에서 가장 밝은 별은 ___이다.",
+    text: "밤하늘에서 가장 밝은 별은 ___다.",
     answer: "시리우스",
     category: "우주",
   },
   {
-    text: "우주에서 지구로 돌아올 때 ___가 뜨거워진다.",
+    text: "우주에서 지구로 돌아올 때 ___이 뜨거워진다.",
     answer: "우주선",
     category: "우주",
   },
@@ -1439,7 +1439,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "그믐달은 달이 보이지 ___는 때이다.",
+    text: "그믐달은 달이 보이지 ___은 때이다.",
     answer: "않",
     category: "우주",
   },
@@ -1449,12 +1449,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "로켓은 우주로 ___를 보내는 운송 수단이다.",
+    text: "로켓은 우주로 ___을 보내는 운송 수단이다.",
     answer: "사람",
     category: "우주",
   },
   {
-    text: "망원경으로 밤하늘의 ___를 관찰할 수 있다.",
+    text: "망원경으로 밤하늘의 ___을 관찰할 수 있다.",
     answer: "별",
     category: "우주",
   },
@@ -1465,7 +1465,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
   },
   { text: "북극성은 항상 ___쪽에 있다.", answer: "북", category: "우주" },
   {
-    text: "유성은 대기권에서 타며 빛을 내는 ___이다.",
+    text: "유성은 대기권에서 타며 빛을 내는 ___다.",
     answer: "먼지",
     category: "우주",
   },
@@ -1518,7 +1518,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식초와 베이킹소다를 섞으면 ___가 생긴다.",
+    text: "식초와 베이킹소다를 섞으면 ___이 생긴다.",
     answer: "거품",
     category: "과학",
   },
@@ -1550,7 +1550,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "참새, 비둘기, 독수리는 모두 ___이다.",
+    text: "참새, 비둘기, 독수리는 모두 ___다.",
     answer: "새",
     category: "동물",
   },
@@ -1570,29 +1570,29 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "고등어, 참치, 금붕어는 모두 ___이다.",
+    text: "고등어, 참치, 금붕어는 모두 ___다.",
     answer: "물고기",
     category: "동물",
   },
   {
-    text: "호랑이, 사자, 표범은 모두 ___과 동물이다.",
+    text: "호랑이, 사자, 표범은 모두 ___와 동물이다.",
     answer: "고양이",
     category: "동물",
   },
   {
-    text: "늑대, 여우, 강아지는 모두 ___과 동물이다.",
+    text: "늑대, 여우, 강아지는 모두 ___와 동물이다.",
     answer: "개",
     category: "동물",
   },
 
   // ──── 동물: 비교하기 ────
   {
-    text: "코끼리와 생쥐 중 더 큰 동물은 ___이다.",
+    text: "코끼리와 생쥐 중 더 큰 동물은 ___다.",
     answer: "코끼리",
     category: "동물",
   },
   {
-    text: "거북이와 토끼 중 더 느린 동물은 ___이다.",
+    text: "거북이와 토끼 중 더 느린 동물은 ___다.",
     answer: "거북이",
     category: "동물",
   },
@@ -1602,24 +1602,24 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "치타와 달팽이 중 더 빠른 동물은 ___이다.",
+    text: "치타와 달팽이 중 더 빠른 동물은 ___다.",
     answer: "치타",
     category: "동물",
   },
   {
-    text: "고래와 금붕어 중 더 큰 동물은 ___이다.",
+    text: "고래와 금붕어 중 더 큰 동물은 ___다.",
     answer: "고래",
     category: "동물",
   },
   {
-    text: "박쥐와 참새 중 밤에 활동하는 동물은 ___이다.",
+    text: "박쥐와 참새 중 밤에 활동하는 동물은 ___다.",
     answer: "박쥐",
     category: "동물",
   },
 
   // ──── 동물: 원인결과 ────
   {
-    text: "겨울이 오면 다람쥐는 먹이를 모으는데, 이것을 ___라고 한다.",
+    text: "겨울이 오면 다람쥐는 먹이를 모으는데, 이것을 ___이라고 한다.",
     answer: "저장",
     category: "동물",
   },
@@ -1646,12 +1646,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 동물: 순서맞추기 ────
   {
-    text: "나비의 성장 순서는 알 → 애벌레 → 번데기 → ___이다.",
+    text: "나비의 성장 순서는 알 → 애벌레 → 번데기 → ___다.",
     answer: "나비",
     category: "동물",
   },
   {
-    text: "개구리의 성장 순서는 알 → 올챙이 → ___이다.",
+    text: "개구리의 성장 순서는 알 → 올챙이 → ___다.",
     answer: "개구리",
     category: "동물",
   },
@@ -1661,7 +1661,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "매미의 성장 순서는 알 → 유충 → ___이다.",
+    text: "매미의 성장 순서는 알 → 유충 → ___다.",
     answer: "매미",
     category: "동물",
   },
@@ -1727,7 +1727,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "바다와 강 중 물이 짠 곳은 ___이다.",
+    text: "바다와 강 중 물이 짠 곳은 ___다.",
     answer: "바다",
     category: "자연",
   },
@@ -1737,14 +1737,14 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "호수와 바다 중 더 큰 것은 ___이다.",
+    text: "호수와 바다 중 더 큰 것은 ___다.",
     answer: "바다",
     category: "자연",
   },
 
   // ──── 자연: 연결하기 ────
   {
-    text: "봄에 피는 꽃은 벚꽃이고, 가을에 피는 꽃은 ___이다.",
+    text: "봄에 피는 꽃은 벚꽃이고, 가을에 피는 꽃은 ___다.",
     answer: "코스모스",
     category: "자연",
   },
@@ -1761,12 +1761,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 인체: 연결하기 ────
   {
-    text: "눈은 보는 것이고, 코는 ___을 맡는 것이다.",
+    text: "눈은 보는 것이고, 코는 ___를 맡는 것이다.",
     answer: "냄새",
     category: "인체",
   },
   {
-    text: "손은 잡는 것이고, 발은 ___는 것이다.",
+    text: "손은 잡는 것이고, 발은 ___은 것이다.",
     answer: "걷",
     category: "인체",
   },
@@ -1793,7 +1793,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "인체",
   },
   {
-    text: "심장, 폐, 위, 간은 몸속의 ___이다.",
+    text: "심장, 폐, 위, 간은 몸속의 ___다.",
     answer: "장기",
     category: "인체",
   },
@@ -1859,7 +1859,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 식물: 비교하기 ────
   {
-    text: "나무와 풀 중 더 오래 사는 것은 ___이다.",
+    text: "나무와 풀 중 더 오래 사는 것은 ___다.",
     answer: "나무",
     category: "식물",
   },
@@ -1869,7 +1869,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "식물",
   },
   {
-    text: "해바라기와 제비꽃 중 더 큰 꽃은 ___이다.",
+    text: "해바라기와 제비꽃 중 더 큰 꽃은 ___다.",
     answer: "해바라기",
     category: "식물",
   },
@@ -1908,12 +1908,12 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "태풍, 폭설, 폭염은 모두 ___날씨이다.",
+    text: "태풍, 폭설, 폭염은 모두 ___ 날씨이다.",
     answer: "위험한",
     category: "날씨",
   },
   {
-    text: "온도계, 풍향계, 습도계는 모두 날씨를 재는 ___이다.",
+    text: "온도계, 풍향계, 습도계는 모두 날씨를 재는 ___다.",
     answer: "도구",
     category: "날씨",
   },
@@ -1930,7 +1930,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "소나기와 장마 중 더 오래 내리는 것은 ___이다.",
+    text: "소나기와 장마 중 더 오래 내리는 것은 ___다.",
     answer: "장마",
     category: "날씨",
   },
@@ -1943,7 +1943,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "따뜻한 공기와 차가운 공기가 만나면 ___가 생긴다.",
+    text: "따뜻한 공기와 차가운 공기가 만나면 ___이 생긴다.",
     answer: "바람",
     category: "날씨",
   },
@@ -2004,7 +2004,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 생활상식: 원인결과 ────
   {
-    text: "음식을 오래 두면 ___이 생겨 먹으면 안 된다.",
+    text: "음식을 오래 두면 ___가 생겨 먹으면 안 된다.",
     answer: "곰팡이",
     category: "생활상식",
   },
@@ -2036,7 +2036,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "가야금은 뜯고, 해금은 ___는 악기이다.",
+    text: "가야금은 뜯고, 해금은 ___은 악기이다.",
     answer: "긁",
     category: "문화",
   },
@@ -2053,7 +2053,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "윷놀이, 팽이치기, 제기차기는 모두 전통 ___이다.",
+    text: "윷놀이, 팽이치기, 제기차기는 모두 전통 ___다.",
     answer: "놀이",
     category: "문화",
   },
@@ -2078,7 +2078,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 우주: 비교하기 ────
   {
-    text: "해와 달 중 낮에 보이는 것은 ___이다.",
+    text: "해와 달 중 낮에 보이는 것은 ___다.",
     answer: "해",
     category: "우주",
   },
@@ -2088,7 +2088,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "지구와 달 중 더 큰 것은 ___이다.",
+    text: "지구와 달 중 더 큰 것은 ___다.",
     answer: "지구",
     category: "우주",
   },
@@ -2117,7 +2117,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "나무, 종이, 천은 물에 ___는 물질이다.",
+    text: "나무, 종이, 천은 물에 ___은 물질이다.",
     answer: "젖",
     category: "과학",
   },
@@ -2157,7 +2157,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
 
   // ──── 과학: 비교하기 ────
   {
-    text: "나무와 돌 중 물에 뜨는 것은 ___이다.",
+    text: "나무와 돌 중 물에 뜨는 것은 ___다.",
     answer: "나무",
     category: "과학",
   },
@@ -2228,7 +2228,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "자연",
   },
   {
-    text: "연못과 호수 중 더 큰 것은 ___이다.",
+    text: "연못과 호수 중 더 큰 것은 ___다.",
     answer: "호수",
     category: "자연",
   },
@@ -2237,7 +2237,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     answer: "용암",
     category: "자연",
   },
-  { text: "지구의 약 70%는 ___로 덮여 있다.", answer: "물", category: "자연" },
+  { text: "지구의 약 70%는 ___으로 덮여 있다.", answer: "물", category: "자연" },
 
   // ──── 추가: 생활상식 신규 ────
   {
@@ -2246,13 +2246,13 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "손을 씻을 때 사용하는 것은 ___이다.",
+    text: "손을 씻을 때 사용하는 것은 ___다.",
     answer: "비누",
     category: "생활상식",
   },
   { text: "신발은 ___에 신는 것이다.", answer: "발", category: "생활상식" },
   {
-    text: "엘리베이터가 고장 나면 ___를 이용해 대피한다.",
+    text: "엘리베이터가 고장 나면 ___을 이용해 대피한다.",
     answer: "비상계단",
     category: "생활상식",
   },
@@ -2274,7 +2274,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "설날에 어른에게 세배를 하면 ___를 받는다.",
+    text: "설날에 어른에게 세배를 하면 ___을 받는다.",
     answer: "세뱃돈",
     category: "문화",
   },
@@ -2301,7 +2301,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "날씨",
   },
   {
-    text: "가뭄은 비가 오래 오지 ___는 것이다.",
+    text: "가뭄은 비가 오래 오지 ___은 것이다.",
     answer: "않",
     category: "날씨",
   },
@@ -2366,7 +2366,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "사람의 몸도 ___을 끌어당기는 힘이 있다.",
+    text: "사람의 몸도 ___를 끌어당기는 힘이 있다.",
     answer: "지구",
     category: "과학",
   },
@@ -2376,7 +2376,7 @@ const GRADE_1_2: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "물은 높은 곳에서 ___곳으로 흐르는 성질이 있다.",
+    text: "물은 높은 곳에서 ___ 곳으로 흐르는 성질이 있다.",
     answer: "낮은",
     category: "과학",
   },
@@ -2390,7 +2390,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   // === 지리 (35) ===
   { text: "대한민국의 수도는 ___이다.", answer: "서울", category: "지리" },
   {
-    text: "우리나라에서 가장 큰 섬은 ___이다.",
+    text: "우리나라에서 가장 큰 섬은 ___다.",
     answer: "제주도",
     category: "지리",
   },
@@ -2406,17 +2406,17 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "서울을 관통하는 강은 ___이다.", answer: "한강", category: "지리" },
   {
-    text: "우리나라의 동쪽 바다를 ___이라 한다.",
+    text: "우리나라의 동쪽 바다를 ___라 한다.",
     answer: "동해",
     category: "지리",
   },
   {
-    text: "우리나라의 서쪽 바다를 ___이라 한다.",
+    text: "우리나라의 서쪽 바다를 ___라 한다.",
     answer: "서해",
     category: "지리",
   },
   {
-    text: "우리나라의 남쪽 바다를 ___이라 한다.",
+    text: "우리나라의 남쪽 바다를 ___라 한다.",
     answer: "남해",
     category: "지리",
   },
@@ -2443,7 +2443,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "전라도는 ___이 넓어 곡식이 많이 자란다.",
+    text: "전라도는 ___가 넓어 곡식이 많이 자란다.",
     answer: "평야",
     category: "지리",
   },
@@ -2463,7 +2463,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     answer: "북한",
     category: "지리",
   },
-  { text: "우리나라의 영토는 한___이다.", answer: "반도", category: "지리" },
+  { text: "우리나라의 영토는 한___다.", answer: "반도", category: "지리" },
   {
     text: "태백산맥은 한반도의 ___쪽을 따라 이어진다.",
     answer: "동",
@@ -2512,14 +2512,14 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "삼국시대의 세 나라는 고구려, 백제, ___이다.",
+    text: "삼국시대의 세 나라는 고구려, 백제, ___다.",
     answer: "신라",
     category: "역사",
   },
-  { text: "신라의 수도는 ___이었다.", answer: "경주", category: "역사" },
-  { text: "백제의 마지막 수도는 ___이었다.", answer: "부여", category: "역사" },
+  { text: "신라의 수도는 ___였다.", answer: "경주", category: "역사" },
+  { text: "백제의 마지막 수도는 ___였다.", answer: "부여", category: "역사" },
   { text: "고구려의 수도는 ___이었다.", answer: "평양", category: "역사" },
-  { text: "삼국을 통일한 나라는 ___이다.", answer: "신라", category: "역사" },
+  { text: "삼국을 통일한 나라는 ___다.", answer: "신라", category: "역사" },
   { text: "한글을 만든 왕은 ___이다.", answer: "세종대왕", category: "역사" },
   {
     text: "한글이 만들어진 이름은 ___이다.",
@@ -2527,7 +2527,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "이순신 장군은 ___를 만들어 왜적을 물리쳤다.",
+    text: "이순신 장군은 ___을 만들어 왜적을 물리쳤다.",
     answer: "거북선",
     category: "역사",
   },
@@ -2537,10 +2537,10 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   { text: "고려를 세운 왕은 ___이다.", answer: "왕건", category: "역사" },
-  { text: "조선을 세운 왕은 ___이다.", answer: "이성계", category: "역사" },
+  { text: "조선을 세운 왕은 ___다.", answer: "이성계", category: "역사" },
   { text: "조선의 수도는 ___이었다.", answer: "한양", category: "역사" },
   { text: "경복궁은 ___시대의 궁궐이다.", answer: "조선", category: "역사" },
-  { text: "첨성대는 ___를 관측하던 건물이다.", answer: "별", category: "역사" },
+  { text: "첨성대는 ___을 관측하던 건물이다.", answer: "별", category: "역사" },
   { text: "석굴암은 ___에 있는 문화재이다.", answer: "경주", category: "역사" },
   {
     text: "불국사는 ___시대에 만들어진 절이다.",
@@ -2576,14 +2576,14 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "6·25 전쟁은 ___년에 일어났다.", answer: "1950", category: "역사" },
   {
-    text: "유관순은 3·1 운동 때 만세를 부른 ___이다.",
+    text: "유관순은 3·1 운동 때 만세를 부른 ___다.",
     answer: "열사",
     category: "역사",
   },
   { text: "세종대왕은 조선 제___대 왕이다.", answer: "4", category: "역사" },
   { text: "측우기는 ___을 재는 도구이다.", answer: "강수량", category: "역사" },
   {
-    text: "해시계는 해의 ___으로 시간을 알려주는 도구이다.",
+    text: "해시계는 해의 ___로 시간을 알려주는 도구이다.",
     answer: "그림자",
     category: "역사",
   },
@@ -2600,7 +2600,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "고구려, 백제, 신라를 합쳐 ___라고 부른다.",
+    text: "고구려, 백제, 신라를 합쳐 ___이라고 부른다.",
     answer: "삼국",
     category: "역사",
   },
@@ -2637,28 +2637,28 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "건전지에는 +극과 ___극이 있다.", answer: "-", category: "과학" },
   {
-    text: "공기 중에 가장 많은 기체는 ___이다.",
+    text: "공기 중에 가장 많은 기체는 ___다.",
     answer: "질소",
     category: "과학",
   },
   {
-    text: "사람이 숨을 쉬는 데 필요한 기체는 ___이다.",
+    text: "사람이 숨을 쉬는 데 필요한 기체는 ___다.",
     answer: "산소",
     category: "과학",
   },
   {
-    text: "사람이 내뿜는 기체는 ___이다.",
+    text: "사람이 내뿜는 기체는 ___다.",
     answer: "이산화탄소",
     category: "과학",
   },
   {
-    text: "물질의 세 가지 상태는 고체, 액체, ___이다.",
+    text: "물질의 세 가지 상태는 고체, 액체, ___다.",
     answer: "기체",
     category: "과학",
   },
   { text: "얼음은 물의 ___상태이다.", answer: "고체", category: "과학" },
   { text: "수증기는 물의 ___상태이다.", answer: "기체", category: "과학" },
-  { text: "무게를 재는 도구를 ___라 한다.", answer: "저울", category: "과학" },
+  { text: "무게를 재는 도구를 ___이라 한다.", answer: "저울", category: "과학" },
   { text: "길이를 재는 도구를 ___라 한다.", answer: "자", category: "과학" },
   {
     text: "온도를 재는 도구를 ___라 한다.",
@@ -2703,14 +2703,14 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "식물이 물을 흡수하는 부분은 ___이다.",
+    text: "식물이 물을 흡수하는 부분은 ___다.",
     answer: "뿌리",
     category: "과학",
   },
   { text: "철은 ___에 붙는 성질이 있다.", answer: "자석", category: "과학" },
   { text: "렌즈는 빛을 ___시키는 도구이다.", answer: "굴절", category: "과학" },
   {
-    text: "화산이 폭발하면 ___가 흘러나온다.",
+    text: "화산이 폭발하면 ___이 흘러나온다.",
     answer: "용암",
     category: "과학",
   },
@@ -2748,7 +2748,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "바위가 부서져서 작아진 것을 ___이라 한다.",
+    text: "바위가 부서져서 작아진 것을 ___라 한다.",
     answer: "모래",
     category: "지구과학",
   },
@@ -2763,7 +2763,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   { text: "지구의 내부는 매우 ___다.", answer: "뜨겁", category: "지구과학" },
-  { text: "지구의 겉면을 ___라 한다.", answer: "지각", category: "지구과학" },
+  { text: "지구의 겉면을 ___이라 한다.", answer: "지각", category: "지구과학" },
   {
     text: "바다의 밀물과 썰물은 ___의 인력 때문이다.",
     answer: "달",
@@ -2785,7 +2785,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "지구 표면의 약 70%는 ___이다.",
+    text: "지구 표면의 약 70%는 ___다.",
     answer: "바다",
     category: "지구과학",
   },
@@ -2826,7 +2826,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "지진이 바다에서 일어나면 ___가 발생할 수 있다.",
+    text: "지진이 바다에서 일어나면 ___이 발생할 수 있다.",
     answer: "해일",
     category: "지구과학",
   },
@@ -2901,12 +2901,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "직사각형의 넓이는 가로 곱하기 ___이다.",
+    text: "직사각형의 넓이는 가로 곱하기 ___다.",
     answer: "세로",
     category: "수학상식",
   },
   {
-    text: "삼각형의 넓이는 밑변 곱하기 높이 나누기 ___이다.",
+    text: "삼각형의 넓이는 밑변 곱하기 높이 나누기 ___다.",
     answer: "2",
     category: "수학상식",
   },
@@ -2915,7 +2915,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     answer: "90",
     category: "수학상식",
   },
-  { text: "가장 작은 소수는 ___이다.", answer: "2", category: "수학상식" },
+  { text: "가장 작은 소수는 ___다.", answer: "2", category: "수학상식" },
   {
     text: "분수에서 위의 수를 ___라 한다.",
     answer: "분자",
@@ -2949,7 +2949,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "원의 둘레를 지름으로 나누면 ___가 된다.",
+    text: "원의 둘레를 지름으로 나누면 ___이 된다.",
     answer: "원주율",
     category: "수학상식",
   },
@@ -2962,7 +2962,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "태양에서 세 번째 행성은 ___이다.",
+    text: "태양에서 세 번째 행성은 ___다.",
     answer: "지구",
     category: "우주",
   },
@@ -3003,12 +3003,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "인공___는 지구 주위를 도는 기계이다.",
+    text: "인공___은 지구 주위를 도는 기계이다.",
     answer: "위성",
     category: "우주",
   },
   {
-    text: "우주비행사는 우주에서 ___가 없어 둥둥 뜬다.",
+    text: "우주비행사는 우주에서 ___이 없어 둥둥 뜬다.",
     answer: "중력",
     category: "우주",
   },
@@ -3042,7 +3042,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // === 동물 (중급, 15) ===
   {
-    text: "곤충의 몸은 머리, 가슴, ___으로 나뉜다.",
+    text: "곤충의 몸은 머리, 가슴, ___로 나뉜다.",
     answer: "배",
     category: "동물",
   },
@@ -3092,21 +3092,21 @@ const GRADE_3_4: KnowledgeEntry[] = [
   },
   { text: "오징어의 다리는 ___개이다.", answer: "10", category: "동물" },
   {
-    text: "세계에서 가장 큰 동물은 ___이다.",
+    text: "세계에서 가장 큰 동물은 ___다.",
     answer: "대왕고래",
     category: "동물",
   },
 
   // === 나라 (5) ===
-  { text: "우리나라의 국기는 ___이다.", answer: "태극기", category: "문화" },
-  { text: "우리나라의 국화는 ___이다.", answer: "무궁화", category: "문화" },
+  { text: "우리나라의 국기는 ___다.", answer: "태극기", category: "문화" },
+  { text: "우리나라의 국화는 ___다.", answer: "무궁화", category: "문화" },
   {
     text: "대한민국의 대통령이 사는 곳은 ___이다.",
     answer: "용산",
     category: "문화",
   },
   {
-    text: "우리 몸에서 음식을 소화하는 기관은 ___이다.",
+    text: "우리 몸에서 음식을 소화하는 기관은 ___다.",
     answer: "위",
     category: "인체",
   },
@@ -3118,7 +3118,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 우리나라 지리 심화 (20) ────
   {
-    text: "우리나라에서 가장 넓은 평야는 ___이다.",
+    text: "우리나라에서 가장 넓은 평야는 ___다.",
     answer: "호남평야",
     category: "지리",
   },
@@ -3143,7 +3143,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     answer: "철강",
     category: "지리",
   },
-  { text: "보성은 ___으로 유명한 지역이다.", answer: "녹차", category: "지리" },
+  { text: "보성은 ___로 유명한 지역이다.", answer: "녹차", category: "지리" },
   {
     text: "안동은 ___으로 유명한 도시이다.",
     answer: "하회탈",
@@ -3155,7 +3155,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "춘천은 ___으로 유명한 도시이다.",
+    text: "춘천은 ___로 유명한 도시이다.",
     answer: "닭갈비",
     category: "문화",
   },
@@ -3167,12 +3167,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "혼합물에서 물질을 분리하는 방법 중 하나는 ___이다.",
+    text: "혼합물에서 물질을 분리하는 방법 중 하나는 ___다.",
     answer: "거르기",
     category: "과학",
   },
   {
-    text: "열은 뜨거운 곳에서 ___곳으로 이동한다.",
+    text: "열은 뜨거운 곳에서 ___ 곳으로 이동한다.",
     answer: "차가운",
     category: "과학",
   },
@@ -3242,12 +3242,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
   { text: "자유의 여신상은 ___에 있다.", answer: "미국", category: "지리" },
   { text: "에펠탑은 ___에 있다.", answer: "프랑스", category: "지리" },
   {
-    text: "세계에서 인구가 가장 많은 나라는 ___이다.",
+    text: "세계에서 인구가 가장 많은 나라는 ___다.",
     answer: "인도",
     category: "지리",
   },
   {
-    text: "세계에서 면적이 가장 큰 나라는 ___이다.",
+    text: "세계에서 면적이 가장 큰 나라는 ___다.",
     answer: "러시아",
     category: "지리",
   },
@@ -3271,12 +3271,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 지리 확장 (20) ────
   {
-    text: "우리나라의 가장 남쪽 섬은 ___이다.",
+    text: "우리나라의 가장 남쪽 섬은 ___다.",
     answer: "마라도",
     category: "지리",
   },
   {
-    text: "우리나라의 가장 동쪽 영토는 ___이다.",
+    text: "우리나라의 가장 동쪽 영토는 ___다.",
     answer: "독도",
     category: "지리",
   },
@@ -3288,7 +3288,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   { text: "해운대 해수욕장은 ___에 있다.", answer: "부산", category: "지리" },
   { text: "강릉은 ___도에 있는 도시이다.", answer: "강원", category: "지리" },
   {
-    text: "우리나라에서 밀감이 가장 많이 나는 곳은 ___이다.",
+    text: "우리나라에서 밀감이 가장 많이 나는 곳은 ___다.",
     answer: "제주도",
     category: "지리",
   },
@@ -3299,12 +3299,12 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "합천에 있는 유네스코 세계유산은 ___이다.",
+    text: "합천에 있는 유네스코 세계유산은 ___다.",
     answer: "해인사",
     category: "지리",
   },
   {
-    text: "우리나라에서 가장 큰 호수는 ___이다.",
+    text: "우리나라에서 가장 큰 호수는 ___다.",
     answer: "소양호",
     category: "지리",
   },
@@ -3321,7 +3321,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "순천만은 ___로 유명한 생태 관광지이다.",
+    text: "순천만은 ___으로 유명한 생태 관광지이다.",
     answer: "갈대밭",
     category: "지리",
   },
@@ -3345,19 +3345,19 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 역사 확장 (20) ────
   {
-    text: "고려시대의 대표적인 종교는 ___이다.",
+    text: "고려시대의 대표적인 종교는 ___다.",
     answer: "불교",
     category: "역사",
   },
-  { text: "조선시대의 지배 이념은 ___이다.", answer: "유교", category: "역사" },
+  { text: "조선시대의 지배 이념은 ___다.", answer: "유교", category: "역사" },
   { text: "세종대왕이 만든 악기는 ___이다.", answer: "편경", category: "역사" },
   {
-    text: "조선시대 관리를 뽑는 시험을 ___이라 한다.",
+    text: "조선시대 관리를 뽑는 시험을 ___라 한다.",
     answer: "과거",
     category: "역사",
   },
   {
-    text: "고려시대에 몽골의 침략을 막기 위해 ___으로 천도했다.",
+    text: "고려시대에 몽골의 침략을 막기 위해 ___로 천도했다.",
     answer: "강화도",
     category: "역사",
   },
@@ -3378,17 +3378,17 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "백제의 근초고왕은 일본에 ___을 전해 주었다.",
+    text: "백제의 근초고왕은 일본에 ___를 전해 주었다.",
     answer: "문화",
     category: "역사",
   },
   {
-    text: "한국전쟁 때 유엔군을 이끈 장군은 ___이다.",
+    text: "한국전쟁 때 유엔군을 이끈 장군은 ___다.",
     answer: "맥아더",
     category: "역사",
   },
   {
-    text: "1988년 서울 올림픽의 마스코트는 ___이다.",
+    text: "1988년 서울 올림픽의 마스코트는 ___다.",
     answer: "호돌이",
     category: "역사",
   },
@@ -3419,7 +3419,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "대한민국 헌법에는 국민의 ___가 보장되어 있다.",
+    text: "대한민국 헌법에는 국민의 ___이 보장되어 있다.",
     answer: "기본권",
     category: "역사",
   },
@@ -3431,17 +3431,17 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 과학 확장 (20) ────
   {
-    text: "물질이 타면서 빛과 열을 내는 것을 ___이라 한다.",
+    text: "물질이 타면서 빛과 열을 내는 것을 ___라 한다.",
     answer: "연소",
     category: "과학",
   },
   {
-    text: "양초가 타면 ___으로 변한다.",
+    text: "양초가 타면 ___로 변한다.",
     answer: "이산화탄소와 수증기",
     category: "과학",
   },
   {
-    text: "식초에 달걀 껍데기를 넣으면 ___가 나온다.",
+    text: "식초에 달걀 껍데기를 넣으면 ___이 나온다.",
     answer: "거품",
     category: "과학",
   },
@@ -3461,7 +3461,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "전지를 직렬로 연결하면 ___이 밝아진다.",
+    text: "전지를 직렬로 연결하면 ___가 밝아진다.",
     answer: "전구",
     category: "과학",
   },
@@ -3470,7 +3470,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     answer: "늘어",
     category: "과학",
   },
-  { text: "체온계로 사람의 ___를 측정한다.", answer: "체온", category: "과학" },
+  { text: "체온계로 사람의 ___을 측정한다.", answer: "체온", category: "과학" },
   {
     text: "비커와 시험관은 ___실에서 사용하는 도구이다.",
     answer: "실험",
@@ -3503,7 +3503,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "흙은 자갈, 모래, ___으로 이루어져 있다.",
+    text: "흙은 자갈, 모래, ___로 이루어져 있다.",
     answer: "점토",
     category: "과학",
   },
@@ -3631,7 +3631,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
   { text: "둔각은 ___도보다 큰 각이다.", answer: "90", category: "수학상식" },
   { text: "예각은 ___도보다 작은 각이다.", answer: "90", category: "수학상식" },
   {
-    text: "곱하기의 반대 연산은 ___이다.",
+    text: "곱하기의 반대 연산은 ___다.",
     answer: "나누기",
     category: "수학상식",
   },
@@ -3639,7 +3639,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 동물 확장 (15) ────
   {
-    text: "사마귀는 앞다리로 먹이를 ___는 곤충이다.",
+    text: "사마귀는 앞다리로 먹이를 ___은 곤충이다.",
     answer: "잡",
     category: "동물",
   },
@@ -3659,7 +3659,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "코뿔소의 뿔은 ___로 만들어져 있다.",
+    text: "코뿔소의 뿔은 ___으로 만들어져 있다.",
     answer: "케라틴",
     category: "동물",
   },
@@ -3674,7 +3674,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "해마는 ___가 새끼를 낳는 특이한 동물이다.",
+    text: "해마는 ___이 새끼를 낳는 특이한 동물이다.",
     answer: "수컷",
     category: "동물",
   },
@@ -3698,7 +3698,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     answer: "사계절",
     category: "동물",
   },
-  { text: "다슬기는 강에 사는 ___이다.", answer: "달팽이", category: "동물" },
+  { text: "다슬기는 강에 사는 ___다.", answer: "달팽이", category: "동물" },
   {
     text: "반달가슴곰은 우리나라의 멸종 위기 ___이다.",
     answer: "동물",
@@ -3736,7 +3736,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "동해, 서해, 남해는 모두 우리나라의 ___이다.",
+    text: "동해, 서해, 남해는 모두 우리나라의 ___다.",
     answer: "바다",
     category: "지리",
   },
@@ -3748,7 +3748,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "제주도와 울릉도 중 더 큰 섬은 ___이다.",
+    text: "제주도와 울릉도 중 더 큰 섬은 ___다.",
     answer: "제주도",
     category: "지리",
   },
@@ -3780,7 +3780,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "충청도의 대표 도시는 대전이고, 경상북도의 대표 도시는 ___이다.",
+    text: "충청도의 대표 도시는 대전이고, 경상북도의 대표 도시는 ___다.",
     answer: "대구",
     category: "지리",
   },
@@ -3826,7 +3826,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "고구려의 수도는 평양이고, 신라의 수도는 ___이다.",
+    text: "고구려의 수도는 평양이고, 신라의 수도는 ___다.",
     answer: "경주",
     category: "역사",
   },
@@ -3865,19 +3865,19 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 역사: 비교하기 ────
   {
-    text: "고구려와 백제 중 영토가 더 넓었던 나라는 ___이다.",
+    text: "고구려와 백제 중 영토가 더 넓었던 나라는 ___다.",
     answer: "고구려",
     category: "역사",
   },
   {
-    text: "삼국을 통일한 나라는 백제가 아니라 ___이다.",
+    text: "삼국을 통일한 나라는 백제가 아니라 ___다.",
     answer: "신라",
     category: "역사",
   },
 
   // ──── 역사: 원인결과 ────
   {
-    text: "한글이 만들어져서 백성들이 ___를 쉽게 배울 수 있었다.",
+    text: "한글이 만들어져서 백성들이 ___을 쉽게 배울 수 있었다.",
     answer: "글",
     category: "역사",
   },
@@ -3899,7 +3899,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "고체, 액체, 기체는 물질의 세 가지 ___이다.",
+    text: "고체, 액체, 기체는 물질의 세 가지 ___다.",
     answer: "상태",
     category: "과학",
   },
@@ -3966,7 +3966,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "같은 부피의 쇠와 나무 중 더 무거운 것은 ___이다.",
+    text: "같은 부피의 쇠와 나무 중 더 무거운 것은 ___다.",
     answer: "쇠",
     category: "과학",
   },
@@ -3995,7 +3995,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "지진, 화산, 해일은 모두 자연 ___이다.",
+    text: "지진, 화산, 해일은 모두 자연 ___다.",
     answer: "재해",
     category: "지구과학",
   },
@@ -4019,7 +4019,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 지구과학: 원인결과 ────
   {
-    text: "화산이 폭발하면 주변에 ___이 쌓인다.",
+    text: "화산이 폭발하면 주변에 ___가 쌓인다.",
     answer: "화산재",
     category: "지구과학",
   },
@@ -4087,7 +4087,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 수학상식: 연결하기 ────
   {
-    text: "더하기의 반대는 빼기이고, 곱하기의 반대는 ___이다.",
+    text: "더하기의 반대는 빼기이고, 곱하기의 반대는 ___다.",
     answer: "나누기",
     category: "수학상식",
   },
@@ -4184,7 +4184,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "동물",
   },
   {
-    text: "문어와 오징어 중 다리가 더 적은 것은 ___이다.",
+    text: "문어와 오징어 중 다리가 더 적은 것은 ___다.",
     answer: "문어",
     category: "동물",
   },
@@ -4208,7 +4208,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 문화: 비교하기 ────
   {
-    text: "고려청자와 조선백자 중 푸른색인 것은 ___이다.",
+    text: "고려청자와 조선백자 중 푸른색인 것은 ___다.",
     answer: "고려청자",
     category: "문화",
   },
@@ -4251,7 +4251,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
 
   // ──── 추가: 세계 지리 신규 ────
   {
-    text: "아시아에서 가장 큰 나라는 ___이다.",
+    text: "아시아에서 가장 큰 나라는 ___다.",
     answer: "러시아",
     category: "지리",
   },
@@ -4328,7 +4328,7 @@ const GRADE_3_4: KnowledgeEntry[] = [
     category: "지구과학",
   },
   {
-    text: "화석연료에는 석탄, 석유, ___이 있다.",
+    text: "화석연료에는 석탄, 석유, ___가 있다.",
     answer: "천연가스",
     category: "지구과학",
   },
@@ -4374,12 +4374,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "지구에서 가장 큰 대륙은 ___이다.",
+    text: "지구에서 가장 큰 대륙은 ___다.",
     answer: "아시아",
     category: "지리",
   },
   {
-    text: "세계에서 가장 높은 산은 ___이다.",
+    text: "세계에서 가장 높은 산은 ___다.",
     answer: "에베레스트",
     category: "지리",
   },
@@ -4389,36 +4389,36 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "세계에서 가장 큰 사막은 ___이다.",
+    text: "세계에서 가장 큰 사막은 ___다.",
     answer: "사하라",
     category: "지리",
   },
   {
-    text: "세계에서 가장 큰 나라는 ___이다.",
+    text: "세계에서 가장 큰 나라는 ___다.",
     answer: "러시아",
     category: "지리",
   },
   {
-    text: "세계에서 인구가 가장 많은 나라는 ___이다.",
+    text: "세계에서 인구가 가장 많은 나라는 ___다.",
     answer: "인도",
     category: "지리",
   },
-  { text: "일본의 수도는 ___이다.", answer: "도쿄", category: "지리" },
+  { text: "일본의 수도는 ___다.", answer: "도쿄", category: "지리" },
   { text: "중국의 수도는 ___이다.", answer: "베이징", category: "지리" },
   { text: "미국의 수도는 ___이다.", answer: "워싱턴 D.C.", category: "지리" },
   { text: "영국의 수도는 ___이다.", answer: "런던", category: "지리" },
-  { text: "프랑스의 수도는 ___이다.", answer: "파리", category: "지리" },
-  { text: "이탈리아의 수도는 ___이다.", answer: "로마", category: "지리" },
+  { text: "프랑스의 수도는 ___다.", answer: "파리", category: "지리" },
+  { text: "이탈리아의 수도는 ___다.", answer: "로마", category: "지리" },
   { text: "독일의 수도는 ___이다.", answer: "베를린", category: "지리" },
-  { text: "호주의 수도는 ___이다.", answer: "캔버라", category: "지리" },
-  { text: "브라질의 수도는 ___이다.", answer: "브라질리아", category: "지리" },
+  { text: "호주의 수도는 ___다.", answer: "캔버라", category: "지리" },
+  { text: "브라질의 수도는 ___다.", answer: "브라질리아", category: "지리" },
   {
     text: "이집트에는 유명한 ___가 있다.",
     answer: "피라미드",
     category: "지리",
   },
   {
-    text: "적도는 지구의 ___을 가로지르는 선이다.",
+    text: "적도는 지구의 ___를 가로지르는 선이다.",
     answer: "가운데",
     category: "지리",
   },
@@ -4438,7 +4438,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "나이아가라 폭포는 ___와 캐나다 사이에 있다.",
+    text: "나이아가라 폭포는 ___과 캐나다 사이에 있다.",
     answer: "미국",
     category: "지리",
   },
@@ -4494,8 +4494,8 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // === 역사 (심화, 35) ===
   { text: "고구려를 세운 왕은 ___이다.", answer: "주몽", category: "역사" },
-  { text: "백제를 세운 왕은 ___이다.", answer: "온조", category: "역사" },
-  { text: "신라를 세운 왕은 ___이다.", answer: "박혁거세", category: "역사" },
+  { text: "백제를 세운 왕은 ___다.", answer: "온조", category: "역사" },
+  { text: "신라를 세운 왕은 ___다.", answer: "박혁거세", category: "역사" },
   { text: "발해를 세운 사람은 ___이다.", answer: "대조영", category: "역사" },
   { text: "고려의 수도는 ___이었다.", answer: "개경", category: "역사" },
   {
@@ -4546,7 +4546,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "민주주의가 처음 시작된 나라는 ___이다.",
+    text: "민주주의가 처음 시작된 나라는 ___다.",
     answer: "그리스",
     category: "역사",
   },
@@ -4607,7 +4607,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     answer: "조선왕조실록",
     category: "역사",
   },
-  { text: "수원 화성을 지은 왕은 ___이다.", answer: "정조", category: "역사" },
+  { text: "수원 화성을 지은 왕은 ___다.", answer: "정조", category: "역사" },
   {
     text: "안중근 의사는 이토 히로부미를 ___에서 저격했다.",
     answer: "하얼빈",
@@ -4636,17 +4636,17 @@ const GRADE_5_6: KnowledgeEntry[] = [
   { text: "원소 기호 H는 ___를 나타낸다.", answer: "수소", category: "과학" },
   { text: "원소 기호 C는 ___를 나타낸다.", answer: "탄소", category: "과학" },
   { text: "원소 기호 N는 ___를 나타낸다.", answer: "질소", category: "과학" },
-  { text: "원소 기호 Fe는 ___를 나타낸다.", answer: "철", category: "과학" },
+  { text: "원소 기호 Fe는 ___을 나타낸다.", answer: "철", category: "과학" },
   { text: "물의 화학식은 ___이다.", answer: "H₂O", category: "과학" },
   { text: "이산화탄소의 화학식은 ___이다.", answer: "CO₂", category: "과학" },
-  { text: "전류의 단위는 ___이다.", answer: "암페어", category: "물리" },
-  { text: "전압의 단위는 ___이다.", answer: "볼트", category: "물리" },
+  { text: "전류의 단위는 ___다.", answer: "암페어", category: "물리" },
+  { text: "전압의 단위는 ___다.", answer: "볼트", category: "물리" },
   { text: "저항의 단위는 ___이다.", answer: "옴", category: "물리" },
   { text: "힘의 단위는 ___이다.", answer: "뉴턴", category: "물리" },
   { text: "에너지의 단위는 ___이다.", answer: "줄", category: "물리" },
   { text: "원자의 중심에는 ___이 있다.", answer: "원자핵", category: "과학" },
   {
-    text: "원자핵 주위를 도는 것은 ___이다.",
+    text: "원자핵 주위를 도는 것은 ___다.",
     answer: "전자",
     category: "과학",
   },
@@ -4667,7 +4667,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "지레의 원리를 발견한 과학자는 ___이다.",
+    text: "지레의 원리를 발견한 과학자는 ___다.",
     answer: "아르키메데스",
     category: "과학",
   },
@@ -4688,7 +4688,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "전화기를 발명한 사람은 ___이다.", answer: "벨", category: "과학" },
   {
-    text: "증기기관을 개량한 사람은 ___이다.",
+    text: "증기기관을 개량한 사람은 ___다.",
     answer: "와트",
     category: "과학",
   },
@@ -4729,7 +4729,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "물체의 빠르기를 나타내는 것을 ___라 한다.",
+    text: "물체의 빠르기를 나타내는 것을 ___이라 한다.",
     answer: "속력",
     category: "물리",
   },
@@ -4741,7 +4741,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "세포의 에너지 공장이라 불리는 것은 ___이다.",
+    text: "세포의 에너지 공장이라 불리는 것은 ___다.",
     answer: "미토콘드리아",
     category: "생물",
   },
@@ -4757,7 +4757,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "광합성에서 식물이 내보내는 기체는 ___이다.",
+    text: "광합성에서 식물이 내보내는 기체는 ___다.",
     answer: "산소",
     category: "생물",
   },
@@ -4782,7 +4782,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "오존층은 태양의 ___를 차단한다.",
+    text: "오존층은 태양의 ___을 차단한다.",
     answer: "자외선",
     category: "환경",
   },
@@ -4802,7 +4802,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "식물",
   },
   {
-    text: "광합성에 필요한 세 가지는 빛, 물, ___이다.",
+    text: "광합성에 필요한 세 가지는 빛, 물, ___다.",
     answer: "이산화탄소",
     category: "식물",
   },
@@ -4812,16 +4812,16 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "식물",
   },
   {
-    text: "씨앗이 싹트는 것을 ___이라 한다.",
+    text: "씨앗이 싹트는 것을 ___라 한다.",
     answer: "발아",
     category: "식물",
   },
   {
-    text: "식충식물은 ___를 잡아 양분을 얻는다.",
+    text: "식충식물은 ___을 잡아 양분을 얻는다.",
     answer: "곤충",
     category: "식물",
   },
-  { text: "겉씨식물의 대표는 ___이다.", answer: "소나무", category: "식물" },
+  { text: "겉씨식물의 대표는 ___다.", answer: "소나무", category: "식물" },
   {
     text: "속씨식물은 씨가 ___안에 들어 있다.",
     answer: "열매",
@@ -4836,7 +4836,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   { text: "소장에서 영양분을 ___한다.", answer: "흡수", category: "인체" },
   { text: "대장에서 ___을 흡수한다.", answer: "수분", category: "인체" },
   {
-    text: "간은 ___을 해독하는 역할을 한다.",
+    text: "간은 ___를 해독하는 역할을 한다.",
     answer: "독소",
     category: "인체",
   },
@@ -4852,12 +4852,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "인체",
   },
   {
-    text: "인체에서 가장 큰 장기는 ___이다.",
+    text: "인체에서 가장 큰 장기는 ___다.",
     answer: "피부",
     category: "인체",
   },
   {
-    text: "인체에서 가장 작은 뼈는 귀 속의 ___이다.",
+    text: "인체에서 가장 작은 뼈는 귀 속의 ___다.",
     answer: "등골뼈",
     category: "인체",
   },
@@ -4867,13 +4867,13 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "인체",
   },
   {
-    text: "호흡에서 사람이 내보내는 기체는 ___이다.",
+    text: "호흡에서 사람이 내보내는 기체는 ___다.",
     answer: "이산화탄소",
     category: "인체",
   },
   { text: "사람의 폐는 ___개이다.", answer: "두", category: "인체" },
   {
-    text: "원자를 이루는 양성자, 중성자, ___이 있다.",
+    text: "원자를 이루는 양성자, 중성자, ___가 있다.",
     answer: "전자",
     category: "과학",
   },
@@ -4883,7 +4883,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "열이 전달되는 세 가지 방법은 전도, 대류, ___이다.",
+    text: "열이 전달되는 세 가지 방법은 전도, 대류, ___다.",
     answer: "복사",
     category: "과학",
   },
@@ -4893,7 +4893,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "과학",
   },
   {
-    text: "지구 대기의 약 78%를 차지하는 기체는 ___이다.",
+    text: "지구 대기의 약 78%를 차지하는 기체는 ___다.",
     answer: "질소",
     category: "과학",
   },
@@ -4919,7 +4919,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     answer: "46",
     category: "우주",
   },
-  { text: "우리 은하의 이름은 ___이다.", answer: "은하수", category: "우주" },
+  { text: "우리 은하의 이름은 ___다.", answer: "은하수", category: "우주" },
   {
     text: "블랙홀은 빛도 빠져나올 수 없을 만큼 ___이 강하다.",
     answer: "중력",
@@ -5035,7 +5035,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "확률에서 절대 일어나지 않는 사건의 확률은 ___이다.",
+    text: "확률에서 절대 일어나지 않는 사건의 확률은 ___다.",
     answer: "0",
     category: "수학상식",
   },
@@ -5062,8 +5062,8 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생활상식",
   },
   { text: "일본의 화폐 단위는 ___이다.", answer: "엔", category: "생활상식" },
-  { text: "미국의 화폐 단위는 ___이다.", answer: "달러", category: "생활상식" },
-  { text: "유럽의 공통 화폐는 ___이다.", answer: "유로", category: "생활상식" },
+  { text: "미국의 화폐 단위는 ___다.", answer: "달러", category: "생활상식" },
+  { text: "유럽의 공통 화폐는 ___다.", answer: "유로", category: "생활상식" },
   { text: "올림픽은 ___년마다 열린다.", answer: "4", category: "생활상식" },
   {
     text: "FIFA 월드컵은 ___년마다 열린다.",
@@ -5090,7 +5090,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     answer: "레몬",
     category: "생활상식",
   },
-  { text: "칼슘이 많은 음식은 ___이다.", answer: "우유", category: "생활상식" },
+  { text: "칼슘이 많은 음식은 ___다.", answer: "우유", category: "생활상식" },
   {
     text: "탄수화물은 우리 몸에 ___를 공급한다.",
     answer: "에너지",
@@ -5107,7 +5107,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생활상식",
   },
   {
-    text: "소리의 빠르기를 ___라고 한다.",
+    text: "소리의 빠르기를 ___이라고 한다.",
     answer: "음속",
     category: "생활상식",
   },
@@ -5129,13 +5129,13 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "비빔밥으로 유명한 한국의 도시는 ___이다.",
+    text: "비빔밥으로 유명한 한국의 도시는 ___다.",
     answer: "전주",
     category: "문화",
   },
   { text: "고려청자는 ___색을 띤다.", answer: "비취", category: "문화" },
   {
-    text: "조선시대 그림 중 풍속화로 유명한 화가는 ___이다.",
+    text: "조선시대 그림 중 풍속화로 유명한 화가는 ___다.",
     answer: "김홍도",
     category: "문화",
   },
@@ -5159,7 +5159,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "물체가 빠르게 움직이면 ___이 커진다.",
+    text: "물체가 빠르게 움직이면 ___가 커진다.",
     answer: "운동에너지",
     category: "물리",
   },
@@ -5202,7 +5202,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "온실가스 중 대표적인 것은 ___이다.",
+    text: "온실가스 중 대표적인 것은 ___다.",
     answer: "이산화탄소",
     category: "환경",
   },
@@ -5256,7 +5256,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "장영실이 만든 물시계는 ___이다.",
+    text: "장영실이 만든 물시계는 ___다.",
     answer: "자격루",
     category: "역사",
   },
@@ -5271,12 +5271,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "유네스코에 등록된 한국의 전통 음악은 ___이다.",
+    text: "유네스코에 등록된 한국의 전통 음악은 ___다.",
     answer: "판소리",
     category: "문화",
   },
   {
-    text: "김정호가 만든 정밀한 지도는 ___이다.",
+    text: "김정호가 만든 정밀한 지도는 ___다.",
     answer: "대동여지도",
     category: "역사",
   },
@@ -5302,11 +5302,11 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
 
   // ──── 추가: 지리 심화 확장 (20) ────
-  { text: "베트남의 수도는 ___이다.", answer: "하노이", category: "지리" },
+  { text: "베트남의 수도는 ___다.", answer: "하노이", category: "지리" },
   { text: "태국의 수도는 ___이다.", answer: "방콕", category: "지리" },
-  { text: "인도의 수도는 ___이다.", answer: "뉴델리", category: "지리" },
-  { text: "캐나다의 수도는 ___이다.", answer: "오타와", category: "지리" },
-  { text: "스페인의 수도는 ___이다.", answer: "마드리드", category: "지리" },
+  { text: "인도의 수도는 ___다.", answer: "뉴델리", category: "지리" },
+  { text: "캐나다의 수도는 ___다.", answer: "오타와", category: "지리" },
+  { text: "스페인의 수도는 ___다.", answer: "마드리드", category: "지리" },
   { text: "지구에는 ___개의 대양이 있다.", answer: "5", category: "지리" },
   {
     text: "수에즈 운하는 아시아와 ___를 잇는다.",
@@ -5355,7 +5355,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "열대 지방은 ___가 일년 내내 높다.",
+    text: "열대 지방은 ___이 일년 내내 높다.",
     answer: "기온",
     category: "지리",
   },
@@ -5366,7 +5366,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "한류 지방은 ___이 매우 낮다.", answer: "기온", category: "지리" },
   {
-    text: "세계에서 가장 높은 폭포는 ___이다.",
+    text: "세계에서 가장 높은 폭포는 ___다.",
     answer: "앙헬 폭포",
     category: "지리",
   },
@@ -5378,7 +5378,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "인쇄술의 발전에 기여한 독일인은 ___이다.",
+    text: "인쇄술의 발전에 기여한 독일인은 ___다.",
     answer: "구텐베르크",
     category: "역사",
   },
@@ -5426,7 +5426,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "로마 제국의 공용어는 ___어였다.", answer: "라틴", category: "역사" },
   {
-    text: "이집트의 파라오는 ___을 지었다.",
+    text: "이집트의 파라오는 ___를 지었다.",
     answer: "피라미드",
     category: "역사",
   },
@@ -5438,7 +5438,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
   },
   { text: "대한민국은 ___주의 공화국이다.", answer: "민주", category: "역사" },
   {
-    text: "안창호 선생은 흥사단을 만든 ___이다.",
+    text: "안창호 선생은 흥사단을 만든 ___다.",
     answer: "독립운동가",
     category: "역사",
   },
@@ -5447,7 +5447,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 추가: 과학/물리/화학 확장 (20) ────
   {
-    text: "지레는 작은 힘으로 큰 ___을 들어 올리는 도구이다.",
+    text: "지레는 작은 힘으로 큰 ___를 들어 올리는 도구이다.",
     answer: "물체",
     category: "물리",
   },
@@ -5462,17 +5462,17 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "물리",
   },
   {
-    text: "빛이 직진하는 성질을 이용한 장치는 ___이다.",
+    text: "빛이 직진하는 성질을 이용한 장치는 ___다.",
     answer: "카메라",
     category: "물리",
   },
   {
-    text: "주파수가 높은 소리는 ___소리이다.",
+    text: "주파수가 높은 소리는 ___ 소리이다.",
     answer: "높은",
     category: "물리",
   },
   {
-    text: "주파수가 낮은 소리는 ___소리이다.",
+    text: "주파수가 낮은 소리는 ___ 소리이다.",
     answer: "낮은",
     category: "물리",
   },
@@ -5497,17 +5497,17 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "화학",
   },
   {
-    text: "원소 주기율표를 만든 과학자는 ___이다.",
+    text: "원소 주기율표를 만든 과학자는 ___다.",
     answer: "멘델레예프",
     category: "화학",
   },
   {
-    text: "중화 반응이란 산과 ___이 만나 물과 소금이 생기는 것이다.",
+    text: "중화 반응이란 산과 ___가 만나 물과 소금이 생기는 것이다.",
     answer: "염기",
     category: "화학",
   },
   {
-    text: "탄산음료에 들어 있는 기체는 ___이다.",
+    text: "탄산음료에 들어 있는 기체는 ___다.",
     answer: "이산화탄소",
     category: "화학",
   },
@@ -5564,7 +5564,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "생태계에서 분해자 역할을 하는 것은 ___이다.",
+    text: "생태계에서 분해자 역할을 하는 것은 ___다.",
     answer: "세균과 곰팡이",
     category: "생물",
   },
@@ -5574,7 +5574,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "혈소판은 상처에서 ___를 멈추게 한다.",
+    text: "혈소판은 상처에서 ___을 멈추게 한다.",
     answer: "출혈",
     category: "생물",
   },
@@ -5584,7 +5584,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "백신은 면역___를 만들어 병을 예방한다.",
+    text: "백신은 면역___을 만들어 병을 예방한다.",
     answer: "력",
     category: "생물",
   },
@@ -5594,7 +5594,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "지구온난화의 주범인 온실가스는 ___이다.",
+    text: "지구온난화의 주범인 온실가스는 ___다.",
     answer: "이산화탄소",
     category: "환경",
   },
@@ -5614,7 +5614,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "분리수거는 ___를 보호하기 위한 활동이다.",
+    text: "분리수거는 ___을 보호하기 위한 활동이다.",
     answer: "환경",
     category: "환경",
   },
@@ -5629,7 +5629,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "환경",
   },
   {
-    text: "습지는 다양한 생물이 사는 중요한 ___이다.",
+    text: "습지는 다양한 생물이 사는 중요한 ___다.",
     answer: "서식지",
     category: "환경",
   },
@@ -5656,7 +5656,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "금성은 지구에서 가장 ___행성이다.",
+    text: "금성은 지구에서 가장 ___ 행성이다.",
     answer: "밝은",
     category: "우주",
   },
@@ -5671,12 +5671,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "토성의 고리는 ___와 먼지로 이루어져 있다.",
+    text: "토성의 고리는 ___과 먼지로 이루어져 있다.",
     answer: "얼음",
     category: "우주",
   },
   {
-    text: "목성의 위성 중 가장 큰 것은 ___이다.",
+    text: "목성의 위성 중 가장 큰 것은 ___다.",
     answer: "가니메데",
     category: "우주",
   },
@@ -5691,7 +5691,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "우주비행사가 우주 밖으로 나가 활동하는 것을 ___라 한다.",
+    text: "우주비행사가 우주 밖으로 나가 활동하는 것을 ___이라 한다.",
     answer: "우주유영",
     category: "우주",
   },
@@ -5711,7 +5711,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "우주",
   },
   {
-    text: "화성 탐사 로버의 이름 중 하나는 ___이다.",
+    text: "화성 탐사 로버의 이름 중 하나는 ___다.",
     answer: "퍼시비어런스",
     category: "우주",
   },
@@ -5728,7 +5728,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 추가: 인체 심화 확장 (15) ────
   {
-    text: "뉴런은 신경 ___을 전달하는 세포이다.",
+    text: "뉴런은 신경 ___를 전달하는 세포이다.",
     answer: "신호",
     category: "인체",
   },
@@ -5748,7 +5748,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "인체",
   },
   {
-    text: "기관지는 ___와 폐를 연결하는 통로이다.",
+    text: "기관지는 ___과 폐를 연결하는 통로이다.",
     answer: "목",
     category: "인체",
   },
@@ -5827,14 +5827,14 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "원기둥의 전개도에는 ___와 직사각형이 포함된다.",
+    text: "원기둥의 전개도에는 ___과 직사각형이 포함된다.",
     answer: "원",
     category: "수학상식",
   },
   { text: "삼각기둥의 면은 ___개이다.", answer: "5", category: "수학상식" },
   { text: "사각뿔의 꼭짓점은 ___개이다.", answer: "5", category: "수학상식" },
   {
-    text: "통계에서 가장 자주 나오는 값을 ___라 한다.",
+    text: "통계에서 가장 자주 나오는 값을 ___이라 한다.",
     answer: "최빈값",
     category: "수학상식",
   },
@@ -5844,12 +5844,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "수학상식",
   },
   {
-    text: "원그래프는 전체에 대한 ___를 나타낸다.",
+    text: "원그래프는 전체에 대한 ___을 나타낸다.",
     answer: "비율",
     category: "수학상식",
   },
   {
-    text: "막대그래프는 ___를 비교할 때 사용한다.",
+    text: "막대그래프는 ___을 비교할 때 사용한다.",
     answer: "양",
     category: "수학상식",
   },
@@ -5866,17 +5866,17 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 추가: 문화 심화 확장 (15) ────
   {
-    text: "한국의 유네스코 세계유산으로 ___이 있다.",
+    text: "한국의 유네스코 세계유산으로 ___가 있다.",
     answer: "종묘",
     category: "문화",
   },
   {
-    text: "아리랑은 한국의 대표적인 ___이다.",
+    text: "아리랑은 한국의 대표적인 ___다.",
     answer: "민요",
     category: "문화",
   },
   {
-    text: "한국 영화 ___는 아카데미 작품상을 수상했다.",
+    text: "한국 영화 ___은 아카데미 작품상을 수상했다.",
     answer: "기생충",
     category: "문화",
   },
@@ -5892,7 +5892,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한국의 전통 공예품 중 ___은 나무에 옻칠을 한 것이다.",
+    text: "한국의 전통 공예품 중 ___는 나무에 옻칠을 한 것이다.",
     answer: "칠기",
     category: "문화",
   },
@@ -5922,7 +5922,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "판소리에서 소리하는 사람을 ___라 한다.",
+    text: "판소리에서 소리하는 사람을 ___이라 한다.",
     answer: "소리꾼",
     category: "문화",
   },
@@ -5932,7 +5932,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "한국 전통 무용으로 ___이 있다.",
+    text: "한국 전통 무용으로 ___가 있다.",
     answer: "강강술래",
     category: "문화",
   },
@@ -5980,7 +5980,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "러시아와 바티칸 중 더 큰 나라는 ___이다.",
+    text: "러시아와 바티칸 중 더 큰 나라는 ___다.",
     answer: "러시아",
     category: "지리",
   },
@@ -6002,7 +6002,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "미국의 수도는 워싱턴 D.C.이고, 일본의 수도는 ___이다.",
+    text: "미국의 수도는 워싱턴 D.C.이고, 일본의 수도는 ___다.",
     answer: "도쿄",
     category: "지리",
   },
@@ -6019,12 +6019,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 지리: 원인결과 ────
   {
-    text: "적도 근처는 햇빛을 많이 받아서 ___가 높다.",
+    text: "적도 근처는 햇빛을 많이 받아서 ___이 높다.",
     answer: "기온",
     category: "지리",
   },
   {
-    text: "극지방은 햇빛이 적어서 ___이 발달한다.",
+    text: "극지방은 햇빛이 적어서 ___가 발달한다.",
     answer: "빙하",
     category: "지리",
   },
@@ -6069,7 +6069,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "유관순, 윤봉길, 안중근은 모두 ___이다.",
+    text: "유관순, 윤봉길, 안중근은 모두 ___다.",
     answer: "독립운동가",
     category: "역사",
   },
@@ -6098,7 +6098,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 역사: 원인결과 ────
   {
-    text: "산업혁명이 일어나서 ___으로 물건을 만들게 되었다.",
+    text: "산업혁명이 일어나서 ___로 물건을 만들게 되었다.",
     answer: "기계",
     category: "역사",
   },
@@ -6120,19 +6120,19 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 역사: 비교하기 ────
   {
-    text: "고려와 조선 중 먼저 생긴 나라는 ___이다.",
+    text: "고려와 조선 중 먼저 생긴 나라는 ___다.",
     answer: "고려",
     category: "역사",
   },
   {
-    text: "금속활자와 목판인쇄 중 먼저 발명된 것은 ___이다.",
+    text: "금속활자와 목판인쇄 중 먼저 발명된 것은 ___다.",
     answer: "목판인쇄",
     category: "역사",
   },
 
   // ──── 과학/물리: 분류하기 ────
   {
-    text: "뉴턴, 줄, 와트는 모두 물리학의 ___이다.",
+    text: "뉴턴, 줄, 와트는 모두 물리학의 ___다.",
     answer: "단위",
     category: "물리",
   },
@@ -6184,7 +6184,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 과학/물리: 비교하기 ────
   {
-    text: "도체와 부도체 중 전기가 잘 통하는 것은 ___이다.",
+    text: "도체와 부도체 중 전기가 잘 통하는 것은 ___다.",
     answer: "도체",
     category: "물리",
   },
@@ -6213,7 +6213,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 화학: 분류하기 ────
   {
-    text: "산소, 수소, 질소는 모두 ___이다.",
+    text: "산소, 수소, 질소는 모두 ___다.",
     answer: "원소",
     category: "화학",
   },
@@ -6286,7 +6286,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "소화계, 호흡계, 순환계는 모두 인체의 ___이다.",
+    text: "소화계, 호흡계, 순환계는 모두 인체의 ___다.",
     answer: "기관계",
     category: "생물",
   },
@@ -6347,7 +6347,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "생물",
   },
   {
-    text: "적혈구와 백혈구 중 산소를 운반하는 것은 ___이다.",
+    text: "적혈구와 백혈구 중 산소를 운반하는 것은 ___다.",
     answer: "적혈구",
     category: "생물",
   },
@@ -6405,12 +6405,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 환경: 비교하기 ────
   {
-    text: "재생에너지와 화석연료 중 환경에 더 좋은 것은 ___이다.",
+    text: "재생에너지와 화석연료 중 환경에 더 좋은 것은 ___다.",
     answer: "재생에너지",
     category: "환경",
   },
   {
-    text: "종이와 플라스틱 중 자연에서 더 빨리 분해되는 것은 ___이다.",
+    text: "종이와 플라스틱 중 자연에서 더 빨리 분해되는 것은 ___다.",
     answer: "종이",
     category: "환경",
   },
@@ -6576,7 +6576,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 수학상식: 분류하기 ────
   {
-    text: "평균, 중앙값, 최빈값은 모두 ___를 나타내는 값이다.",
+    text: "평균, 중앙값, 최빈값은 모두 ___을 나타내는 값이다.",
     answer: "대표값",
     category: "수학상식",
   },
@@ -6646,7 +6646,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "아리랑, 도라지, 밀양아리랑은 모두 한국의 ___이다.",
+    text: "아리랑, 도라지, 밀양아리랑은 모두 한국의 ___다.",
     answer: "민요",
     category: "문화",
   },
@@ -6663,7 +6663,7 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "문화",
   },
   {
-    text: "고려의 대표 도자기는 청자이고, 조선의 대표 도자기는 ___이다.",
+    text: "고려의 대표 도자기는 청자이고, 조선의 대표 도자기는 ___다.",
     answer: "백자",
     category: "문화",
   },
@@ -6704,12 +6704,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
 
   // ──── 생활상식: 원인결과 ────
   {
-    text: "탄수화물을 많이 먹으면 ___가 올라간다.",
+    text: "탄수화물을 많이 먹으면 ___이 올라간다.",
     answer: "혈당",
     category: "생활상식",
   },
   {
-    text: "편식을 하면 ___가 불균형해진다.",
+    text: "편식을 하면 ___이 불균형해진다.",
     answer: "영양",
     category: "생활상식",
   },
@@ -6760,12 +6760,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "역사",
   },
   {
-    text: "발해는 고구려를 계승한 나라로 ___가 세웠다.",
+    text: "발해는 고구려를 계승한 나라로 ___이 세웠다.",
     answer: "대조영",
     category: "역사",
   },
   {
-    text: "조선시대 신분 제도에서 가장 낮은 계층은 ___이었다.",
+    text: "조선시대 신분 제도에서 가장 낮은 계층은 ___였다.",
     answer: "노비",
     category: "역사",
   },
@@ -6792,12 +6792,12 @@ const GRADE_5_6: KnowledgeEntry[] = [
     category: "지리",
   },
   {
-    text: "인도네시아는 세계에서 가장 많은 ___를 가진 나라이다.",
+    text: "인도네시아는 세계에서 가장 많은 ___을 가진 나라이다.",
     answer: "섬",
     category: "지리",
   },
   { text: "뉴질랜드의 수도는 ___이다.", answer: "웰링턴", category: "지리" },
-  { text: "이집트의 수도는 ___이다.", answer: "카이로", category: "지리" },
+  { text: "이집트의 수도는 ___다.", answer: "카이로", category: "지리" },
 
   // ──── 추가: 환경 신규 사실 ────
   {

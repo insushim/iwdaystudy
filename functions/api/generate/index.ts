@@ -2,6 +2,7 @@
 // AI question generation using Anthropic Claude API
 // Generates a complete daily set of questions for a given grade/semester
 
+import { authUserId } from '../../lib/ctx';
 import { logAudit, clientIp } from "../../lib/audit";
 
 interface Env {
@@ -18,7 +19,7 @@ interface GenerateBody {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    const userId = (context as any).userId;
+    const userId = authUserId(context.data);
     if (!userId) {
       return jsonResponse({ message: '인증이 필요합니다.' }, 401);
     }

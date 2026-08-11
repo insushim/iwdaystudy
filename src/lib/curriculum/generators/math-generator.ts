@@ -8,6 +8,10 @@ import { naturalizeKorean, hasBatchim } from "@/lib/korean-josa";
 
 // 이름 뒤 주격조사 이/가를 받침 기준으로(연필이·사과가·상자가) — 하드코딩 "가"/"이" 비문 방지
 const iGa = (w: string) => `${w}${hasBatchim(w.slice(-1)) ? "이" : "가"}`;
+// 이름 뒤 보조사 은/는을 받침 기준으로(지영은·서연은·민수는) — 하드코딩 "는" 비문 방지
+const eunNeun = (w: string) => `${w}${hasBatchim(w.slice(-1)) ? "은" : "는"}`;
+// 이름 뒤 접속조사 과/와를 받침 기준으로(남학생과·사과와) — 하드코딩 "과" 비문 방지
+const gwaWa = (w: string) => `${w}${hasBatchim(w.slice(-1)) ? "과" : "와"}`;
 
 // Seeded PRNG for reproducible generation
 function seededRandom(seed: number) {
@@ -40,7 +44,12 @@ function lcmCalc(a: number, b: number): number {
 function generateGrade1Math(
   rng: () => number,
   difficulty: 1 | 2 | 3 = 2,
+  // 1학년은 MATH_UNIT_SEQUENCE상 "한 자리 덧셈/뺄셈·뛰어 세기·수의 크기 비교"가
+  // 1·2학기 모두 동일하게 반복 학습되므로(주차만 다름) semester로 유형을 가를 필요가 없다.
+  // 시그니처만 다른 학년과 통일해 둔다(선택적 매개변수 — 기존 호출 호환).
+  semester: 1 | 2 = 1,
 ): MathEntry {
+  void semester;
   const type = pickOne(rng, [
     "addition",
     "addition",
@@ -393,38 +402,65 @@ function generateGrade1Math(
 function generateGrade2Math(
   rng: () => number,
   difficulty: 1 | 2 | 3 = 2,
+  semester: 1 | 2 = 1,
 ): MathEntry {
-  const type = pickOne(rng, [
-    "addition2",
-    "addition2",
-    "subtraction2",
-    "subtraction2",
-    "multiplication_intro",
-    "time",
-    "length",
-    "length_compare",
-    "weight_compare",
-    "clock_read",
-    // New types
-    "unit_convert_length",
-    "word_problem_mul",
-    "ordering_2digit",
-    "shape_compose",
-    "pattern_find_2",
-    "missing_operator",
-    "even_odd",
-    "word_problem_compare",
-  ]);
+  // "길이 재기"(length/length_compare)는 MATH_UNIT_SEQUENCE상 2학기(13주차)에만 등장하는
+  // 단원이므로 1학기 풀에서는 제외한다(단원 없이 semester를 무시하던 결함 수정).
+  const type = pickOne(
+    rng,
+    semester === 2
+      ? [
+          "addition2",
+          "addition2",
+          "subtraction2",
+          "subtraction2",
+          "multiplication_intro",
+          "time",
+          "length",
+          "length_compare",
+          "weight_compare",
+          "clock_read",
+          // New types
+          "unit_convert_length",
+          "word_problem_mul",
+          "ordering_2digit",
+          "shape_compose",
+          "pattern_find_2",
+          "missing_operator",
+          "even_odd",
+          "word_problem_compare",
+        ]
+      : [
+          "addition2",
+          "addition2",
+          "subtraction2",
+          "subtraction2",
+          "multiplication_intro",
+          "time",
+          "weight_compare",
+          "clock_read",
+          // New types
+          "unit_convert_length",
+          "word_problem_mul",
+          "ordering_2digit",
+          "shape_compose",
+          "pattern_find_2",
+          "missing_operator",
+          "even_odd",
+          "word_problem_compare",
+        ],
+  );
 
-  // Difficulty-based ranges for Grade 2
-  const addMin = difficulty === 1 ? 10 : difficulty === 3 ? 100 : 10;
-  const addMax = difficulty === 1 ? 30 : difficulty === 3 ? 999 : 99;
-  const subMax = difficulty === 1 ? 30 : difficulty === 3 ? 999 : 99;
+  // Difficulty-based ranges for Grade 2 (단원 라벨 "두 자리"를 넘지 않도록 항상 ≤99 유지 —
+  // 난이도 상승은 자릿수 확장이 아니라 하한선 상향·받아올림 빈도로 표현)
+  const addMin = difficulty === 1 ? 10 : difficulty === 3 ? 50 : 10;
+  const addMax = 99;
+  const subMax = 99;
   const mulMax = difficulty === 1 ? 4 : difficulty === 3 ? 9 : 5;
 
   if (type === "addition2") {
     const a = randInt(rng, addMin, addMax);
-    const bMax = Math.max(1, (difficulty === 3 ? 999 : addMax) - a);
+    const bMax = Math.max(1, addMax - a);
     const b = randInt(rng, 1, bMax);
     const hasCarry = (a % 10) + (b % 10) >= 10;
     const unitLabel = difficulty === 3 ? "두 자리 덧셈" : "두 자리 덧셈";
@@ -460,7 +496,7 @@ function generateGrade2Math(
   } else if (type === "subtraction2") {
     const a = randInt(
       rng,
-      difficulty === 1 ? 15 : difficulty === 3 ? 200 : 20,
+      difficulty === 1 ? 15 : difficulty === 3 ? 70 : 20,
       subMax,
     );
     const b = randInt(rng, 1, a);
@@ -756,10 +792,10 @@ function generateGrade2Math(
     const diff = Math.abs(a - b);
     return {
       type: "subtraction",
-      expression: `${items.a}는 ${items.item}를 ${a}개, ${items.b}는 ${b}개 가지고 있습니다. 누가 몇 개 더 많나요? (개수만 입력)`,
+      expression: `${eunNeun(items.a)} ${items.item}를 ${a}개, ${eunNeun(items.b)} ${b}개 가지고 있습니다. 누가 몇 개 더 많나요? (개수만 입력)`,
       answer: diff,
       steps: [
-        `${a > b ? items.a : items.b}가 더 많습니다`,
+        `${iGa(a > b ? items.a : items.b)} 더 많습니다`,
         `${Math.max(a, b)} - ${Math.min(a, b)} = ${diff}개`,
       ],
       unit: "서술형 비교",
@@ -786,26 +822,49 @@ function generateGrade2Math(
 function generateGrade3Math(
   rng: () => number,
   difficulty: 1 | 2 | 3 = 2,
+  semester: 1 | 2 = 1,
 ): MathEntry {
-  const type = pickOne(rng, [
-    "addition3",
-    "subtraction3",
-    "multiplication",
-    "multiplication",
-    "division_intro",
-    "division_remainder",
-    "fraction_intro",
-    "fraction_compare",
-    // New types
-    "word_problem_division",
-    "ordering_fractions",
-    "shape_perimeter",
-    "unit_convert_km",
-    "pattern_find_mul",
-    "word_problem_multi_step",
-    "comparison_3digit",
-    "missing_number_mul",
-  ]);
+  // addition3·subtraction3(세 자리 덧셈/뺄셈)과 fraction_intro·fraction_compare
+  // (분수의 기초)는 MATH_UNIT_SEQUENCE상 3학년 1학기 전용 단원이므로 2학기 풀에서는
+  // 제외한다(단원 없이 semester를 무시하던 결함 수정).
+  const type = pickOne(
+    rng,
+    semester === 2
+      ? [
+          "multiplication",
+          "multiplication",
+          "division_intro",
+          "division_remainder",
+          // New types
+          "word_problem_division",
+          "ordering_fractions",
+          "shape_perimeter",
+          "unit_convert_km",
+          "pattern_find_mul",
+          "word_problem_multi_step",
+          "comparison_3digit",
+          "missing_number_mul",
+        ]
+      : [
+          "addition3",
+          "subtraction3",
+          "multiplication",
+          "multiplication",
+          "division_intro",
+          "division_remainder",
+          "fraction_intro",
+          "fraction_compare",
+          // New types
+          "word_problem_division",
+          "ordering_fractions",
+          "shape_perimeter",
+          "unit_convert_km",
+          "pattern_find_mul",
+          "word_problem_multi_step",
+          "comparison_3digit",
+          "missing_number_mul",
+        ],
+  );
 
   // Difficulty-based ranges for Grade 3
   const mulMaxA = difficulty === 1 ? 5 : difficulty === 3 ? 12 : 9;
@@ -813,11 +872,13 @@ function generateGrade3Math(
   const divMaxQ = difficulty === 1 ? 5 : difficulty === 3 ? 12 : 9;
 
   if (type === "addition3") {
+    // 단원 라벨 "세 자리 덧셈"을 넘지 않도록 항은 항상 ≤999 유지 —
+    // 난이도 상승은 자릿수 확장이 아니라 하한선 상향(받아올림 빈도 증가)으로 표현
     const aMin = difficulty === 1 ? 100 : difficulty === 3 ? 500 : 100;
-    const aMax = difficulty === 1 ? 400 : difficulty === 3 ? 9999 : 999;
+    const aMax = difficulty === 1 ? 400 : 999;
     const a = randInt(rng, aMin, aMax);
-    const bMax = Math.max(100, (difficulty === 3 ? 9999 : 999) - a);
-    const b = randInt(rng, difficulty === 1 ? 50 : 100, bMax);
+    const bMin = difficulty === 1 ? 50 : difficulty === 3 ? 300 : 100;
+    const b = randInt(rng, bMin, 999);
     const sum = a + b;
     return {
       type: "addition",
@@ -829,10 +890,15 @@ function generateGrade3Math(
       hasCarry: true,
     };
   } else if (type === "subtraction3") {
-    const aMin = difficulty === 1 ? 200 : difficulty === 3 ? 1000 : 200;
-    const aMax = difficulty === 1 ? 500 : difficulty === 3 ? 9999 : 999;
+    // 단원 라벨 "세 자리 뺄셈"을 넘지 않도록 항은 항상 ≤999 유지
+    const aMin = difficulty === 1 ? 200 : difficulty === 3 ? 700 : 200;
+    const aMax = difficulty === 1 ? 500 : 999;
     const a = randInt(rng, aMin, aMax);
-    const b = randInt(rng, difficulty === 1 ? 50 : 100, a);
+    const b = randInt(
+      rng,
+      difficulty === 1 ? 50 : difficulty === 3 ? 300 : 100,
+      a,
+    );
     return {
       type: "subtraction",
       expression: `${a} - ${b} = ?`,
@@ -1159,26 +1225,48 @@ function generateGrade3Math(
 function generateGrade4Math(
   rng: () => number,
   difficulty: 1 | 2 | 3 = 2,
+  semester: 1 | 2 = 1,
 ): MathEntry {
-  const type = pickOne(rng, [
-    "multiplication_2digit",
-    "division_remainder",
-    "large_addition",
-    "large_subtraction",
-    "angle",
-    "angle_calc",
-    "fraction_add",
-    "graph_read",
-    // New types
-    "word_problem_area",
-    "ordering_large",
-    "shape_area_triangle",
-    "unit_convert_weight",
-    "pattern_find_complex",
-    "mixed_word_problem",
-    "estimation",
-    "symmetry",
-  ]);
+  // MATH_UNIT_SEQUENCE 기준 division_remainder·large_addition·large_subtraction·
+  // angle·angle_calc(나머지가 있는 나눗셈·네 자리 덧셈/뺄셈·각도)는 1학기 전용,
+  // fraction_add(동분모 분수 덧셈)는 2학기 전용이므로 학기별로 나눈다
+  // (단원 없이 semester를 무시하던 결함 수정).
+  const type = pickOne(
+    rng,
+    semester === 2
+      ? [
+          "multiplication_2digit",
+          "fraction_add",
+          "graph_read",
+          // New types
+          "word_problem_area",
+          "ordering_large",
+          "shape_area_triangle",
+          "unit_convert_weight",
+          "pattern_find_complex",
+          "mixed_word_problem",
+          "estimation",
+          "symmetry",
+        ]
+      : [
+          "multiplication_2digit",
+          "division_remainder",
+          "large_addition",
+          "large_subtraction",
+          "angle",
+          "angle_calc",
+          "graph_read",
+          // New types
+          "word_problem_area",
+          "ordering_large",
+          "shape_area_triangle",
+          "unit_convert_weight",
+          "pattern_find_complex",
+          "mixed_word_problem",
+          "estimation",
+          "symmetry",
+        ],
+  );
 
   if (type === "multiplication_2digit") {
     const aMin = difficulty === 1 ? 11 : difficulty === 3 ? 20 : 11;
@@ -1230,10 +1318,13 @@ function generateGrade4Math(
       remainder,
     };
   } else if (type === "large_addition") {
-    const aMin = difficulty === 1 ? 100 : difficulty === 3 ? 10000 : 1000;
-    const aMax = difficulty === 1 ? 999 : difficulty === 3 ? 99999 : 9999;
+    // 단원 라벨 "네 자리 덧셈"을 넘지 않도록 항은 항상 1000~9999 유지 —
+    // 난이도 상승은 자릿수 확장이 아니라 하한선 상향으로 표현
+    const aMin = difficulty === 1 ? 1000 : difficulty === 3 ? 5000 : 1000;
+    const aMax = 9999;
     const a = randInt(rng, aMin, aMax);
-    const b = randInt(rng, aMin, Math.min(aMax, aMax * 2 - a));
+    const bMin = difficulty === 1 ? 1000 : difficulty === 3 ? 3000 : 1000;
+    const b = randInt(rng, bMin, 9999);
     return {
       type: "addition",
       expression: `${a.toLocaleString()} + ${b.toLocaleString()} = ?`,
@@ -1244,12 +1335,13 @@ function generateGrade4Math(
       hasCarry: true,
     };
   } else if (type === "large_subtraction") {
-    const aMin = difficulty === 1 ? 500 : difficulty === 3 ? 10000 : 5000;
-    const aMax = difficulty === 1 ? 999 : difficulty === 3 ? 99999 : 9999;
+    // 단원 라벨 "네 자리 뺄셈"을 넘지 않도록 항은 항상 1000~9999 유지
+    const aMin = difficulty === 1 ? 1000 : difficulty === 3 ? 5000 : 2000;
+    const aMax = 9999;
     const a = randInt(rng, aMin, aMax);
     const b = randInt(
       rng,
-      difficulty === 1 ? 100 : difficulty === 3 ? 1000 : 1000,
+      difficulty === 1 ? 1000 : difficulty === 3 ? 3000 : 1000,
       a,
     );
     return {
@@ -1351,9 +1443,11 @@ function generateGrade4Math(
       0,
       monthCount,
     );
-    const valMax = difficulty === 1 ? 15 : difficulty === 3 ? 50 : 30;
-    const values = Array.from({ length: monthCount }, () =>
-      randInt(rng, 5, valMax),
+    // 완전 무작위 대신 한국 평년 월별 평균기온(°C) 근사치를 기준으로 소폭 변동만 준다
+    // ("2월 47°C" 같은 비현실적 값 방지). 4학년은 음수를 배우지 않으므로 0 미만은 자른다.
+    const monthlyAvgTemp = [1, 3, 8, 14, 19, 23, 26]; // 1~7월
+    const values = Array.from({ length: monthCount }, (_, i) =>
+      Math.max(0, monthlyAvgTemp[i] + randInt(rng, -3, 3)),
     );
     const maxVal = Math.max(...values);
     const maxIdx = values.indexOf(maxVal);
@@ -2254,26 +2348,47 @@ function generateGrade5Math(
 function generateGrade6Math(
   rng: () => number,
   difficulty: 1 | 2 | 3 = 2,
+  semester: 1 | 2 = 1,
 ): MathEntry {
-  const type = pickOne(rng, [
-    "ratio",
-    "percentage",
-    "circle_area",
-    "circle_circumference",
-    "proportion",
-    "proportion_word",
-    "probability",
-    "volume",
-    // New types
-    "word_problem_ratio",
-    "ordering_decimals",
-    "unit_convert_speed",
-    "pattern_fibonacci",
-    "fraction_division",
-    "surface_area",
-    "average",
-    "cylinder_volume",
-  ]);
+  // MATH_UNIT_SEQUENCE 기준 ratio·percentage·volume(비와 비율·백분율·직육면체의 부피)은
+  // 1학기 전용, circle_area·circle_circumference·proportion·proportion_word
+  // (원의 넓이·비례식)는 2학기 전용이므로 학기별로 나눈다
+  // (단원 없이 semester를 무시하던 결함 수정).
+  const type = pickOne(
+    rng,
+    semester === 2
+      ? [
+          "circle_area",
+          "circle_circumference",
+          "proportion",
+          "proportion_word",
+          "probability",
+          // New types
+          "word_problem_ratio",
+          "ordering_decimals",
+          "unit_convert_speed",
+          "pattern_fibonacci",
+          "fraction_division",
+          "surface_area",
+          "average",
+        ]
+      : [
+          "ratio",
+          "percentage",
+          "probability",
+          "volume",
+          // New types
+          "word_problem_ratio",
+          "ordering_decimals",
+          "unit_convert_speed",
+          "pattern_fibonacci",
+          "fraction_division",
+          "surface_area",
+          "average",
+          // "cylinder_volume" 제외: 원기둥의 부피는 초등 교육과정([6수02-01] 직육면체·정육면체 범위) 밖 —
+          // 중학교 과정 내용이라 미배정. 아래 cylinder_volume 분기는 생성 경로에서 도달 불가.
+        ],
+  );
 
   if (type === "ratio") {
     const aMax = difficulty === 1 ? 6 : difficulty === 3 ? 24 : 12;
@@ -2496,7 +2611,7 @@ function generateGrade6Math(
     ]);
     return {
       type: "ratio",
-      expression: `${pair.a}과 ${pair.b}의 비가 ${ratioA}:${ratioB}이고 전체가 ${adjustedTotal}${pair.counter}일 때 ${pair.a}은 몇 ${pair.counter}?`,
+      expression: `${gwaWa(pair.a)} ${pair.b}의 비가 ${ratioA}:${ratioB}이고 전체가 ${adjustedTotal}${pair.counter}일 때 ${eunNeun(pair.a)} 몇 ${pair.counter}?`,
       answer: partA,
       steps: [
         `전체 비: ${ratioA} + ${ratioB} = ${ratioSum}`,
@@ -2684,23 +2799,26 @@ export function generateMathProblems(
 ): MathEntry[] {
   const rng = seededRandom(seed);
   const problems: MathEntry[] = [];
+  // semester는 1|2만 유효 — daily-set-generator.ts 등 외부 호출부가 number를 넘겨도
+  // 안전하게 정규화한다.
+  const sem: 1 | 2 = semester === 2 ? 2 : 1;
 
   const gen = (r: () => number): MathEntry => {
     switch (grade) {
       case 1:
-        return generateGrade1Math(r, difficulty);
+        return generateGrade1Math(r, difficulty, sem);
       case 2:
-        return generateGrade2Math(r, difficulty);
+        return generateGrade2Math(r, difficulty, sem);
       case 3:
-        return generateGrade3Math(r, difficulty);
+        return generateGrade3Math(r, difficulty, sem);
       case 4:
-        return generateGrade4Math(r, difficulty);
+        return generateGrade4Math(r, difficulty, sem);
       case 5:
         return generateGrade5Math(r, semester, difficulty);
       case 6:
-        return generateGrade6Math(r, difficulty);
+        return generateGrade6Math(r, difficulty, sem);
       default:
-        return generateGrade1Math(r, difficulty);
+        return generateGrade1Math(r, difficulty, sem);
     }
   };
 

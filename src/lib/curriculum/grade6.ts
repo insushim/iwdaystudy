@@ -1399,12 +1399,12 @@ export const grade6MathData: MathEntry[] = [
     steps: ["원주 = π × 지름", "3.14 × 10 = 31.4", "답: 31.4cm"],
     unit: "원의 넓이",
   },
-  // 원기둥의 부피
+  // 직육면체의 부피
   {
     type: "calculation",
-    expression: "밑면 반지름 3cm, 높이 10cm 원기둥의 부피 (π=3.14)",
-    answer: 282.6,
-    steps: ["원기둥의 부피 = π × r² × 높이", "3.14 × 9 × 10", "답: 282.6cm³"],
+    expression: "가로 3cm, 세로 4cm, 높이 5cm인 직육면체의 부피",
+    answer: 60,
+    steps: ["직육면체의 부피 = 가로 × 세로 × 높이", "3 × 4 × 5 = 60", "답: 60cm³"],
     unit: "직육면체의 부피",
   },
   // 복합 문제
@@ -1626,7 +1626,7 @@ export const grade6MathData: MathEntry[] = [
   {
     type: "calculation",
     expression: "2/3 : 4/5의 가장 간단한 비",
-    answer: 10,
+    answer: 5,
     steps: [
       "통분: 10/15 : 12/15",
       "분자만 비교: 10 : 12",
@@ -1819,49 +1819,48 @@ export const grade6MathData: MathEntry[] = [
     unit: "원의 넓이",
   },
 
-  // 원기둥 부피 추가
+  // 직육면체의 부피 추가
   {
     type: "calculation",
-    expression: "밑면 반지름 5cm, 높이 8cm 원기둥의 부피 (π=3.14)",
-    answer: 628,
+    expression: "가로 6cm, 세로 5cm, 높이 4cm인 직육면체의 부피",
+    answer: 120,
     steps: [
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 25 × 8 = 628",
-      "답: 628cm³",
+      "직육면체의 부피 = 가로 × 세로 × 높이",
+      "6 × 5 × 4 = 120",
+      "답: 120cm³",
     ],
     unit: "직육면체의 부피",
   },
   {
     type: "calculation",
-    expression: "밑면 반지름 4cm, 높이 6cm 원기둥의 부피 (π=3.14)",
-    answer: 301.44,
+    expression: "한 모서리의 길이가 6cm인 정육면체의 부피",
+    answer: 216,
     steps: [
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 16 × 6 = 301.44",
-      "답: 301.44cm³",
+      "정육면체의 부피 = 한 모서리 × 한 모서리 × 한 모서리",
+      "6 × 6 × 6 = 216",
+      "답: 216cm³",
     ],
     unit: "직육면체의 부피",
   },
   {
     type: "calculation",
-    expression: "밑면 반지름 2cm, 높이 15cm 원기둥의 부피 (π=3.14)",
-    answer: 188.4,
+    expression: "가로 9cm, 세로 3cm, 높이 5cm인 직육면체의 부피",
+    answer: 135,
     steps: [
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 4 × 15 = 188.4",
-      "답: 188.4cm³",
+      "직육면체의 부피 = 가로 × 세로 × 높이",
+      "9 × 3 × 5 = 135",
+      "답: 135cm³",
     ],
     unit: "직육면체의 부피",
   },
   {
     type: "calculation",
-    expression: "밑면 지름 10cm, 높이 7cm 원기둥의 부피 (π=3.14)",
-    answer: 549.5,
+    expression: "가로 10cm, 세로 4cm, 높이 6cm인 직육면체의 부피",
+    answer: 240,
     steps: [
-      "반지름 = 10 ÷ 2 = 5cm",
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 25 × 7 = 549.5",
-      "답: 549.5cm³",
+      "직육면체의 부피 = 가로 × 세로 × 높이",
+      "10 × 4 × 6 = 240",
+      "답: 240cm³",
     ],
     unit: "직육면체의 부피",
   },
@@ -1958,12 +1957,12 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "밑면 반지름 6cm, 높이 5cm 원기둥의 부피 (π=3.14)",
-    answer: 565.2,
+    expression: "한 모서리의 길이가 5cm인 정육면체의 부피",
+    answer: 125,
     steps: [
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 36 × 5 = 565.2",
-      "답: 565.2cm³",
+      "정육면체의 부피 = 한 모서리 × 한 모서리 × 한 모서리",
+      "5 × 5 × 5 = 125",
+      "답: 125cm³",
     ],
     unit: "직육면체의 부피",
   },
@@ -2001,12 +2000,12 @@ export const grade6MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "밑면 반지름 7cm, 높이 4cm 원기둥의 부피 (π=3.14)",
-    answer: 615.44,
+    expression: "가로 7cm, 세로 6cm, 높이 5cm인 직육면체의 부피",
+    answer: 210,
     steps: [
-      "원기둥의 부피 = π × r² × 높이",
-      "3.14 × 49 × 4 = 615.44",
-      "답: 615.44cm³",
+      "직육면체의 부피 = 가로 × 세로 × 높이",
+      "7 × 6 × 5 = 210",
+      "답: 210cm³",
     ],
     unit: "직육면체의 부피",
   },

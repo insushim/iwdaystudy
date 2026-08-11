@@ -12,35 +12,35 @@ import type {
 export const grade3Semester1Standards = {
   math: [
     {
-      code: "[2수01-14]",
+      code: "[4수01-06]",
       desc: "네 자리 이하의 수의 범위에서 덧셈과 뺄셈을 할 수 있다",
       unit: "덧셈과 뺄셈",
       difficulty: 3,
       weeks: [1, 4] as [number, number],
     },
     {
-      code: "[2수01-15]",
+      code: "[4수01-07]",
       desc: "곱셈과 나눗셈의 관계를 이해한다",
       unit: "나눗셈",
       difficulty: 3,
       weeks: [5, 8] as [number, number],
     },
     {
-      code: "[2수02-03]",
+      code: "[4수02-04]",
       desc: "평면도형의 이동을 이해한다",
       unit: "평면도형",
       difficulty: 3,
       weeks: [9, 11] as [number, number],
     },
     {
-      code: "[2수03-04]",
+      code: "[4수03-02]",
       desc: "시간의 덧셈과 뺄셈을 할 수 있다",
       unit: "시간과 길이",
       difficulty: 3,
       weeks: [12, 14] as [number, number],
     },
     {
-      code: "[2수01-16]",
+      code: "[4수01-08]",
       desc: "두 자리 수의 곱셈을 할 수 있다",
       unit: "곱셈",
       difficulty: 3,
@@ -105,35 +105,35 @@ export const grade3Semester1Standards = {
 export const grade3Semester2Standards = {
   math: [
     {
-      code: "[2수01-17]",
+      code: "[4수01-09]",
       desc: "분수를 이해하고 읽고 쓸 수 있다",
       unit: "분수와 소수",
       difficulty: 3,
       weeks: [1, 4] as [number, number],
     },
     {
-      code: "[2수01-18]",
+      code: "[4수01-10]",
       desc: "단위분수의 크기를 비교할 수 있다",
       unit: "분수와 소수",
       difficulty: 3,
       weeks: [1, 4] as [number, number],
     },
     {
-      code: "[2수02-04]",
+      code: "[4수02-05]",
       desc: "원의 구성 요소를 이해하고 원을 그릴 수 있다",
       unit: "원",
       difficulty: 3,
       weeks: [5, 7] as [number, number],
     },
     {
-      code: "[2수03-05]",
+      code: "[4수03-03]",
       desc: "들이의 단위를 알고 어림하여 재어 볼 수 있다",
       unit: "들이와 무게",
       difficulty: 3,
       weeks: [8, 10] as [number, number],
     },
     {
-      code: "[2수04-03]",
+      code: "[4수04-02]",
       desc: "자료를 수집하여 그림그래프로 나타내고 해석할 수 있다",
       unit: "자료 정리",
       difficulty: 3,
@@ -1282,7 +1282,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2시간 30분 + 1시간 40분",
+    expression: "2시간 30분 + 1시간 40분 (시간만 입력)",
     answer: 4,
     steps: [
       "30분 + 40분 = 70분 = 1시간 10분",
@@ -1293,7 +1293,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3시간 20분 - 1시간 50분",
+    expression: "3시간 20분 - 1시간 50분 (시간만 입력)",
     answer: 1,
     steps: [
       "20분에서 50분을 뺄 수 없으므로 1시간을 빌려옴",
@@ -1860,7 +1860,7 @@ export const grade3MathData: MathEntry[] = [
   // 시간 계산 추가
   {
     type: "calculation",
-    expression: "1시간 45분 + 2시간 30분",
+    expression: "1시간 45분 + 2시간 30분 (시간만 입력)",
     answer: 4,
     steps: [
       "45분 + 30분 = 75분 = 1시간 15분",
@@ -1871,7 +1871,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4시간 10분 - 1시간 35분",
+    expression: "4시간 10분 - 1시간 35분 (시간만 입력)",
     answer: 2,
     steps: [
       "10분에서 35분을 뺄 수 없으므로 1시간을 빌려옴",
@@ -1883,7 +1883,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2시간 50분 + 1시간 25분",
+    expression: "2시간 50분 + 1시간 25분 (시간만 입력)",
     answer: 4,
     steps: [
       "50분 + 25분 = 75분 = 1시간 15분",
@@ -1894,7 +1894,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5시간 15분 - 2시간 40분",
+    expression: "5시간 15분 - 2시간 40분 (시간만 입력)",
     answer: 2,
     steps: [
       "15분에서 40분을 뺄 수 없으므로 1시간을 빌려옴",
@@ -1907,7 +1907,7 @@ export const grade3MathData: MathEntry[] = [
   // 길이 계산
   {
     type: "calculation",
-    expression: "3km 400m + 2km 700m",
+    expression: "3km 400m + 2km 700m (km만 입력)",
     answer: 6,
     steps: [
       "400m + 700m = 1100m = 1km 100m",
@@ -1918,7 +1918,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5km 200m - 1km 800m",
+    expression: "5km 200m - 1km 800m (km만 입력)",
     answer: 3,
     steps: [
       "200m에서 800m을 뺄 수 없으므로 1km를 빌려옴",
@@ -1931,7 +1931,7 @@ export const grade3MathData: MathEntry[] = [
   // 무게 계산
   {
     type: "calculation",
-    expression: "2kg 300g + 1kg 800g",
+    expression: "2kg 300g + 1kg 800g (kg만 입력)",
     answer: 4,
     steps: [
       "300g + 800g = 1100g = 1kg 100g",
@@ -1942,7 +1942,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3kg 100g - 1kg 600g",
+    expression: "3kg 100g - 1kg 600g (kg만 입력)",
     answer: 1,
     steps: [
       "100g에서 600g을 뺄 수 없으므로 1kg를 빌려옴",
@@ -1955,7 +1955,7 @@ export const grade3MathData: MathEntry[] = [
   // 들이 계산
   {
     type: "calculation",
-    expression: "1L 500mL + 2L 700mL",
+    expression: "1L 500mL + 2L 700mL (L만 입력)",
     answer: 4,
     steps: [
       "500mL + 700mL = 1200mL = 1L 200mL",
@@ -1966,7 +1966,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "3L 200mL - 1L 500mL",
+    expression: "3L 200mL - 1L 500mL (L만 입력)",
     answer: 1,
     steps: [
       "200mL에서 500mL을 뺄 수 없으므로 1L를 빌려옴",
@@ -2351,7 +2351,7 @@ export const grade3MathData: MathEntry[] = [
   // 시간 계산 추가
   {
     type: "calculation",
-    expression: "3시간 40분 + 1시간 30분",
+    expression: "3시간 40분 + 1시간 30분 (시간만 입력)",
     answer: 5,
     steps: [
       "40분 + 30분 = 70분 = 1시간 10분",
@@ -2362,7 +2362,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "2시간 55분 + 1시간 15분",
+    expression: "2시간 55분 + 1시간 15분 (시간만 입력)",
     answer: 4,
     steps: [
       "55분 + 15분 = 70분 = 1시간 10분",
@@ -2373,7 +2373,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "6시간 - 2시간 30분",
+    expression: "6시간 - 2시간 30분 (시간만 입력)",
     answer: 3,
     steps: [
       "6시간 0분 - 2시간 30분",
@@ -2386,7 +2386,7 @@ export const grade3MathData: MathEntry[] = [
   // 길이 계산 추가
   {
     type: "calculation",
-    expression: "2km 500m + 3km 800m",
+    expression: "2km 500m + 3km 800m (km만 입력)",
     answer: 6,
     steps: [
       "500m + 800m = 1300m = 1km 300m",
@@ -2397,7 +2397,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4km 100m - 1km 600m",
+    expression: "4km 100m - 1km 600m (km만 입력)",
     answer: 2,
     steps: [
       "100m에서 600m을 뺄 수 없으므로 1km를 빌려옴",
@@ -2410,7 +2410,7 @@ export const grade3MathData: MathEntry[] = [
   // 무게 계산 추가
   {
     type: "calculation",
-    expression: "1kg 700g + 2kg 500g",
+    expression: "1kg 700g + 2kg 500g (kg만 입력)",
     answer: 4,
     steps: [
       "700g + 500g = 1200g = 1kg 200g",
@@ -2421,7 +2421,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "5kg 200g - 2kg 700g",
+    expression: "5kg 200g - 2kg 700g (kg만 입력)",
     answer: 2,
     steps: [
       "200g에서 700g을 뺄 수 없으므로 1kg를 빌려옴",
@@ -2434,7 +2434,7 @@ export const grade3MathData: MathEntry[] = [
   // 들이 계산 추가
   {
     type: "calculation",
-    expression: "2L 400mL + 1L 800mL",
+    expression: "2L 400mL + 1L 800mL (L만 입력)",
     answer: 4,
     steps: [
       "400mL + 800mL = 1200mL = 1L 200mL",
@@ -2445,7 +2445,7 @@ export const grade3MathData: MathEntry[] = [
   },
   {
     type: "calculation",
-    expression: "4L 100mL - 2L 600mL",
+    expression: "4L 100mL - 2L 600mL (L만 입력)",
     answer: 1,
     steps: [
       "100mL에서 600mL을 뺄 수 없으므로 1L를 빌려옴",

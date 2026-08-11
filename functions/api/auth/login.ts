@@ -7,6 +7,10 @@ import {
   createToken,
 } from "../../lib/crypto";
 import { logAudit, clientIp } from "../../lib/audit";
+import {
+  checkAccountRateLimit,
+  clearAccountRateLimit,
+} from "../../lib/rate-limit";
 
 interface Env {
   DB: D1Database;
@@ -33,6 +37,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const normalizedEmail = email.includes("@")
       ? email
       : `${email}@class.local`;
+
+    // 계정 단위 제한: 학교 NAT 때문에 IP 한도는 넉넉히 두므로,
+    // 브루트포스 방어는 여기(같은 계정 5분 10회)가 담당한다.
+    const acct = await checkAccountRateLimit(context.env.DB, normalizedEmail);
+    if (!acct.ok) {
+      await logAudit(context.env.DB, {
+        action: "login_rate_limited",
+        targetType: "email",
+        targetId: normalizedEmail,
+        ip: clientIp(context.request),
+      });
+      return jsonResponse(
+        {
+          message:
+            "로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.",
+        },
+        429,
+      );
+    }
 
     const user = await context.env.DB.prepare(
       "SELECT * FROM profiles WHERE email = ?",
@@ -122,6 +145,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         403,
       );
     }
+
+    // 로그인 성공 → 이 계정의 실패 카운터 초기화(정상 사용자가 다음날 막히지 않게)
+    await clearAccountRateLimit(context.env.DB, normalizedEmail);
 
     // Generate signed token
     const token = await createToken(

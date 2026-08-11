@@ -1,22 +1,27 @@
 // GET /api/users/me - current user profile
 // PATCH /api/users/me - update own profile
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
 }
 
-const ALLOWED_FIELDS = new Set([
-  'name',
-  'avatar_url',
-  'grade',
-  'semester',
-  'school_name',
-  'class_name',
-  'student_number',
-]);
+// Whitelisted self-editable fields, each with its own value validator so a
+// bad value returns 400 instead of tripping a D1 CHECK constraint (which would
+// surface as a 500 with a stack trace).
+const FIELD_VALIDATORS: Record<string, (v: unknown) => boolean> = {
+  name: (v) => typeof v === 'string' && v.trim().length >= 1 && v.length <= 60,
+  avatar_url: (v) => v === null || (typeof v === 'string' && v.length <= 500),
+  grade: (v) => v === null || (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 6),
+  semester: (v) => v === null || v === 1 || v === 2,
+  school_name: (v) => v === null || (typeof v === 'string' && v.length <= 80),
+  class_name: (v) => v === null || (typeof v === 'string' && v.length <= 40),
+  student_number: (v) =>
+    v === null || (typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 100),
+};
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const row = await context.env.DB.prepare(
@@ -29,20 +34,33 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 };
 
 export const onRequestPatch: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
-  const body = (await context.request.json()) as Record<string, unknown>;
+  let body: Record<string, unknown>;
+  try {
+    body = (await context.request.json()) as Record<string, unknown>;
+  } catch {
+    return jsonResponse({ message: '요청 형식이 올바르지 않습니다.' }, 400);
+  }
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return jsonResponse({ message: '요청 형식이 올바르지 않습니다.' }, 400);
+  }
+
   const updates: string[] = [];
   const values: unknown[] = [];
 
   for (const [k, v] of Object.entries(body)) {
-    if (!ALLOWED_FIELDS.has(k)) continue;
-    if (typeof v === 'string' && v.length > 200) {
-      return jsonResponse({ message: '값이 너무 깁니다.' }, 400);
+    // hasOwnProperty 로 조회해야 한다. FIELD_VALIDATORS[k] 는 '__proto__',
+    // 'constructor', 'toString' 같은 키에 프로토타입 체인의 함수를 돌려주므로
+    // 그대로 두면 컬럼명이 아닌 값이 SQL 조립에 들어간다.
+    if (!Object.prototype.hasOwnProperty.call(FIELD_VALIDATORS, k)) continue;
+    const validate = FIELD_VALIDATORS[k];
+    if (!validate(v)) {
+      return jsonResponse({ message: `'${k}' 값이 올바르지 않습니다.` }, 400);
     }
     updates.push(`${k} = ?`);
-    values.push(v);
+    values.push(typeof v === 'string' ? v.trim() : v);
   }
 
   if (updates.length === 0) {

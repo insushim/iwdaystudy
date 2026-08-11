@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: POST /api/daily-set/submit
 // Submit learning results for a daily set
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
 }
@@ -26,7 +27,7 @@ interface SubmitBody {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
-    const userId = (context as any).userId;
+    const userId = authUserId(context.data);
     if (!userId) {
       return jsonResponse({ message: '인증이 필요합니다.' }, 401);
     }

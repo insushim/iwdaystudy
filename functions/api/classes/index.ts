@@ -1,6 +1,7 @@
 // GET /api/classes - list classes (teacher sees own, admin sees all)
 // POST /api/classes - create a class (teacher/admin)
 
+import { authUserId } from '../../lib/ctx';
 import { logAudit, clientIp } from '../../lib/audit';
 
 interface Env {
@@ -8,7 +9,7 @@ interface Env {
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(
@@ -36,7 +37,7 @@ interface CreateBody {
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const userId = (context as any).userId as string | undefined;
+  const userId = authUserId(context.data) as string | undefined;
   if (!userId) return jsonResponse({ message: '인증이 필요합니다.' }, 401);
 
   const caller = await context.env.DB.prepare(

@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { APP_NAME, GRADES, SEMESTERS } from "@/lib/constants";
 
 type Role = "student" | "teacher" | "parent";
@@ -61,9 +62,14 @@ export default function SignupPage() {
   const [schoolName, setSchoolName] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  // 만 14세 미만 학생의 개인정보 수집에는 법정대리인 동의가 필요하다(개인정보보호법
+  // 제22조의2). 백엔드에 동의 기록을 저장할 방법이 없으므로, 가입 진행 자체를
+  // 보호자 동의 확인에 걸어 정직하게 처리한다.
+  const [guardianConsent, setGuardianConsent] = useState(false);
 
   function handleRoleSelect(selectedRole: Role) {
     setRole(selectedRole);
+    setGuardianConsent(false);
     setStep(2);
   }
 
@@ -103,6 +109,10 @@ export default function SignupPage() {
       }
       if (!semester) {
         setError("학기를 선택해 주세요.");
+        return;
+      }
+      if (!guardianConsent) {
+        setError("보호자(법정대리인) 동의 확인에 체크해 주세요.");
         return;
       }
     }
@@ -342,6 +352,24 @@ export default function SignupPage() {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+
+                <div className="rounded-lg border border-primary/30 bg-background/60 p-3 space-y-2">
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <Checkbox
+                      checked={guardianConsent}
+                      onCheckedChange={(v) => setGuardianConsent(v === true)}
+                      className="mt-0.5"
+                    />
+                    <span className="text-xs text-foreground leading-relaxed">
+                      만 14세 미만이며, 보호자(법정대리인)의 동의를 받았음을
+                      확인합니다.
+                    </span>
+                  </label>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed pl-6">
+                    직접 동의를 받기 어렵다면, 담임 선생님께 요청해 학급
+                    계정으로 가입하는 방법도 있어요.
+                  </p>
                 </div>
               </div>
             )}

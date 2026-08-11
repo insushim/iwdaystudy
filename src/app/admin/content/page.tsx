@@ -13,6 +13,7 @@ import {
   FileQuestion,
   ChevronRight,
   Filter,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -189,6 +190,18 @@ export default function ContentManagementPage() {
             AI로 생성하기
           </Link>
         </Button>
+      </div>
+
+      {/* 이 목록과 게시 토글은 이 브라우저(localStorage)에만 저장된다.
+          실제 학생 화면은 학년/학기에 맞춰 문제를 자동 생성하므로,
+          여기서 미게시로 꺼도 학생에게 노출되는 문제에는 영향이 없다. */}
+      <div className="flex items-start gap-2 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+        <Info className="h-4 w-4 shrink-0 mt-0.5" />
+        <p>
+          이 목록은 이 브라우저에만 저장되는 초안/미리보기입니다. 실제
+          학생에게 노출되는 문제는 학년·학기에 맞춰 자동으로 생성되므로,
+          여기서 게시/미게시를 바꿔도 학생 화면에는 영향을 주지 않습니다.
+        </p>
       </div>
 
       {/* Grade overview cards */}

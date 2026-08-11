@@ -2,13 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
-import {
-  Mail,
-  Send,
-  ChevronDown,
-  MessageCircle,
-  CheckCircle2,
-} from "lucide-react";
+import { Mail, Send, ChevronDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,23 +39,23 @@ const faqs = [
   },
   {
     q: "학습 시간은 얼마나 걸리나요?",
-    a: "학년에 따라 10~15문제로 구성되며, 보통 20~30분 정도 소요됩니다. 아이의 속도에 맞추어 진행할 수 있어요.",
+    a: "한 세트는 1~2학년 15문제, 3~4학년 20문제, 5~6학년 21문제로 구성되며 30~40분 정도 걸립니다. 아이의 속도에 맞추어 진행할 수 있어요.",
   },
   {
     q: "오프라인에서도 사용할 수 있나요?",
-    a: "PWA(Progressive Web App)를 지원하여, 한 번 접속한 학습 세트는 오프라인에서도 풀 수 있습니다.",
+    a: "아직은 인터넷 연결이 필요합니다. 오프라인 학습은 준비 중이에요.",
   },
   {
     q: "학부모가 학습 현황을 확인할 수 있나요?",
-    a: "네! 프리미엄 플랜에서는 학부모 리포트를 통해 아이의 학습 현황, 취약 과목, 성장 추이를 확인할 수 있습니다.",
+    a: "네, 학부모 계정으로 자녀의 학습 현황, 취약 과목, 성장 추이를 확인할 수 있어요. 현재는 무료 베타 기간이라 모든 기능을 무료로 이용하실 수 있습니다.",
   },
   {
     q: "여러 자녀를 등록할 수 있나요?",
-    a: "하나의 계정에서 여러 자녀의 프로필을 관리할 수 있습니다. 두 번째 자녀부터는 할인이 적용됩니다.",
+    a: "하나의 계정에서 여러 자녀의 프로필을 관리할 수 있습니다.",
   },
   {
     q: "학교에서 단체로 사용할 수 있나요?",
-    a: "학교 플랜을 통해 학급 단위로 사용할 수 있습니다. 교사 대시보드, 학급 관리, 과제 배정 기능이 포함되어 있습니다.",
+    a: "선생님 계정으로 가입(관리자 승인 후 이용)하시면 학급 단위로 학생을 관리하고 과제를 배정할 수 있어요. 학교/기관 단위 도입을 원하시면 문의 유형에서 \"학교/기관 도입 문의\"를 선택해 주세요.",
   },
 ];
 
@@ -95,22 +89,32 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+const CONTACT_EMAIL = "contact@araharu.kr";
+
 export default function ContactPage() {
-  const [submitted, setSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [type, setType] = useState("");
   const [message, setMessage] = useState("");
 
-  async function handleSubmit(e: FormEvent) {
+  // 문의 폼을 실제로 받는 백엔드가 없다. 서버 전송 대신 입력값을 본문에 채운
+  // mailto: 링크로 메일 앱을 열어, 사용자가 직접 보내는 실제 이메일로 이어지게 한다.
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setIsLoading(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    setSubmitted(true);
+    const typeLabel =
+      contactTypes.find((ct) => ct.value === type)?.label || "일반 문의";
+    const subject = `[아라하루 문의] ${typeLabel}`;
+    const body = [
+      `이름: ${name}`,
+      `이메일: ${email}`,
+      `문의 유형: ${typeLabel}`,
+      "",
+      message,
+    ].join("\n");
+    const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoUrl;
   }
 
   return (
@@ -155,133 +159,87 @@ export default function ContactPage() {
                   <CardHeader>
                     <CardTitle className="text-xl">문의 보내기</CardTitle>
                     <CardDescription>
-                      아래 양식을 작성하시면 이메일로 답변을 보내드립니다.
+                      아래 양식을 작성하고 버튼을 누르면 입력하신 내용이 담긴
+                      메일 작성 화면이 열립니다. 그대로 보내주세요.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    {submitted ? (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="py-12 text-center"
-                      >
-                        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                          <CheckCircle2 className="h-8 w-8 text-primary" />
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">
-                          문의가 접수되었습니다!
-                        </h3>
-                        <p className="text-muted-foreground mb-6">
-                          평일 기준 24시간 이내 입력하신 이메일로 답변 드리겠습니다.
-                        </p>
-                        <Button
-                          variant="outline"
-                          onClick={() => {
-                            setSubmitted(false);
-                            setName("");
-                            setEmail("");
-                            setType("");
-                            setMessage("");
-                          }}
-                        >
-                          추가 문의하기
-                        </Button>
-                      </motion.div>
-                    ) : (
-                      <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                          <div className="space-y-2">
-                            <Label htmlFor="name">이름</Label>
-                            <Input
-                              id="name"
-                              placeholder="홍길동"
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              required
-                              className="h-11"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="email">이메일</Label>
-                            <Input
-                              id="email"
-                              type="email"
-                              placeholder="name@example.com"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              required
-                              className="h-11"
-                            />
-                          </div>
-                        </div>
-
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div className="space-y-2">
-                          <Label htmlFor="type">문의 유형</Label>
-                          <Select value={type} onValueChange={setType} required>
-                            <SelectTrigger className="h-11">
-                              <SelectValue placeholder="문의 유형을 선택해 주세요" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {contactTypes.map((ct) => (
-                                <SelectItem key={ct.value} value={ct.value}>
-                                  {ct.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="message">메시지</Label>
-                          <Textarea
-                            id="message"
-                            placeholder="문의 내용을 입력해 주세요..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                          <Label htmlFor="name">이름</Label>
+                          <Input
+                            id="name"
+                            placeholder="홍길동"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                             required
-                            rows={6}
-                            className="resize-none"
+                            className="h-11"
                           />
                         </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="email">이메일</Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="name@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            className="h-11"
+                          />
+                        </div>
+                      </div>
 
-                        <Button
-                          type="submit"
-                          className="w-full h-11 text-base font-semibold"
-                          disabled={isLoading}
+                      <div className="space-y-2">
+                        <Label htmlFor="type">문의 유형</Label>
+                        <Select value={type} onValueChange={setType} required>
+                          <SelectTrigger className="h-11">
+                            <SelectValue placeholder="문의 유형을 선택해 주세요" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {contactTypes.map((ct) => (
+                              <SelectItem key={ct.value} value={ct.value}>
+                                {ct.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="message">메시지</Label>
+                        <Textarea
+                          id="message"
+                          placeholder="문의 내용을 입력해 주세요..."
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          required
+                          rows={6}
+                          className="resize-none"
+                        />
+                      </div>
+
+                      <Button
+                        type="submit"
+                        className="w-full h-11 text-base font-semibold"
+                      >
+                        <span className="flex items-center gap-2">
+                          <Send className="h-4 w-4" />
+                          메일 앱으로 보내기
+                        </span>
+                      </Button>
+                      <p className="text-xs text-muted-foreground text-center">
+                        메일 앱이 열리지 않으면{" "}
+                        <a
+                          href={`mailto:${CONTACT_EMAIL}`}
+                          className="text-primary hover:underline"
                         >
-                          {isLoading ? (
-                            <span className="flex items-center gap-2">
-                              <svg
-                                className="animate-spin h-4 w-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                />
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                                />
-                              </svg>
-                              전송 중...
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-2">
-                              <Send className="h-4 w-4" />
-                              문의 보내기
-                            </span>
-                          )}
-                        </Button>
-                      </form>
-                    )}
+                          {CONTACT_EMAIL}
+                        </a>
+                        로 직접 보내주세요.
+                      </p>
+                    </form>
                   </CardContent>
                 </Card>
               </motion.div>

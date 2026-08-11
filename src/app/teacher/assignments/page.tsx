@@ -96,8 +96,36 @@ const STATUS_CONFIG = {
   },
 };
 
+// 과제 배정을 실제로 학생 화면에 반영·동기화하는 백엔드가 없다. 새로고침하면
+// 사라지는 순수 mock이었던 것을, 최소한 "이 기기에서는 사라지지 않는다"로
+// 만들기 위해 localStorage에 저장한다(다른 기기·학생 화면과는 동기화되지 않음).
+const STORAGE_KEY = "araharu_teacher_assignments";
+
+function loadAssignments(): Assignment[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as Assignment[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveAssignments(list: Assignment[]) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch {
+    // ignore
+  }
+}
+
 export default function TeacherAssignmentsPage() {
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  // 지연 초기화로 마운트 시점에 이 기기에 저장된 과제를 바로 불러온다
+  // (useEffect+setState 조합은 불필요한 추가 렌더를 유발해 피한다).
+  const [assignments, setAssignmentsState] = useState<Assignment[]>(
+    loadAssignments,
+  );
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
@@ -106,6 +134,20 @@ export default function TeacherAssignmentsPage() {
   );
   const [rescheduleId, setRescheduleId] = useState<string | null>(null);
   const [newDueDate, setNewDueDate] = useState<Date | undefined>();
+
+  // 상태가 바뀔 때마다 localStorage에도 반영해, 새로고침해도 사라지지 않게 한다.
+  const setAssignments = (
+    updater: Assignment[] | ((prev: Assignment[]) => Assignment[]),
+  ) => {
+    setAssignmentsState((prev) => {
+      const next =
+        typeof updater === "function"
+          ? (updater as (p: Assignment[]) => Assignment[])(prev)
+          : updater;
+      saveAssignments(next);
+      return next;
+    });
+  };
 
   const handleCreate = () => {
     if (!selectedTitle || !selectedClass || !dueDate) return;
@@ -171,7 +213,7 @@ export default function TeacherAssignmentsPage() {
               과제 관리
             </h1>
             <p className="text-muted-foreground text-sm mt-1">
-              학급별 과제를 배정하고 완료 현황을 확인하세요
+              학급별 과제를 배정하고 관리하세요 (이 기기에만 저장됩니다)
             </p>
           </div>
           <Button onClick={() => setShowCreateDialog(true)} className="gap-2">

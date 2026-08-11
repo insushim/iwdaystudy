@@ -427,19 +427,31 @@ export default function UserManagementPage() {
                         <SelectItem value="admin">관리자</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-7 w-7"
-                      onClick={() => toggleStatus(user.id)}
-                      title={user.status === "active" ? "정지" : "활성화"}
-                    >
-                      {user.status === "active" ? (
-                        <UserX className="h-3.5 w-3.5 text-red-500" />
-                      ) : (
-                        <UserCheck className="h-3.5 w-3.5 text-green-500" />
-                      )}
-                    </Button>
+                    {user.role === "teacher" ? (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7"
+                        onClick={() => toggleStatus(user.id)}
+                        title={user.status === "active" ? "정지" : "활성화"}
+                      >
+                        {user.status === "active" ? (
+                          <UserX className="h-3.5 w-3.5 text-red-500" />
+                        ) : (
+                          <UserCheck className="h-3.5 w-3.5 text-green-500" />
+                        )}
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-7 w-7 opacity-30 cursor-not-allowed"
+                        disabled
+                        title="정지/활성화는 교사 계정만 지원됩니다"
+                      >
+                        <UserX className="h-3.5 w-3.5" />
+                      </Button>
+                    )}
                   </div>
 
                   {/* Mobile extra info */}

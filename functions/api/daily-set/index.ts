@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: GET /api/daily-set?grade=1&semester=1&day=42
 // Returns the daily set with questions for the given grade/semester/day
 
+import { authUserId } from '../../lib/ctx';
 interface Env {
   DB: D1Database;
 }
@@ -68,7 +69,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     }));
 
     // Check if the authenticated user already has a record for this set
-    const userId = (context as any).userId;
+    const userId = authUserId(context.data);
     let record = null;
     if (userId) {
       record = await context.env.DB.prepare(
